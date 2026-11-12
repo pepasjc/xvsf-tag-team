@@ -1,0 +1,5 @@
+{
+ "mips": "C:/path/to/gcc/bin/mipsel-none-elf-",
+ "chdman": "C:/path/to/chdman.exe",
+ "xdelta": "C:/path/to/xdelta3.exe"
+}

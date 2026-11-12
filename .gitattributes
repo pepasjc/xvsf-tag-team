@@ -1,0 +1,3 @@
+# Files are stored byte for byte: the compiled MIPS blobs and the reference data must
+# not be rewritten by a checkout with core.autocrlf.
+* -text

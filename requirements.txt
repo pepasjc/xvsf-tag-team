@@ -1,0 +1,5 @@
+# The builder (builder/build.py). Versions are the ones the 1.0 release was built and checked with.
+numpy==1.26.4
+numba==0.61.0
+# only for the restored frames (--arcade): the packer the reference images were made with
+zopfli==0.4.3

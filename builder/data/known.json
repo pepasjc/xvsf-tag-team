@@ -1,0 +1,159 @@
+{
+ "input": {
+  "title": "X-Men vs. Street Fighter (USA), SLUS-00627",
+  "serial": "SLUS-00627",
+  "exe": "SLUS_006.27",
+  "sha1": "c04bf74422c7e1cbb3b961528c38cd67b656856a",
+  "size": 392393568
+ },
+ "expected": [
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--title"
+   ],
+   "sha1": "11e0367f6d0e4d5cdbe2d0fee55dcd7d40175cea",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [],
+   "sha1": "ce7747ea47b9be0bed4c44a944f3f6587f718d9d",
+   "size": 392393568,
+   "what": "2 MB tag hack"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--nopad"
+   ],
+   "sha1": "23908acfccb0e5c9ca9d3c96d3253ce2943fed49",
+   "size": 392393568,
+   "what": "2 MB tag hack [--nopad]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--title"
+   ],
+   "sha1": "c96076656032478b85b4645b0ac3da20b17af05a",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "0546198be281d29ad60d59bad72712e37990d443",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "caabdce7471a56e8bc0fdcb834b2c70e69b421cf",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title --nopad]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "98cb28e00d126e1dbc70cfd20b0f23690f9b8708",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title --nopad]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "328a0319ca55e2450d9a229033a2f7dee4e40925",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --nopad]"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "db8abeaa03c7bc70bac1bbd735e372e7c18d2d23",
+   "size": 422701440,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo]"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [],
+   "sha1": "51653fadea9299743499f0d25bd40e44e0347790",
+   "size": 422348640,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023)"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "92dd8685a3aaea4cba508b85e0cde6b97effb5ed",
+   "size": 422701440,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo --nopad]"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "7b2be4086075f2cecc113693c8ed961af9f78598",
+   "size": 422701440,
+   "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo]"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [],
+   "sha1": "16554c05138d54c1223dfb921dff334c83e96a83",
+   "size": 422348640,
+   "what": "tag hack + restored frames, xmvsf (Euro 961004)"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "7b2be4086075f2cecc113693c8ed961af9f78598",
+   "size": 422701440,
+   "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo]"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
+   "flags": [],
+   "sha1": "16554c05138d54c1223dfb921dff334c83e96a83",
+   "size": 422348640,
+   "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted)"
+  }
+ ]
+}
