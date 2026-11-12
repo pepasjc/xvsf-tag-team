@@ -5,7 +5,7 @@
 
 The first form builds the 2 MB tag hack. With `--arcade` (your own arcade ROM set; a clone zip followed by
 its parent zip) the image also carries the restored animation frames for 8 MB setups. Output:
-`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.0].bin` + `.cue` (`… [Tag Hack 1.0 + Restored Frames]` with an
+`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` + `.cue` (`… [Tag Hack 1.0.1 + Restored Frames]` with an
 arcade set; `--name` changes it), `build.log`, and a `.chd` with `--chd` when `chdman` is found (`XVSF_CHDMAN`,
 PATH, `--chdman PATH`).
 

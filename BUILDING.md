@@ -10,7 +10,7 @@ repository.
 
       pip install -r requirements.txt
 
-  The versions in `requirements.txt` are the ones the 1.0 references were made with. Without the
+  The versions in `requirements.txt` are the ones the 1.0.1 references were made with. Without the
   `zopfli` module the 8 MB build falls back to zlib: the image works but is not identical to the
   reference.
 - `chdman` only for `--chd`.

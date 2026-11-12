@@ -70,7 +70,7 @@ Cancel terminates the worker (the build is one long synchronous computation) and
   button layout can be changed; the version line is always shown (it carries the 8MB indicator). The expected SHA-1
   for the chosen combination is shown before building. Free version text and experimental switches need the
   command-line builder.
-* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.0].bin` / `.cue`, or `… [Tag Hack 1.0 + Restored
+* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` / `.cue`, or `… [Tag Hack 1.0.1 + Restored
   Frames]`; the `.cue` names its `.bin`. No CHD in the browser.
 
 ## Tests

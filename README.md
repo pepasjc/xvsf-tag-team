@@ -1,6 +1,6 @@
 # X-Men vs. Street Fighter: Tag Team Hack (PlayStation)
 
-**Version 1.0**, 2026, by pepa
+**Version 1.0.1**, 2026, by pepa
 
 Capcom treated us PlayStation fans really poorly, releasing crippled versions of all their CPS2
 fighting games. The Saturn got a really good port, and even the N64 got a nice fan port, so I thought
@@ -111,7 +111,7 @@ python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --out OUT
 python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip --out OUT
 ```
 
-writes `OUT/X-Men vs. Street Fighter (USA) [Tag Hack 1.0].bin` and `.cue` (`[Tag Hack 1.0 + Restored
+writes `OUT/X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` and `.cue` (`[Tag Hack 1.0.1 + Restored
 Frames]` with an arcade set). `--chd` also writes a CHD when `chdman` is found. See
 [BUILDING.md](BUILDING.md).
 
@@ -120,13 +120,13 @@ Frames]` with an arcade set). `--chd` also writes a CHD when `chdman` is found. 
 The default build (boot card, version line, modern buttons):
 
 ```
-X-Men vs. Street Fighter (USA) [Tag Hack 1.0].bin
+X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin
 Size   392393568
-SHA1   11e0367f6d0e4d5cdbe2d0fee55dcd7d40175cea
+SHA1   2012f9c3ddc8514acc2cca104741b1c15c559bad
 
-X-Men vs. Street Fighter (USA) [Tag Hack 1.0 + Restored Frames].bin
-with xmvsfu                SHA1   db8abeaa03c7bc70bac1bbd735e372e7c18d2d23
-with xmvsf or xmvsfu1d     SHA1   7b2be4086075f2cecc113693c8ed961af9f78598
+X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1 + Restored Frames].bin
+with xmvsfu                SHA1   9a208a70f7e6e57ac3a3d2b57154b0fbae3842db
+with xmvsf or xmvsfu1d     SHA1   ff5412a7615c052c7a9640b12c77a0b230fd630c
 ```
 
 Every other combination of options has its own reference in `builder/data/known.json`; both the page
@@ -142,9 +142,22 @@ The main menu shows "8MB" after the version when the extra memory is in use.
 
 ## Compatibility
 
-Tested on a MiSTer (PSX core, 2 MB and 8 MB) and in emulators (Beetle PSX, SwanStation). Not tested on
-an original console. The image is a plain MODE2/2352 BIN/CUE and converts to CHD with
-`chdman createcd`.
+Tested on a PlayStation with a PSIO (2 MB), a MiSTer (PSX core, 2 MB and 8 MB) and in emulators
+(Beetle PSX, SwanStation). The image is a plain MODE2/2352 BIN/CUE and converts to CHD
+with `chdman createcd`.
+
+For a PSIO, the `.cu2` sheet must be in PSIO's own format (as written by Cue2cu2 or PSIO's Systems
+Console); for this single-track image it is:
+
+```
+ntracks 1
+size      MM:SS:FF          (length of the .bin: bytes / 2352 sectors, 75 per second)
+data1     00:02:00
+
+trk end   MM:SS:FF          (size + 2 seconds)
+```
+
+with Windows (CRLF) line endings.
 
 ## Known issues
 

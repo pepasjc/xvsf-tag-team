@@ -425,7 +425,7 @@ def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=N
 
 
 def output_name(arcade, tools_dir=None):
-    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.0]" """
+    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1]" """
     ver = "TAG HACK"
     try:
         tools_dir = tools_dir or os.path.join(REPO, "tools")

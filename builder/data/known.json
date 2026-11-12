@@ -10,17 +10,6 @@
   {
    "variant": "2mb",
    "arcade_set": null,
-   "flags": [
-    "--logo",
-    "--title"
-   ],
-   "sha1": "11e0367f6d0e4d5cdbe2d0fee55dcd7d40175cea",
-   "size": 392393568,
-   "what": "2 MB tag hack [--logo --title]"
-  },
-  {
-   "variant": "2mb",
-   "arcade_set": null,
    "flags": [],
    "sha1": "ce7747ea47b9be0bed4c44a944f3f6587f718d9d",
    "size": 392393568,
@@ -40,44 +29,11 @@
    "variant": "2mb",
    "arcade_set": null,
    "flags": [
-    "--title"
-   ],
-   "sha1": "c96076656032478b85b4645b0ac3da20b17af05a",
-   "size": 392393568,
-   "what": "2 MB tag hack [--title]"
-  },
-  {
-   "variant": "2mb",
-   "arcade_set": null,
-   "flags": [
     "--logo"
    ],
    "sha1": "0546198be281d29ad60d59bad72712e37990d443",
    "size": 392393568,
    "what": "2 MB tag hack [--logo]"
-  },
-  {
-   "variant": "2mb",
-   "arcade_set": null,
-   "flags": [
-    "--logo",
-    "--nopad",
-    "--title"
-   ],
-   "sha1": "caabdce7471a56e8bc0fdcb834b2c70e69b421cf",
-   "size": 392393568,
-   "what": "2 MB tag hack [--logo --title --nopad]"
-  },
-  {
-   "variant": "2mb",
-   "arcade_set": null,
-   "flags": [
-    "--nopad",
-    "--title"
-   ],
-   "sha1": "98cb28e00d126e1dbc70cfd20b0f23690f9b8708",
-   "size": 392393568,
-   "what": "2 MB tag hack [--title --nopad]"
   },
   {
    "variant": "2mb",
@@ -96,7 +52,7 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "db8abeaa03c7bc70bac1bbd735e372e7c18d2d23",
+   "sha1": "9a208a70f7e6e57ac3a3d2b57154b0fbae3842db",
    "size": 422701440,
    "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo]"
   },
@@ -104,7 +60,7 @@
    "variant": "8mb",
    "arcade_set": "xmvsfu (USA 961023)",
    "flags": [],
-   "sha1": "51653fadea9299743499f0d25bd40e44e0347790",
+   "sha1": "b153a87fc2ec5d2862dbc55ed6d89d1acf6f7a10",
    "size": 422348640,
    "what": "tag hack + restored frames, xmvsfu (USA 961023)"
   },
@@ -115,7 +71,7 @@
     "--logo",
     "--nopad"
    ],
-   "sha1": "92dd8685a3aaea4cba508b85e0cde6b97effb5ed",
+   "sha1": "27a9625e5b8f0b037a12610596bf0d141f376a19",
    "size": 422701440,
    "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo --nopad]"
   },
@@ -125,7 +81,7 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "7b2be4086075f2cecc113693c8ed961af9f78598",
+   "sha1": "ff5412a7615c052c7a9640b12c77a0b230fd630c",
    "size": 422701440,
    "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo]"
   },
@@ -133,7 +89,7 @@
    "variant": "8mb",
    "arcade_set": "xmvsf (Euro 961004)",
    "flags": [],
-   "sha1": "16554c05138d54c1223dfb921dff334c83e96a83",
+   "sha1": "9c34483996c007f946ac1d6f128770a55146e39a",
    "size": 422348640,
    "what": "tag hack + restored frames, xmvsf (Euro 961004)"
   },
@@ -143,7 +99,7 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "7b2be4086075f2cecc113693c8ed961af9f78598",
+   "sha1": "ff5412a7615c052c7a9640b12c77a0b230fd630c",
    "size": 422701440,
    "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo]"
   },
@@ -151,9 +107,53 @@
    "variant": "8mb",
    "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
    "flags": [],
-   "sha1": "16554c05138d54c1223dfb921dff334c83e96a83",
+   "sha1": "9c34483996c007f946ac1d6f128770a55146e39a",
    "size": 422348640,
    "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted)"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--title"
+   ],
+   "sha1": "2012f9c3ddc8514acc2cca104741b1c15c559bad",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--title"
+   ],
+   "sha1": "bd5a9bddc9f13c0c1e2fc8c19b8b625456a64fed",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "08f0f0f83e3e0e0f601fec0d1ad43ad33194ff9e",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title --nopad]"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "dac7db778b887066369dc3c10ac744f0b2e2738a",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title --nopad]"
   }
  ]
 }

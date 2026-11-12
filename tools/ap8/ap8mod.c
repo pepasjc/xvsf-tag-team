@@ -134,7 +134,7 @@ void flushcache(void);
  * sprite files are the stock files plus appended data (SPEC 1), so an unpatched overlay draws the stock frames from them. */
 #define FRAMES_OFF  (tl_dbg.title == 3)
 #ifndef VERSION
-#define VERSION "TAG HACK 1.0"
+#define VERSION "TAG HACK 1.0.1"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #include "inflate.h"
@@ -804,5 +804,5 @@ void mod_menu(void)
 {
     optpatch();
     loadhook();
-    PRINT(VERSION "  8MB", 88, 214, 8, 0x30, 1);
+    PRINT(VERSION "  8MB", 88, 222, 8, 0x30, 1);   /* 8 px below the 2 MB line: "  8MB" would touch OPTION MODE (y 208) */
 }

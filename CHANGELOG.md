@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2026)
+
+- Fixes a freeze on real PlayStation hardware: with the image built with restored frames, a stock 2 MB
+  console could hang while loading the character select screen. The check for 8 MB of RAM no longer
+  writes anything when the memory is mirrored 2 MB, and runs only once per boot. Emulators and the MiSTer
+  were not affected.
+- Version line reads TAG HACK 1.0.1.
+
 ## 1.0 (2026)
 
 First release.

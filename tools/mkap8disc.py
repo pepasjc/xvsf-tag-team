@@ -32,7 +32,7 @@ OBJ = os.path.join(BUILD, "ap8obj")
 GCC = M.GCC
 # dead ranges (tools/deadcode.py, break-tested with work/ap8/deadtest8.py), not used by any patch module
 CHUNKS = {".chunkh": (0x8002d9c4, 0x8002daec), ".chunki": (0x8006f2e4, 0x8006f3e0), ".chunkj": (0x80019ae8, 0x80019bd4), ".chunkl": (0x80054704, 0x800547d4), ".chunkm": (0x8004e3e0, 0x8004e490)}
-VERSION = "TAG HACK 1.0"                              # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
+VERSION = "TAG HACK 1.0.1"                              # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
 SEL_AT, SEL_FILE = 0x8009bc38, "P/P4/SELECT.BIN"      # jal SPRLOAD(0x27, off) of the select screen -> selhook8
 MENU_AT, MENU_FILE = 0x800987b8, "P/P4/OPDEMO.BIN"    # jr ra at the end of the main-menu text routine -> j menuhook
 OVL_BASE, EFFAREA = 0x80098000, 0x80205000

@@ -21,7 +21,7 @@ Relocation table (u16 little endian, word index = offset/4 inside the overlay):
         --build      recompile tools/tagload (needs a MIPS toolchain, see tools/toolenv.py)
         --breakfill  test disc: the dead-code ranges are filled with break, loader NOT installed
         --logo       boot card before the game starts (tools/logopatch.py); changes the image
-        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.0"); changes the image
+        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.0.1"); changes the image
 """
 import os, struct, subprocess, sys, json, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))

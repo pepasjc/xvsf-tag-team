@@ -21,7 +21,7 @@ typedef short s16;
 typedef unsigned char u8;
 
 #ifndef VERSION
-#define VERSION "TAG HACK 1.0"
+#define VERSION "TAG HACK 1.0.1"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #define MENU_X      88                  /* left edge of the picture is about x = 72 in this routine's coordinates */
@@ -63,18 +63,26 @@ void flushcache(void);
 
 SEC(".chunkh") int ap8probe(void)
 {
+    /* A real console's CPU has a write buffer: a read can be answered before the write in front of it has
+     * reached RAM, so a write-then-read test alone can see "8 MB" on a 2 MB console (emulators and the MiSTer
+     * commit writes at once).  So first a test that writes nothing: on a 2 MB console the upper addresses
+     * mirror the lower 2 MB, and game code reads the same 2 MB higher.  (No data cache on this CPU: these
+     * reads go to RAM.) */
     volatile u32 *lo = (volatile u32 *)&tl_dbg.start, *hi;
-    u32 l = *lo, keep, pat;
-    int k, ok = 1;
+    const volatile u32 *c = (const volatile u32 *)0x8002dd40u;      /* game code (CD file read), never changed */
+    u32 l, keep;
+    int k, i, ok = 1;
+    if (tl_dbg.title == 1) return 0;    /* the main menu found no 8 MB: never probe again this boot */
+    l = *lo;
     RAM_SIZE = 0xb88;
+    for (i = 0; i < 32 && c[i] == c[i + 0x200000 / 4]; i++) ;
+    if (i == 32) return 0;
     for (k = 1; k < 4 && ok; k++) {
         hi = lo + k * (0x200000 / 4);
         keep = *hi;
-        for (pat = 0x5aa5c33c; pat != 0x5aa5c33c + 2 * 0x9e3779b1u; pat += 0x9e3779b1u) {
-            *hi = l ^ pat;
-            if (*lo != l || *hi != (l ^ pat)) ok = 0;
-            *lo = l;
-        }
+        *hi = l ^ 0x5aa5c33c;           /* then: the upper word holds what is written there, and the lower one did not change */
+        if (*hi != (l ^ 0x5aa5c33c) || *lo != l) ok = 0;
+        *lo = l;
         *hi = keep;
     }
     return ok;
@@ -153,10 +161,8 @@ SEC(".chunkj") u32 selhook8(int set, u32 off)
 /* end of the main-menu text routine (every frame the menu is shown) */
 SEC(".chunkl") void menuhook(void)
 {
-    if (!tl_dbg.title) {                /* once per boot; the drive is idle on this screen */
-        tl_dbg.title = 1;
-        if (ap8ready()) tl_dbg.title = 2;
-    }
+    if (!tl_dbg.title)                  /* once per boot; the drive is idle on this screen */
+        tl_dbg.title = ap8ready() ? 2 : 1;
     if (tl_dbg.title >= 2) ((void (*)(void))(MOD + 24))();     /* module: option-screen patch + the version line with "8MB" */
     else PRINT(VERSION, MENU_X, MENU_Y, 8, 0x30, 1);
 }
