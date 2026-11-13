@@ -43,6 +43,10 @@ def symbols():
 
 
 def patches():
+    if "--nospeed" not in sys.argv:                 # 1.1: rewritten decoders (tools/speed/decode), same formats
+        import speedpatch
+        sp = speedpatch.decode_patches()
+        if sp is not None: return sp
     b = open(os.path.join(D, "nspdec.bin"), "rb").read()
     s = symbols()
     assert s["xvm_dec"] == ORG and s["holeS_start"] == HOLES[0][0] and s["holeS_end"] == HOLES[0][1] == s["msym"]

@@ -23,6 +23,8 @@ Patch
     one.  No life value is substituted or written: 0 = knocked out, drawn empty.
   * 0x8008096c: the 0x8004278c gate is removed, the two "main is the boss" tests become "flag == 0".
   * 0x80080eec: the two slot-1 frame tests read the flag instead of the display value.
+  * 1.1 (not with --nospeed): the fight after Apocalypse is one character per side, as on the arcade -
+    see FINAL in build().
 """
 import os, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))       # tools/mipsasm.py
@@ -41,8 +43,16 @@ class A(Asm):
     def nor(self, rd, rs, rt):
         self._i(lambda pc, L: 0x27 | REG[rs] << 21 | REG[rt] << 16 | REG[rd] << 11)
 
+    def xor_(self, rd, rs, rt):
+        self._i(lambda pc, L: 0x26 | REG[rs] << 21 | REG[rt] << 16 | REG[rd] << 11)
 
-def build():
+
+MODE, IDS = 0x8004218c, 0x800423b2           # game mode (1 = arcade); P1 main, P1 partner, P2 main, P2 partner (char * 2)
+PARTNER_LIFE = (0x80043178 + 0x224, 0x80043178 + 0x22c, 0x800434b8 + 0x224, 0x800434b8 + 0x22c)
+
+
+def build(final=True):
+    """final: 1.1 "fight after Apocalypse" rule (see FINAL below); False = the 1.0.1 stub."""
     a = A(ORG)
     a.label("stub")
     a.lui("$t7", 0x8004)
@@ -52,6 +62,29 @@ def build():
     a.label("fl_lo")
     a.addiu("$a2", "$a2", 0)
     a.ori("$a3", "$zero", 2)
+    if final:
+        # FINAL: the arcade's last fight (after Apocalypse) is the player's point character against its
+        # own partner, ONE character per side: the game sets both partner slots to the boss id with 0
+        # life (FBNeo xmvsfu1d: ids 9/8 vs 0/8, one bar per side, one round).  The port mirrors the team
+        # instead (P1 main = P1 partner, P2 main = P2 partner, both full) - in the hack a tag match.
+        # Arcade mode with both sides mirrored happens only there.  Then: both partner objects get 0
+        # life / 0 recoverable life every frame (= knocked out: the tag hook, team super, counter, the
+        # CPU's arcade tag branch and the KO replacement all refuse a partner with 0 life) and their bars
+        # are hidden.  t5 = 1 unless it is that fight.
+        a.lb("$t4", MODE & 0xFFFF, "$t7")
+        a.lh("$t5", (IDS + 0) & 0xFFFF, "$t7")
+        a.lh("$t6", (IDS + 2) & 0xFFFF, "$t7")
+        a.lh("$t8", (IDS + 4) & 0xFFFF, "$t7")
+        a.lh("$t9", (IDS + 6) & 0xFFFF, "$t7")
+        a.xori("$t4", "$t4", 1)
+        a.xor_("$t5", "$t5", "$t6")
+        a.xor_("$t8", "$t8", "$t9")
+        a.or_("$t5", "$t5", "$t8")
+        a.or_("$t5", "$t5", "$t4")
+        a.bne("$t5", "$zero", "side")
+        a.sltu("$t5", "$zero", "$t5")             # 1 = not the final fight
+        for addr in PARTNER_LIFE:
+            a.sh("$zero", addr & 0xFFFF, "$t7")
     a.label("side")
     a.lb("$t0", 0x54, "$a0")                      # this side's main character * 2
     a.lw("$t3", 0x234, "$a0")                     # partner object
@@ -63,6 +96,8 @@ def build():
     a.or_("$t1", "$t1", "$t2")
     a.sltiu("$t1", "$t1", 1)                      # 1 = full partner
     a.and_("$t0", "$t0", "$t1")
+    if final:
+        a.and_("$t0", "$t0", "$t5")               # FINAL: no partner bar
     a.sb("$t0", 0, "$a2")                         # vis[side]
     a.addiu("$a0", "$a0", 0x348)                  # P2 main object
     a.bne("$a3", "$zero", "side")
@@ -79,7 +114,7 @@ def _w(*ws):
 
 
 def patches():
-    a = build(); code = bytearray(a.assemble())
+    a = build(final="--nospeed" not in sys.argv); code = bytearray(a.assemble())
     L = a.labels()
     fl = L["flags"]
     hi, lo = ((fl + 0x8000) >> 16) & 0xFFFF, fl & 0xFFFF

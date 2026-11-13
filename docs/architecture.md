@@ -12,7 +12,7 @@ USA disc (SLUS-00627); the executable is loaded at 0x80010000. Engine facts the 
   - [The battle loader](#the-battle-loader)
   - [Tagging](#tagging)
   - [Arcade behaviour](#arcade-behaviour)
-  - [Boot card and version line](#boot-card-and-version-line)
+  - [Boot cards and version line](#boot-cards-and-version-line)
 - [The 8 MB build](#the-8-mb-build)
   - [One image for both machines](#one-image-for-both-machines)
   - [Memory map](#memory-map)
@@ -21,7 +21,9 @@ USA disc (SLUS-00627); the executable is loaded at 0x80010000. Engine facts the 
   - [Select screen and effects](#select-screen-and-effects)
   - [The ARCADE FRAMES option](#the-arcade-frames-option)
   - [The file cache](#the-file-cache)
+  - [Pre-decoded tiles (1.1)](#pre-decoded-tiles-11)
 - [Speed](#speed)
+  - [Speed (1.1)](#speed-11)
 - [The disc](#the-disc)
 - [Reproducible builds](#reproducible-builds)
 
@@ -96,8 +98,24 @@ Nothing is read from the disc during a fight, as before.
 - **CPU** (`tools/aipatch.py`): the CPU's script interpreter already has tag and assist commands; the
   patch lets the CPU's team moves through, so it tags with the arcade's own logic.
 - **Team super and counter assist** need a partner that is still standing.
+- **Who stays on point** (1.1, `tools/tagpatch.py`): after a team super (variable combination) and after a
+  variable counter, the partner who came in stays on point, as in the arcade. The port's end-of-team-move
+  resolver (`0x8006e6f0`) and the counter's effect object (`0x8008dfe8`) chose the "partner leaves" branch by
+  the mode flag; both now test the reduced-set mask `0x800421bc` instead, so full partners take the arcade
+  branch and the boss fight keeps the port's.
+- **Specials after a counter** (1.1): the counter sets the side's bit in `0x80042387` ("assist is out"),
+  and only the port's swap-back cleared it. While it was set, the veto routine `0x8006f84c` (asked by the
+  command parser, the tag hook and the team moves) blocked every special, super and tag of the new point
+  character for the rest of the round. The veto (`0x8006f850`) and the counter stub now skip the bit for
+  full partners, as the arcade does.
 - **Boss**: Apocalypse has no partner. The player's side keeps both bars and can tag; the boss side has
   one bar.
+- **The fight after Apocalypse** (1.1, `tools/hudpatch.py`): the arcade's last fight is the point
+  character against its own partner, one character per side. The port mirrors the whole team instead,
+  which in the hack became a tag match. In arcade mode with both sides mirrored (that fight only), the HUD
+  stub sets both partner objects' life and red life to 0 every frame and hides their bars: tag, team
+  super, counter, the CPU's tag and the KO replacement all refuse a partner with no life, so the fight is
+  one on one, one round.
 
 ### Arcade behaviour
 
@@ -113,11 +131,21 @@ Nothing is read from the disc during a fight, as before.
 - **Buttons** (`tools/padpatch.py`): default layout HP = R1, HK = R2, three punches = L1, three
   kicks = L2, so tag is R1 + R2. The in-game KEY CONFIG still changes it.
 
-### Boot card and version line
+### Boot cards and version line
 
 `tools/logopatch.py` draws a boot card from a bare-metal stub at the executable's entry point, before
 any game code runs, then jumps to the original entry. `tools/titlepatch.py` adds the version line to the
 main menu through a hook at the end of the menu's text routine.
+
+Since 1.1 a second card follows (`tools/card2patch.py`, stub `tools/logo/card2.S`): a notice that this is
+a free fan-made patch, with the project's address, over six slanted panels with select-screen portraits.
+The repository holds only the card's own layer (`tools/logo/card2.bin`: panel shapes, text and borders).
+The portraits are decoded at build time from the user's disc (`SP_SEL0.NSP` and the colours in
+`SELECT.BIN`) and composed with that layer into a 15-bit picture in the executable's zero area
+(`0x800c0000`). The first card's stub ends in a jump to the second's (`0x800e5800`), which shows the
+picture for 4.5 seconds (START or X skips it after one second), clears what it used and jumps to the
+game's entry point. The first card now shows only the PEPA SOFT HOUSE logo; with `--nospeed` the build
+uses the 1.0.1 card (`tools/logo/card_101.bin`) and no second card.
 
 ## The 8 MB build
 
@@ -144,11 +172,12 @@ console plays the same image as the 2 MB tag hack.
 
 | Address | Contents |
 |---|---|
-| `0x80200000` | the module (7 sectors), then its state page (`0x80203800`) and the effects undo list (`0x80203c00`) |
-| `0x80205000` | the effects sprite file, resident |
+| `0x80200000` | the module (12 sectors) |
+| `0x80206000` | its state page, the effects undo list (`+0x400`) and the decoder hook `raw_dec` (`+0x1000`) |
+| `0x80207800` | the effects sprite file, resident |
 | then | shared-slot tables (see below) |
 | then | the file cache's resident pack |
-| arena | character blocks, from the end of the above to `ARENA_END` |
+| arena | character blocks, from the end of the above to `ARENA_END`; since 1.1 also the pre-decoded tiles |
 | `ARENA_END` | scratch: a compressed block being decoded during a battle load; the select screen's sprite files while the select screen runs |
 
 `ARENA_END` and the other boundaries depend on the content and are written into the module's table
@@ -228,6 +257,26 @@ Every copy is checksummed before use; anything wrong falls back to the disc. The
 large the four characters are: about 3 seconds between fights with four large X-Men, about 6 with a
 lighter team.
 
+### Pre-decoded tiles (1.1)
+
+At the end of every battle load the module decodes the tiles of the four characters and of the effects
+file, with the game's own decoder, into the free memory above 2 MB: each tile as a tagged copy
+(`XRAW`, the old offset, the 4 bpp pixels), and the tile's entry in the sprite file's tile table
+(section 1) is pointed at it. The order is by measured use: `tools/ap8/hot8.json` scores every tile of
+every character by how often it is decoded in play and in burst frames (measured on the 8 MB build with
+the restored frames). The disc builder writes that order into each character block as a fifth part
+(`PLxx.HT8`), so it comes with the same read. Memory is filled until it runs out; a copy only goes where
+its file's 22-bit offsets can reach it, and the opponents' fresh blocks get an equal share of the free
+memory behind them. Teams without restored characters fit completely; teams with restored characters get
+15 to 48 % of their tiles.
+
+During the fight the decoder hook copies a pre-decoded tile instead of decoding it, and the upload loops
+send it to video memory straight from the copy. A tile that was not pre-decoded is copied into the space
+left over the first time it is decoded. Every redirection is undone from the copies' headers before the
+next battle load, effects load, `LOADFILE` and select screen, so the stock files are intact whenever the
+game reads them. The decode adds 0.85 to 1.2 seconds to a battle load. Supers with restored frames
+lose far fewer frames (Chun-Li's Kikoshou: 53.8 to 56.6 loops per second on average).
+
 ## Speed
 
 The port is CPU-bound in fights: the one CPU runs the game and decodes every sprite every frame. Large
@@ -241,6 +290,65 @@ sprites (supers, Juggernaut, Apocalypse) slow the retail game down too.
 - Some slowdown comes from the tag hack itself (four full characters, the tag code). It shows in the
   2 MB build too and does not depend on the restored frames.
 
+### Speed (1.1)
+
+1.1 replaces the hot paths of the sprite pipeline and a few engine routines with hand-written MIPS that
+computes the same results (`tools/speed/`, one entry point `tools/speedpatch.py`; `--nospeed` gives the
+1.0.1 image bit for bit). Each module rewrites whole functions inside their original address ranges or in
+executable ranges that nothing references.
+
+| Module | What it replaces | Effect |
+|---|---|---|
+| `decode` | the RLE tile decoder `0x8001b5b0` and the hack's XVM1 / XVH1 decoders | cycles per byte (Beetle): RLE 8.8 to 7.4, XVM1 30.4 to 25.9, XVH1 95 to 82 |
+| `upload` | the sprite memory (arena) allocator `0x80058d04`, the end-of-frame sweep, the three upload loops `0x8005935c` / `0x80059564` / `0x80059930` | fewer allocator flushes, shorter loops |
+| `quad` | the sprite-part primitive builder `0x80056340` and the frame-record parsers `0x80057be4` / `0x80057f48` | 1330 to 555 cycles per part; the hot loop fits the instruction cache better |
+| `frame` | the sprite-list dispatcher and walkers, layer dispatch, draw and present, libgpu's queue (`_addque`, `_exeque`, the timeout check), the BIOS memory routines, the stages' background layers | see below |
+| `logic` | the draw-list insert `0x800303f0`, the move parser's command matcher `0x8007d100` (fast path without a stack frame) | a few thousand cycles per frame |
+
+The `frame` module in detail: `bcopy`, `bzero`, `memcpy` and `memset` under 1 KB run from RAM instead of
+the BIOS ROM (larger ones keep the BIOS routine, whose timing the attract demo relies on). The libgpu queue
+functions are rewritten register for register, because the game reads registers that libgpu calls leave
+behind (the score code `0x80075550` ORs one of them into a player byte). When the GPU is still busy with
+the screen clear, the first draw of a frame is queued instead of waited for, and a root-counter interrupt
+starts the queue as soon as the GPU is free. On stages whose background code allows it, the next frame's
+background layers are built while the GPU draws this frame's sprites. The stages' background tile layers
+(compiled per stage in `P/P4/STAGEn.BIN`) are rewritten too: four compiled templates are matched word by
+word in every stage file and emitted again with the values in registers (`bgtile.py`), seven one-off
+variants are rewritten individually (`bghand.py`); these patches go into the stage files on the disc.
+
+The strong tier (XVH1, the slowest decoder) now keeps each character's most decoded tiles as plain RLE,
+up to 4 KB per character (`builder/xvb/strongrle.py`, `builder/data/hot_tiles.json`): 24 to 47 % of a
+strong character's decode volume takes the fast path. The battle loader's directory read is three sectors
+instead of one; the two extra sectors carry a decode-ahead predictor that follows the animation scripts.
+It has no consumer in 1.1; the cache it was written for comes later.
+
+**How equivalence was checked.** Every rewritten function was run against the original in a CPU emulator
+(Unicorn) on real calls captured from fights and on random mutations of them, comparing all of RAM, the
+scratchpad, the return values, the saved registers and the log of outside calls (thousands to tens of
+thousands of calls per module, no difference). All of the new code passes a load-delay hazard check for
+the R3000. Then the built discs were compared with 1.0.1 in Beetle PSX, one disc per process, every logic
+frame locked to five vblanks, same inputs: the displayed picture and the game state
+(`0x80042000`-`0x80044000`) per logic frame, over 3,400 to 4,300 logic frames in each of four scenarios
+(strong tier, Chun-Li's Kikoshou, Magneto, Storm; specials, supers, tags, a KO and the replacement). No
+picture differs. The only state difference is a byte the stock game itself sets from a leftover register
+(`P+0x117`, see above); a timing-only change to the stock game flips it the same way. The speed build was
+also played on a real PlayStation before the release.
+
+Result on a stock 2 MB console (Beetle, 10 teams in 12 situations, loops per second): situations below
+full speed went from 98 of 120 in 1.0.1 to about 65; walking, normals and most specials run at full speed
+with four characters loaded. The original
+game, with two characters and no tag, has 41 of 110 below full speed in the same test.
+
+**Prebaked code.** All of the patch's own MIPS code, the speed modules and the stage patches included, is
+stored assembled in `builder/data/blobs/` (one file per piece, named by its SHA-1 and checked on every
+read; `manifest.json` maps each code-generating function and its arguments to its piece). The builder
+and the web patcher install these in place of the generating functions and run no compiler or other
+program. [BUILDING.md](../BUILDING.md) describes re-baking them after a source change.
+
+**Deferred to 1.2.** A frame cache that keeps decoded sprite frames in the arena between frames (`UP_FC`,
+`tools/speed/upload/fcache.c`) froze on a real console after several attract-mode cycles. It is off in
+1.1; the source is included.
+
 ## The disc
 
 The game reads files through its own file table in the executable (`0x8003d91c`, 8 bytes per file),
@@ -253,6 +361,6 @@ shortens seeks. The image stays a single MODE2/2352 track.
 
 `builder/` regenerates every intermediate file from the user's inputs and checks the result against
 SHA-1 references (`builder/data/known.json`): the same inputs give the same image on any machine, in
-the command line and in the browser. The parts that need a MIPS compiler (the loader, decoder, module,
-boot card) are stored compiled in the repository (`tools/**/*.bin`, `builder/data/toolcache/`), keyed by
-a hash of their sources; changing a source needs the compiler again. See [BUILDING.md](../BUILDING.md).
+the command line and in the browser. Everything that needs a MIPS compiler (the loader, decoders, speed
+modules, stage patches, 8 MB module, boot cards, version line) is stored compiled in `builder/data/blobs/`,
+so a build needs no compiler; changing a source needs the compiler again. See [BUILDING.md](../BUILDING.md).

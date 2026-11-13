@@ -21,7 +21,7 @@ typedef short s16;
 typedef unsigned char u8;
 
 #ifndef VERSION
-#define VERSION "TAG HACK 1.0.1"
+#define VERSION "TAG HACK 1.1"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #define MENU_X      88                  /* left edge of the picture is about x = 72 in this routine's coordinates */
@@ -53,7 +53,10 @@ extern const struct xent modent;        /* the module on the disc (disc builder)
 /* effp: 0x5a = effect animation records of the EXE are patched (restored effects file, SPEC 17), list at UNDOLIST;
    0xee = the last undo met a word that was neither id (the module then keeps the stock effects for this fight) */
 extern struct { u8 dropped; u8 loaded; u8 strong; u8 fat; u32 start, end; u8 ap8; u8 title; u8 effp; } tl_dbg;
-#define UNDOLIST    ((u32 *)0x80203c00)         /* count, then { address, stock id, new id } - written by the module */
+#ifndef STATEA
+#define STATEA      0x80206000u
+#endif
+#define UNDOLIST    ((u32 *)(STATEA + 0x400))         /* count, then { address, stock id, new id } - written by the module */
 #define EFF_LO      0x80091afcu                 /* the effect animation records in the EXE image */
 #define EFF_LEN     0xd48u
 #define SLOT26      (*(u32 *)0x8005c6f4)        /* shared-slot table pointer of set 0x26, stock 0x8005c760 */

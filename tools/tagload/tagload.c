@@ -93,7 +93,11 @@ typedef unsigned char u8;
 #define FAKE(p)     ((int)((u32)(p) - FTABLE) >> 3)
 
 struct xent { u32 msf; u32 size; };
+#ifdef HOT
+struct dir { struct xent code[19], var[3][19], eff, hdir; };   /* + the hot directory sector (1.1) */
+#else
 struct dir { struct xent code[19], var[3][19], eff; };   /* var[tier - 1]: 1 strong, 2 fat, 3 mid */
+#endif
 #define T_STRONG 1
 #define T_FAT    2
 #define T_MID    3
@@ -215,6 +219,16 @@ SEC(".ram") const struct xent *effplan(s16 *list, u32 off)
 }
 
 /* tier per slot for the real heap top (after the effects file) */
+#ifdef HOT
+void hotplan(s16 *list, u32 slack, u8 *tier);
+SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
+{
+    int i, m = guard(list, cap);
+    for (i = 0; i < 4; i++) tier[i] = (m >> i) & 1;
+    tl_dbg.loaded = 0;
+    hotplan(list, cap - total(list, tier), tier);       /* base characters only; also next to strong ones */
+}
+#else
 SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
 {
     int i, m = guard(list, cap);
@@ -228,6 +242,7 @@ SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
     tl_dbg.loaded = mid;
     tl_dbg.fat |= fat;
 }
+#endif
 
 SEC(".chunkb") int isboss(void)
 {
@@ -368,6 +383,9 @@ SEC(".chunka") u32 effhook(int set, u32 off, s16 *list)
     return varload(SETLOAD, set, off, var);
 }
 
+#ifdef HOT
+u32 hotspr(int set, u32 off);
+#endif
 SEC(".chunkb") u32 load_one(int c, u8 *base, const struct xent *var)
 {
     u32 code = FT_SIZE(3 + c), delta = (u32)base - LINKBASE, off, n, t;
@@ -395,7 +413,11 @@ SEC(".chunkb") u32 load_one(int c, u8 *base, const struct xent *var)
     ((void (*)(void))(INITTAB[c] + delta))();
     off = ((code >> 3) + 1) << 3;
     D130 = (u32)base;
+#ifdef HOT
+    n = varload(hotspr, c, off, var);
+#else
     n = varload(SPRLOAD, c, off, var);
+#endif
     D130 = LINKBASE;
     return (off + n + 7) & ~7u;
 }
@@ -436,3 +458,76 @@ SEC(".chunkd") void hook(int stage, s16 *list, int unused, u8 *heap)
 #endif
     tl_dbg.end = (u32)cur;
 }
+
+#ifdef HOT
+/* ---- 1.1 continuous hot-tile tier (format: tools/speed/decode/hotfile.py) ----
+ * The hot directory sector (DIR->hdir) is read to HDIR right below LIMIT when the policy runs (nothing is loaded
+ * there yet); hplan() in it picks a step per base character from the slack; the chosen region entry and suffix
+ * size of each character are copied to hslot[] (resident) because later reads overwrite HDIR.
+ * hotspr() replaces the game's sprite-file load for every character: base file minus S bytes, then the region
+ * prefix (R bytes) right behind it, truncated sec2 size into the XVM1 header, sec1 of the items -> RLE copies. */
+#define HDIR        0x801fd804u                     /* == FTABLE mod 8; ends at DIR */
+#define HDIR_MAGIC  0x44485658u                     /* "XVHD" at word 510, word 511 = sum of words 0..509 */
+#define SEC0TAB     ((u32 *)0x8006a358)
+#define SEC1TAB     ((u32 *)0x8005ce80)
+#define SEC2TAB     ((u32 *)0x8005c830)
+struct hslot { struct xent reg; s16 c; s16 fake; u32 s; };   /* reg first: must sit at FTABLE mod 8; fake = its file index */
+extern struct hslot hslot[4];
+typedef void (*hplan_fn)(s16 *list, u32 slack, u8 *tier, struct hslot *out);
+
+/* hotplan(list, slack, tier): tagload/hot/hotspr.S */
+/* hotspr(): tagload/hot/hotspr.S */
+
+/* ---- in the hot directory sector (linked at HDIR + table size; called through word 0) ---- */
+struct hstep { u16 s, net, g; };
+struct hchar { u32 msf; u8 n; u8 pad; struct hstep st[9]; };       /* 60 bytes; msf = the region file */
+#define HC(c)   ((struct hchar *)(HDIR + 4 + 60 * (c)))   /* word 0 = &hplan; code from HDIR + 1144 */
+/* extra RAM of step k of character c over the base file (as hotspr() and load_one() consume it) */
+SEC(".hram") static u32 hcost(int c, int k)
+{
+    u32 f, s, r;
+    if (k == 0) return 0;
+    f = FT_SIZE(0x5a + c);
+    s = HC(c)->st[k - 1].s;
+    r = s + HC(c)->st[k - 1].net;
+    return ((f - s + 3) & ~3u) + r - ((f + 3) & ~3u) + 8;
+}
+
+SEC(".hram") void hplan(s16 *list, u32 slack, u8 *tier, struct hslot *out)
+{
+    int step[4], live[4], i;
+    for (i = 0; i < 4; i++) {
+        step[i] = 0;
+        live[i] = list[i] >= 0 && tier[i] == 0 && HC(list[i])->n > 0;
+    }
+    for (;;) {
+        int b = -1;
+        u32 bg = 0, bd = 1;
+        for (i = 0; i < 4; i++) {
+            u32 g, d;
+            int c = list[i], k;
+            if (!live[i]) continue;
+            k = step[i];
+            d = hcost(c, k + 1) - hcost(c, k);
+            g = HC(c)->st[k].g;
+            if (b < 0 || g * bd > bg * d) { b = i; bg = g; bd = d; }
+        }
+        if (b < 0) break;
+        if (bd <= slack) {
+            slack -= bd;
+            if (++step[b] == HC(list[b])->n) live[b] = 0;
+        } else live[b] = 0;
+    }
+    for (i = 0; i < 4; i++) {
+        int c = list[i], k = step[i];
+        if (k) {
+            out[i].c = c;
+            out[i].reg.msf = HC(c)->msf;
+            out[i].reg.size = HC(c)->st[k - 1].s + HC(c)->st[k - 1].net;
+            out[i].s = HC(c)->st[k - 1].s;
+            out[i].fake = FAKE(&out[i].reg);
+            tl_dbg.loaded |= 16 << i;
+        }
+    }
+}
+#endif

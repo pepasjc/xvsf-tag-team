@@ -5,11 +5,12 @@
  * read or run: the stub jumps to the normal loader of the 2 MB hack (same disc).
  *
  * Memory above 2 MB:
- *      0x80200000  this module (7 sectors: vectors, file tables, code; magic + checksum at the end)
- *      0x80203800  struct state: resident-block records + debug info (survives between battles)
- *      0x80203c00  undo list of the restored effects (SPEC 17.5)
- *      0x80205000  effects file, shared-slot tables, then the arena up to ARENA_END: one block per loaded character
- *                      [code file = P0 overlay + relocation table][sprite file][PLxx.AP8][PLxx.AD8]
+ *      0x80200000  this module (MODSECT sectors: vectors, file tables, code; magic + checksum at the end)
+ *      STATEA      struct state: resident-block records + debug info (survives between battles)  (0x80206000)
+ *      STATEA+0x400  undo list of the restored effects (SPEC 17.5)
+ *      STATEA+0x1000 raw_dec (the tile decoder hook, copied from the module), +0x11f0 the decoder's own first words
+ *      STATEA+0x1800 effects file, shared-slot tables, then the arena up to ARENA_END: one block per loaded character
+ *                      [code file = P0 overlay + relocation table][sprite file][PLxx.AP8][PLxx.AD8][PLxx.HT8]
  *                  each part starts on a 2048-byte step (a CD read spills up to the end of its last sector)
  * Below 2 MB, as in the 2 MB hack but only the code:  heap | pool (POOL) | relocated overlay copies, 8-aligned.
  *
@@ -47,7 +48,10 @@ typedef unsigned char u8;
 #define LINKBASE    0x800d1000u
 #define POOL        19296u
 #define FAKE(p)     ((int)((u32)(p) - FTABLE) >> 3)
-#define STATE       ((struct state *)0x80203800)
+#ifndef STATEA
+#define STATEA      0x80206000u
+#endif
+#define STATE       ((struct state *)STATEA)
 #define SLOTPTR     ((u32 *)0x8005c65c)         /* per sprite set: its shared-slot table, 8 bytes per slot, ends with 0xffff */
 /* fixed areas above 2 MB (addresses from the disc builder, -D):
  *   EFFAREA   .. SLOTAREA   the effects sprite file (set 0x26, SP_EFF1), resident like a character block
@@ -57,7 +61,7 @@ typedef unsigned char u8;
  *                           SP_SEL0) lives here, up to the top of RAM - the two uses never overlap in time, and no
  *                           resident block is touched
  *   LT_ADDR, DT_ADDR        decode tables (inside the top of the scratch/select area, battle load only) */
-#define EFFAREA     0x80205000u
+#define EFFAREA     (STATEA + 0x1800)
 #define SELAREA     SCRATCH
 #define SPRLOAD     ((u32 (*)(int, u32))0x80053f78)
 #define D130        (*(u32 *)0x8003d130)        /* base the game's sprite loaders add to their offset argument */
@@ -80,8 +84,15 @@ typedef unsigned char u8;
 #define R(n)        (((n) + 2047) & ~2047u)
 
 struct xent { u32 msf; u32 size; };
+#ifndef EFFHMAX
+#define EFFHMAX     400
+#endif
+//                 /* pre-decode list of the effects set: entries (module table) */
 struct tab { struct xent code[19], spr[19], ap8[19], ad8[19], eff, sel0, selap, sel2, selap2, effr, effae, pack[19]; u32 psum[19]; u32 slotstock[39]; u16 slots[20]; u32 arena, arena_end, slotarea; u32 sel2sum, selap2sum, effrsum, effaesum;
-             u32 pad0; struct xent auxp; u32 auxpsum, auxarea; };   /* auxp at 4 mod 8 like every file entry */
+             u32 pad0; struct xent auxp; u32 auxpsum, auxarea;     /* auxp at 4 mod 8 like every file entry */
+             struct xent ht8[19];                                       /* per character: PLxx.HT8, the pre-decode order (rawsetup) */
+             u32 effhn, effh[EFFHMAX]; };                               /* the same for the effects set 0x26 (stock file's tiles) */
+#define HT8_MAGIC   0x01385448u         /* "HT8", then u32 n, n x (tile | score << 16), highest score first */
 /* effr + effae: restored effects file (set 0x26) and EFF1.AE8 (work/ap/SPEC.md section 17), with their word sums */
 /* sel0 + selap: restored select-screen sprite file and SELECT.AP8 (work/ap/SPEC.md section 10); size 0 = none
  * sel2 + selap2: second select-screen sprite file (set 0x39) and SELECT2.AP8 (section 15), with their word sums */
@@ -118,12 +129,27 @@ struct state {
     u32 auxhits, auxmiss, auxstored;    /* debug: cache hits, whitelisted reads from the disc, copies kept */
     u32 corehits, coreloads, selres;    /* compressed core: files served, pack reads; selres 1 = select sprites in the scratch area */
     u32 sellow;                         /* where the game would have put its own SP_SEL0 (select screen memory, unused on this path) */
+    /* decoded-tile cache (speed 1.1, see rawsetup); offsets used by ap8glue.S raw_dec */
+    u32 rawoff;                         /* 0x1b0: 1 = no copies in battle (tests poke it; pre-decode still runs) */
+    u32 rawcur, rawlo;                  /* 0x1b4: battle copies grow down from rawcur to rawlo */
+    u32 rsn;                            /* 0x1bc: sets with redirected sec1 entries (rs[]); 0 = no cache */
+    u32 decw[2];                        /* 0x1c0: the tile decoder's first two words before our hook */
+    u32 rawskip, pad1;                  /* 0x1c8: raw_dec copies no RAW tile for a call returning here (see rawsetup) */
+    u32 rsave[5];                       /* 0x1d0: raw_dec's ra, v0, a0, a1, a2 (no stack) */
+    struct rset { u32 s1, n, s2; } rs[5];   /* 0x1e4: sec1 table, entries, sec2 of every cached set */
+    /* debug: last battle load */
+    u32 pdtiles, pdbytes, pdvbl, pdevict, pdsets, ldvbl, pdfree;    /* tiles / bytes decoded, vblanks the cache took (salvage to
+                                           the end of the load), kept blocks dropped for it, -, vblanks of the battle load, bytes left */
+    u32 pdsalv, pdwait, pdt0;           /* copies salvaged from the last load, tiles decoded while the drive streamed */
+    u32 inload;                         /* mod_hook is loading: rawundo does nothing (its own plain-file reads) */
+    u32 idx, idxn, idxsum;              /* index of the copies (pdend) for the next load's salvage */
 };
+typedef char state_fits[(sizeof(struct state) <= 0x400) ? 1 : -1];
 #define AUXN 7
 
 /* from the EXE part of the loader (tools/tagload, addresses passed by the linker) */
 extern struct { u8 dropped; u8 loaded; u8 strong; u8 fat; u32 start, end; u8 ap8; u8 title; u8 effp; } tl_dbg;
-#define UNDOLIST    ((u32 *)0x80203c00)         /* count + { address, stock id, new id }: what effundo() in the EXE restores */
+#define UNDOLIST    ((u32 *)(STATEA + 0x400))         /* count + { address, stock id, new id }: what effundo() in the EXE restores */
 #define EFF_LO      0x80091afcu
 #define EFF_LEN     0xd48u
 u32 varload(u32 (*fn)(int, u32), int set, u32 off, const struct xent *var);
@@ -134,7 +160,7 @@ void flushcache(void);
  * sprite files are the stock files plus appended data (SPEC 1), so an unpatched overlay draws the stock frames from them. */
 #define FRAMES_OFF  (tl_dbg.title == 3)
 #ifndef VERSION
-#define VERSION "TAG HACK 1.0.1"
+#define VERSION "TAG HACK 1.1"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #include "inflate.h"
@@ -142,6 +168,7 @@ void flushcache(void);
 struct rd { struct inf s; const u8 *base; int total; u8 res[8]; u32 *sp; u32 acc; };     /* sp, acc: word sum of the output so far */
 
 /* the decoder ran out of input: wait for the drive */
+static void pdwait(void);
 static int more(struct inf *s)
 {
     struct rd *r = (struct rd *)s;
@@ -159,6 +186,7 @@ static int more(struct inf *s)
         if (left == 0) { s->lim = r->base + r->total * 2048 + 0x10000; return 1; }
         arrived = r->base + (r->total - left) * 2048;
         if (arrived - INF_MARGIN > s->in) { s->lim = arrived - INF_MARGIN; return 1; }
+        pdwait();                       /* tile cache, phase A: decode a tile while the data is coming */
     }
 }
 
@@ -209,12 +237,12 @@ static u32 sum(u32 a, u32 n)
 
 static u32 ident(int c)
 {
-    return 1 | (T.code[c].msf ^ (T.spr[c].msf << 1) ^ (T.ap8[c].msf << 2) ^ T.code[c].size ^ (T.spr[c].size << 8) ^ (T.ap8[c].size << 20) ^ T.pack[c].msf ^ T.psum[c] ^ (T.ad8[c].msf << 3) ^ (T.ad8[c].size << 12));
+    return 1 | (T.code[c].msf ^ (T.spr[c].msf << 1) ^ (T.ap8[c].msf << 2) ^ T.code[c].size ^ (T.spr[c].size << 8) ^ (T.ap8[c].size << 20) ^ T.pack[c].msf ^ T.psum[c] ^ (T.ad8[c].msf << 3) ^ (T.ad8[c].size << 12) ^ (T.ht8[c].msf << 4) ^ (T.ht8[c].size << 16));
 }
 
 static u32 need(int c)
 {
-    return R(T.code[c].size) + R(T.spr[c].size) + R(T.ap8[c].size) + R(T.ad8[c].size);
+    return R(T.code[c].size) + R(T.spr[c].size) + R(T.ap8[c].size) + R(T.ad8[c].size) + R(T.ht8[c].size);
 }
 
 static struct state *state(void)
@@ -230,6 +258,7 @@ static struct state *state(void)
         for (i = 0; i < AUXN; i++) st->aux[i].size = 0;
         st->auxhits = st->auxmiss = st->auxstored = 0;
         st->corehits = st->coreloads = st->selres = st->sellow = 0;
+        st->rsn = st->rawoff = 0;
     }
     return st;
 }
@@ -305,6 +334,9 @@ static int sel2(struct state *st, u8 *low)
  * Restored content: SELECT.AP8 is read first (behind the place of the sprite file) and checked; only then the
  * restored sprite file is loaded and the frame ids are written into SELECT.BIN (in RAM at 0x80098000, it is the
  * code that called us).  Anything wrong with the patch file = stock file, nothing patched: both or neither. */
+void rawundo(struct state *st);
+static u32 findgap(struct state *st, u32 n);
+
 u32 mod_sel(int set, u32 off)
 {
     struct state *st = state();
@@ -312,6 +344,7 @@ u32 mod_sel(int set, u32 off)
     u8 *a = (u8 *)(SELAREA + R(T.sel0.size));
     u32 *w = (u32 *)a;
     const struct xent *var = 0;
+    rawundo(st);
     st->selhow = 1;
     st->sel2err = 0;
     if (T.sel0.size && T.selap.size && !FRAMES_OFF) {
@@ -381,11 +414,317 @@ static int effrestored(struct state *st, int set)
     return how;
 }
 
+/* ---- decoded-tile cache (8 MB only; speed 1.1, work/speed/8mb/REPORT.md) ----
+ * A cached tile is stored DECODED (4 bpp, e8*e9 bytes, the decoder's output) in free memory above 2 MB as
+ *      u32 old offset | slot << 24, u32 check, u32 tile, u32 'XRAW', pixels    (check = word sum of the pixels ^ word 0)
+ * and its sec1 entry (bits 0-21 = offset from the set's sec2) points at the tag.  The upload loops (tools/speed/upload,
+ * rawchk) DMA the pixels straight to VRAM - no decode, no arena block, no copy - and every other decoder caller goes
+ * through raw_dec (ap8glue.S, hooked on 0x8001b5b0), which copies a RAW tile and decodes anything else.
+ * Filled during every battle load, highest score first (PLxx.HT8 in the block, T.effh for the effects; scores = decodes
+ * measured with the restored frames, work/speed/8mb/hot8.py), as much as fits where each set's 22-bit offsets reach:
+ *   salvage   copies of the last load that are still intact (the ranges it filled are scanned; check) for a set that is
+ *             still resident
+ *   phase A   while the drive streams a block (packload's waits): tiles of the sets already in place, into the arena only
+ *             (the packed stream and the inflate tables use the scratch area above ARENA_END)
+ *   phase B   end of the load: everything else, arena + scratch area
+ * In battle raw_dec copies a tile that is still decoded into what is left (lazy).  rawundo puts every redirected entry
+ * back (old offset from the copy's header) before anything can write into that memory or check a block (battle load,
+ * effects load, file cache, select screen), so the blocks are the files again.  Copies stay where they are. */
+#define XRAW        0x57415258u
+#define OFFM        0x3fffffu
+#define TOPRAM      0x80800000u
+#define TRAMP       ((u32 (*)(u32, u32, u32))(STATEA + 0x11f0))     /* the decoder as it was (rawhook) */
+#define VSYNC       ((int (*)(int))0x80011960)
+#define NF          16
+#define NFR         40
+#define EVSCORE     4                   /* a kept (unlisted) block is dropped for a tile with at least this score */
+#define PAD         32                  /* behind every copy: the decoders may write up to a run (16 bytes) past n */
+#define TSIZE(w)    ((((w) >> 24 & 15) + 1) * (((w) >> 28) + 1) << 7)
+
+u32 raw_dec(u32 *src, u32 *dst, int n);
+void rawhook(struct state *st);
+typedef char rawoff_at_0x1b0[(__builtin_offsetof(struct state, rawoff) == 0x1b0 && __builtin_offsetof(struct state, decw) == 0x1c0 && __builtin_offsetof(struct state, rsave) == 0x1d0 && __builtin_offsetof(struct state, rs) == 0x1e4) ? 1 : -1];
+
+struct fr { u32 lo, hi; };
+struct ps { u32 *s1, n, s2; const u32 *h; u32 nh, k, id, blk; };
+/* work area of one battle load: free ranges (sorted), the cached sets; in the state page behind TRAMP */
+struct pd { u32 on, nf, ns, lim, rs, re; struct fr f[NFR]; struct ps p[5]; };
+#define PD          ((struct pd *)(STATEA + 0x1200))
+/* what the last load filled, for the next load's salvage: the free ranges it started from + the ids of its sets */
+struct scan { u32 n, id[5]; struct fr f[NFR + 8]; };
+#define SCAN        ((struct scan *)(STATEA + 0x1400))
+typedef char scan_fits[(STATEA + 0x1400 + sizeof(struct scan) <= STATEA + 0x1800 && sizeof(struct pd) <= 0x200) ? 1 : -1];
+
+static void undoset(u32 *s1, u32 n, u32 s2)
+{
+    for (; n; n--, s1++) {
+        u32 w = *s1, o = w & OFFM;
+        if (!(o & 3)) {
+            u32 *p = (u32 *)(s2 + o);
+            if (p[0] == XRAW) *s1 = (w & ~OFFM) | (p[-3] & OFFM);
+        }
+    }
+}
+
+void rawundo(struct state *st)
+{
+    u32 k;
+    if (st->inload) return;             /* mod_hook's own plain-file reads: they write into blocks, never into the cache */
+    for (k = 0; k < st->rsn; k++) undoset((u32 *)st->rs[k].s1, st->rs[k].n, st->rs[k].s2);
+    st->rsn = 0;
+    st->rawcur = st->rawlo = 0;
+    PD->on = 0;
+}
+
+static u32 findgap2(struct state *st, u32 a, u32 n);
+
+/* free runs in [ARENA, top): not a block, not a cached file */
+static int frees(struct state *st, struct fr *f, int max, u32 top)
+{
+    int k = 0, i;
+    u32 a = ARENA;
+    while (k < max) {
+        u32 hi = top;
+        a = findgap2(st, a, 16);
+        if (a + 16 > top) break;
+        for (i = 0; i < NBLK; i++)
+            if (st->b[i].c >= 0 && st->b[i].addr >= a && st->b[i].addr < hi) hi = st->b[i].addr;
+        for (i = 0; i < AUXN; i++)
+            if (st->aux[i].size && st->aux[i].addr >= a && st->aux[i].addr < hi) hi = st->aux[i].addr;
+        f[k].lo = a; f[k].hi = hi; k++;
+        a = hi;
+    }
+    return k;
+}
+
+/* take [a, e) out of the free ranges; 0 if it is not completely free */
+static int carve(struct pd *d, u32 a, u32 e)
+{
+    int i, j;
+    for (i = 0; i < (int)d->nf; i++) {
+        struct fr *f = &d->f[i];
+        if (a < f->lo || e > f->hi) continue;
+        if (a > f->lo && e < f->hi) {   /* split */
+            if (d->nf >= NFR) return 0;
+            for (j = d->nf; j > i + 1; j--) d->f[j] = d->f[j - 1];
+            d->f[i + 1].lo = e; d->f[i + 1].hi = f->hi; f->hi = a; d->nf++;
+        } else if (a == f->lo) f->lo = e;
+        else f->hi = a;
+        return 1;
+    }
+    return 0;
+}
+
+static void addfree(struct pd *d, u32 a, u32 e)
+{
+    int i, j;
+    if (d->nf >= NFR) return;
+    for (i = 0; i < (int)d->nf && d->f[i].lo < a; i++) ;
+    for (j = d->nf; j > i; j--) d->f[j] = d->f[j - 1];
+    d->f[i].lo = a; d->f[i].hi = e; d->nf++;
+}
+
+/* lowest a >= lo, a <= amax, a + n <= d->lim, free -> taken; 0 = none */
+static u32 falloc(struct pd *d, u32 n, u32 lo, u32 amax)
+{
+    u32 i;
+    for (i = 0; i < d->nf; i++) {
+        u32 a = d->f[i].lo, e = d->f[i].hi;
+        if (a < lo) a = lo;
+        if (e > d->lim) e = d->lim;
+        if (a <= amax && a + n <= e) { carve(d, a, a + n); return a; }
+    }
+    return 0;
+}
+
+static u32 wsum(const u32 *p, u32 n)
+{
+    u32 s = 0;
+    for (n >>= 4; n; n--, p += 4) { s += p[0]; s += p[1]; s += p[2]; s += p[3]; }
+    return s;
+}
+
+/* copy of tile t of set q at a (header) -> the entry points at it */
+static void point(struct ps *q, u32 t, u32 a)
+{
+    q->s1[t] = (q->s1[t] & ~OFFM) | (a + 12 - q->s2);
+}
+
+static void addset(struct state *st, u32 s1, u32 s2, const u32 *h, u32 nh, u32 id)
+{
+    struct pd *d = PD;
+    struct ps *q = &d->p[d->ns];
+    if (d->ns >= 5) return;
+    q->s1 = (u32 *)s1; q->s2 = s2; q->n = (s2 - s1) >> 2; q->h = h; q->nh = nh; q->k = 0; q->id = id; q->blk = 0;
+    st->rs[d->ns].s1 = s1; st->rs[d->ns].n = q->n; st->rs[d->ns].s2 = s2;
+    d->ns++;
+    st->rsn = d->ns;
+}
+
+static void addblk(struct state *st, struct blk *b)
+{
+    int c = b->c;
+    u32 a = b->addr + R(T.code[c].size), *h = (u32 *)a, *ht;
+    ht = (u32 *)(a + R(T.spr[c].size) + R(T.ap8[c].size) + R(T.ad8[c].size));
+    if (!(T.ht8[c].size && ht[0] == HT8_MAGIC && T.ht8[c].size == 8 + 4 * ht[1])) ht = 0;
+    addset(st, a + h[1], a + h[2], ht ? ht + 2 : 0, ht ? ht[1] : 0, ident(c) ^ c);
+}
+
+/* up to `max` tiles in score order (sets not blocked); -> tiles done, -1 = nothing left */
+static int pdstep(struct state *st, struct blk **use, int max)
+{
+    struct pd *d = PD;
+    int done = 0, i, j;
+    while (done < max) {
+        struct ps *q = 0;
+        u32 sc = 0, t, w, o, n, a = 0, *p;
+        for (i = 0; i < (int)d->ns; i++) {
+            struct ps *r = &d->p[i];
+            if (!r->blk && r->k < r->nh && (!q || r->h[r->k] >> 16 > sc)) { q = r; sc = r->h[r->k] >> 16; }
+        }
+        if (!q) return done ? done : -1;
+        t = q->h[q->k] & 0xffff;
+        if (t >= q->n) { q->k++; continue; }
+        w = q->s1[t]; o = w & OFFM;
+        if (!(o & 3) && *(u32 *)(q->s2 + o) == XRAW) { q->k++; continue; }
+        n = TSIZE(w);
+        for (;;) {
+            a = falloc(d, n + 16 + PAD, q->s2, q->s2 + OFFM - 12);
+            if (a || d->lim != TOPRAM || sc < EVSCORE || !use) break;
+            for (j = 0; j < NBLK; j++) {    /* no room: a block kept from an earlier battle (not listed now) gives way */
+                struct blk *b = &st->b[j];
+                if (b->c >= 0 && b != use[0] && b != use[1] && b != use[2] && b != use[3] && b->addr >= q->s2 && b->addr + 8 - q->s2 <= OFFM) break;
+            }
+            if (j == NBLK) break;
+            st->b[j].c = -1; st->why[j] = 4; st->pdevict++;
+            addfree(d, st->b[j].addr, st->b[j].addr + st->b[j].size);
+            if (SCAN->n < NFR + 8) { SCAN->f[SCAN->n].lo = st->b[j].addr; SCAN->f[SCAN->n].hi = st->b[j].addr + st->b[j].size; SCAN->n++; }
+        }
+        if (!a) {
+            if (d->lim != TOPRAM) { q->blk = 1; continue; }     /* phase A: retried at the end of the load */
+            q->k++; continue;
+        }
+        q->k++;
+        p = (u32 *)a;
+        TRAMP(q->s2 + o, a + 16, n);
+        p[0] = o | (q - d->p) << 24; p[1] = wsum(p + 4, n) ^ p[0]; p[2] = t; p[3] = XRAW;
+        point(q, t, a);
+        st->pdtiles++; st->pdbytes += n; done++;
+    }
+    return done;
+}
+
+/* the battle load starts: free ranges below ARENA_END, the sets that are already in place (reused blocks, effects),
+ * then the copies of the last load that are still intact (`lim`: ARENA_END when the drive will stream into the
+ * scratch area, else the top of RAM) */
+static void pdbegin(struct state *st, struct blk **use)
+{
+    struct pd *d = PD;
+    u32 lim = TOPRAM, i, j, k, newn;
+    struct fr newf[NFR];
+#ifdef NOCACHE
+    d->on = 0; st->rsn = 0; st->rawskip = 0; SCAN->n = 0;   /* developers: the build without the tile cache (A/B) */
+    return;
+#endif
+    st->pdtiles = st->pdbytes = st->pdevict = st->pdsalv = st->pdwait = 0;
+    st->pdt0 = VSYNC(-1);
+    rawhook(st);                        /* decoder -> raw_dec (once per boot), TRAMP = the decoder */
+    st->rawskip = 0;                    /* see raw_dec: no copy of a RAW tile for the stock pre-decode when the upload loops
+                                           take RAW tiles from the cache (rawchk present: lui/ori of the tag in the loops) */
+    if (*(u32 *)0x8005b348 == 0x0c006d6cu)
+        for (j = 0x800590c4; j < 0x80059d68; j += 4)
+            if (*(u32 *)j == 0x3c035741u && *(u32 *)(j + 4) == 0x34635258u) { st->rawskip = 0x8005b350; break; }
+    d->ns = 0; st->rsn = 0;
+    d->nf = frees(st, d->f, NFR - 4, TOPRAM);
+    for (i = 0; i < d->nf; i++) newf[i] = d->f[i];
+    newn = d->nf;
+    for (j = 0, k = 0; j < 4; j++)      /* a block will be read: its packed stream goes to the scratch area (ARENA_END up),
+                                           the inflate tables to LT_ADDR; what lies between them is free during the load */
+        if (use[j] && !use[j]->id) { lim = LT_ADDR; if (R(T.pack[use[j]->c].size) > k) k = R(T.pack[use[j]->c].size); }
+    d->lim = lim;
+    d->rs = 0;
+    if (lim != TOPRAM) {                /* the stream's place is kept out until the end of the load (pdend) */
+        d->rs = ARENA_END; d->re = ARENA_END + k + 0x800;
+        if (!carve(d, d->rs, d->re)) d->lim = ARENA_END;      /* (not one free range: phase A stays in the arena) */
+    }
+    if (st->effhow && SEC2[0x26] >= EFFAREA) addset(st, SEC1[0x26], SEC2[0x26], T.effh, T.effhn, st->effid | 1);
+    for (j = 0; j < 4; j++) {
+        if (!use[j] || !use[j]->id) continue;
+        for (i = 0; i < j && use[i] != use[j]; i++) ;
+        if (i == j) addblk(st, use[j]);
+    }
+    /* salvage: walk the ranges the last load filled; a copy is taken when its set is resident (same id), its header and
+       check hold, it lies where the set's offsets reach, below lim, and in free memory */
+    {
+        struct scan *sc = SCAN;
+        u32 nr = sc->n < NFR + 8 ? sc->n : 0;
+        for (i = 0; i < nr; i++) {
+            u32 a = (sc->f[i].lo + 15) & ~15u, e = sc->f[i].hi < d->lim ? sc->f[i].hi : d->lim;
+            while (a + 16 <= e) {
+                u32 *p = (u32 *)a, sl = p[0] >> 24, t = p[2], w, n;
+                struct ps *q = 0;
+                if (p[3] != XRAW || sl >= 5) { a += 16; continue; }
+                for (k = 0; k < d->ns; k++) if (d->p[k].id == sc->id[sl]) q = &d->p[k];
+                if (!q || t >= q->n) { a += 16; continue; }
+                w = q->s1[t]; n = TSIZE(w);
+                if ((p[0] & OFFM) != (w & OFFM) || a + 16 + n + PAD > e) { a += 16; continue; }
+                if (a >= q->s2 && a + 12 - q->s2 <= OFFM && (wsum(p + 4, n) ^ p[0]) == p[1] && carve(d, a, a + 16 + n + PAD)) {
+                    p[0] = (w & OFFM) | (q - d->p) << 24; p[1] = wsum(p + 4, n) ^ p[0];    /* this load's slot */
+                    point(q, t, a);
+                    st->pdsalv++;
+                }
+                a += 16 + n + PAD;
+            }
+        }
+        /* this load fills what was free when it began (salvaged copies included) */
+        sc->n = newn;
+        for (i = 0; i < newn; i++) sc->f[i] = newf[i];
+        for (k = 0; k < 5; k++) sc->id[k] = k < d->ns ? d->p[k].id : 0;
+    }
+    d->on = 1;
+}
+
+/* phase A: a few tiles while the drive streams (packload's waits) */
+static void pdwait(void)
+{
+    struct state *st = STATE;
+    if (PD->on && st->inload && pdstep(st, 0, 1) > 0) st->pdwait++;
+}
+
+/* end of the load: every set, the scratch area too, then the index */
+static void pdend(struct state *st, struct blk **use)
+{
+    struct pd *d = PD;
+    u32 i, k;
+    int s;
+    if (!d->on) return;
+    st->pdt0 = VSYNC(-1);               /* pdvbl: vblanks of this last phase (what the load still waits for) */
+    st->pdsets = d->ns;
+    if (d->rs && d->lim != ARENA_END) addfree(d, d->rs, d->re);    /* the stream's place */
+    d->lim = TOPRAM;                    /* (the free ranges run to the top already: phase A only stopped at lim) */
+    for (k = 0; k < d->ns; k++) d->p[k].blk = 0;
+    pdstep(st, use, 0x7fffffff);
+    /* a set that shares its sec1 table with another set of another sec2 would see wrong offsets: put it back */
+    for (k = 0; k < d->ns; k++)
+        for (s = 0; s < 40; s++)
+            if (SEC1[s] == (u32)d->p[k].s1 && SEC2[s] != d->p[k].s2) { undoset(d->p[k].s1, d->p[k].n, d->p[k].s2); d->p[k].n = 0; st->rs[k].n = 0; }
+    /* what is left: the largest free run takes the copies made during the battle */
+    st->rawcur = st->rawlo = 0;
+    st->pdfree = 0;
+    for (i = 0; i < d->nf; i++) {
+        st->pdfree += d->f[i].hi - d->f[i].lo;
+        if (d->f[i].hi - d->f[i].lo > st->rawcur - st->rawlo) { st->rawlo = d->f[i].lo; st->rawcur = d->f[i].hi & ~3u; }
+    }
+    st->pdvbl = VSYNC(-1) - st->pdt0;
+}
+
 u32 mod_eff(int set, u32 off, s16 *list)
 {
     s16 *ids = IDS;
     struct state *st = state();
     int boss;
+    rawundo(st);                        /* the effects file is checked below: its entries back first */
+    st->ldvbl = VSYNC(-1);
     st->selres = 0;
     boss = ids[0] == 0x10 || ids[1] == 0x10 || ids[2] == 0x10 || ids[3] == 0x10;
     slotreset(st);
@@ -471,9 +810,8 @@ static int listed(s16 *list, int c)
 
 /* lowest address in the arena where n bytes are clear of every character block and every cached file (may lie past
  * ARENA_END: no room) */
-static u32 findgap(struct state *st, u32 n)
+static u32 findgap2(struct state *st, u32 a, u32 n)
 {
-    u32 a = ARENA;
     int k, moved;
     do {
         moved = 0;
@@ -487,6 +825,11 @@ static u32 findgap(struct state *st, u32 n)
         }
     } while (moved);
     return a;
+}
+
+static u32 findgap(struct state *st, u32 n)
+{
+    return findgap2(st, ARENA, n);
 }
 
 /* drop the lowest-priority cached file below priority p (p = -1: any) -> 1 if one was dropped */
@@ -575,6 +918,7 @@ u32 mod_loadfile(int idx, u8 *dst)
     u32 msf = e[0] | e[1] << 8 | e[2] << 16, size = *(const u32 *)(e + 4), n = R(size), a, got;
     int p;
     struct aux *x;
+    rawundo(st);
     if (!size || ((u32)dst & 3)) return orig_loadfile(idx, dst);
     if (core(st, idx, msf, size, dst)) return size;
     p = auxpri(idx);
@@ -620,6 +964,8 @@ void mod_hook(int stage, s16 *list, int unused, u8 *heap)
     struct blk *b, *use[4];
     u8 *cur;
     int i, j, k;
+    u32 gap = 0;
+    rawundo(st);
     st->battles++;
     tl_dbg.end = 0;                     /* set again when the last character is in place */
     st->sumtime = 0;
@@ -639,6 +985,22 @@ void mod_hook(int stage, s16 *list, int unused, u8 *heap)
         }
         if (st->why[i]) b->c = -1;
     }
+    /* fresh opponent blocks (list slots 2, 3) get a gap behind them (an equal share of what the four blocks leave free),
+       so that every set's 22-bit tile offsets reach some of the tile cache (rawsetup), not only the sets above the last
+       block.  P1's side is placed first and packed (it stays resident through an arcade run: the opponents that come
+       and go then always find one contiguous region above it). */
+    {
+        struct fr f[NF];
+        u32 fr = 0, nd = 0, nn = 0;
+        k = frees(st, f, NF, TOPRAM);
+        for (i = 0; i < k; i++) fr += f[i].hi - f[i].lo;
+        for (j = 0; j < 4; j++) {
+            if (list[j] < 0) continue;
+            for (i = 0; i < NBLK && st->b[i].c != list[j]; i++) ;
+            if (i == NBLK) { nd += need(list[j]); nn += j >= 2; }
+        }
+        if (nn && fr > nd) gap = ((fr - nd) / nn) & ~2047u;
+    }
 again:
     /* a block for every listed character */
     for (j = 0; j < 4; j++) {
@@ -652,9 +1014,10 @@ again:
         n = need(c);
         for (;;) {
             struct blk *v = 0;
-            a = findgap(st, n);         /* lowest free address, clear of every block and every cached file */
+            a = findgap(st, n + (j < 2 ? 0 : gap));    /* lowest free address, clear of every block and every cached file */
             for (f = 0; f < NBLK && st->b[f].c >= 0; f++) ;
             if (a + n <= ARENA_END && f < NBLK) break;
+            if (gap) { gap = 0; continue; }     /* no room with gaps: none for the rest */
             for (i = 0; i < NBLK; i++) {            /* no room: the kept block that was used longest ago goes */
                 b = &st->b[i];
                 if (b->c >= 0 && !listed(list, b->c) && (!v || b->used < v->used)) v = b;
@@ -666,10 +1029,14 @@ again:
             goto again;                 /* an empty arena takes any four characters (checked by the disc builder) */
         }
         b = &st->b[f];
-        b->c = c; b->addr = a; b->size = n; b->id = 0;      /* id 0 = not read yet */
+        b->c = c; b->addr = a; b->size = n + (j < 2 ? 0 : gap); b->id = 0;    /* id 0 = not read yet; the gap is only reserved while placing */
         b->used = 2 * st->battles + (j < 2);
         use[j] = b;
     }
+    for (j = 0; j < 4; j++)
+        if (use[j] && !use[j]->id) use[j]->size = need(use[j]->c);
+    st->inload = 1;
+    pdbegin(st, use);                   /* tile cache: salvage, the sets in place (phase A runs in packload's waits) */
     POOLSIZE = POOL;
     POOLINIT(stage, list[0], list[2], heap, POOL);
     cur = heap + POOL;
@@ -700,9 +1067,11 @@ again:
                 LOADFILE(FAKE(&T.spr[c]), spr);
                 if (T.ap8[c].size) LOADFILE(FAKE(&T.ap8[c]), ap);
                 if (T.ad8[c].size) LOADFILE(FAKE(&T.ad8[c]), ad);
+                if (T.ht8[c].size) LOADFILE(FAKE(&T.ht8[c]), ad + R(T.ad8[c].size));
                 b->sum = sum(b->addr, b->size);
             }
             b->id = ident(c);
+            addblk(st, b);              /* in place: its tiles can be decoded from now on */
         } else st->slot[j] = 2;
         st->addr[j] = b->addr;
         st->low[j] = (u32)cur;
@@ -741,7 +1110,10 @@ again:
         cur += (((code >> 3) + 1) << 3);
         tl_dbg.loaded |= 1 << j;
     }
-    tl_dbg.end = (u32)cur;
+    pdend(st, use);
+    st->inload = 0;
+    tl_dbg.end = (u32)cur;              /* (after the tile cache: harnesses read the load's results when this is set) */
+    st->ldvbl = VSYNC(-1) - st->ldvbl;
 }
 
 /* OPTION MODE gets a 13th line, "ARCADE FRAMES  ON  OFF" (restored frames on / off for this session; on at every boot).

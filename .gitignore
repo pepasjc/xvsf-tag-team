@@ -2,6 +2,7 @@
 # Disc images, built images, work directories and arcade-derived data stay local.
 *.bin
 !tools/**/*.bin
+!builder/data/blobs/*.bin
 *.cue
 *.chd
 *.iso
@@ -17,6 +18,10 @@
 *.o
 *.elf
 tools/tagload/**/tagload.tab*.bin
+# the speed modules' assembled code (python tools/speed/<module>.py build; the builder uses builder/data/blobs)
+tools/speed/**/*.bin
+tools/speed/frame/bin/
+tools/speed/*/obj/
 
 __pycache__/
 *.pyc

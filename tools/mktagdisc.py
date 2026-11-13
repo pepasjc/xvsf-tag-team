@@ -20,8 +20,9 @@ Relocation table (u16 little endian, word index = offset/4 inside the overlay):
     python mktagdisc.py [name] [--breakfill] [--build] [--chd]
         --build      recompile tools/tagload (needs a MIPS toolchain, see tools/toolenv.py)
         --breakfill  test disc: the dead-code ranges are filled with break, loader NOT installed
-        --logo       boot card before the game starts (tools/logopatch.py); changes the image
-        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.0.1"); changes the image
+        --logo       boot card before the game starts (tools/logopatch.py); changes the image; without --nospeed
+                     also the second card (fan-patch notice, tools/card2patch.py)
+        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.1", "TAG HACK 1.0.1" with --nospeed); changes the image
 """
 import os, struct, subprocess, sys, json, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -54,15 +55,95 @@ RLEDIR = os.path.join(region.FILES, "A", "A0")              # stock RLE sprite f
 # 0x8008f4d0-0x8008f558 (break-tested free range; used by tag14/15) holds bossfin() since tag20.
 DIR_MAGIC = 0x31445658                                # "XVD1" at byte 2040 of the directory sector, sum of words 0..509 at 2044
 RESERVED = [(0x800146a8, 0x80015024)]                 # CdSearchFile (live)
-FASTDIR, STRONGDIR, MIDDIR, FATDIR = "nspm", "nsp", "nspm4", "nspfat2"   # base (in place), strong, mid, fat sprite files
+FASTDIR, STRONGDIR, MIDDIR, FATDIR = "nspm", "nsph4", "nspm4", "nspfat2"   # base (in place), strong, mid, fat sprite files
+# 1.1: strong tier = XVH1 + its most decoded tiles as stock RLE (work/speed/decode/strongrle.py 4); with --nospeed the
+# 1.0.x strong files (build/nsp): decided when the build runs (the builder imports this module before setting argv)
+_strongdir = lambda: "nsp" if "--nospeed" in sys.argv else STRONGDIR
 EFFDEFAULT = "nspm_eff/SP_EFF1.NSP"                   # effects file in place of A/A2/SP_EFF1.NSP (XVM1)
 EFFSTOCK = os.path.join(region.FILES, "A", "A2", "SP_EFF1.NSP")             # stock RLE effects file (DMY.DAT extent)
 DIRADDR, DIRTABLES, RAMORG = 0x801fe004, (4 * 19 + 1) * 8, 0x801fe26c
 POOL, LIMIT, LINKBASE = 19296, 0x801fe000, 0x800d1000
 
 
+# ---- 1.1 continuous hot-tile tier (tools/speed/decode/hotfile.py): loader variant tools/tagload/hot (tagload.c -DHOT),
+# in-place base files = build/nsphot/base, hot regions + hot directory sector in the DMY.DAT extent.  OFF by default (--hot to
+# build it; no measured gain over the fat/mid tiers, and its resident code range is the upload worker's now).
+HOTDIR = "nsphot"
+HOT = False
+_CONF0 = None
+
+
+def configure():
+    """set the module globals for this build (the builder imports the module before it sets argv)"""
+    global D, CHUNKS, DIRTABLES, RAMORG, FASTDIR, HOT, _CONF0
+    if _CONF0 is None: _CONF0 = (D, dict(CHUNKS), DIRTABLES, RAMORG, FASTDIR)
+    D, CHUNKS, DIRTABLES, RAMORG, FASTDIR = _CONF0[0], dict(_CONF0[1]), _CONF0[2], _CONF0[3], _CONF0[4]
+    HOT = "--hot" in sys.argv and "--nospeed" not in sys.argv and region.REGION == "us"   # opt-in: needs 0x80055c34-0x80055ebc (now upload's)
+    if HOT:
+        D = os.path.join(HERE, region.TAGDIR, "hot")
+        CHUNKS[".chunkh"] = (0x80055c34, 0x80055ebc)          # tools/speed/quad.py FREED range
+        DIRTABLES += 8; RAMORG += 8                          # + the hot directory entry
+        FASTDIR = HOTDIR + "/base"
+
+
+HDIRADDR, HDIRCODE, HSTEPS = 0x801fd804, 0x801fdc7c, 9
+
+
+def ahead_area():
+    """the 2 sectors behind the directory sector: tools/speed/decode/ahead_sector.py (to 0x801fe804-0x801ff600); the
+    cache entry points come from the upload module when it has them (else 0: predictions are discarded)"""
+    sys.path.insert(0, os.path.join(HERE, "speed", "decode")); sys.path.insert(0, os.path.join(HERE, "speed"))
+    import ahead_sector
+    vc = (0, 0)
+    try:
+        import upload
+        sy = upload.symbols() if hasattr(upload, "symbols") else {}
+        if "vc_lookup" in sy and "vc_prefetch" in sy: vc = (sy["vc_lookup"], sy["vc_prefetch"])
+    except Exception:
+        pass
+    img, sym = ahead_sector.build(vc)
+    assert len(img) == 4096
+    return img
+
+
+def hot_dir_sector(regpos, steps):
+    """hot directory sector: word 0 = &hplan, per character (u32 region msf, u8 steps, u8 0, 9 x (u16 S, u16 R - S,
+    u16 gain)), code from +1144, magic 'XVHD' at 2040, checksum of words 0..509 at 2044 (tagload.c hplan)"""
+    s = symbols()
+    d = bytearray(2048)
+    struct.pack_into("<I", d, 0, s["hplan"])
+    for c in range(19):
+        st = steps.get("%02X" % c, [])[:HSTEPS]
+        o = 4 + 60 * c
+        if c in regpos and st:
+            d[o:o + 4] = msf(regpos[c])
+            d[o + 4] = len(st)
+            g0 = 0.0
+            for k, (n, S, R, G) in enumerate(st):
+                g = int(round((G - g0) * 3000)); g0 = G
+                assert 0 <= S < 65536 and 0 < R - S < 65536 and 0 <= g < 65536, (c, k, S, R, g)
+                struct.pack_into("<3H", d, o + 6 + 6 * k, S, R - S, g)
+    code = open(os.path.join(D, "tagload.hram.bin"), "rb").read()
+    assert HDIRADDR + 1144 == HDIRCODE and HDIRCODE <= s["hplan"] < HDIRCODE + len(code) and 1144 + len(code) <= 2040
+    d[1144:1144 + len(code)] = code
+    struct.pack_into("<I", d, 2040, 0x44485658)
+    struct.pack_into("<I", d, 2044, sum(struct.unpack_from("<510I", d, 0)) & 0xFFFFFFFF)
+    return bytes(d)
+
+
 def build():
     cf = ["-mips1", "-G0", "-mno-abicalls", "-fno-pic"]
+    if HOT:                                           # 1.1 loader: sources copied into tools/tagload/hot
+        os.makedirs(D, exist_ok=True)
+        for fn in ("tagload.c", "glue.S"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
+        subprocess.check_call([GCC + "gcc", "-Os", "-ffreestanding", "-msoft-float", *cf, "-DHOT", "-c", "tagload.c", "-o", "tagload.o"], cwd=D)
+        for fn in ("glue", "hotdata", "hotspr"):
+            subprocess.check_call([GCC + "gcc", *cf, "-c", fn + ".S", "-o", fn + ".o"], cwd=D)
+        subprocess.check_call([GCC + "ld", "-T", "link.ld", "glue.o", "hotdata.o", "hotspr.o", "tagload.o", "-o", "tagload.elf"], cwd=D)
+        for sec in list(CHUNKS) + [".ram", ".ramb", ".hram"]:
+            subprocess.check_call([GCC + "objcopy", "-O", "binary", "-j", sec, "tagload.elf", "tagload" + sec + ".bin"], cwd=D)
+        open(os.path.join(D, "tagload.sym"), "w").write(subprocess.check_output([GCC + "nm", "-n", "tagload.elf"], cwd=D).decode())
+        return
     extra = ["-DPOOL=%su" % a.split("=")[1] for a in sys.argv if a.startswith("--pool=")]      # experiment only
     if "--oldlayout" in sys.argv: extra.append("-DSLOTORDER")       # tag14 disc layout: characters loaded in slot order
     if "--noflush" in sys.argv: extra.append("-DNOFLUSH")           # diagnosis build: never call BIOS FlushCache
@@ -231,11 +312,11 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         code = [put(code_file(c)[0], f"code PL{c:02X} (reloc table {code_file(c)[1]})") for c in range(18)]
         code.append(code[11])                                   # char 18 runs PL0B's code (file table index 21)
         d = b"".join(code)
-        for dname, lab in ((STRONGDIR, "strong"), (FATDIR, "fat"), (MIDDIR, "mid")):      # = tiers 1, 2, 3 of tagload.c
+        for dname, lab in ((_strongdir(), "strong"), (FATDIR, "fat"), (MIDDIR, "mid")):      # = tiers 1, 2, 3 of tagload.c
             for c in range(19):
                 data = sprite_file(dname, c); base = sprite_file(FASTDIR, c)
                 assert len(data) % 4 == 0
-                assert len(sprite_file(STRONGDIR, c)) < len(base) <= len(sprite_file(MIDDIR, c)) <= len(sprite_file(FATDIR, c)), f"tier sizes out of order for char {c}"
+                assert len(sprite_file(_strongdir(), c)) < len(base) <= len(sprite_file(MIDDIR, c)) <= len(sprite_file(FATDIR, c)), f"tier sizes out of order for char {c}"
                 if lab == "mid" and data == base:                       # no duplicate: the in-place file is the mid file
                     d += msf(base_lba[c]) + struct.pack("<I", len(base))
                 else:
@@ -251,14 +332,15 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         stages(0, 6)
         game(G_AKE, "AKE.PAC"); game(G_EFF2, "SP_EFF2"); game(G_EFF0, "SP_EFF0")
         for st in range(11): game(G_SO + st, f"SP_SO{st:02X}")
-        items.append((("dir",), bytes(2048), "directory sector (tables + policy code)"))
+        AHEAD = "--nospeed" not in sys.argv and region.REGION == "us"         # 1.1: decode-ahead predictor read with the directory
+        items.append((("dir",), bytes(2048 * (3 if AHEAD else 1)), "directory sector (tables + policy code)" + (" + decode-ahead predictor (2 sectors)" if AHEAD else "")))
         items.append((("bossdir",), bytes(2048), "boss directory sector (stock RLE files + boss-path code)"))
         game(G_EFF1, "SP_EFF1 (XVM1, in the game file table)")
         items.append((("eff",), open(EFFSTOCK, "rb").read(), "SP_EFF1 (stock RLE)"))
         stages(6, 11)
         for c in range(19):
             base = sprite_file(FASTDIR, c)
-            assert len(sprite_file(STRONGDIR, c)) < len(base) <= len(sprite_file(MIDDIR, c)) <= len(sprite_file(FATDIR, c)), f"tier sizes out of order for char {c}"
+            assert len(sprite_file(_strongdir(), c)) < len(base) <= len(sprite_file(MIDDIR, c)) <= len(sprite_file(FATDIR, c)), f"tier sizes out of order for char {c}"
             cf = code_file(11 if c == 18 else c)                # char 18 runs PL0B's code (own copy, next to its sprites)
             items.append((("code", c), cf[0], f"char {c:2d} code PL{11 if c == 18 else c:02X} (reloc table {cf[1]})"))
             assert gamefile(G_SPR + c) == base, "in-place sprite file is not build/FASTDIR"
@@ -266,7 +348,11 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
             if sprite_file(MIDDIR, c) != base:                  # else: the base file is the mid file
                 items.append((("mid", c), sprite_file(MIDDIR, c), f"char {c:2d} mid"))
             items.append((("fat", c), sprite_file(FATDIR, c), f"char {c:2d} fat"))
-            items.append((("strong", c), sprite_file(STRONGDIR, c), f"char {c:2d} strong"))
+            items.append((("strong", c), sprite_file(_strongdir(), c), f"char {c:2d} strong"))
+            if HOT:
+                reg = open(os.path.join(BUILD, HOTDIR, "region", "SP_PL%02X.REG" % c), "rb").read()
+                if reg: items.append((("hot", c), reg, f"char {c:2d} hot region"))
+        if HOT: items.append((("hdir",), bytes(2048), "hot directory sector (steps + hplan)"))
         for c in range(19):                                     # boss path: the game's original files
             items.append((("rle", c), open(os.path.join(RLEDIR, "SP_PL%02X.NSP" % c), "rb").read(), f"char {c:2d} stock RLE SP_PL{c:02X}"))
         pos = {}; lba = dmy_lba
@@ -279,17 +365,20 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         for tier in ("strong", "fat", "mid"):                   # = tiers 1, 2, 3 of tagload.c
             d += b"".join(ent((tier, c)) if (tier, c) in pos else ent(("g", G_SPR + c)) for c in range(19))
         d += ent(("eff",))
+        if HOT: d += ent(("hdir",))
         d = finish_dir(d)
         # boss directory: code files, var[T_STRONG-1] unused, var[T_FAT-1] = fat files (players on the new
         # loader), var[T_MID-1] = stock RLE files (boss; and the mains on the stock path), eff = stock effects
         bd = (b"".join(ent(("code", c)) for c in range(19)) + bytes(19 * 8) + b"".join(ent(("fat", c)) for c in range(19))
-              + b"".join(ent(("rle", c)) for c in range(19)) + ent(("eff",)))
+              + b"".join(ent(("rle", c)) for c in range(19)) + ent(("eff",)) + (bytes(8) if HOT else b""))
         bd = finish_dir(bd, "tagload.ramb.bin")
+        if HOT:
+            hd = hot_dir_sector({k[1]: p for k, p in pos.items() if k[0] == "hot"}, json.load(open(os.path.join(BUILD, HOTDIR, "steps.json"))))
         for key, data, label in items:
-            info.append((pos[key], d if key == ("dir",) else bd if key == ("bossdir",) else data, label))
+            info.append((pos[key], (d + ahead_area() if AHEAD else d) if key == ("dir",) else bd if key == ("bossdir",) else hd if key == ("hdir",) else data, label))
             if key[0] == "g":
                 out.append((FTABLE + 8 * key[1], msf(pos[key])))    # file table: MSF only, the size stays
-        dirent = msf(pos[("dir",)]) + struct.pack("<I", 2048)
+        dirent = msf(pos[("dir",)]) + struct.pack("<I", 2048 * (3 if AHEAD else 1))   # the loader reads all of it to 0x801fe004
         bossdirent = msf(pos[("bossdir",)]) + struct.pack("<I", 2048)
     for sec, (addr, end) in CHUNKS.items():
         b = open(os.path.join(D, "tagload" + sec + ".bin"), "rb").read()
@@ -310,6 +399,7 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
 
 
 def main():
+    configure()
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     name = args[0] if args else region.DISC
     if "--build" in sys.argv or not os.path.exists(os.path.join(D, "tagload.sym")):
@@ -319,6 +409,7 @@ def main():
     sys.argv = [argv[0], name, "--dir=" + FASTDIR, "--tag", "--eff1=" + EFFDEFAULT]
     if region.REGION != "us":                         # the EXE patches are applied below, re-targeted; here only the files
         sys.argv = [argv[0], name, "--dir=" + FASTDIR, "--noexe", "--eff1=" + EFFDEFAULT]
+    sys.argv += [a for a in argv if a == "--nospeed"]           # nsppatch (inside mknspdisc) must see it too
     mknspdisc.main()
     sys.argv = argv
     out = os.path.join(BUILD, name + ".bin")
@@ -353,6 +444,13 @@ def main():
                 exe_write(addr, struct.pack("<I", 0x0000000D) * ((end - addr) // 4))
                 print(f"break-fill {addr:08x}-{end:08x}")
         else:
+            import speedpatch                                                   # 1.1 engine speed-ups (stage overlays first:
+            def iso_write(path, off, data):                                     #  the battle layout copies the stage files)
+                lba, size = lmap[path]; assert off + len(data) <= size
+                for i in range(len(data)):
+                    wr_data(lba + (off + i) // 2048, (off + i) % 2048, data[i:i + 1])
+            n_ovl = speedpatch.apply_overlays(None, iso_write)
+            if n_ovl: print(f"speed: {n_ovl} stage overlay patches")
             info = []
             def gamefile(idx):
                 ent = exe_read(FTABLE + 8 * idx, 8)
@@ -374,7 +472,11 @@ def main():
             import diffpatch, balpatch                                          # arcade parity: CPU rank ticker (port bug), round timer 110
             pal += [] if "--norank" in sys.argv else list(diffpatch.rank_patches())   # (CPU tag-rule tuning in diffpatch is NOT applied: not approved)
             pal += [] if "--nobal" in sys.argv else list(balpatch.patches())
+            pal += speedpatch.exe_patches()                                     # 1.1 engine speed-ups (upload, quad, frame)
             other = [(a, a + len(d)) for a, d in list(nsppatch.patches()) + list(tagpatch.patches()) + pal] + RESERVED
+            _sp = sorted((a, a + len(d)) for a, d in list(nsppatch.patches()) + list(tagpatch.patches()) + pal)
+            for (_a0, _b0), (_a1, _b1) in zip(_sp, _sp[1:]):                    # no two EXE patches may share a byte
+                assert _b0 <= _a1, f"EXE patches overlap: {_a0:08x}-{_b0:08x} and {_a1:08x}-{_b1:08x}"
             if region.REGION != "us":
                 # every module's assembled US patch, re-targeted to this executable (tools/retarget.py); nsppatch and
                 # tagpatch are included here because mknspdisc ran with --noexe
@@ -422,6 +524,9 @@ def main():
         if "--logo" in sys.argv:                            # "PEPA SOFT HOUSE" boot card (NOT in the default build yet)
             import logopatch
             logopatch.apply(exe_read, exe_write, orig)
+            if "--nospeed" not in sys.argv and region.REGION == "us":     # 1.1: second card (fan-patch notice, tools/card2patch.py);
+                import card2patch                                           # --nospeed keeps the 1.0.x image
+                card2patch.apply(exe_read, exe_write, orig, region.FILES)
         for sec in sorted(touched):
             f.seek(sec * 2352); raw = bytearray(f.read(2352))
             fix_sector(raw)

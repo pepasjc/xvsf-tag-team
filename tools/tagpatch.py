@@ -182,11 +182,15 @@ COUNTER_SITE = 0x8007cc9c        # variable counter 0x8007cc4c, PS1-mode path: `
 COUNTER_FAIL = 0x8007cd78        # its exit (returns v0)
 
 
-def counter_stub(org):
+def counter_stub(org, full=None):
     """The PS1-mode path of the variable counter never looks at the partner's
     life (the stock partner has none).  With a full partner, 0 life means it was
     knocked out: no counter.  A reduced partner (+0x74 = 1, boss fight) keeps
-    stock behaviour."""
+    stock behaviour.
+    full (1.1, default: not --nospeed): a full partner with life also skips the PS1 "assist is out"
+    bit 0x80042387 (set by the counter prep 0x8006d50c; cleared only by the stock swap-back that
+    1.1's counter fix no longer takes), as the arcade does - it only tests the partner's life."""
+    if full is None: full = "--nospeed" not in sys.argv
     a = A(org)
     a.lw("$t0", 0x234, "$s0")                         # partner object
     a.nop()
@@ -194,10 +198,14 @@ def counter_stub(org):
     a.lh("$t0", 0x224, "$t0")
     a.bne("$t1", "$zero", "ok")
     a.nop()
-    a.bne("$t0", "$zero", "ok")
+    a.bne("$t0", "$zero", "full" if full else "ok")
     a.nop()
     a.j(COUNTER_FAIL)
     a.addu("$v0", "$zero", "$zero")
+    if full:
+        a.label("full")
+        a.j(COUNTER_SITE + 8)                         # v0 = 0: "assist bit clear" for the code at 0x8007cca4..
+        a.addu("$v0", "$zero", "$zero")
     a.label("ok")
     a.lui("$v0", 0x8004)                              # the two displaced instructions
     a.j(COUNTER_SITE + 8)
@@ -243,7 +251,25 @@ def patches():
         # which arrives with 0 life).  Test the assist-only flag +0x74 instead: the stock
         # assist still has it, a character tagged in by the hook does not.
         (KO_SWAP_TEST, struct.pack("<I", 0x82020074)),   # lb v0,0x74(s0)   (was 0x82020230)
-    ]
+    ] + ([] if "--nospeed" in sys.argv else [
+        # 1.1: after a variable combination (team super) the partner who jumped in stays on point, as on
+        # the arcade (verified on FBNeo xmvsfu1d, work/teamsuper).  The end-of-team-move resolver
+        # 0x8006e59c chose the PS1 branch (partner leaves) by the mode flag; test the reduced-set mask
+        # instead (full partners -> arcade branch with the swap; boss fight -> stock).
+        (0x8006e6f0, struct.pack("<I", 0x8C4221BC)),      # lw v0,0x21bc(v0)  (was lb v0,0x278c(v0))
+        # 1.1: after a variable COUNTER the partner who came in stays on point, as on the arcade
+        # (FBNeo: Ryu/Wolverine, Ryu counters -> Wolverine stays at x291; patched port: same).  The
+        # counter move's effect object (handler 0x8008ded4) swapped the owner back in PS1 mode
+        # (0x8008e07c: 0x8008d868, swap 0x8006b248, 0x8006ee34).  Same mask switch.
+        (0x8008dfe8, struct.pack("<I", 0x8C4221BC)),      # lw v0,0x21bc(v0)  (was lb v0,0x278c(v0))
+        # 1.1: ...and the counter character must keep its specials/supers.  The counter prep sets the side's
+        # bit in 0x80042387 ("assist is out"); only the stock swap-back (the branch the line above skips)
+        # clears it.  In PS1 mode the veto 0x8006f84c - called by the command parser, the tag hook and the
+        # tag/counter routines - reports "blocked" while that bit is set, so after a counter the new point
+        # character had no specials, supers or tag for the rest of the round.  The arcade (flag 0) never
+        # tests the bit: same mask switch (full partners -> arcade).  The counter stub skips the bit too.
+        (0x8006f850, struct.pack("<I", 0x8C4221BC)),      # lw v0,0x21bc(v0)  (was lb v0,0x278c(v0))
+    ])
 
 
 def apply_ram(emu):

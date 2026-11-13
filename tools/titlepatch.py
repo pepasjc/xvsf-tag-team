@@ -1,4 +1,4 @@
-"""Optional version line on the main menu of the 2 MB build:  python tools/mktagdisc.py NAME --title["=TAG HACK 1.0.1"]
+"""Optional version line on the main menu of the 2 MB build:  python tools/mktagdisc.py NAME --title["=TAG HACK 1.1"]
 
 Not part of the default build (build/xvsf_tag23 stays as it is).  The 8 MB build (tools/mkap8disc.py) has its
 own, larger hook in the same place, which also shows "8MB" when the upper memory and its module are usable.
@@ -16,7 +16,12 @@ import toolenv
 GCC = toolenv.mips_prefix()
 RANGE = (0x80054704, 0x800547d4)
 MENU_AT, MENU_FILE, OVL_BASE = 0x800987b8, "P/P4/OPDEMO.BIN", 0x80098000
-DEFAULT = "TAG HACK 1.0.1"
+DEFAULT = "TAG HACK 1.1"
+DEFAULT_NOSPEED = "TAG HACK 1.0.1"                      # --nospeed: the 1.0.1 image, unchanged
+
+
+def default():
+    return DEFAULT_NOSPEED if "--nospeed" in sys.argv else DEFAULT
 
 
 def build(text):
@@ -36,11 +41,11 @@ def build(text):
 
 def apply(f, lmap, exe_read, exe_write, orig_exe, touched, text):
     """f: the image opened r+b; exe_read/exe_write as in mktagdisc.main; touched: set of sectors to re-seal"""
-    code, hook = build(text or DEFAULT)
+    code, hook = build(text or default())
     o = RANGE[0] - 0x80010000 + 0x800
     assert exe_read(RANGE[0], RANGE[1] - RANGE[0]) == orig_exe[o:o + RANGE[1] - RANGE[0]], "title range is not the original code"
     exe_write(RANGE[0], code)
     o = MENU_AT - OVL_BASE; l = lmap[MENU_FILE][0] + o // 2048
     f.seek(l * 2352 + 24 + o % 2048); assert f.read(4) == struct.pack("<I", 0x03e00008), "OPDEMO.BIN: unexpected code at the menu hook"
     f.seek(l * 2352 + 24 + o % 2048); f.write(struct.pack("<I", 0x08000000 | (hook >> 2 & 0x3ffffff))); touched.add(l)
-    print(f"title patch: \"{text or DEFAULT}\", exe {RANGE[0]:08x}-{RANGE[0] + len(code):08x}, OPDEMO.BIN {MENU_AT:08x} -> j {hook:08x}")
+    print(f"title patch: \"{text or default()}\", exe {RANGE[0]:08x}-{RANGE[0] + len(code):08x}, OPDEMO.BIN {MENU_AT:08x} -> j {hook:08x}")

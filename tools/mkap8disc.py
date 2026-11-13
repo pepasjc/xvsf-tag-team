@@ -8,9 +8,9 @@ additions) plus:
     hook words redirected to it.  Without 8 MB of RAM the stub jumps to the 2 MB loader: same code, same files.
   * an extent APPENDED to the image (after the last sector of the original disc; the game reads by absolute
     position, not through the file system), in read order:
-        module (4 sectors, tools/ap8/ap8mod.c, runs at 0x80200000) | stock RLE effects file |
+        module (MODSECT sectors, tools/ap8/ap8mod.c, runs at 0x80200000) | stock RLE effects file |
         per character 0..18: the PACKED BLOCK = raw deflate (zopfli when the Python module is there, else zlib level 9) of the character's block exactly as it sits in
-            RAM: code file (P0 overlay + relocation table), sprite file, PLxx.AP8, each padded with zeros to 2048 bytes |
+            RAM: code file (P0 overlay + relocation table), sprite file, PLxx.AP8, PLxx.AD8, PLxx.HT8, each padded with zeros to 2048 bytes |
         then, as the fallback when a packed stream fails: per character the same three files plain
     sprite file = OUT/SP_PLxx.NSP of the restoration builder (tools/ap/build8.py) when the manifest lists the
     character, else the game's stock file.  All stock RLE: no XVM1/XVH1 on the 8 MB path.
@@ -32,11 +32,14 @@ OBJ = os.path.join(BUILD, "ap8obj")
 GCC = M.GCC
 # dead ranges (tools/deadcode.py, break-tested with work/ap8/deadtest8.py), not used by any patch module
 CHUNKS = {".chunkh": (0x8002d9c4, 0x8002daec), ".chunki": (0x8006f2e4, 0x8006f3e0), ".chunkj": (0x80019ae8, 0x80019bd4), ".chunkl": (0x80054704, 0x800547d4), ".chunkm": (0x8004e3e0, 0x8004e490)}
-VERSION = "TAG HACK 1.0.1"                              # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
+VERSION = "TAG HACK 1.1"                                # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
 SEL_AT, SEL_FILE = 0x8009bc38, "P/P4/SELECT.BIN"      # jal SPRLOAD(0x27, off) of the select screen -> selhook8
 MENU_AT, MENU_FILE = 0x800987b8, "P/P4/OPDEMO.BIN"    # jr ra at the end of the main-menu text routine -> j menuhook
-OVL_BASE, EFFAREA = 0x80098000, 0x80205000
-MOD, MODSECT, MOD_MAGIC = 0x80200000, 7, 0x384d5658          # module area 0x80200000-0x80203800; state 0x80203800, undo list 0x80203c00
+MOD, MODSECT, MOD_MAGIC = 0x80200000, 12, 0x384d5658         # module area 0x80200000-0x80206000; state 0x80206000, undo list +0x400, raw_dec +0x1000
+STATEA = MOD + 2048 * MODSECT
+OVL_BASE, EFFAREA = 0x80098000, STATEA + 0x1800
+EFFHMAX = 400                                                   # pre-decode list of the effects set in the module table (ap8mod.c)
+HOT8 = os.path.join(SRC, "hot8.json")                           # per-tile scores for the pre-decode order (work/speed/8mb/mkhot.py)
 SLOTPTR, SLOTSIZE = 0x8005c65c, 5 * 2048 + 0x800               # shared-slot table pointers per set; bytes of extended tables per battle (4 characters + effects)
 DT_ADDR, LT_ADDR = 0x807f0000, 0x807e0000      # decode tables: 2 x 32768 u16
 R = lambda n: (n + 2047) & ~2047
@@ -46,12 +49,13 @@ def build(syms, version):
     """compile the boot stub and the module.  Nothing here depends on the content: the memory map goes into the module table."""
     os.makedirs(OBJ, exist_ok=True)
     cf = ["-mips1", "-G0", "-mno-abicalls", "-fno-pic"]
-    defs = [f"-DMODWORDS={MODSECT * 512}", f'-DVERSION="{version}"']
+    defs = [f"-DMODWORDS={MODSECT * 512}", f'-DVERSION="{version}"', f"-DSTATEA=0x{STATEA:08x}u", f"-DEFFHMAX={EFFHMAX}"] + (["-DNOCACHE"] if os.environ.get("XV8_NOCACHE") else [])   # developers: no tile cache (A/B)
     for src, opt in (("ap8boot.c", "-Os"), ("ap8mod.c", "-Os")):      # size first; the decoder loop itself is O2 by attribute (inflate.h)
         subprocess.check_call([GCC + "gcc", opt, "-ffreestanding", "-msoft-float", "-fno-tree-loop-distribute-patterns", *cf, *defs,      # no memset/memcpy calls: there is no libc
                                "-c", os.path.join(SRC, src), "-o", os.path.join(OBJ, src[:-2] + ".o")])
-    subprocess.check_call([GCC + "gcc", *cf, "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8glue.o")])
-    subprocess.check_call([GCC + "gcc", *cf, "-DMODULE", "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8modhead.o")])
+    sdefs = [f"-DSTATEA=0x{STATEA:08x}", f"-DEFFHMAX={EFFHMAX}"]
+    subprocess.check_call([GCC + "gcc", *cf, *sdefs, "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8glue.o")])
+    subprocess.check_call([GCC + "gcc", *cf, *sdefs, "-DMODULE", "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8modhead.o")])
     defs = [f"--defsym={n}=0x{syms[n]:08x}" for n in ("effhook", "hook", "flushcache", "tl_dbg", "varload")]
     disc = "/DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.pdr) *(.comment) *(.gnu.attributes) *(.mdebug*) *(.eh_frame) *(.bss) %s }"
     open(os.path.join(OBJ, "boot.ld"), "w").write("SECTIONS {\n" + "".join(
@@ -70,6 +74,32 @@ def build(syms, version):
             if len(l.split()) == 3: sym[l.split()[2]] = int(l.split()[0], 16) & 0xFFFFFFFF
     open(os.path.join(OBJ, "ap8.sym"), "w").write("".join(f"{v:08x} {k}\n" for k, v in sorted(sym.items(), key=lambda x: x[1])))
     return out, open(os.path.join(OBJ, "mod.bin"), "rb").read(), sym
+
+
+_HOT = None
+def _hot():
+    global _HOT
+    if _HOT is None: _HOT = json.load(open(HOT8)) if os.path.exists(HOT8) else {}
+    return _HOT
+
+
+def _order(sfile, scores):
+    """every tile of a sprite file, highest score first (then tile index): [(tile, score)]"""
+    h = struct.unpack_from("<4I", sfile)
+    n = (h[2] - h[1]) // 4
+    return sorted(((t, min(65535, int(scores.get(str(t), 0)))) for t in range(n)), key=lambda x: (-x[1], x[0]))
+
+
+def ht8(c, spr):
+    """PLxx.HT8: the order in which rawsetup (ap8mod.c) pre-decodes the character's tiles at the end of a battle load"""
+    o = _order(spr, _hot().get("PL%02X" % c, {}))
+    return struct.pack("<2I", 0x01385448, len(o)) + b"".join(struct.pack("<I", t | s << 16) for t, s in o)
+
+
+def effhot(eff):
+    """module table: u32 n + EFFHMAX entries, the effects set's pre-decode order (stock SP_EFF1 tiles)"""
+    o = _order(eff, _hot().get("EFF", {}))[:EFFHMAX]
+    return struct.pack("<I", len(o)) + b"".join(struct.pack("<I", t | s << 16) for t, s in o) + bytes(4 * (EFFHMAX - len(o)))
 
 
 def main():
@@ -173,7 +203,8 @@ def main():
     for c in range(19):
         cf = M.code_file(11 if c == 18 else c)
         spr, a8, ad = restored.get(c, (open(os.path.join(M.RLEDIR, "SP_PL%02X.NSP" % c), "rb").read(), b"", b""))
-        img = padr(cf[0]) + padr(spr) + padr(a8) + padr(ad)      # the block as the module lays it out
+        ht = ht8(c, spr)
+        img = padr(cf[0]) + padr(spr) + padr(a8) + padr(ad) + padr(ht)      # the block as the module lays it out
         z = zlib.compressobj(9, zlib.DEFLATED, -15, 9); pk = z.compress(img) + z.flush()
         if zopfli_zlib: pk = min(pk, zopfli_zlib.compress(img, numiterations=15)[2:-4], key=len)     # same format, about 4 % smaller
         assert zlib.decompress(pk, -15) == img
@@ -182,6 +213,7 @@ def main():
         plain.append((("spr", c), spr, f"char {c:2d} {'RESTORED' if c in restored else 'stock RLE'} SP_PL{c:02X} (fallback)"))
         if a8: plain.append((("ap8", c), a8, f"char {c:2d} PL{c:02X}.AP8 (fallback)"))
         if ad: plain.append((("ad8", c), ad, f"char {c:2d} PL{c:02X}.AD8 (fallback)"))
+        plain.append((("ht8", c), ht, f"char {c:2d} PL{c:02X}.HT8, pre-decode order of {len(ht) // 4 - 2} tiles (fallback)"))
         need.append(len(img)); psum.append(sum(struct.unpack(f"<{len(img) // 4}I", img)) & 0xFFFFFFFF)
     items += plain
     maxpack = max(len(d) for k, d, l in items if k[0] == "pack")
@@ -268,9 +300,11 @@ def main():
         ent = lambda key: (M.msf(pos[key]) + struct.pack("<I", size[key])) if key in pos else bytes(8)
         # module: tables, magic, checksum
         T = sym["T"] - MOD
-        assert (sym["T"] - M.FTABLE) % 8 == 0 and (sym["modent"] - M.FTABLE) % 8 == 0 and mod[T:T + 102 * 8 + 76 + 196 + 28 + 20] == bytes(102 * 8 + 76 + 196 + 28 + 20)
-        tab = b"".join(ent(("code", c)) for c in range(19)) + b"".join(ent(("spr", c)) for c in range(19)) + b"".join(ent(("ap8", c)) for c in range(19)) + b"".join(ent(("ad8", c)) for c in range(19)) + ent("eff") + ent("sel0") + ent("selap") + ent("sel2") + ent("selap2") + ent("effr") + ent("effae") + b"".join(ent(("pack", c)) for c in range(19)) + struct.pack("<19I", *psum) + struct.pack("<39I", *slotstock) + struct.pack("<20H", *slots) + struct.pack("<7I", ARENA, ARENA_END, SLOTAREA, sel2sum, selap2sum, wsum(effr) if effr else 0, wsum(effae) if effae else 0) + struct.pack("<I", 0) + ent("auxp") + struct.pack("<2I", auxsum, AUXAREA)
+        assert (sym["T"] - M.FTABLE) % 8 == 0 and (sym["modent"] - M.FTABLE) % 8 == 0 and mod[T:T + 102 * 8 + 76 + 196 + 28 + 20 + 19 * 8 + 4 + 4 * EFFHMAX] == bytes(102 * 8 + 76 + 196 + 28 + 20 + 19 * 8 + 4 + 4 * EFFHMAX)
+        tab = b"".join(ent(("code", c)) for c in range(19)) + b"".join(ent(("spr", c)) for c in range(19)) + b"".join(ent(("ap8", c)) for c in range(19)) + b"".join(ent(("ad8", c)) for c in range(19)) + ent("eff") + ent("sel0") + ent("selap") + ent("sel2") + ent("selap2") + ent("effr") + ent("effae") + b"".join(ent(("pack", c)) for c in range(19)) + struct.pack("<19I", *psum) + struct.pack("<39I", *slotstock) + struct.pack("<20H", *slots) + struct.pack("<7I", ARENA, ARENA_END, SLOTAREA, sel2sum, selap2sum, wsum(effr) if effr else 0, wsum(effae) if effae else 0) + struct.pack("<I", 0) + ent("auxp") + struct.pack("<2I", auxsum, AUXAREA) + b"".join(ent(("ht8", c)) for c in range(19)) + effhot(eff)
+        assert len(tab) == 102 * 8 + 76 + 196 + 28 + 20 + 19 * 8 + 4 + 4 * EFFHMAX
         mod = mod[:T] + tab + mod[T + len(tab):]
+        assert sym["raw_end"] - sym["raw_dec"] <= 0x1f0, "raw_dec does not fit RUNAT..TRAMP"
         assert len(mod) <= 2048 * MODSECT - 8, f"module too big: {len(mod)}"
         print(f"module {len(mod)} bytes of {2048 * MODSECT - 8}")
         mod += bytes(2048 * MODSECT - 8 - len(mod))

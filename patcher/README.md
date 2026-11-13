@@ -2,7 +2,8 @@
 
 `index.html` is a single self-contained page: pick your disc image (and optionally your arcade ROM zip), the page
 verifies it, runs **the real build** in the browser and hands back `.bin` + `.cue` (or both in one `.zip`).
-Nothing is uploaded and the page carries no game data — only this project's code.
+Nothing is uploaded and the page carries no game graphics or sound — only this project's code (which includes a few short
+fragments of the game's own code where rewritten routines keep the original instructions).
 
 ## Hosting
 
@@ -41,9 +42,10 @@ Without the CDN (an intranet, an archive copy): download the six files of the CD
     python patcher/make.py            # src/ + the bundle -> index.html
 
 `index.html` is generated; edit `src/`. The page must be rebuilt whenever `builder/` or `tools/` change, because
-it contains them (the *bundle*: `builder/xvb`, `builder/data`, `tools/*.py`, `tools/ap`,
-`tools/ap8`, `tools/logo`, and the prebuilt MIPS blobs of `tools/tagload` and `tools/nspdec`; about 210 KB).
-See `builder/README.md`, "After the tools … change", for the blobs and reference hashes the page relies on.
+it contains them (the *bundle*: `builder/xvb`, `builder/data` with all of our MIPS code prebaked in
+`builder/data/blobs`, `tools/*.py`, `tools/speed/*.py`, `tools/ap`, `tools/ap8/hot8.json`, `tools/logo/*.bin`).
+The page compiles nothing. Re-baking the blobs, recording the reference hashes and running `make.py` are
+described in `builder/README.md`, "After the tools … change".
 
 ## How it works
 
@@ -70,7 +72,7 @@ Cancel terminates the worker (the build is one long synchronous computation) and
   button layout can be changed; the version line is always shown (it carries the 8MB indicator). The expected SHA-1
   for the chosen combination is shown before building. Free version text and experimental switches need the
   command-line builder.
-* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` / `.cue`, or `… [Tag Hack 1.0.1 + Restored
+* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.1].bin` / `.cue`, or `… [Tag Hack 1.1 + Restored
   Frames]`; the `.cue` names its `.bin`. No CHD in the browser.
 
 ## Tests

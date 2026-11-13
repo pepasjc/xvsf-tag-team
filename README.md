@@ -1,6 +1,6 @@
 # X-Men vs. Street Fighter: Tag Team Hack (PlayStation)
 
-**Version 1.0.1**, 2026, by pepa
+**Version 1.1**, 2026, by pepa
 
 Capcom treated us PlayStation fans really poorly, releasing crippled versions of all their CPS2
 fighting games. The Saturn got a really good port, and even the N64 got a nice fan port, so I thought
@@ -34,14 +34,19 @@ into the PlayStation's 2 MB of RAM.
   characters of a team are down.
 - The CPU tags on its own, with the game's own arcade logic.
 - You can tag against the final boss, Apocalypse.
-- Team super and counter assist need a partner that is still standing.
+- Team super and counter assist need a partner that is still standing. After either one, the partner
+  who came in stays on point, as in the arcade.
+- The fight against your own partner after Apocalypse is one on one, as in the arcade.
 - After a knock-out the music switches to the incoming character's theme.
 - The CPU's difficulty ramps up during the first fight as in the arcade (the port started at the cap),
   and the round timer runs at the arcade's speed.
 - Default buttons: HP = R1, HK = R2, three punches = L1, three kicks = L2, so tag is R1 + R2. KEY CONFIG
   in the options still changes them; the patcher can also keep the game's own layout.
 - Battle loading is faster than on the retail disc.
-- A short boot card before the game, and the version on the main menu.
+- The game's sprite engine is rewritten for speed (1.1): with four characters loaded it runs at full
+  speed in normal play and drops far less in supers than 1.0.x.
+- Two short boot cards before the game (the second is a fan-patch notice whose portraits come from your
+  own disc), and the version on the main menu.
 
 ## Restored frames (8 MB)
 
@@ -62,6 +67,8 @@ is built on your computer.
 - **Shorter loading with 8 MB:** characters stay in memory between fights, and the files the select,
   win and VS screens read every time stay in memory too. Between two fights this saves about 3 to 6
   seconds, depending on how large the four characters are.
+- **Smoother fights with 8 MB:** the four characters of a fight are decoded during the loading screen,
+  so a fight decodes almost nothing (about one second more loading).
 - Supported arcade sets: `xmvsf` (Euro 961004), `xmvsfu` (USA 961023), `xmvsfu1d` (USA 961004,
   decrypted; with its parent `xmvsf`).
 
@@ -111,7 +118,7 @@ python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --out OUT
 python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip --out OUT
 ```
 
-writes `OUT/X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` and `.cue` (`[Tag Hack 1.0.1 + Restored
+writes `OUT/X-Men vs. Street Fighter (USA) [Tag Hack 1.1].bin` and `.cue` (`[Tag Hack 1.1 + Restored
 Frames]` with an arcade set). `--chd` also writes a CHD when `chdman` is found. See
 [BUILDING.md](BUILDING.md).
 
@@ -120,13 +127,13 @@ Frames]` with an arcade set). `--chd` also writes a CHD when `chdman` is found. 
 The default build (boot card, version line, modern buttons):
 
 ```
-X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin
+X-Men vs. Street Fighter (USA) [Tag Hack 1.1].bin
 Size   392393568
-SHA1   2012f9c3ddc8514acc2cca104741b1c15c559bad
+SHA1   9f4ad95ba809c9d6c0e4732dfad9034d950a4fff
 
-X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1 + Restored Frames].bin
-with xmvsfu                SHA1   9a208a70f7e6e57ac3a3d2b57154b0fbae3842db
-with xmvsf or xmvsfu1d     SHA1   ff5412a7615c052c7a9640b12c77a0b230fd630c
+X-Men vs. Street Fighter (USA) [Tag Hack 1.1 + Restored Frames].bin
+with xmvsfu                SHA1   24f4f2511a32600105c5dfd8756c3ec67306ae14
+with xmvsf or xmvsfu1d     SHA1   94757993ff5e076e65248c60e8d7a1d7bd6a1005
 ```
 
 Every other combination of options has its own reference in `builder/data/known.json`; both the page
@@ -161,10 +168,9 @@ with Windows (CRLF) line endings.
 
 ## Known issues
 
-- Moves with very large sprites run slowly. The retail game has the same problem (the port draws
-  every sprite through the CPU); the hack aims to match retail speed there, not to exceed it. Keeping
-  four full characters costs a little on its own: in the heaviest moves (Sabretooth's super is the
-  clearest case) the tag hack runs a few frames per second slower than retail.
+- Supers with very large sprites can still drop below full speed on 2 MB (the port draws every sprite
+  through the CPU and decodes it on the fly); since 1.1 much less than before. On 8 MB, a few supers on
+  the heaviest stages are limited by the GPU itself.
 - A tag pressed while a move is still finishing is ignored; press again.
 - Turbo is off by default, as in the retail game. The arcade's USA default pace corresponds to
   Options → Turbo Speed 2.
@@ -184,6 +190,11 @@ fastest encoding that still fits.
 The 8 MB build is the same image plus a module that runs only when 8 MB is really present: it keeps
 characters in memory between fights, applies the restored frames to each character after loading, and
 falls back to the 2 MB path on any doubt. See [docs/architecture.md](docs/architecture.md).
+
+Since 1.1 the hot parts of the engine are rewritten in hand-scheduled MIPS (tile decoders, sprite memory
+allocator, upload to video memory, sprite quads, main loop, GPU queue, stage background layers, memory
+copies, parts of the game logic). Each rewrite was checked against the original routine on thousands of
+captured calls and in game, frame by frame, for identical pictures and game state.
 
 ## Documentation
 
@@ -206,14 +217,15 @@ has the details.
 
 | Folder | Contents |
 |---|---|
-| `builder/` | the one-command build (`build.py`) and its pipeline, with the reference hashes |
+| `builder/` | the one-command build (`build.py`) and its pipeline, with the reference hashes and all of the patch's MIPS code prebuilt (`builder/data/blobs/`) |
 | `patcher/` | the same build as a single web page (`index.html`), its sources and tests |
 | `tools/` | the patch itself: one module per feature (`tagpatch.py`, `hudpatch.py`, `aipatch.py`, …), the disc builders (`mktagdisc.py`, `mkap8disc.py`), sprite formats and codecs (`nsp.py`, `nsppatch.py`), relocation (`reloc.py`) |
 | `tools/tagload/` | the 2 MB battle loader (C, MIPS assembly) |
-| `tools/nspdec/` | the sprite decoder (MIPS assembly) |
+| `tools/nspdec/` | the 1.0.x sprite decoder (MIPS assembly) |
+| `tools/speed/` | the 1.1 speed-ups: tile decoders, sprite upload, quad builder, main loop and GPU queue, stage backgrounds, game logic (MIPS assembly, C) |
 | `tools/ap8/` | the 8 MB boot stub and module (C, MIPS assembly) |
 | `tools/ap/` | the restored-frames content builder (reads the arcade ROM set) |
-| `tools/logo/` | the boot card |
+| `tools/logo/` | the boot cards |
 | `docs/` | the documents above |
 
 ## About me

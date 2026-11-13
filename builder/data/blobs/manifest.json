@@ -1,0 +1,825 @@
+{
+ "calls": {
+  "0e3fef38f375602e854b2c6ef862e54bd9e2baed": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "0edaec484125919edb0545d3648945d2f76eb427.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "roundpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 305
+  },
+  "146c0510c1ad4d1e83e730390e308f31c3fc246a": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "eb43da932d2827553d26ec10f029d7fab3a0ba4c.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "balpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 53
+  },
+  "1f8736c2a04de2d42f8204bc489f07f8f5708e8f": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "padpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 77
+  },
+  "25e9448d147c8028718d60e37a2ea649e7d24504": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f5ee781e1311bb8567bfa572ef9d5364c8010249.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "hudpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 849
+  },
+  "2efa8bc3ee42f3607cee6508bafeb2f2ee45167c": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "0edaec484125919edb0545d3648945d2f76eb427.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "roundpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 305
+  },
+  "36970756240a242a0d74ffb736f6ce2d36758cc9": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "ca651fb8a2cf678c556485a361ecb90c8c395898.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "frame.ovl_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 31400
+  },
+  "36f1ffb2fc3a77c43efe4a672d1ad48e2d055e79": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "diffpatch.rank_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 101
+  },
+  "3ae3f9f4e8eb589446531eecc70eb85ff5ec9745": {
+   "args": {
+    "__tuple__": [
+     ""
+    ]
+   },
+   "blob": "05227a995c6dc7baec9fca17c3fc84ec96940040.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "logopatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 20016
+  },
+  "4dab5e2e6d50bd960ab3e53fd7c8e1749acbad45": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "bgmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 105
+  },
+  "571af21ce39ef2f9ca95bea4ea56460fad7c7f12": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "padpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 77
+  },
+  "5c05b8274371f281b9ee970e0b699017ba293060": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "diffpatch.rank_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 101
+  },
+  "5d6b4f0dadaea106735ab9bc09a51055ec526da7": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "aipatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 381
+  },
+  "623f023aab66fa505870419351aa921fa7e4f238": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "bgmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 105
+  },
+  "71d64dd6bd5e48a2d3e0df4ba38dd7fde6c1bf84": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "need",
+        2147571204
+       ],
+       [
+        "e_end",
+        2147571332
+       ],
+       [
+        "stockpath",
+        2147575420
+       ],
+       [
+        "dirent",
+        2147575508
+       ],
+       [
+        "bossdirent",
+        2147575516
+       ],
+       [
+        "bk",
+        2147575524
+       ],
+       [
+        "f_end",
+        2147575544
+       ],
+       [
+        "hook",
+        2147575972
+       ],
+       [
+        "d_end",
+        2147576400
+       ],
+       [
+        "dirload",
+        2147576780
+       ],
+       [
+        "c_end",
+        2147577004
+       ],
+       [
+        "glue",
+        2147578312
+       ],
+       [
+        "effglue",
+        2147578320
+       ],
+       [
+        "flushcache",
+        2147578328
+       ],
+       [
+        "varload",
+        2147578380
+       ],
+       [
+        "effhook",
+        2147578508
+       ],
+       [
+        "a_end",
+        2147578696
+       ],
+       [
+        "tl_dbg",
+        2147578704
+       ],
+       [
+        "isboss",
+        2147578808
+       ],
+       [
+        "load_one",
+        2147578884
+       ],
+       [
+        "b_end",
+        2147579340
+       ],
+       [
+        "bossfin",
+        2148070608
+       ],
+       [
+        "g_end",
+        2148070708
+       ],
+       [
+        "bplan",
+        2149573228
+       ],
+       [
+        "plan",
+        2149573228
+       ],
+       [
+        "bossswap",
+        2149573360
+       ],
+       [
+        "choose",
+        2149573496
+       ],
+       [
+        "bossdone",
+        2149573516
+       ],
+       [
+        "bossprep",
+        2149573556
+       ],
+       [
+        "guard",
+        2149573804
+       ],
+       [
+        "ramb_end",
+        2149573996
+       ],
+       [
+        "total",
+        2149574020
+       ],
+       [
+        "upgrade",
+        2149574164
+       ],
+       [
+        "effplan",
+        2149574376
+       ],
+       [
+        "order",
+        2149574616
+       ],
+       [
+        "ram_end",
+        2149574620
+       ]
+      ]
+     },
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "dfe6ac35a4faa54a555c7ad4a9d3e5f14769a0f4.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "mkap8disc.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 45759
+  },
+  "758327e14a655621e9185a32b9b0a528035129c8": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "20e51c7a30bbe96b6841e8ade2a5e5bf11e71f51.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "nsppatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 3789
+  },
+  "7bd6358883fb0e864a7615fe39dbef09e53033ea": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "cfb93e40d121fc0fae93cba8925e426728e20aad.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "nsppatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 2949
+  },
+  "a1877baaa7a0cc084dae37522544304c3ebf06fa": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "aipatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 381
+  },
+  "a2497b8caf5ecaf2fca326980e6616d717abb1d8": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e9ef44249f3285f5cceb04e0543c83e921395778.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "speedpatch.exe_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 22381
+  },
+  "adb2f2026ca0b2cf66230878a2dcd0fbd8423f1c": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e446c17413d6685731e61611bbaaca264026d8a8.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "mktagdisc.ahead_area",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 8208
+  },
+  "b00ed6fdefc3a25b93498c13f277919ccd3bba7b": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "2ad9967a66c49b3a85a36b6a6db511fed66f00fb.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "card2patch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 1336
+  },
+  "b98bc34ac7888a6d308f8021ebe295c47836afec": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "ec749ec312578e72f44b25f92562112c51ba123b.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "tagpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 1421
+  },
+  "bbed3558a839604bd5ced2db56f8b9e8dd00ef2a": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d765bcb47914104f1eea6a2ae17715666f2b5fab.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "hudpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 713
+  },
+  "c5890d8011b93eae27642de7cfbfae82debefbaf": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "3b0808f1b7d0a45ff5a1a34558ce8e349f34a29e.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "tagpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 1249
+  },
+  "cbbdcb8767ceb61f53aa78b3769dfd6ff9538d00": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "eb43da932d2827553d26ec10f029d7fab3a0ba4c.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "balpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 53
+  },
+  "e10ebb42ecdac0feb1dc775790f8e4282ee1fa27": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "97d170e1550eee4afc0af065b78cda302a97674c.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "speedpatch.exe_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 2
+  },
+  "e5e7d08ef58304ed4133ed98613a3a5bd95c4132": {
+   "args": {
+    "__tuple__": [
+     "X-MEN VS. STREET FIGHTER  \u00b7  TAG HACK 1.0"
+    ]
+   },
+   "blob": "640eba14fb5f4c185cba57f8f9ddf6560a62b521.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "logopatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 20016
+  },
+  "e79e3bdf67c8a15e5f7fd4c3f813847e45113775": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "10dd8bc6a1a01150b2f18248680481b4dc6a337a.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "palpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 177
+  },
+  "e7ed131f16213c1c29f2ca7535f46313959c8ab6": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "fec90fd0f5789869db0b2ea4378d789866ea1217.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "titlepatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 213
+  },
+  "f2a5feb66ec2e05a199a27636a570155952fa9a6": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0.1"
+    ]
+   },
+   "blob": "2ce1c4f18011335cbe75bc8d85e94e10fe3081de.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "titlepatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 217
+  },
+  "f733853e80fa97c3c8fad2c3d00b037230a0c289": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "10dd8bc6a1a01150b2f18248680481b4dc6a337a.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "palpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "size": 177
+  }
+ },
+ "files": {
+  "tagload/tagload.chunka.bin": "eca58ebf215ccf147b7100dea230bc59999d1255.bin",
+  "tagload/tagload.chunkb.bin": "ddafd163196ff028b22e3aedd5d0dca7b65ec455.bin",
+  "tagload/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09.bin",
+  "tagload/tagload.chunkd.bin": "fd27e11950461c14768ef8c55fe68aaeb3d7e69e.bin",
+  "tagload/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc.bin",
+  "tagload/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159.bin",
+  "tagload/tagload.chunkg.bin": "6c80d96cb7de19989728fb2119006f8499c29739.bin",
+  "tagload/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf.bin",
+  "tagload/tagload.ram.bin": "201af1bffabaf3fc2f6544ce3dea8e71e50a7f67.bin",
+  "tagload/tagload.ramb.bin": "0c2ed48318f1ebc60eb9f4806021f3f909d2b657.bin",
+  "tagload/tagload.sym": "e743199ac5e3bb3f1d54d054561c80b79eb760c9.bin"
+ },
+ "format": 1,
+ "note": "our own MIPS code, made by work/release11/record.py; blob name = SHA-1 of the blob; calls keyed by pipeline.call_key",
+ "sources": {
+  "aipatch.py": "608b3acfdbd8c1010c99be6e55a10509ee22ec4e",
+  "ap/aplib.py": "b9f5e2c829da63d9ff624020bfb7e80af81a964f",
+  "ap/build8.py": "76532a42acae992b907bd2f3cc90443b88aad5ab",
+  "ap/build8k.py": "7e6b94f0f420d1338b4e091e2204e488b0601f0f",
+  "ap/dirbuild.py": "119557a03db26fd42387168189b0dff49f239b22",
+  "ap/eff2build.py": "73872077c5a190a83b6c03654f35030a6cf347e9",
+  "ap/effbuild.py": "5b7e972551da63f83d65956265e9cc3ab9a8fda6",
+  "ap/sel2build.py": "4041f0a73fc3e82253320e53065c52e599a72106",
+  "ap/selbuild.py": "34661c8d9dddc2ed8ecf5536baa0da859b2c9229",
+  "ap8/ap8boot.c": "f312029dbbe9c7995e856d647065226eb43fc930",
+  "ap8/ap8glue.S": "46c5451ce72d1d7da7fba586eedae09b647dad3b",
+  "ap8/ap8mod.c": "ca25fe6b8c850c925583be012602344cae38b4d4",
+  "ap8/hot8.json": "384008a3a7af890c989df902c57ca2277f89b36f",
+  "ap8/inflate.h": "ab31bd9093838ae12655dc68353f9e3529eeedaa",
+  "ap8/inftest.c": "01769accd9cf684fdda43092b53657f31b89dcc4",
+  "balpatch.py": "d4b320867aca7aa21d21a946efe0d4ee25b0b83a",
+  "bgmpatch.py": "f58fd89b2e3af6d5d21359f9b0337018d0574a36",
+  "card2patch.py": "7579f3076fb2ee5e874c36a34ba441244e2983c3",
+  "deadcode.py": "ecd2c92bf367713a1881cbe06ba79f423864d2b2",
+  "diffpatch.py": "92f0ca36f1967333cf6c114904723dc8d740f53e",
+  "hudpatch.py": "505e6725d0a0eb5489e35caa34cfb49f9bbcce85",
+  "iso.py": "8e25457a20c898158f680102e38da3238e4859df",
+  "logo/card.bin": "814670b62c1c057d276ab9cdd26c08ec0f224532",
+  "logo/card2.S": "b3077e1d685a5df9b6fc7bbbe851dfd4c27f5cd5",
+  "logo/card2.bin": "c4a36bf83b49ec188eb6f4433e5f967d1462dc6f",
+  "logo/card_101.bin": "020a7439a0cc61f1db17640999d93c074833c1f4",
+  "logo/logo.S": "d0967446b5f84c757c4f964665816f61bf6f7d4f",
+  "logopatch.py": "811530489499e73cc99499979ffb4a3c52e7eb6e",
+  "mdis.py": "95a49216a0cdad1cea24e0aa1dcd2732e7e6ce9b",
+  "mipsasm.py": "3651f92a5acc498230d6a74a40bc9bf18cc6e9eb",
+  "mkap8disc.py": "2542de9b1f2b57673f52b4fe427ee9bd2bf8f1c9",
+  "mkdisc.py": "3c5b1e6de70028842461d79900b7249af1eb42ec",
+  "mknspdisc.py": "83956631149beae8d57199b3fe05dfcff534c899",
+  "mkrelease.py": "1f16fc2b177c95a04c98a1076ffa9fd2a198a51c",
+  "mktagdisc.py": "1d24a0c5057ab73e3dd90e91b65e6e6565db995f",
+  "mktrace.py": "adaa0b4cfbeaf7fd6406a38f976924a479e1b885",
+  "nsp.py": "eaa09f7cab945a0b601c668785d58d361c64416c",
+  "nsp_codec.py": "495696cc8de5a301734379a58b96036535e550e6",
+  "nsp_fast.py": "94769f714667f6341f9d8cccf67c034caca17ce9",
+  "nsp_fast2.py": "b2a64303c52e6dce1b9f71650e7dc4a4951147cb",
+  "nsp_huff.py": "856312e4d375cc54b21b22c103d075408ad66f6b",
+  "nsp_mid.py": "9f84ce00234fc6413d15b2c17acad7339d33d101",
+  "nspdec/link.ld": "c6ca94a3009d63ab708bf0eff469493bf4794756",
+  "nspdec/nspdec.S": "d5d9b7ba95124f8887cca94969450cebc799a534",
+  "nspdec/nspdec.bin": "c478955268646a9d5cc192ee9ec040195fb10a40",
+  "nspdec/nspdec.sym": "a10e937dbbf37d45fd2afa8520efa291c507d939",
+  "nspdec/nspdec_xvg1_experiment.S": "2b68a573fec857db9779ffa443bc10736d8ebe51",
+  "nspdec/testdrv.bin": "2d6a61752397dfc61115fca9da83a3d31c1ebaad",
+  "nspdec/testdrv.c": "8462a5c08da3f25b7ee3344c7460fa1d8659e4d3",
+  "nsppatch.py": "0f0907591375b6a0ab18b481b754a2c3a486e06a",
+  "offref.py": "0067576266b24f7495b0410eecff1bf6086c93bc",
+  "padpatch.py": "8514d575a9c364c85efb78efcba6636a7d1d74e0",
+  "palpatch.py": "bc6f98776c3ba6e3c5475a9385f2e4483a0c5690",
+  "refrange.py": "53aad02b6633b2447d08a49c48aca1111525c27f",
+  "region.py": "8a6bf646d135c8a9eaa5b251aff516bf350b952a",
+  "regionmap.py": "c83c923adee1b6f91205fcfac37759aa2e1047ef",
+  "reloc.py": "ce155821193c27326c2aa5416a8f512961003e28",
+  "retarget.py": "0e82dde6252405b5edec18ab78478aef86fb2113",
+  "roundpatch.py": "743487715b99f424bed96893ef5ff2bdcf0c90f9",
+  "speed/decode.py": "f63e3f607f66c92e15ce35a9731a0f837c36856d",
+  "speed/decode/ahead.c": "cf1e2d474ef001b857513edb59adec153100ee99",
+  "speed/decode/ahead_head.S": "e52fd1220192005b2d20358d9dc7bf73bf7d0981",
+  "speed/decode/ahead_ref.py": "a1c6353715f2f8ac57648c07e219ce29b73a92e8",
+  "speed/decode/ahead_sector.py": "d5039adcae70c325da82451e2f151ceddcd2ae17",
+  "speed/decode/ahead_test.py": "51c8583c9184d74c1828cb64c05a78a7d290a8f4",
+  "speed/decode/bench.S": "32da9075da45ec7d8347a91b18ca77232c8f905f",
+  "speed/decode/cost.py": "41f658f26dee3941887c5f707bf8dc0c966d78bc",
+  "speed/decode/dlib.py": "ee8ee15a53b9cb71550582b898be91b6e203004c",
+  "speed/decode/hotfile.py": "0d1d3de4c9946312f20a53adde03b936e19a574b",
+  "speed/decode/hottest.py": "f9363dd0dbf12dd0975fe9d85cf39fed4c473d60",
+  "speed/decode/nspdec.S": "d7f0b5b8a1b3556508fea090ef10c61ce54e4208",
+  "speed/decode/nspdec.bin": "faa8b450d125cb0c63ea4e60176edb019768c1a4",
+  "speed/decode/nspdec.sym": "ab5383a7654a306b69ddf341a53fdb2465262a85",
+  "speed/decode/sizes.py": "e3dcfdea0a2303b012405fb0e8e209bd9662eee4",
+  "speed/decode/test.py": "971117ce425cbb670cddff9e62ae9f15a03c912e",
+  "speed/decode/xvm_sub.py": "c1a2f0cffc12a5e879cdeadc22ae607232a76d18",
+  "speed/frame.py": "879fac601c26a9b35a6f7c95d7b44e92f8bb5990",
+  "speed/frame/bghand.py": "cebf1cbb0849830c7eff4750b146b79b199af540",
+  "speed/frame/bgtile.py": "b6a25bc50d6d3a0df8df5af7b51f13d1efbc3a3a",
+  "speed/frame/bin/ovl.json": "128471d6bba0f5c140e94559b2afae834a0a2a78",
+  "speed/frame/bin/region_a.bin": "e9b94ad76425312c19a8f14edb2a2499e270f32b",
+  "speed/frame/bin/region_b.bin": "e0f317317104c2b5128a86f28244a08d5613201e",
+  "speed/frame/bin/region_d.bin": "c9e738e56167cab1c9df7888b5dc09f0e6030f54",
+  "speed/frame/bin/region_q1.bin": "75fb1f1f04dbfc94aec01fcd3e5453118a5f097b",
+  "speed/frame/bin/region_q2.bin": "ffc4d4c2ebdb08a1d4b6828ac151f3f59ecfdea8",
+  "speed/frame/bin/region_q3.bin": "952e5ca3c9b4567ce3c1e711f096dfc4d0dff32d",
+  "speed/frame/bin/symbols.txt": "965723215066121e1d382809cab5ae97e2c13be9",
+  "speed/frame/cfg.py": "e8d81eb42c1e47ae0f7ff0b9f1f3bb10c3bffbc0",
+  "speed/frame/fprof.py": "b2318d96892493cd93cd4d4c2a688a8a3904022f",
+  "speed/frame/gas.py": "e07790c5834cc27cfdaa23c23e4558b019ed06c0",
+  "speed/frame/hazard.py": "5eac996e3c57f9928ab44ad16e084470c7998fce",
+  "speed/frame/src/gpuq.S": "e24e6d00da2ffa38bf2d04a30b4ef1669fec4509",
+  "speed/frame/src/gpuq2.S": "95f4d21141138679ed3c5fd6771756e01a77d6a5",
+  "speed/frame/src/gpuq3.S": "0ff6dc19735b5410925d15524285b81b46645f49",
+  "speed/frame/src/layers.S": "203aa3f2c412c26c25a0ad5e59fbc4d3b1c2cd10",
+  "speed/frame/src/present.S": "dc452287e7e00ef5203506361a5bf13fc6e2243c",
+  "speed/frame/src/splist.S": "b4559afc2ea71992ef408d50693afafef62e9783",
+  "speed/logic.py": "d436f3f06d19ada7a21f338b6968b518fe05643f",
+  "speed/logic/lcap.py": "a2add0358b32d6ea492805c2b9dd856a39683b79",
+  "speed/logic/lcov.py": "aa1a8c05c7613426aa72157612899d43bc6d022b",
+  "speed/logic/lfuzz.py": "bdc9276a6ac589fe3579f9792cf9588dd96f6f03",
+  "speed/logic/lgame.py": "797ac40d0f5e65260a57b11984f1533960e8196a",
+  "speed/logic/lhazard.py": "36313d58e4c96d5c76de8bde2446b85f7ba7e8f8",
+  "speed/logic/logic.S": "89af28ca597c3eff2ebacaa349c19be60adcc26b",
+  "speed/logic/logic_800303f0.bin": "1d5ff334363f88296a829dd17c490cd0565b3c2a",
+  "speed/logic/logic_8006b6a4.bin": "82cc87a84d21918c4809a44f180899b5fc82c4a6",
+  "speed/logic/logic_8006cdec.bin": "9fe4fa0e072cab7538c549969ad91af1e439a252",
+  "speed/logic/logic_8007d100.bin": "f1d232a2c8305cfd971a3e32c1112856bb027ec7",
+  "speed/logic/lpath.py": "58d1c5043efe8d85098ca3dc32e6b11d676bf666",
+  "speed/logic/lpath2.py": "d64e333183f9d761155464cf4d621c4321a4e9f9",
+  "speed/logic/ltest.py": "47157934789ab838ce10f61e593c409ae4a97236",
+  "speed/quad.py": "adc52e2facb740eaea7f1c74aedd493874ef98fa",
+  "speed/quad/hazard.py": "0dc3d71ea3f33a9264e48540526abed155174df2",
+  "speed/quad/ingame.py": "2d7854b19ce3668d325654518113c792548ae62b",
+  "speed/quad/mkqdisc.py": "25884f8c9c2b1077b09d7d98c6120da0c8b70dac",
+  "speed/quad/qcap.py": "7a8cb77788c1bbc8a86a345f99e93b166f324e78",
+  "speed/quad/qcount.py": "126cac1ec3058a363781df149a153c4d6a4104ae",
+  "speed/quad/qcov.py": "d2da9ba1e3a3b0780f110be7fa8cacf6c95474ee",
+  "speed/quad/qfuzz.py": "ec57cd081b8bdd577e5c50ffa62aeaaf336a292c",
+  "speed/quad/qpath.py": "d73225adbf9be8caf3e20e8d9b5efb2a8e454552",
+  "speed/quad/qpoke.py": "08bc0139a2ec3f007f4c2279bf1b6b2ce8b6f0f0",
+  "speed/quad/qtest.py": "4e863f76c5b4a64854bad618fea19179a24835e6",
+  "speed/quad/quad.S": "ed95c2299998156cb4dcb7e29ed8f78866c142a1",
+  "speed/quad/quad.c": "3700ba642c3a38cf7ea7863ba069c8b31f7896f6",
+  "speed/quad/quad_80056340.bin": "d66d71eb6cf68e57f23e1fc2370427f6699ecb20",
+  "speed/quad/quad_80057be4.bin": "de3a3705ce7d76f2227fb3d31afa55a409b35676",
+  "speed/quad/quad_80057f48.bin": "ddb1ce3e732e420bc3e265bc1f1253a344539496",
+  "speed/upload.py": "3ad2435624bdaaff4e91c60e4ea46f4d42eb2cac",
+  "speed/upload/arena.S": "191b435bfc4da32791109574b757e3b96d5a6001",
+  "speed/upload/draw.c": "b5c57fcbfc1f19ade38cb83562f35348f2eaf099",
+  "speed/upload/fcache.c": "99c392e72b25fc351b85519d406bc5d7ba73b00b",
+  "speed/upload/fcstub.S": "3a7a187dfa41db2bd1a36697d0d76b3e065098f9",
+  "speed/upload/helpers.S": "c9bb4c87519ab62ff05e81e6556aa79112dd142f",
+  "speed/upload/icount.py": "cf574a78fdf65131618516e3933e0c0c5af371e8",
+  "speed/upload/test_alloc.py": "151915a10aab0ebe5ea64423511f2b21fdf51fb6",
+  "speed/upload/test_helpers.py": "08749e0f2179938d7b0cac23987033cd17c5791d",
+  "speed/upload/test_mut.py": "ab6e8b95737e81c065878b9ee5327208a1eacc6d",
+  "speed/upload/test_raw.py": "8ba9e255fcdbe5857b5a6cb2de4c3e295666cb4e",
+  "speed/upload/test_vc.py": "74aeca3c7ae4e66dfdb1c08253b64e7d78f131e2",
+  "speed/upload/ulib.py": "9dc2548a741d7e07050d16fa582f72534e31b3e4",
+  "speed/upload/vc.c": "07a3f0c6d7888c8bef2809b73e4925ec732c47cb",
+  "speed/upload/vcmap.txt": "f1555fa737cecfa5fe5cc2c2b14c9148fd3de881",
+  "speedpatch.py": "915a67e294b17676080353ed43098e3062a43626",
+  "tagload/glue.S": "b9edfbb5711bef43557cba298deaa2da1a8a6452",
+  "tagload/hot/glue.S": "b9edfbb5711bef43557cba298deaa2da1a8a6452",
+  "tagload/hot/hotdata.S": "c967aa6637b4d099558fdae41c79e00ba53f8bbf",
+  "tagload/hot/hotspr.S": "30e1fdc35d18472fa9b6c1b3ae2670eb172fe8b0",
+  "tagload/hot/link.ld": "db2763360bfb788eea26577648e92ff59add5f0e",
+  "tagload/hot/tagload.c": "636e4d3019f07af0da04a963771e94d5ec717eec",
+  "tagload/hot/tagload.chunka.bin": "af24b0051c0e5f19fb75771c573adc4de3f58078",
+  "tagload/hot/tagload.chunkb.bin": "2f814e966a281407d833e8d64f1628d558beebdf",
+  "tagload/hot/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09",
+  "tagload/hot/tagload.chunkd.bin": "1a6f3cf46b2e2b8f8afbd2aa3b74c939983962db",
+  "tagload/hot/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc",
+  "tagload/hot/tagload.chunkf.bin": "939f6e4ff274fbe1e89f89d09737ca17b7b66115",
+  "tagload/hot/tagload.chunkg.bin": "bffa3bac77f3fd56ab66fcc51f2ad32023a653bf",
+  "tagload/hot/tagload.chunkh.bin": "f0a2bcd32d7af0d81af9bd1dc27b34a70b712626",
+  "tagload/hot/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf",
+  "tagload/hot/tagload.hram.bin": "6387f764e65809a4f624759459ef267e33379e6b",
+  "tagload/hot/tagload.ram.bin": "00b1b6ac44c8f0a2c8e1b83d6a78011b3e8c9403",
+  "tagload/hot/tagload.ramb.bin": "0270cc09e27a5f0b56ba8e0f348dc1a2a2768209",
+  "tagload/hot/tagload.sym": "cb58eed282dd08d72a97daa0f13ef28e083b6bcb",
+  "tagload/jp/glue.S": "b9edfbb5711bef43557cba298deaa2da1a8a6452",
+  "tagload/jp/link.ld": "ff3e29fdd121fc242e2af8acdae9a96e951e16f9",
+  "tagload/jp/tagload.c": "90fac4ea9ac7fe11988d0b1558ed2bb71a82a433",
+  "tagload/jp/tagload.chunka.bin": "4643c0547304caf457fa700d86d99e21367bdc28",
+  "tagload/jp/tagload.chunkb.bin": "19e687e890f66db1ac1c9311bcea155b72b63710",
+  "tagload/jp/tagload.chunkc.bin": "0e9a64dcf04e982691ac891e36963dc94b598625",
+  "tagload/jp/tagload.chunkd.bin": "524dcf07c540ef5dddfb9587fa37fb1a1b1dd528",
+  "tagload/jp/tagload.chunke.bin": "62fa27a10dbfb3b90f8f635af87d5c32ec5c3396",
+  "tagload/jp/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159",
+  "tagload/jp/tagload.chunkg.bin": "a5f8f52767498f6dc4b5bf13c9191233b751a29c",
+  "tagload/jp/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf",
+  "tagload/jp/tagload.ram.bin": "655fb1419eeb5a90a0d4da8aff0b55939573fa7c",
+  "tagload/jp/tagload.ramb.bin": "1b90a6108203b133f2a3c6ccb1be61eeb341357d",
+  "tagload/jp/tagload.sym": "7190c334e017681a0084e6b2ba1b14635e010a96",
+  "tagload/link.ld": "4da68f334749067009c4d5eb8042b433688e8698",
+  "tagload/tagload.c": "636e4d3019f07af0da04a963771e94d5ec717eec",
+  "tagload/tagload.chunka.bin": "eca58ebf215ccf147b7100dea230bc59999d1255",
+  "tagload/tagload.chunkb.bin": "ddafd163196ff028b22e3aedd5d0dca7b65ec455",
+  "tagload/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09",
+  "tagload/tagload.chunkd.bin": "fd27e11950461c14768ef8c55fe68aaeb3d7e69e",
+  "tagload/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc",
+  "tagload/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159",
+  "tagload/tagload.chunkg.bin": "6c80d96cb7de19989728fb2119006f8499c29739",
+  "tagload/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf",
+  "tagload/tagload.ram.bin": "201af1bffabaf3fc2f6544ce3dea8e71e50a7f67",
+  "tagload/tagload.ramb.bin": "0c2ed48318f1ebc60eb9f4806021f3f909d2b657",
+  "tagload/tagload.sym": "3f41886e4aad81541dd8e06939e9a645cd1d3edb",
+  "tagload/tagload.tab.bin": "32fb2e046f09e6dc814a6040b03706174eae7229",
+  "tagload/tagload.tab2.bin": "32fb2e046f09e6dc814a6040b03706174eae7229",
+  "tagpatch.py": "148719cc202ad5282b111d3982c4acc7f1f2640a",
+  "tagpolicy.py": "caca90197243d7b642788332241ce46840ed6b34",
+  "titlepatch.py": "55baa60e52ba4ac986efd427c7b2304bbb8815f8",
+  "toolenv.py": "ed74db339e37217419eb81aa7042b78d150ab899",
+  "xvemu.py": "1b90cb07b4b04b2bc8222f6d6c2e0ec7157b5a53"
+ }
+}

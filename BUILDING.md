@@ -10,7 +10,7 @@ repository.
 
       pip install -r requirements.txt
 
-  The versions in `requirements.txt` are the ones the 1.0.1 references were made with. Without the
+  The versions in `requirements.txt` are the ones the 1.1 references were made with. Without the
   `zopfli` module the 8 MB build falls back to zlib: the image works but is not identical to the
   reference.
 - `chdman` only for `--chd`.
@@ -52,22 +52,48 @@ browser tests.
 
 ## Changing the MIPS code
 
-The code that runs on the PlayStation is stored compiled:
+The code that runs on the PlayStation is stored assembled in `builder/data/blobs/`: one file per piece,
+named by its SHA-1, and `manifest.json`, which maps every code-generating function in `tools/` and its
+arguments to its piece. A normal build only reads these, so neither the builder nor the web patcher needs a
+compiler. The sources:
 
-| Source | Compiled form |
+| Source | What it is |
 |---|---|
-| `tools/tagload/` (battle loader) | `tools/tagload/*.bin`, `tagload.sym` |
-| `tools/nspdec/nspdec.S` (sprite decoder) | `tools/nspdec/nspdec.bin`, `nspdec.sym` |
-| `tools/ap8/` (8 MB stub and module), `tools/logo/` (boot card), the version line | `builder/data/toolcache/*.json`, keyed by a hash of the sources and the arguments |
+| `tools/tagload/` | the battle loader (C and assembly; its linked output is also kept in `tools/tagload/*.bin`) |
+| `tools/nspdec/nspdec.S` | the 1.0.x sprite decoders (`--nospeed`) |
+| `tools/speed/decode/` | the 1.1 tile decoders and the decode-ahead predictor |
+| `tools/speed/upload/`, `quad/`, `frame/`, `logic/` | the 1.1 sprite upload, quad builder, main loop and GPU queue, game logic; `frame/bgtile.py` and `bghand.py` generate the stage background rewrites |
+| `tools/ap8/` | the 8 MB boot stub and module |
+| `tools/logo/` | the boot cards (`logo.S`, `card2.S`; `card.bin` and `card2.bin` are the cards' own artwork) |
+| `tools/*patch.py` | patches assembled by `tools/mipsasm.py` (tag, HUD, CPU, rounds, music, ...) and the version line |
 
-After changing a source you need a `mipsel-none-elf-` GCC toolchain. It is found through
-`XVSF_MIPS_PREFIX`, else `mipsel-none-elf-gcc` on PATH, else `local_paths.json` in the repository root
-(copy `local_paths.example.json`). Then:
+After changing a source you need a `mipsel-none-elf-` GCC toolchain (binutils and gcc), plus `capstone`
+for the load-delay check of the speed modules. It is found through `XVSF_MIPS_PREFIX`, else
+`mipsel-none-elf-gcc` on PATH, else `local_paths.json` in the repository root (copy
+`local_paths.example.json`). Then:
 
-    python -c "import sys; sys.path.insert(0, 'tools'); import mktagdisc; mktagdisc.build()"   # the battle loader
-    python tools/nsppatch.py build                                                              # the sprite decoder
-    python builder/build.py ... --record-blobs                 # recompile and store the module, boot card, version line
-    python builder/build.py ... --record-expected              # store the new reference SHA-1 for those options
+1. Rebuild what you changed. The battle loader:
+   `python -c "import sys; sys.path.insert(0, 'tools'); import mktagdisc; mktagdisc.build()"`.
+   The speed modules: `python tools/speed/decode.py build`, `python tools/speed/quad.py build`,
+   `python tools/speed/logic.py build`, `python tools/speed/frame.py build` (in this order: `frame` reads
+   `decode`'s symbols; the upload module is compiled on the fly). `frame.py build` reads the original stage
+   files from `disc/files/P/P4/` in the repository root (extract them from your disc image).
+2. Re-bake the blobs with record-mode builds, which run the tools' own code generation instead of reading
+   the blobs and store the results:
+
+       python builder/build.py --disc … --out OUT --record-blobs
+       python builder/build.py --disc … --out OUT --record-blobs --tool-flag=--nospeed
+       python builder/build.py --disc … --arcade xmvsfu.zip xmvsf.zip --out OUT --record-blobs
+
+   These three cover every piece; the other options only leave pieces out. Old pieces that are no longer
+   referenced can be deleted from `builder/data/blobs/` together with their manifest entries.
+3. Build every configuration you ship again with no compiler reachable, and store the new reference
+   hashes: `python builder/build.py … --record-expected` (once per option combination).
+4. `python patcher/make.py`.
+
+The maintainers run steps 2 to 4 with one script that also checks the record-mode images against the
+tools run directly; that script is not part of this repository. When a `tools/` file differs from the
+one the blobs were baked from, the build prints a note; the image is still built from the blobs.
 
 A change to anything the image contains changes the reference hashes; `--record-expected` writes the
 new ones for the options of that run.

@@ -40,7 +40,9 @@ HOLD_S, ROUNDS = 2.6, 2
 HBLANKS = int(HOLD_S / ROUNDS * 15734)   # NTSC line rate; each round below 32768 (sltiu)
 assert HBLANKS < 0x8000
 TITLE = "PEPA SOFT HOUSE"
-SUB = "X-MEN VS. STREET FIGHTER  ·  TAG HACK 1.0"
+SUB_101 = "X-MEN VS. STREET FIGHTER  ·  TAG HACK 1.0"     # 1.0 / 1.0.1 card (tools/logo/card_101.bin, used with --nospeed)
+SUB = ""                                                      # 1.1 and later: the title only (tools/logo/card.bin)
+CARD_101 = os.path.join(HERE, "logo", "card_101.bin")
 FONT, SUBFONT = ("impact.ttf", 26), ("arialbd.ttf", 11)
 
 
@@ -52,7 +54,7 @@ def card(sub=SUB):
     f = ImageFont.truetype(*FONT)
     bb = d.textbbox((0, 0), TITLE, font=f)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    cx, cy = W // 2, H // 2 - 6
+    cx, cy = W // 2, (H // 2 - 6 if sub else H // 2)
     bar_w = tw + 24
     d.rectangle([cx - bar_w // 2, cy - th // 2 - 14, cx + bar_w // 2, cy - th // 2 - 10], fill=(0, 0, 0))
     d.rectangle([cx - bar_w // 2, cy + th // 2 + 10, cx + bar_w // 2, cy + th // 2 + 14], fill=(0, 0, 0))
@@ -67,6 +69,7 @@ def card(sub=SUB):
 def card_bits(sub=SUB):
     """the card the build uses: tools/logo/card.bin (rendered with other text only on request)"""
     if sub == SUB: return open(CARD, "rb").read()
+    if sub == SUB_101: return open(CARD_101, "rb").read()
     return render_bits(sub)
 
 
@@ -99,7 +102,8 @@ def build(sub=SUB):
 
 def apply(exe_read, exe_write, orig_exe, sub=None):
     """exe_read / exe_write as in mktagdisc.main (they address the executable on the disc image by RAM address)"""
-    blob = build(SUB if sub is None else sub)
+    if sub is None: sub = SUB_101 if "--nospeed" in sys.argv else SUB
+    blob = build(sub)
     z = orig_exe[ZERO[0] - EXE_BASE + EXE_HDR:ZERO[1] - EXE_BASE + EXE_HDR]
     assert not any(z), "the executable is not zero where the card goes"
     assert struct.unpack_from("<I", orig_exe, 0x10)[0] == ENTRY and exe_read(LOGO_AT, len(blob)) == bytes(len(blob))

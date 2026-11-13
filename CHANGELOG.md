@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.1 (2026)
+
+- Much faster on a stock 2 MB console. The sprite pipeline was rewritten in hand-optimised MIPS: tile
+  decoders, the sprite memory allocator and the upload to video memory, the sprite quad builder, the main
+  loop and GPU queue, the stage background layers, the memory copy routines and parts of the game logic.
+  Pictures and game logic are unchanged; only the time they take. Walking, normals and most specials now
+  run at full speed with four characters loaded, and supers drop far less than in 1.0.1.
+- Characters that need the densest sprite encoding keep their most used tiles in the fast format.
+- 8 MB: the four characters of a fight are decoded during the loading screen, so fights decode almost
+  nothing; supers with restored frames are much smoother. Loading takes about one second longer.
+- After a team super (variable combination) the partner who jumped in stays on point, as in the arcade.
+- After a variable counter the partner who came in stays on point, as in the arcade, and keeps all its
+  special moves and supers (they were blocked after a counter).
+- The fight against your own partner after Apocalypse is one on one again: one character and one life
+  bar per side, no tag, team super or counter, one round (issue #1).
+- A second boot card: a short notice that this is a free fan-made patch, with the project's address.
+  Its portraits are taken from your own disc when the patch is built. The first card now shows only
+  PEPA SOFT HOUSE.
+- The builder and the web patcher no longer compile anything: all of the patch's own code ships
+  prebuilt and checked by its SHA-1.
+- Version line reads TAG HACK 1.1.
+
 ## 1.0.1 (2026)
 
 - Fixes a freeze on real PlayStation hardware: with the image built with restored frames, a stock 2 MB

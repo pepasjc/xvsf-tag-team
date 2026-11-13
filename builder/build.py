@@ -32,20 +32,20 @@ def main(argv=None):
     ap.add_argument("--disc", required=True, help="your original disc image (.bin, or the .cue that names it)")
     ap.add_argument("--arcade", nargs="+", default=[], help="your arcade ROM set (zip; a clone zip followed by its parent zip): adds the restored animation frames")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1]", with "+ Restored Frames" for an arcade build)')
+    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.1]", with "+ Restored Frames" for an arcade build)')
     ap.add_argument("--work", help="work directory to keep (re-used on the next run: encoded sprites are cached); default: a temporary one")
     ap.add_argument("--jobs", type=int, default=min(6, os.cpu_count() or 1), help="processes for the sprite encoders (default %(default)s)")
     ap.add_argument("--buttons", choices=["modern", "stock"], default="modern", help="default button layout: modern = HP R1, HK R2, 3P L1, 3K L2 (default); stock = the game's own")
     ap.add_argument("--no-logo", action="store_true", help="leave out the boot card shown before the game starts")
     ap.add_argument("--no-menu-version", action="store_true", help="leave out the version line on the main menu (2 MB build only; the 8 MB loader always draws it)")
     ap.add_argument("--plain", action="store_true", help="no boot card, and no version line on the 2 MB build: the plain images the regression references were made with")
-    ap.add_argument("--menu-version", metavar="TEXT", help="your own text for the version line (capitals, digits, space, dot, dash; needs a MIPS compiler)")
+    ap.add_argument("--menu-version", metavar="TEXT", help="another text for the version line (developers: only texts baked into builder/data/blobs)")
     ap.add_argument("--tool-flag", action="append", metavar="FLAG", help="hand FLAG to tools/mktagdisc.py / mkap8disc.py as it is (developers; repeatable)")
     ap.add_argument("--chd", action="store_true", help="also write a .chd (needs chdman: XVSF_CHDMAN, PATH, or --chdman)")
     ap.add_argument("--chdman", help="path of chdman")
-    ap.add_argument("--mips-prefix", help='MIPS cross toolchain prefix, e.g. "/opt/gcc/bin/mipsel-none-elf-" (only for options not in the blob cache)')
-    ap.add_argument("--no-blob-cache", action="store_true", help="compile the option-dependent MIPS code instead of using builder/data/toolcache")
-    ap.add_argument("--record-blobs", action="store_true", help="developers: store freshly compiled MIPS code in builder/data/toolcache")
+    ap.add_argument("--mips-prefix", help='developers, with --record-blobs: MIPS cross toolchain prefix, e.g. "/opt/gcc/bin/mipsel-none-elf-"')
+    ap.add_argument("--record-blobs", action="store_true", help="developers: run the tools' own code generation (MIPS compiler) and bake the results into builder/data/blobs "
+                    "(work/release11/record.py does this for every release configuration); without it the builder never compiles anything")
     ap.add_argument("--record-expected", action="store_true", help="developers: store the resulting SHA-1 in builder/data/known.json")
     ap.add_argument("--verbose", action="store_true", help="print the tools' own output")
     a = ap.parse_args(argv)
@@ -60,7 +60,7 @@ def main(argv=None):
 
     def log(line):
         logf.write(str(line) + "\n")
-        if a.verbose: print("   " + str(line), flush=True)
+        if a.verbose: print("   " + str(line), flush=True, file=sys.__stdout__)      # (the tools' stdout is redirected into log())
 
     def progress(stage, frac, text=""):
         if stage != state["stage"]:
@@ -68,7 +68,7 @@ def main(argv=None):
     try:
         flags = tool_flags(a, bool(a.arcade))
         info = pipeline.run(a.disc, work, a.arcade, flags, a.name, a.jobs, progress, log, mips_prefix=a.mips_prefix,
-                            use_cache=not a.no_blob_cache, record=a.record_blobs)
+                            record=a.record_blobs)
         ov = info["overlay"]; name = info["name"]
         print("* Writing the image ...", flush=True)
         t0 = time.time()
@@ -95,18 +95,28 @@ def main(argv=None):
     exp = expected(info["variant"], info.get("arcade_set"), flags)
     print("\n%s  (%d bytes, %d sectors; %d rewritten or added)" % (binpath, size, size // 2352, len(ov.dirty)))
     print("SHA-1     %s" % sha)
-    if exp: print("expected  %s  %s" % (exp["sha1"], "OK - identical to the reference build" if exp["sha1"] == sha else "*** DIFFERENT ***"))
+    if exp: print("expected  %s  %s%s" % (exp["sha1"], "OK - identical to the reference build" if exp["sha1"] == sha else "*** DIFFERENT ***",
+                                       "  (provisional reference, recorded before the release was frozen)" if exp.get("provisional") else ""))
     else: print("expected  (no reference recorded for these options)")
     print("\nstage                seconds")
     for k, v in info["times"].items(): print("  %-18s %7.1f" % (k, v))
     print("  %-18s %7.1f" % ("total", time.time() - t_all))
-    if info["blobs"]: print("option-dependent MIPS code:", ", ".join("%s (%s)" % b for b in info["blobs"]))
+    if info["blobs"]:
+        kinds = sorted(set(k for f, k in info["blobs"]))
+        print("our MIPS code: %d pieces, %s" % (len(info["blobs"]), "/".join(kinds)))
+    if os.path.isdir(os.path.join(pipeline.REPO, "tools")) and not a.record_blobs:
+        st = pipeline.stale_sources()
+        if st: print("NOTE (developers): %d tools/ files changed since builder/data/blobs was baked, e.g. %s - the image is built from the baked code"
+                     % (len(st), ", ".join(st[:4])))
     logf.write("sha1 %s\n" % sha); logf.close()
     if a.record_expected:
         kn = pipeline.known()
         what = ("2 MB tag hack" if info["variant"] == "2mb" else "tag hack + restored frames, " + info["arcade_set"]) + (" [" + " ".join(flags) + "]" if flags else "")
         kn["expected"] = [e for e in kn.get("expected", []) if not (e["variant"] == info["variant"] and e.get("arcade_set") == info.get("arcade_set") and e["flags"] == sorted(flags))]
-        kn["expected"].append(dict(variant=info["variant"], arcade_set=info.get("arcade_set"), flags=sorted(flags), sha1=sha, size=size, what=what))
+        ent = dict(variant=info["variant"], arcade_set=info.get("arcade_set"), flags=sorted(flags), sha1=sha, size=size, what=what)
+        if os.environ.get("XVSF_RECORD_RELEASE"): ent["release"] = os.environ["XVSF_RECORD_RELEASE"]          # work/release11/record.py
+        if os.environ.get("XVSF_RECORD_PROVISIONAL"): ent["provisional"] = True
+        kn["expected"].append(ent)
         json.dump(kn, open(os.path.join(HERE, "data", "known.json"), "w"), indent=1)
         print("recorded in builder/data/known.json")
     return 0 if (not exp or exp["sha1"] == sha) else 1

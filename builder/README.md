@@ -5,7 +5,7 @@
 
 The first form builds the 2 MB tag hack. With `--arcade` (your own arcade ROM set; a clone zip followed by
 its parent zip) the image also carries the restored animation frames for 8 MB setups. Output:
-`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1].bin` + `.cue` (`… [Tag Hack 1.0.1 + Restored Frames]` with an
+`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.1].bin` + `.cue` (`… [Tag Hack 1.1 + Restored Frames]` with an
 arcade set; `--name` changes it), `build.log`, and a `.chd` with `--chd` when `chdman` is found (`XVSF_CHDMAN`,
 PATH, `--chdman PATH`).
 
@@ -20,8 +20,10 @@ The default is the **release configuration**: boot card + version line on the ma
 | `--buttons stock` | the game's own shoulder layout (`--nopad`) | the same (`--nopad`, handed on to the 2 MB build inside) |
 
 Requirements: Python 3.11, `numpy`, `numba`. For `--arcade`: the `zopfli` Python module (without it
-`tools/mkap8disc.py` falls back to zlib and the image differs from the reference). No compiler and no fixed paths
-for these configurations. `python builder/build.py --help` lists the options.
+`tools/mkap8disc.py` falls back to zlib and the image differs from the reference). No compiler and no fixed paths:
+the builder never compiles or assembles anything (all of our MIPS code is prebaked in `data/blobs`, see below).
+`python builder/build.py --help` lists the options. The 1.0.1 image (no 1.1 speed-ups) is still built with
+`--tool-flag=--nospeed` (2 MB only; bit-identical to the 1.0.1 release, its hashes are in `data/known.json`).
 
 ## What it does
 
@@ -29,9 +31,9 @@ for these configurations. `python builder/build.py --help` lists the options.
 |---|---|---|
 | verify | the image | SHA-1 and size against `data/known.json`; anything else is refused, with the reason (already patched, other region, not this game, not a raw image, altered dump) |
 | extract | the image | `files/…` (every file up to 8 MB), `lba_map.json` |
-| sprites | `files/A/A0/SP_PLxx.NSP`, `A2/SP_EFF1.NSP`, `data/tiles_*.json` | `build/nspm` (base, XVM1), `build/nsp` (strong, XVH1), `build/nspm4` (mid), `build/nspfat2` (fat), `build/nspm_eff` |
+| sprites | `files/A/A0/SP_PLxx.NSP`, `A2/SP_EFF1.NSP`, `data/tiles_*.json`, `data/hot_tiles.json` | `build/nspm` (base, XVM1), `build/nsp` (strong, XVH1; 1.0.x), `build/nsph4` (1.1 strong: XVH1 + its most decoded tiles as stock RLE, `xvb/strongrle.py`), `build/nspm4` (mid), `build/nspfat2` (fat), `build/nspm_eff` |
 | arcade (only with `--arcade`) | the ROM zip(s), the image | `ap8content_base/` — `tools/ap/build8.py --direct --shared`; then `ap8content/` — `tools/ap/sel2build.py --base ap8content_base` (second select-screen sprite set) |
-| disc | all of the above, `tools/` blobs | the patched image: `tools/mktagdisc.py`, or `tools/mkap8disc.py` (which runs the former inside) |
+| disc | all of the above, `data/blobs` | the patched image: `tools/mktagdisc.py`, or `tools/mkap8disc.py` (which runs the former inside) |
 | seal | | EDC/ECC of every rewritten sector, in one vectorised pass |
 
 Encoder parameters (recovered by matching the hand-made files byte for byte): base/mid/fat = XVM1 with 48 tables,
@@ -59,27 +61,45 @@ the browser patcher (`patcher/src/kernels.js`). Two things in them are there for
 * `data/tiles_mid.json`, `data/tiles_fat.json` — tile numbers per character (measurement results: which tiles
   are decoded in bursts). Their generators need emulator measurement logs and are not part of this
   repository.
+* `data/hot_tiles.json` — per character, the decoded bytes of each tile in play (measured on the original disc). The 1.1
+  strong tier (`xvb/strongrle.py`) keeps the most decoded tiles of each XVH1 file as stock RLE, up to 4 KB per
+  character. Measurement data, like the two lists above.
 * `data/known.json` — SHA-1/size of the accepted input, and the SHA-1 of the output for the option
   combinations that were built here (`--record-expected`).
-* `data/toolcache/*.json` — recorded results of the three functions in `tools/` that run the MIPS compiler
-  (`mkap8disc.build`, `titlepatch.build`, `logopatch.build`), keyed by their arguments and source files. With a
-  hit no compiler is needed; with a miss the compiler `tools/toolenv.py` finds is used (`XVSF_MIPS_PREFIX` or
-  `--mips-prefix`, PATH, the development default) and `--record-blobs` stores the result. Our own code only
-  (the logo blob includes the boot card bitmap, `tools/logo/card.bin`).
+* `data/blobs/` — ALL of our own MIPS code, prebaked: `manifest.json` + one file per blob, named by its SHA-1
+  (checked on every read). `calls`: the recorded results of the functions in `tools/` that generate code
+  (`pipeline.PREBAKED`: the sprite decoders `nsppatch.patches`, the mipsasm patches `tagpatch` / `hudpatch` / `aipatch`
+  / ..., the 1.1 speed modules `speedpatch.exe_patches` and stage overlays `frame.ovl_patches`, the predictor sectors
+  `mktagdisc.ahead_area`, the version line `titlepatch.build`, the boot cards `logopatch.build` / `card2patch.build`,
+  the 8 MB module `mkap8disc.build`), keyed by function + arguments + context (`--nospeed`, the developers'
+  `XV_SPEED` / `UP_*` / `XV8_*` switches; `pipeline.call_key`); `files`: the loader `tools/tagload/tagload.*`.
+  The builder installs these in place of the functions and runs no external program at all (a tool that tries to is
+  stopped with an error). `sources` records the SHA-1 of every `tools/` file at bake time: `build.py` notes when the
+  tools changed since (`pipeline.stale_sources()`). The second card's blob is only its stub: its picture is composed
+  at build time from the user's disc (`tools/card2patch.py`).
 
-Nothing here is derived from the game or the arcade ROMs.
+No graphics, sound or other data from the game or the arcade ROMs is here. Where a rewritten routine keeps some of
+the original instructions unchanged (or moves them), a blob contains those few words of the game's own code
+(about 2.4 KB in 1.1); a later version will fill them in from your disc instead.
 
 ## After the tools or the arcade content builder change
 
-The 8 MB loader no longer depends on the content: the memory map (`arena`, `arena_end`, `slotarea`) is written into
-the module table by `tools/mkap8disc.py`, so one recorded blob (`mkap8disc.build(symbols, version text)`) serves every
-arcade set and every content revision. New blobs are needed only when `tools/ap8/`, `tools/logo/` or
-`tools/logopatch.py` / `tools/titlepatch.py` change (or for another version text); new reference hashes whenever the
-tools or the content builder change. On a machine with the compiler:
+The blobs are made by the tools' own code generation, which needs a `mipsel-none-elf-` GCC toolchain (found through
+`XVSF_MIPS_PREFIX`, `--mips-prefix`, PATH or `local_paths.json`, see `tools/toolenv.py`). A record-mode build runs it
+instead of reading the blobs and stores what it produced:
 
-    for each arcade set:  python builder/build.py --disc … --arcade SET.zip --out … --record-blobs --record-expected
-    python builder/build.py --disc … --out … --record-expected          (and the option variants you ship)
-    python patcher/make.py
+    python builder/build.py --disc … --out … --record-blobs                              # 2 MB 1.1 (boot card, version line)
+    python builder/build.py --disc … --out … --record-blobs --tool-flag=--nospeed        # 2 MB 1.0.1
+    python builder/build.py --disc … --arcade SET.zip … --out … --record-blobs           # 8 MB
+
+These three cover every prebaked function and context; the other option combinations only leave pieces out. The
+speed modules read their own assembled code from `tools/speed/<module>/` (and `tools/speed/frame/bin/`): build those
+first with `python tools/speed/decode.py build`, `quad.py build`, `logic.py build` and `frame.py build` (the stage
+background rewrite reads the original stage files from `disc/files/P/P4/` in the repository root). Then rebuild every
+configuration you ship with no compiler reachable, compare, and record the reference hashes with `--record-expected`;
+finally `python patcher/make.py`. The maintainers do all of this with one script that is not part of this repository.
+The 8 MB module does not depend on the content (the memory map goes into the module table), so one baked
+`mkap8disc.build` serves every arcade set.
 
 ## Checks
 

@@ -3,8 +3,8 @@
 
 index.html carries everything except the Pyodide runtime: the page (src/page.html, style.css, app.js),
 the worker (src/kernels.js + src/worker.js, started from a Blob so that it also works from file://)
-and the BUNDLE - a zip of the build pipeline (builder/xvb, builder/data) and of the
-project's tools (tools/*.py, their prebuilt MIPS blobs, tools/ap, tools/ap8), base64-encoded.
+and the BUNDLE - a zip of the build pipeline (builder/xvb, builder/data incl. the prebaked MIPS blobs
+builder/data/blobs) and of the project's tools (tools/*.py, tools/speed/*.py, tools/ap), base64-encoded.
 The bundle contains code and measurement tables only; no game data.
 
     --pyodide URL   where the page loads Pyodide from (default: the pinned official CDN build).
@@ -30,13 +30,13 @@ def bundle_files():
             if os.path.isfile(p) and keep(f): out.append((rel + "/" + f, p))
     py = lambda f: f.endswith(".py")
     add("builder/xvb", py)
-    add("builder/data", lambda f: f.endswith(".json")); add("builder/data/toolcache", lambda f: f.endswith(".json"))
+    add("builder/data", lambda f: f.endswith(".json"))
+    add("builder/data/blobs", lambda f: f.endswith((".json", ".bin")))      # ALL of our MIPS code, prebaked (the page compiles nothing)
     add("tools", lambda f: py(f) and not f.startswith("cold"))
+    add("tools/speed", py)                       # speedpatch.py + frame.py are imported (their results come from the blobs)
     add("tools/ap", py)
-    add("tools/ap8", lambda f: f.endswith((".c", ".S", ".h", ".ld")))
-    add("tools/logo")
-    add("tools/tagload", lambda f: f.endswith(".sym") or (f.endswith(".bin") and f.startswith("tagload.") and ".tab" not in f))
-    add("tools/nspdec", lambda f: f in ("nspdec.bin", "nspdec.sym"))
+    add("tools/ap8", lambda f: f == "hot8.json")  # data: the 8 MB pre-decode order (read by tools/mkap8disc.py)
+    add("tools/logo", lambda f: f.endswith(".bin"))   # card2.bin: the second card's own layer (composed with the user's portraits)
     return out
 
 

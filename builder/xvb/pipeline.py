@@ -7,7 +7,7 @@
     sprites    files/A/A0/SP_PLxx.NSP, A2/SP_EFF1.NSP  build/nspm (base, XVM1)   build/nsp (strong, XVH1)
                + builder/data/tiles_*.json             build/nspm4 (mid)         build/nspfat2 (fat)
                                                        build/nspm_eff/SP_EFF1.NSP
-    disc       files/, build/nsp*, tools/ blobs        the patched image as an Overlay (tools/mktagdisc.py)
+    disc       files/, build/nsp*, data/blobs          the patched image as an Overlay (tools/mktagdisc.py)
     arcade     the arcade ROM zip(s), the image        ap8content_base/ (tools/ap/build8.py), then
                                                        ap8content/ (tools/ap/sel2build.py: second select-screen set)
     disc8      everything above                        the 8 MB image as an Overlay (tools/mkap8disc.py)
@@ -19,8 +19,9 @@ modules they import), unmodified, inside a small harness (class Tools) that
     the repository, nothing is written there),
   * gives them an Overlay instead of a 400 MB copy of the image when they open the output file, and
   * defers their per-sector EDC/ECC to one vectorised pass.
-External programs (MIPS compiler, chdman) are located by tools/toolenv.py; neither is needed for the
-release configurations, whose compiled code is in builder/data/toolcache.
+  * takes all of OUR code (every MIPS blob: loader, speed modules, predictor sectors, mipsasm patches, version
+    line, boot cards, 8 MB module) from builder/data/blobs - the builder never compiles or assembles anything
+    and runs no external program (see PREBAKED; the blobs are made by work/release11/record.py).
 So whatever those tools build, this builds - with the same bytes.
 """
 import builtins, contextlib, hashlib, importlib, io, json, os, shutil, sys, time, zipfile
@@ -30,7 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BUILDER = os.path.abspath(os.path.join(HERE, ".."))
 REPO = os.path.abspath(os.path.join(BUILDER, ".."))
 DATA = os.path.join(BUILDER, "data")
-SPRITE_DIRS = dict(base="nspm", strong="nsp", mid="nspm4", fat="nspfat2")
+SPRITE_DIRS = dict(base="nspm", strong="nsp", mid="nspm4", fat="nspfat2", strong_hot="nsph4")    # strong_hot: 1.1 strong tier
 EFF_OUT = ("nspm_eff", "SP_EFF1.NSP")
 ARCADE_FLAGS = ["--direct", "--shared"]               # the content set of the reference 8 MB build
 ARCADE_KEEP = "keep_v3.json"                           # extra keep-stock animations measured on the built disc (work/ap/SPEC.md 19)
@@ -66,7 +67,7 @@ def identify(path, sha1=None, size=None):
     if sha1 is None: sha1, size = sha1_file(path)
     if sha1 == kn["input"]["sha1"]:
         return dict(status="ok", sha1=sha1, size=size, message=kn["input"]["title"])
-    for e in kn.get("expected", []):
+    for e in kn.get("expected", []) + kn.get("previous", []):
         if sha1 == e["sha1"]:
             return dict(status="patched", sha1=sha1, size=size, message="This image is already patched (it is a %s image this builder made). Use the original, unmodified disc image."
                         % ("tag hack + restored frames" if e["variant"] == "8mb" else "tag hack"))
@@ -111,9 +112,9 @@ def resolve_image(path):
 # ---------------------------------------------------------------- stage: sprites
 def _source_key():
     h = hashlib.sha1()
-    for fn in ("kernels.py", "huff.py", "nspfile.py", "xvm1.py", "xvh1.py"):
+    for fn in ("kernels.py", "huff.py", "nspfile.py", "xvm1.py", "xvh1.py", "strongrle.py"):
         h.update(open(os.path.join(HERE, fn), "rb").read())
-    for fn in ("tiles_mid.json", "tiles_fat.json"):
+    for fn in ("tiles_mid.json", "tiles_fat.json", "hot_tiles.json"):
         h.update(open(os.path.join(DATA, fn), "rb").read())
     return h.hexdigest()
 
@@ -121,7 +122,7 @@ def _source_key():
 def encode_character(job):
     """one character: stock file -> the four tiers.  job = (char, source path, build dir); -> (char, seconds per tier)"""
     c, src, bdir = job
-    from . import kernels, nspfile, xvm1, xvh1
+    from . import kernels, nspfile, xvm1, xvh1, strongrle
     if kernels.backend == "python" and not getattr(kernels, "_chosen", False):
         kernels.auto_backend(); kernels._chosen = True
     k = "%02X" % c
@@ -137,7 +138,9 @@ def encode_character(job):
     base = put("base", lambda: xvm1.encode(n))                                    # XVM1, 48 tables, run penalty 8
     put("mid", lambda: xvm1.encode(n, rle=mid) if mid else base)                  # + sustained-super tiles as stock RLE
     put("fat", lambda: xvm1.encode(n, rle=set(mid) | set(fat)))                   # + hot tiles as stock RLE
-    put("strong", lambda: xvh1.encode(n))                                         # XVH1, 256 tables, 256 classes
+    strong = put("strong", lambda: xvh1.encode(n))                                # XVH1, 256 tables, 256 classes
+    hot = json.load(open(os.path.join(DATA, "hot_tiles.json"))).get(k, {})
+    put("strong_hot", lambda: strongrle.encode(strong, n, hot, len(base)))       # 1.1: + most decoded tiles as stock RLE
     return c, T
 
 
@@ -162,7 +165,7 @@ def stage_sprites(work, jobs=1, progress=None, log=print):
     def one(res):
         nonlocal done
         c, T = res; times[c] = T; done += 1
-        log("sprites: character %2d  base %.1fs  mid %.1fs  fat %.1fs  strong %.1fs" % (c, T["base"], T["mid"], T["fat"], T["strong"]))
+        log("sprites: character %2d  base %.1fs  mid %.1fs  fat %.1fs  strong %.1fs  strong+hot %.1fs" % (c, T["base"], T["mid"], T["fat"], T["strong"], T["strong_hot"]))
         if progress: progress(done / 20.0, "character %d of 19" % done)
     if jobs > 1:
         from concurrent.futures import ProcessPoolExecutor
@@ -180,10 +183,6 @@ def stage_sprites(work, jobs=1, progress=None, log=print):
 
 
 # ---------------------------------------------------------------- the harness around tools/
-def _has_gcc(prefix):
-    return bool(prefix) and bool(shutil.which(prefix + "gcc") or os.path.exists(prefix + "gcc") or os.path.exists(prefix + "gcc.exe"))
-
-
 def _enc(x):
     if isinstance(x, (bytes, bytearray)): return {"__bytes__": bytes(x).hex()}
     if isinstance(x, tuple): return {"__tuple__": [_enc(v) for v in x]}
@@ -202,30 +201,84 @@ def _dec(x):
     return x
 
 
-def memo_key(tools_dir, modname, fname, args, kw, sources):
-    """name of the blob-cache entry of a compiling function: its arguments + the bytes of its source files"""
-    h = hashlib.sha1(json.dumps([modname, fname, _enc(tuple(args)), _enc(dict(kw))], sort_keys=True).encode())
-    for s in sorted(sources):
-        h.update(s.encode()); h.update(hashlib.sha1(open(os.path.join(tools_dir, s), "rb").read().replace(b"\r\n", b"\n")).digest())
-    return h.hexdigest()
+# ---------------------------------------------------------------- prebaked blobs (our own MIPS code)
+# The builder never compiles or assembles anything.  Every piece of OUR code that goes on the disc comes from
+# builder/data/blobs: the recorded results of the functions below (each produces only our code: no game data in
+# them), and the loader's prebuilt files.  They are made on a development machine by work/release11/record.py
+# (`build.py --record-blobs`, which runs these functions for real, with the MIPS compiler) and listed with their
+# SHA-1 in blobs/manifest.json.  A result is looked up by function + arguments + context(): the tools' outputs
+# depend on nothing else (sources are NOT part of the key: re-bake after a source change, see stale_sources()).
+BLOBS = os.path.join(DATA, "blobs")
+PREBAKED = [                        # (module, function): everything in tools/ that yields MIPS code for the disc
+    ("nsppatch", "patches"),        # sprite decoders (1.0.x tools/nspdec, 1.1 tools/speed/decode)
+    ("tagpatch", "patches"), ("palpatch", "patches"), ("aipatch", "patches"), ("hudpatch", "patches"), ("roundpatch", "patches"),
+    ("bgmpatch", "patches"), ("padpatch", "patches"), ("diffpatch", "rank_patches"), ("balpatch", "patches"),   # mipsasm patches
+    ("speedpatch", "exe_patches"),  # 1.1 speed modules upload + quad + frame + logic
+    ("frame", "ovl_patches"),       # 1.1 stage overlay patches (BG layers)
+    ("mktagdisc", "ahead_area"),    # 1.1 decode-ahead predictor sectors (tools/speed/decode/ahead_sector.py)
+    ("titlepatch", "build"), ("logopatch", "build"), ("card2patch", "build"),     # version line, boot card, card 2 stub
+    ("mkap8disc", "build"),         # 8 MB boot stub + module (tools/ap8)
+]
+TAGLOAD_FILES = lambda names: sorted(f for f in names if f == "tagload.sym" or (f.startswith("tagload.") and f.endswith(".bin") and ".tab" not in f))
+CONTEXT_ENV = ("XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
 
 
-LOGO_SOURCES = ["logo/logo.S", "logo/card.bin", "logopatch.py"]      # card.bin: the card itself (tools/logopatch.py render)
+def context():
+    """what the prebaked functions read besides their arguments: --nospeed in the tools' argv (tagpatch, hudpatch,
+    nsppatch, speedpatch) and the developers' environment switches of tools/speed and tools/mkap8disc.py"""
+    return dict(nospeed="--nospeed" in sys.argv, env={k: os.environ[k] for k in CONTEXT_ENV if k in os.environ})
+
+
+def call_key(fname, args, kw, ctx):
+    return hashlib.sha1(json.dumps([fname, _enc(tuple(args)), _enc(dict(kw)), ctx], sort_keys=True).encode()).hexdigest()
+
+
+def manifest(path=None):
+    path = path or os.path.join(BLOBS, "manifest.json")
+    if not os.path.exists(path): return dict(format=1, calls={}, files={}, sources={})
+    return json.load(open(path))
+
+
+def _blob(sha):
+    """a blob's bytes, checked against its name (= its SHA-1, as listed in the manifest)"""
+    b = open(os.path.join(BLOBS, sha), "rb").read()
+    if hashlib.sha1(b).hexdigest() != sha.split(".")[0]: raise BuildError("builder/data/blobs/%s is damaged (SHA-1 mismatch)" % sha, code="toolchain")
+    return b
+
+
+def source_hashes(tools_dir=None):
+    """SHA-1 of every file under tools/ the prebaked results are made from (newlines normalised) -> {path: sha1}"""
+    tools_dir = tools_dir or os.path.join(REPO, "tools"); out = {}
+    for d, sub, files in os.walk(tools_dir):
+        sub[:] = sorted(x for x in sub if x not in ("__pycache__", "obj", "mister"))
+        for f in sorted(files):
+            if f.startswith("cold") or not f.endswith((".py", ".c", ".S", ".h", ".ld", ".bin", ".sym", ".json", ".txt")): continue
+            p = os.path.join(d, f); rel = os.path.relpath(p, tools_dir).replace(os.sep, "/")
+            out[rel] = hashlib.sha1(open(p, "rb").read().replace(bytes((13, 10)), bytes((10,)))).hexdigest()
+    return out
+
+
+def stale_sources(tools_dir=None):
+    """tools/ files changed or added since the blobs were baked -> sorted list (empty = current).  Files that are
+    missing are not counted: the public repository carries only part of tools/ (no test harnesses)."""
+    rec = manifest().get("sources", {}); now = source_hashes(tools_dir)
+    return sorted(k for k in now if rec.get(k) != now[k])
 
 
 def options_available(tools_dir=None):
-    """which optional features can be built WITHOUT a MIPS compiler here (their code is in the blob cache)"""
-    tools_dir = tools_dir or os.path.join(REPO, "tools"); cache = os.path.join(DATA, "toolcache")
+    """which optional features have their code in builder/data/blobs (the builder never compiles)"""
+    tools_dir = tools_dir or os.path.join(REPO, "tools")
     if tools_dir not in sys.path: sys.path.insert(0, tools_dir)
+    calls = manifest()["calls"]; ctx = dict(nospeed=False, env={})
+    has = lambda f, args: call_key(f, args, {}, ctx) in calls
     out = dict(title=False, logo=False, title_text="")
     try:
         tp = importlib.import_module("titlepatch")
-        out["title_text"] = tp.DEFAULT
-        out["title"] = os.path.exists(os.path.join(cache, memo_key(tools_dir, "titlepatch", "build", (tp.DEFAULT,), {}, ap8_sources(tools_dir)) + ".json"))
+        out["title_text"] = tp.DEFAULT; out["title"] = has("titlepatch.build", (tp.DEFAULT,))
     except Exception: pass
     try:
         lp = importlib.import_module("logopatch")
-        out["logo"] = os.path.exists(os.path.join(cache, memo_key(tools_dir, "logopatch", "build", (lp.SUB,), {}, LOGO_SOURCES) + ".json"))
+        out["logo"] = has("logopatch.build", (lp.SUB,)) and has("card2patch.build", ())
     except Exception: pass
     return out
 
@@ -233,14 +286,14 @@ def options_available(tools_dir=None):
 class Tools:
     """imports the project's disc tools with their paths pointed at `work` and the output image virtual"""
 
-    def __init__(self, image, work, tools_dir=None, mips_prefix=None, use_cache=True, record=False, log=print):
+    def __init__(self, image, work, tools_dir=None, mips_prefix=None, record=False, log=print):
         self.image = os.path.abspath(image); self.work = work; self.log = log
         self.tools = tools_dir or os.path.join(REPO, "tools")
         self.build = os.path.join(work, "build")
         self.overlays = {}                                # normalised output path -> Overlay
-        self.use_cache = use_cache; self.record = record
-        if mips_prefix: os.environ["XVSF_MIPS_PREFIX"] = mips_prefix          # tools/toolenv.py reads it
-        self.cache_dir = os.path.join(DATA, "toolcache")
+        self.record = record                              # developers (work/release11/record.py): run + bake instead of look up
+        if mips_prefix: os.environ["XVSF_MIPS_PREFIX"] = mips_prefix          # tools/toolenv.py reads it (record mode only)
+        self.man = manifest()
         self.cache_events = []
         os.makedirs(self.build, exist_ok=True)
         for p in (os.path.join(self.tools, "ap"), self.tools):
@@ -284,37 +337,67 @@ class Tools:
         if hasattr(m, "hashlib"): m.hashlib = cdrom.HashShim()
         if name == "titlepatch": m.ROOT = self.work                       # its object directory: <ROOT>/build/titleobj
         if name == "logopatch": m.OBJ = os.path.join(self.build, "logoobj")
+        if name == "card2patch": m.OBJ = os.path.join(self.build, "card2obj")
         if hasattr(m, "subprocess"):
             m.subprocess = _Subprocess(self, name)
         self.mods[name] = m
         return m
 
-    # ---- blob cache: results of the functions that run the MIPS compiler -------------------------
-    def memo(self, m, fname, sources):
-        """wrap m.fname (a function that compiles `sources`): identical arguments and identical source
-        files -> the recorded result from builder/data/toolcache, no compiler needed"""
+    # ---- prebaked blobs ---------------------------------------------------------------------------
+    def prebake(self, m, fname):
+        """m.fname -> its recorded result from builder/data/blobs (record mode: run it and record the result)"""
         orig = getattr(m, fname)
-        if getattr(orig, "_xvb_memo", False): return
+        if getattr(orig, "_xvb_prebaked", None) is self: return
+        orig = getattr(orig, "_xvb_orig", orig)
+        fn = m.__name__ + "." + fname
 
         def wrapped(*args, **kw):
-            key = memo_key(self.tools, m.__name__, fname, args, kw, sources); path = os.path.join(self.cache_dir, key + ".json")
-            if self.use_cache and os.path.exists(path):
-                self.cache_events.append((m.__name__ + "." + fname, "cache")); self.log(f"{m.__name__}.{fname}: recorded blob {key[:12]}")
-                return _dec(json.load(open(path))["result"])
-            gcc = getattr(m, "GCC", None) if _has_gcc(getattr(m, "GCC", None)) else None       # the prefix tools/toolenv.py resolved
-            if not gcc:
-                raise BuildError("This combination of options needs code that is not in the blob cache (%s.%s) and no MIPS cross compiler "
-                                 "was found. Install one (mipsel-none-elf-gcc on PATH, or set XVSF_MIPS_PREFIX) or use the default options." % (m.__name__, fname),
-                                 code="toolchain")
-            res = orig(*args, **kw)
-            self.cache_events.append((m.__name__ + "." + fname, "compiled")); self.log(f"{m.__name__}.{fname}: compiled ({gcc}gcc), blob {key[:12]}")
+            ctx = context(); key = call_key(fn, args, kw, ctx)
             if self.record:
-                os.makedirs(self.cache_dir, exist_ok=True)
-                json.dump(dict(function=m.__name__ + "." + fname, args=_enc(args), kwargs=_enc(kw), sources=sorted(sources), result=_enc(res)),
-                          open(path, "w"), indent=0)
-            return res
-        wrapped._xvb_memo = True
+                res = orig(*args, **kw); b = json.dumps(_enc(res), separators=(",", ":")).encode()
+                sha = hashlib.sha1(b).hexdigest() + ".json"
+                os.makedirs(BLOBS, exist_ok=True)
+                if not os.path.exists(os.path.join(BLOBS, sha)): open(os.path.join(BLOBS, sha), "wb").write(b)
+                self.man["calls"][key] = dict(function=fn, args=_enc(tuple(args)), kwargs=_enc(dict(kw)), context=ctx, blob=sha, size=len(b))
+                self.cache_events.append((fn, "baked")); self.log("%s: baked %s" % (fn, sha[:12]))
+                return res
+            e = self.man["calls"].get(key)
+            if e is None:
+                raise BuildError("This combination of options needs our code %s(%s), which is not prebaked in builder/data/blobs "
+                                 "(the builder never compiles; the release script work/release11/record.py bakes it)."
+                                 % (fn, ", ".join(repr(x)[:40] for x in args)), code="toolchain")
+            self.cache_events.append((fn, "prebaked")); self.log("%s: prebaked %s" % (fn, e["blob"][:12]))
+            return _dec(json.loads(_blob(e["blob"])))
+        wrapped._xvb_prebaked = self; wrapped._xvb_orig = orig
         setattr(m, fname, wrapped)
+
+    def prebake_all(self):
+        """install the lookups for every PREBAKED function, and the loader files (tools/tagload) from the blobs"""
+        self.mod("speedpatch")                            # puts tools/speed on sys.path (frame.py)
+        for mn, fn in PREBAKED: self.prebake(self.mod(mn), fn)
+        M = self.mod("mktagdisc")
+        if not hasattr(M, "_xvb_tagsrc"): M._xvb_tagsrc = M._CONF0[0] if M._CONF0 else M.D     # tools/tagload
+        src = M._xvb_tagsrc
+        tag = os.path.join(self.build, "tagload"); os.makedirs(tag, exist_ok=True)
+        if self.record:
+            for f in TAGLOAD_FILES(os.listdir(src)):
+                b = open(os.path.join(src, f), "rb").read(); sha = hashlib.sha1(b).hexdigest() + ".bin"
+                os.makedirs(BLOBS, exist_ok=True)
+                if not os.path.exists(os.path.join(BLOBS, sha)): open(os.path.join(BLOBS, sha), "wb").write(b)
+                self.man["files"]["tagload/" + f] = sha
+        files = {k.split("/", 1)[1]: v for k, v in self.man["files"].items() if k.startswith("tagload/")}
+        if "tagload.sym" not in files: raise BuildError("the prebuilt loader (tagload) is not in builder/data/blobs", code="toolchain")
+        for f, sha in files.items(): open(os.path.join(tag, f), "wb").write(_blob(sha))
+        if M._CONF0: M._CONF0 = (tag,) + tuple(M._CONF0[1:])     # mktagdisc.configure() restores D from there
+        M.D = tag
+
+    def save_manifest(self):
+        """record mode: write blobs/manifest.json (+ the SHA-1 of every tools/ source, for stale_sources())"""
+        if not self.record: return
+        self.man.update(format=1, sources=source_hashes(self.tools),
+                        note="our own MIPS code, made by work/release11/record.py; blob name = SHA-1 of the blob; calls keyed by pipeline.call_key")
+        os.makedirs(BLOBS, exist_ok=True)
+        json.dump(self.man, open(os.path.join(BLOBS, "manifest.json"), "w"), indent=1, sort_keys=True)
 
     def finish(self, name):
         """the Overlay of build/<name>.bin, sealed"""
@@ -325,7 +408,8 @@ class Tools:
 
 
 class _Subprocess:
-    """stands in for the subprocess module inside a tool: reports a missing compiler as a BuildError"""
+    """stands in for the subprocess module inside a tool: the builder runs no external program (no compiler);
+    only record mode (developers) passes the calls through"""
     def __init__(self, tools, name): self.t = tools; self.name = name
     def __getattr__(self, n):
         import subprocess
@@ -333,9 +417,13 @@ class _Subprocess:
         if n not in ("check_call", "check_output", "run", "call", "Popen"): return f
 
         def run(cmd, *a, **k):
+            prog = cmd[0] if isinstance(cmd, (list, tuple)) else cmd
+            if not self.t.record:
+                raise BuildError("%s tried to run %s: the builder never compiles; this code must be prebaked in builder/data/blobs "
+                                 "(work/release11/record.py)." % (self.name, os.path.basename(str(prog))), code="toolchain")
             try: return f(cmd, *a, **k)
             except (FileNotFoundError, NotImplementedError, OSError) as ex:
-                raise BuildError("%s needs an external program that is not available here (%s): %s" % (self.name, cmd[0] if isinstance(cmd, (list, tuple)) else cmd, ex), code="toolchain")
+                raise BuildError("%s needs an external program that is not available here (%s): %s" % (self.name, prog, ex), code="toolchain")
         return run
 
 
@@ -346,19 +434,10 @@ def _argv(*args):
     finally: sys.argv = old
 
 
-def ap8_sources(tools_dir):
-    d = os.path.join(tools_dir, "ap8")
-    return ["ap8/" + f for f in sorted(os.listdir(d)) if f.endswith((".c", ".S", ".h", ".ld"))]
-
-
 def stage_disc(T, name, flags):
     """tools/mktagdisc.py NAME [flags] -> Overlay"""
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc")
-    if not os.path.exists(os.path.join(M.D, "tagload.sym")):
-        raise BuildError("tools/tagload/tagload.sym (prebuilt loader) is missing", code="toolchain")
-    if any(f == "--title" or f.startswith("--title=") for f in flags):
-        T.memo(T.mod("titlepatch"), "build", ap8_sources(T.tools))
-    if "--logo" in flags: T.memo(T.mod("logopatch"), "build", LOGO_SOURCES)
+    T.prebake_all()
     with _argv("mktagdisc.py", name, *flags): M.main()
     return T.finish(name)
 
@@ -389,8 +468,7 @@ def stage_arcade(T, arcade, outdir, log):
 def stage_disc8(T, name, apdir, flags):
     """tools/mkap8disc.py NAME --ap8=DIR [flags] -> Overlay (runs the 2 MB build inside)"""
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc"); M8 = T.mod("mkap8disc")
-    T.memo(M8, "build", ap8_sources(T.tools))
-    if "--logo" in flags: T.memo(T.mod("logopatch"), "build", LOGO_SOURCES)
+    T.prebake_all()
     with _argv("mkap8disc.py", name, "--ap8=" + apdir, "--eff=" + apdir + "_eff", *flags): M8.main()
     return T.finish(name)
 
@@ -424,13 +502,14 @@ def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=N
     return f + list(extra)
 
 
-def output_name(arcade, tools_dir=None):
-    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.0.1]" """
+def output_name(arcade, tools_dir=None, flags=()):
+    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.1]" """
     ver = "TAG HACK"
     try:
         tools_dir = tools_dir or os.path.join(REPO, "tools")
         if tools_dir not in sys.path: sys.path.insert(0, tools_dir)
-        ver = importlib.import_module("titlepatch").DEFAULT
+        tp = importlib.import_module("titlepatch")
+        ver = tp.DEFAULT_NOSPEED if "--nospeed" in flags and not arcade else tp.DEFAULT
     except Exception: pass
     return "X-Men vs. Street Fighter (USA) [%s%s]" % (ver.title(), " + Restored Frames" if arcade else "")
 
@@ -441,7 +520,7 @@ STAGES = [("verify", "Checking the disc image"), ("extract", "Reading the game f
 
 
 def run(disc, work, arcade=(), flags=(), name=None, jobs=1, progress=None, log=print, tools_dir=None, mips_prefix=None,
-        use_cache=True, record=False, known_sha1=None):
+        record=False, known_sha1=None):
     """-> dict(overlay=Overlay, name=..., times={stage: seconds}, sha1 of the result is NOT computed here)
 
     flags: options handed to tools/mktagdisc.py / tools/mkap8disc.py as they are (--title=TEXT, --logo, --nopad ...).
@@ -470,10 +549,10 @@ def run(disc, work, arcade=(), flags=(), name=None, jobs=1, progress=None, log=p
         log("extracted %d files" % len(lmap))
     with stage("sprites"):
         info["sprites"] = stage_sprites(work, jobs, lambda f, t: P("sprites", f, t), log)
-    T = Tools(disc, work, tools_dir, mips_prefix, use_cache, record, log)
+    T = Tools(disc, work, tools_dir, mips_prefix, record, log)
     buf = _LineLog(log)
     internal = "image"                                    # the tools' file name in the work directory; not part of the image
-    name = name or output_name(bool(arcade), tools_dir)
+    name = name or output_name(bool(arcade), tools_dir, flags)
     if arcade:
         apdir = os.path.join(work, "ap8content")
         with stage("arcade"), contextlib.redirect_stdout(buf):
@@ -484,6 +563,7 @@ def run(disc, work, arcade=(), flags=(), name=None, jobs=1, progress=None, log=p
         with stage("disc"), contextlib.redirect_stdout(buf):
             ov = stage_disc(T, internal, list(flags))
     buf.flush()
+    T.save_manifest()
     times["seal"] = T.seal_time; times["disc"] -= T.seal_time
     info.update(overlay=ov, name=name, blobs=T.cache_events, variant="8mb" if arcade else "2mb")
     return info
