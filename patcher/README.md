@@ -2,12 +2,13 @@
 
 `index.html` is a single self-contained page: pick your disc image (and optionally your arcade ROM zip), the page
 verifies it, runs **the real build** in the browser and hands back `.bin` + `.cue` (or both in one `.zip`).
-Nothing is uploaded and the page carries no game graphics or sound — only this project's code (which includes a few short
-fragments of the game's own code where rewritten routines keep the original instructions).
+Nothing is uploaded and the page carries no game graphics, sound or code — only this project's code. Where a
+rewritten routine keeps some of the game's original instructions, the page holds a reference instead and fills the
+words in from the user's own disc (`builder/xvb/gameref.py`).
 
 ## Hosting
 
-**What to publish: `index.html`, nothing else** (about 475 KB). It is self-contained except for the Python
+**What to publish: `index.html`, nothing else** (about 800 KB). It is self-contained except for the Python
 runtime, which stays on its official CDN. The other files in `patcher/` (`src/`, `vendor/`, `tests/`, `make.py`)
 are sources and need not be published, though publishing the whole folder does no harm (about 1 MB).
 
@@ -43,7 +44,8 @@ Without the CDN (an intranet, an archive copy): download the six files of the CD
 
 `index.html` is generated; edit `src/`. The page must be rebuilt whenever `builder/` or `tools/` change, because
 it contains them (the *bundle*: `builder/xvb`, `builder/data` with all of our MIPS code prebaked in
-`builder/data/blobs`, `tools/*.py`, `tools/speed/*.py`, `tools/ap`, `tools/ap8/hot8.json`, `tools/logo/*.bin`).
+`builder/data/blobs`, `tools/*.py`, `tools/speed/*.py`, `tools/ap`, `tools/snd/*.py`, `tools/ap8/hot8.json`,
+`tools/logo/*.bin`).
 The page compiles nothing. Re-baking the blobs, recording the reference hashes and running `make.py` are
 described in `builder/README.md`, "After the tools … change".
 
@@ -53,14 +55,20 @@ described in `builder/README.md`, "After the tools … change".
 |---|---|
 | `src/page.html`, `style.css`, `app.js` | the page: file choice, messages, progress, downloads. Main thread, no heavy work. |
 | `src/worker.js` | Web Worker: loads Pyodide, unpacks the bundle, mounts the chosen files read-only (WORKERFS: read in slices, never copied to memory) and calls `builder/xvb/web.py` — the same `pipeline.run()` as the command line. |
-| `src/kernels.js` | the encoders' hot loops in JavaScript, line by line the twin of `builder/xvb/kernels.py` (Pyodide has no numba). |
+| `src/kernels.js` | the encoders' hot loops in JavaScript, line by line the twin of `builder/xvb/kernels.py` (Pyodide has no numba), and of the sound kernels of `tools/snd/adpcm.py` / `resample.py` (`snd_*`). |
 | `src/zopfli.js`, `vendor/zopfli/` | zopfli compiled to WebAssembly (npm `@gfx/zopfli` 1.0.15, Apache-2.0), used by the 8 MB build; gives the same bytes as the Python `zopfli` module. |
 
 The result is not a copy of the image in memory: the pipeline returns "the original + these sectors", and the
 worker builds a `Blob` out of slices of the user's own file and the new sectors. The browser streams it to disk on
 download. The SHA-1 shown is computed over that result and compared with `builder/data/known.json`.
 
-Cancel terminates the worker (the build is one long synchronous computation) and starts a fresh one.
+Sound banks: the ADPCM encoder jobs do not depend on each other. Before the build the worker asks Python for all of
+them (`web.sound_plan`), hands them to up to four sub-workers (the same worker script, started from `self.location`)
+and encodes the sprites meanwhile; the results go into a memo that the build's encoder reads by the SHA-1 of its
+input (`web.sound_results`). Jobs that were not planned are encoded in place. The bytes are the same either way, and
+the same as the command-line build's.
+
+Cancel terminates the worker and its sub-workers (the build is one long synchronous computation) and starts a fresh one.
 
 ## Supported input
 
@@ -72,7 +80,10 @@ Cancel terminates the worker (the build is one long synchronous computation) and
   button layout can be changed; the version line is always shown (it carries the 8MB indicator). The expected SHA-1
   for the chosen combination is shown before building. Free version text and experimental switches need the
   command-line builder.
-* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.1].bin` / `.cue`, or `… [Tag Hack 1.1 + Restored
+* Memory and time (Chrome): the 2 MB build about 2 minutes, peak about 1.4 GB for all browser processes; the 8 MB
+  build about 5-6 minutes, peak about 2.0 GB (worker 700 MB of WebAssembly memory plus the sound sub-workers): have
+  about 2.5 GB free for it.
+* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.2].bin` / `.cue`, or `… [Tag Hack 1.2 + Restored
   Frames]`; the `.cue` names its `.bin`. No CHD in the browser.
 
 ## Tests
@@ -81,4 +92,5 @@ Cancel terminates the worker (the build is one long synchronous computation) and
 
 drives a real Chrome over the DevTools protocol with real files: wrong-file messages, cancel, a full build, the
 download and the zip, screenshots (default `work/patcher_shots/`), time and memory.
-`patcher/tests/node_build.cjs` runs the same bundle and kernels under Node for quick iteration.
+`patcher/tests/node_build.cjs` runs the same bundle and kernels under Node for quick iteration (`SND_PLAN=1`: the
+page's sound path, plan + memo, with the jobs run one after the other).

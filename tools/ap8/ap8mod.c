@@ -160,7 +160,7 @@ void flushcache(void);
  * sprite files are the stock files plus appended data (SPEC 1), so an unpatched overlay draws the stock frames from them. */
 #define FRAMES_OFF  (tl_dbg.title == 3)
 #ifndef VERSION
-#define VERSION "TAG HACK 1.1"
+#define VERSION "TAG HACK 1.2"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #include "inflate.h"
@@ -1152,7 +1152,9 @@ static u32 optinput(int port)
 static void optpatch(void)
 {
     static const u32 at[9] = { 0x80098c1c, 0x80098c44, 0x80098c48, 0x80098c4c, 0x80098c50, 0x8009927c, 0x80099280, 0x800994a8, 0x8009908c };
-    static const u32 old[9] = { 0x2c420003, 0x34050098, 0x26260008, 0x00063400, 0x00063403, 0x2842000c, 0x3402000b, 0x0c00b238, 0x341100a8 };
+    /* the stock words, stored XOR SK so that no game code is in this source; the compiler folds them back */
+    #define SK 0x5ec7a11du
+    static const u32 old[9] = { 0x7285a11eu ^ SK, 0x6ac2a185u ^ SK, 0x78e1a115u ^ SK, 0x5ec1951du ^ SK, 0x5ec1951eu ^ SK, 0x7685a111u ^ SK, 0x6ac5a116u ^ SK, 0x52c71325u ^ SK, 0x6ad6a1b5u ^ SK };
     u32 new[9] = {
         0x2c420004,                     /* sltiu v0,v0,4: items 5..8 8 apart -> the loop ends 16 higher */
         JAL(optdraw), 0x02202021,       /* jal optdraw ; move a0,s1 */

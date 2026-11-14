@@ -21,7 +21,7 @@ typedef short s16;
 typedef unsigned char u8;
 
 #ifndef VERSION
-#define VERSION "TAG HACK 1.1"
+#define VERSION "TAG HACK 1.2"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #define MENU_X      88                  /* left edge of the picture is about x = 72 in this routine's coordinates */
@@ -115,7 +115,10 @@ SEC(".chunki") int modload(void)
 
 SEC(".chunki") int ap8ready(void)
 {
-    return ap8probe() && (modok() || modload());
+    /* the first call of a boot (from menuhook, tl_dbg.title still 0) always reads the module from the disc: upper
+       RAM survives a reset / core reload on some machines (MiSTer), and a resident module of another build would
+       pass modok() */
+    return ap8probe() && ((tl_dbg.title && modok()) || modload());
 }
 
 /* SPEC 17.5 step 1, at EVERY fight init and before anything else, whatever loads this fight (module, 2 MB loader,

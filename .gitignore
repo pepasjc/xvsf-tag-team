@@ -2,7 +2,6 @@
 # Disc images, built images, work directories and arcade-derived data stay local.
 *.bin
 !tools/**/*.bin
-!builder/data/blobs/*.bin
 *.cue
 *.chd
 *.iso
@@ -13,11 +12,14 @@
 *.npy
 *.npz
 
-# build products of the MIPS sources (the .bin blobs in tools/ ARE kept: they are our
-# own assembled code and let the builder run without a MIPS toolchain)
+# build products of the MIPS sources (the builder uses builder/data/blobs, where words of the
+# game are references filled in from your disc; the linked outputs below would hold them verbatim)
 *.o
 *.elf
-tools/tagload/**/tagload.tab*.bin
+tools/tagload/**/tagload.*.bin
+tools/tagload/**/tagload.sym
+tools/nspdec/nspdec.bin
+tools/nspdec/nspdec.sym
 # the speed modules' assembled code (python tools/speed/<module>.py build; the builder uses builder/data/blobs)
 tools/speed/**/*.bin
 tools/speed/frame/bin/

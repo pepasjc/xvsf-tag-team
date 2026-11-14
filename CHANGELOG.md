@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2 (2026)
+
+- Partners load their full sound bank: a tagged-in or replacement character has all its own voices and
+  sound effects (before, most were silent).
+- The tag voices play (they were silent on the PS1 for every character), as do Juggernaut's KO scream,
+  Wolverine's throw sound and an Akuma voice that were missing from the fight banks.
+- 2 MB: teams of four different characters fit by lowering some sample rates, never below the port's
+  lowest. 8 MB: full quality for almost every team, and Wolverine's tag voice from the arcade set.
+- 8 MB: the menu could show the version of a previously played build after a MiSTer core reload; the
+  8 MB module is now always read from the disc at boot.
+- The builder and web patcher contain no code from the game: the few original instructions the patch
+  keeps are taken from your own disc at build time.
+
 ## 1.1 (2026)
 
 - Much faster on a stock 2 MB console: the sprite engine is rewritten in optimised MIPS. Walking, normals

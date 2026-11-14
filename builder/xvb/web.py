@@ -10,6 +10,7 @@ from . import kernels, pipeline, cdrom
 
 WORK = "/work"
 _result = {}
+_snd = dict(memo={}, plan=None)          # ADPCM encoder results made ahead by sub-workers (sound_plan / sound_results)
 
 
 def use_js_kernels(jsk):
@@ -21,6 +22,37 @@ def use_js_kernels(jsk):
         return call
     kernels.set_backend({n: wrap(getattr(jsk, n)) for n in kernels.NAMES})
     kernels._chosen = True
+    use_js_sound(jsk, wrap)
+
+
+def use_js_sound(jsk, wrap):
+    """1.2 sound banks (tools/snd/adpcm.py, resample.py): their numba functions -> the JavaScript twins.  The int64
+    arrays of the Python code are handed over as int32 copies (all their values fit 16 or 32 bits)."""
+    import os, sys
+    tools = os.path.join(pipeline.REPO, "tools")
+    if tools not in sys.path: sys.path.insert(0, tools)
+    from snd import adpcm, resample
+    dec, enc, rs = wrap(jsk.snd_decode), wrap(jsk.snd_encode), wrap(jsk.snd_resample)
+    h32 = {}
+
+    def decode_core(b, nblk, s1, s2, out):
+        t = np.zeros(len(out), np.int32); dec(b, nblk, s1, s2, t); out[:] = t
+        return None
+
+    def encode_core(x, nblk, s1, s2, K, M, B, R, out):
+        x32 = np.ascontiguousarray(x, np.int32)
+        key = hashlib.sha1(x32.tobytes() + np.array([nblk, s1, s2, K, M, B, R], np.int64).tobytes()).hexdigest()
+        if key in _snd["memo"]: out[:] = np.frombuffer(_snd["memo"][key], np.uint8); return
+        if _snd["plan"] is not None:                  # sound_plan(): note the job, the result is not needed yet
+            if key not in _snd["plan"]: _snd["plan"][key] = (x32.copy(), [int(v) for v in (nblk, s1, s2, K, M, B, R)])
+            return
+        enc(x32, nblk, s1, s2, K, M, B, R, out)
+
+    def resample_core(x, n, num, den, D, nout, H, NTAB, P, out):
+        if id(H) not in h32: h32[id(H)] = (H, np.ascontiguousarray(H, np.int32))
+        t = np.zeros(len(out), np.int32)
+        rs(np.ascontiguousarray(x, np.int32), n, num, den, D, nout, h32[id(H)][1], NTAB, P, t); out[:] = t
+    adpcm._decode_core, adpcm._encode_core, resample._resample_core = decode_core, encode_core, resample_core
 
 
 def use_js_zopfli(deflate):
@@ -36,6 +68,58 @@ def use_js_zopfli(deflate):
     pkg = types.ModuleType("zopfli"); zl = types.ModuleType("zopfli.zlib")
     zl.compress = compress; pkg.zlib = zl
     sys.modules["zopfli"] = pkg; sys.modules["zopfli.zlib"] = zl
+
+
+# ---------------------------------------------------------------- 1.2 sound banks, encoded in parallel
+# The ADPCM encoder is most of the sound work (tools/sndpatch.py: every resampled sample of every level).  Its jobs
+# do not depend on each other, so the worker asks for them first (sound_plan: the bank builds run once with the
+# encoder only noting its inputs), hands them to sub-workers that run while the sprites are encoded here, and puts
+# the results in the memo (sound_results).  During the build the encoder then takes each result from the memo by
+# the SHA-1 of its input; anything not planned (the arcade sample of the 8 MB level) is encoded in place.  The bytes
+# are the same either way: the sub-workers run the same kernel.
+def prepare(disc):
+    """extract the game files (pipeline.run extracts again: same files)"""
+    import os
+    os.makedirs(WORK, exist_ok=True)
+    lmap = cdrom.extract(disc, os.path.join(WORK, "files"))
+    json.dump(lmap, open(os.path.join(WORK, "lba_map.json"), "w"), indent=0)
+
+
+def sound_plan(disc, arcade_json, flags_json):
+    """-> (JSON [[key, offset, count, nblk, s1, s2, K, M, B, R], ...], int32 array of all inputs) of the encoder jobs
+    the build will run; ([], empty) when the build has no 1.2 sound or its banks are in the cache already"""
+    import os, sys
+    flags = json.loads(flags_json)
+    if "--nosound" in flags or "--nospeed" in flags: return json.dumps([]), np.zeros(0, np.int32)
+    T = pipeline.Tools(disc, WORK)
+    sp = T.mod("sndpatch")
+    argv = sys.argv; sys.argv = ["mktagdisc.py", "x"] + flags
+    _snd["plan"] = {}
+    try:
+        if not sp.enabled(): return json.dumps([]), np.zeros(0, np.int32)
+        if not os.path.exists(os.path.join(sp._cache_dir(), sp._src_key() + ".bin")): sp.build_banks(sp.LEVELS)
+        if json.loads(arcade_json): sp.level8({})                   # the 8 MB levels (without the arcade sample)
+        jobs = _snd["plan"]
+    finally:
+        _snd["plan"] = None; sys.argv = argv
+    meta, parts, o = [], [], 0
+    for key, (x, prm) in jobs.items():
+        meta.append([key, o, len(x)] + prm); parts.append(x); o += len(x)
+    return json.dumps(meta), (np.concatenate(parts) if parts else np.zeros(0, np.int32))
+
+
+def sound_results(meta_json, data):
+    """data: the sub-workers' ADPCM blocks of the planned jobs, concatenated in plan order (16 bytes per block)"""
+    d = data.to_bytes() if hasattr(data, "to_bytes") else bytes(data); o = 0
+    for key, off, n, nblk, *prm in json.loads(meta_json):
+        _snd["memo"][key] = d[o:o + 16 * nblk]; o += 16 * nblk
+    assert o == len(d)
+    return len(_snd["memo"])
+
+
+def sprites(progress, log):
+    """the sprite stage on its own (pipeline.run finds its results in the work directory: cached)"""
+    return json.dumps(pipeline.stage_sprites(WORK, 1, lambda f, t: progress("sprites", float(f), t), log))
 
 
 def identify(path, progress=None):

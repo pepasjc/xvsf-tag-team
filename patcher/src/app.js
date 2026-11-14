@@ -182,6 +182,8 @@ function refresh() {
   const with8 = withArcade(), fl = flags();
   const exp = expectedFor(with8 ? "8mb" : "2mb", with8 ? state.arcade.message : "", fl);
   let h = "<li><div><strong>Tag hack for the stock 2 MB console</strong> — four full characters per match, tag with HP + HK, no disc access during a fight.</div></li>";
+  h += "<li><div><strong>Full sound for every character in a battle</strong> — partners and tagged-in characters use their own complete sound bank, rebuilt from your disc" +
+       (with8 ? " (8 MB: the original sample quality for almost every team, plus Wolverine's third tag voice from your arcade set)." : ".") + "</div></li>";
   const extras = [fl.includes("--logo") ? "boot card" : "", with8 || fl.includes("--title") ? "version line on the main menu" : "", fl.includes("--nopad") ? "stock buttons" : ""].filter(Boolean);
   h += "<li" + (extras.length ? "" : ' class="off"') + "><div>" + (extras.length ? "With " + extras.join(", ") + "." : "Plain build: no boot card, no version line.") + "</div></li>";
   h += with8
@@ -204,14 +206,15 @@ function refresh() {
   $("go").disabled = !(state.ready && discOk && arcOk) || state.building;
   $("go").textContent = with8 ? "Build the patched image (with restored frames)" : "Build the patched image";
   if (!state.building && !state.result) {
-    if (discOk && arcOk && state.ready) status("st-build", "busy", with8 ? "Ready. This build takes several minutes; the page stays responsive." : "Ready. The build takes a minute or two.");
+    if (discOk && arcOk && state.ready) status("st-build", "busy", with8 ? "Ready. This build takes several minutes and needs about 2.5 GB of free memory; the page stays responsive." : "Ready. The build takes a few minutes.");
     else if (!$("st-build").classList.contains("bad")) status("st-build", null);
   }
 }
 document.querySelectorAll("#adv input").forEach((i) => (i.onchange = () => { clearResult(); refresh(); }));
 
 /* ------------------------------------------------------------------ building */
-const STAGES = [["extract", "Reading the game files", 2], ["sprites", "Re-encoding the character graphics", 75], ["arcade", "Restoring animation frames from the arcade set", 230],
+const STAGES = [["extract", "Reading the game files", 2], ["sprites", "Re-encoding the character graphics", 75], ["sound", "Rebuilding the sound banks", 10],
+                ["arcade", "Restoring animation frames from the arcade set", 230],
                 ["disc", "Assembling the patched disc", 3], ["digest", "Checksum of the result", 4]];
 let run = null;                           // {stages: [{key, title, weight, frac, state, t0, t}], sub: counters}
 

@@ -32,7 +32,7 @@ def main(argv=None):
     ap.add_argument("--disc", required=True, help="your original disc image (.bin, or the .cue that names it)")
     ap.add_argument("--arcade", nargs="+", default=[], help="your arcade ROM set (zip; a clone zip followed by its parent zip): adds the restored animation frames")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.1]", with "+ Restored Frames" for an arcade build)')
+    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.2]", with "+ Restored Frames" for an arcade build)')
     ap.add_argument("--work", help="work directory to keep (re-used on the next run: encoded sprites are cached); default: a temporary one")
     ap.add_argument("--jobs", type=int, default=min(6, os.cpu_count() or 1), help="processes for the sprite encoders (default %(default)s)")
     ap.add_argument("--buttons", choices=["modern", "stock"], default="modern", help="default button layout: modern = HP R1, HK R2, 3P L1, 3K L2 (default); stock = the game's own")

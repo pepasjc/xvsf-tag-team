@@ -496,7 +496,231 @@ const XVK = (() => {
     return 0;
   }
 
-  const K = { cost_argmin, rle_decode_all, xvm_parse_acc, xvm_emit, xvm_verify, xvh_parse_acc, xvh_emit, xvh_verify, hufflens_many, argsort_np };
+  // ---------------------------------------------------------------- 1.2 sound: tools/snd/adpcm.py, resample.py
+  // Twins of the numba functions _decode_core, _encode_core (with _greedy_err, _beam_block, _pack) and
+  // _resample_core.  The Python side (builder/xvb/web.py) hands int32 copies of the int64 arrays.  Values that
+  // can pass 2**31 (squared errors and their sums, the resampler's positions and products) are plain Numbers:
+  // exact integers below 2**53 (checked where a sum could grow); shifts of such values are floor divisions by
+  // powers of two, other divisions exact floor divisions (fdiv).
+  const SF0 = [0, 60, 115, 98, 122], SF1 = [0, 0, -52, -55, -60];
+  const LIMIT53 = 9007199254740991;
+
+  function fdiv(a, b) {               // floor(a / b), exact for integers |a|, |b| < 2**53, b > 0
+    let q = Math.floor(a / b);
+    while (q * b > a) q--;
+    while ((q + 1) * b <= a) q++;
+    return q;
+  }
+
+  function snd_decode(b, nblk, s1, s2, out) {
+    for (let k = 0; k < nblk; k++) {
+      const o = k * 16, hdr = b[o];
+      let sh = hdr & 15; if (sh > 12) sh = 9;
+      let f = (hdr >> 4) & 7; if (f > 4) f = 4;
+      const f0 = SF0[f], f1 = SF1[f];
+      for (let i = 0; i < 28; i++) {
+        let n = (b[o + 2 + (i >> 1)] >> ((i & 1) * 4)) & 15;
+        if (n >= 8) n -= 16;
+        let s = ((n << 12) >> sh) + ((s1 * f0 + s2 * f1 + 32) >> 6);
+        if (s > 32767) s = 32767; else if (s < -32768) s = -32768;
+        s2 = s1; s1 = s;
+        out[k * 28 + i] = s;
+      }
+    }
+    return 0;                                           // (the Python caller does not use the final state)
+  }
+
+  function greedy_err(x, o, s1, s2, f0, f1, sh) {
+    const qs = 12 - sh, step = 1 << qs, half = step >> 1;
+    let err = 0;
+    for (let i = 0; i < 28; i++) {
+      const xi = x[o + i];
+      const pred = (s1 * f0 + s2 * f1 + 32) >> 6;
+      let n = (xi - pred + half) >> qs;
+      if (n > 7) n = 7; else if (n < -8) n = -8;
+      let s = n * step + pred;
+      if (s > 32767) s = 32767; else if (s < -32768) s = -32768;
+      const e = xi - s;
+      err += e * e;
+      s2 = s1; s1 = s;
+    }
+    return err;
+  }
+
+  function snd_pack(out, o, f, sh, nib, no) {
+    out[o] = (f << 4) | sh;
+    out[o + 1] = 0;
+    for (let j = 0; j < 14; j++) out[o + 2 + j] = (nib[no + 2 * j] & 15) | ((nib[no + 2 * j + 1] & 15) << 4);
+  }
+
+  function beam_block(x, o, s1, s2, f0, f1, sh, B, R, keep, W) {
+    const qs = 12 - sh, step = 1 << qs, half = step >> 1;
+    const { cs1, cs2, cerr, ns1, ns2, nerr, ccost, cs, cpar, cnib, order, bpar, bnib, fin_s1, fin_s2, fin_err, fin_nib } = W;
+    let nb = 1;
+    cs1[0] = s1; cs2[0] = s2; cerr[0] = 0;
+    for (let i = 0; i < 28; i++) {
+      const xi = x[o + i];
+      let nc = 0;
+      for (let b = 0; b < nb; b++) {
+        const p1 = cs1[b];
+        const pred = (p1 * f0 + cs2[b] * f1 + 32) >> 6;
+        let n0 = (xi - pred + half) >> qs;
+        if (n0 > 7) n0 = 7; else if (n0 < -8) n0 = -8;
+        let lo = n0 - R, hi = n0 + R;
+        if (lo < -8) lo = -8;
+        if (hi > 7) hi = 7;
+        const base = cerr[b];
+        for (let n = lo; n <= hi; n++) {
+          let s = n * step + pred;
+          if (s > 32767) s = 32767; else if (s < -32768) s = -32768;
+          const e = xi - s;
+          ccost[nc] = base + e * e; cs[nc] = s; cpar[nc] = b; cnib[nc] = n;
+          nc++;
+        }
+      }
+      for (let a = 0; a < nc; a++) {                    // stable insertion sort of candidate indices by cost
+        const v = ccost[a];
+        let j = a - 1;
+        while (j >= 0 && ccost[order[j]] > v) { order[j + 1] = order[j]; j--; }
+        order[j + 1] = a;
+      }
+      let k = 0;
+      for (let a = 0; a < nc; a++) {                    // the best B with distinct (s1, s2)
+        const c = order[a], s = cs[c], p = cs1[cpar[c]];
+        let dup = false;
+        for (let q = 0; q < k; q++) if (ns1[q] === s && ns2[q] === p) { dup = true; break; }
+        if (dup) continue;
+        ns1[k] = s; ns2[k] = p; nerr[k] = ccost[c];
+        bpar[i * B + k] = cpar[c]; bnib[i * B + k] = cnib[c];
+        k++;
+        if (k === B) break;
+      }
+      for (let q = 0; q < k; q++) { cs1[q] = ns1[q]; cs2[q] = ns2[q]; cerr[q] = nerr[q]; }
+      nb = k;
+    }
+    const nf = nb < keep ? nb : keep;
+    for (let q = 0; q < nf; q++) {
+      fin_s1[q] = cs1[q]; fin_s2[q] = cs2[q]; fin_err[q] = cerr[q];
+      let p = q;
+      for (let i = 27; i >= 0; i--) { fin_nib[q * 28 + i] = bnib[i * B + p]; p = bpar[i * B + p]; }
+    }
+    return nf;
+  }
+
+  function snd_encode(x, nblk, s1, s2, K, M, B, R, out) {
+    const NC = B * (2 * R + 1);
+    const W = {
+      cs1: new Int32Array(B), cs2: new Int32Array(B), cerr: new Float64Array(B), ns1: new Int32Array(B), ns2: new Int32Array(B),
+      nerr: new Float64Array(B), ccost: new Float64Array(NC), cs: new Int32Array(NC), cpar: new Int32Array(NC), cnib: new Int32Array(NC),
+      order: new Int32Array(NC), bpar: new Int32Array(28 * B), bnib: new Int32Array(28 * B),
+      fin_s1: new Int32Array(K), fin_s2: new Int32Array(K), fin_err: new Float64Array(K), fin_nib: new Int32Array(K * 28),
+    };
+    const cerr_c = new Float64Array(M), cidx_c = new Int32Array(M);
+    const P = K * M * K;
+    const pcost = new Float64Array(P), ps1_ = new Int32Array(P), ps2_ = new Int32Array(P), ppar = new Int32Array(P),
+      pcombo = new Int32Array(P), pnib = new Int32Array(P * 28), porder = new Int32Array(P);
+    const ks1 = new Int32Array(K), ks2 = new Int32Array(K), kerr = new Float64Array(K);
+    let nk = 1;
+    ks1[0] = s1; ks2[0] = s2;
+    const bt_par = new Int32Array(nblk * K), bt_combo = new Int32Array(nblk * K), bt_nib = new Int8Array(nblk * K * 28);
+    for (let blk = 0; blk < nblk; blk++) {
+      const o = blk * 28;
+      let npool = 0;
+      for (let p = 0; p < nk; p++) {
+        let nm = 0;                                     // all 65 (filter, shift) pairs by greedy error, the best M
+        for (let combo = 0; combo < 65; combo++) {
+          const f = (combo / 13) | 0, sh = combo - f * 13;
+          const e = greedy_err(x, o, ks1[p], ks2[p], SF0[f], SF1[f], sh);
+          let j;
+          if (nm < M) { j = nm; nm++; }
+          else if (e < cerr_c[M - 1]) j = M - 1;
+          else continue;
+          while (j > 0 && cerr_c[j - 1] > e) { cerr_c[j] = cerr_c[j - 1]; cidx_c[j] = cidx_c[j - 1]; j--; }
+          cerr_c[j] = e; cidx_c[j] = combo;
+        }
+        for (let m = 0; m < nm; m++) {
+          const combo = cidx_c[m], f = (combo / 13) | 0, sh = combo - f * 13;
+          const nf = beam_block(x, o, ks1[p], ks2[p], SF0[f], SF1[f], sh, B, R, K, W);
+          for (let q = 0; q < nf; q++) {
+            pcost[npool] = kerr[p] + W.fin_err[q];
+            ps1_[npool] = W.fin_s1[q]; ps2_[npool] = W.fin_s2[q]; ppar[npool] = p; pcombo[npool] = combo;
+            for (let i = 0; i < 28; i++) pnib[npool * 28 + i] = W.fin_nib[q * 28 + i];
+            npool++;
+          }
+        }
+      }
+      for (let a = 0; a < npool; a++) {                 // stable sort of the pool by cost, the best K distinct states
+        const v = pcost[a];
+        let j = a - 1;
+        while (j >= 0 && pcost[porder[j]] > v) { porder[j + 1] = porder[j]; j--; }
+        porder[j + 1] = a;
+      }
+      let k = 0;
+      for (let a = 0; a < npool; a++) {
+        const c = porder[a];
+        let dup = false;
+        for (let q = 0; q < k; q++) if (ks1[q] === ps1_[c] && ks2[q] === ps2_[c]) { dup = true; break; }
+        if (dup) continue;
+        bt_par[blk * K + k] = ppar[c]; bt_combo[blk * K + k] = pcombo[c];
+        for (let i = 0; i < 28; i++) bt_nib[(blk * K + k) * 28 + i] = pnib[c * 28 + i];
+        ks1[k] = ps1_[c]; ks2[k] = ps2_[c]; kerr[k] = pcost[c];
+        if (pcost[c] > LIMIT53) throw new Error("snd_encode: error sum beyond 2**53");
+        k++;
+        if (k === K) break;
+      }
+      nk = k;
+    }
+    const nib = new Int32Array(28);
+    let p = 0;
+    for (let blk = nblk - 1; blk >= 0; blk--) {         // backtrack from the best final state (slot 0)
+      const combo = bt_combo[blk * K + p], f = (combo / 13) | 0, sh = combo - f * 13;
+      for (let i = 0; i < 28; i++) nib[i] = bt_nib[(blk * K + p) * 28 + i];
+      snd_pack(out, blk * 16, f, sh, nib, 0);
+      p = bt_par[blk * K + p];
+    }
+    return 0;
+  }
+
+  function snd_resample(x, n, num, den, D, nout, H, NTAB, P, out) {
+    const WB = 32768, T32 = 4294967296;               // 2**WBITS, 2**32
+    const inv = fdiv(140737488355328, D);              // (1 << (WBITS + 32)) // D
+    const dq = fdiv(den, num), dr = den - dq * num;
+    const tq = fdiv(num * P, D), tr = num * P - tq * D;
+    let ip = 0, fr = 0;
+    for (let j = 0; j < nout; j++) {
+      let acc = 0, ssum = 0;
+      let a = fr * P, i = fdiv(a, D), r = a - i * D, k = ip;
+      while (i < NTAB) {                                // taps at and left of t
+        const w = Math.floor((r * inv) / T32);
+        const h0 = H[i];
+        const c = h0 + Math.floor(((H[i + 1] - h0) * w) / WB);
+        ssum += c;
+        if (k >= 0 && k < n) acc += x[k] * c;
+        k--; i += tq; r += tr;
+        if (r >= D) { r -= D; i++; }
+      }
+      a = (num - fr) * P; i = fdiv(a, D); r = a - i * D; k = ip + 1;
+      while (i < NTAB) {                                // taps right of t
+        const w = Math.floor((r * inv) / T32);
+        const h0 = H[i];
+        const c = h0 + Math.floor(((H[i + 1] - h0) * w) / WB);
+        ssum += c;
+        if (k >= 0 && k < n) acc += x[k] * c;
+        k++; i += tq; r += tr;
+        if (r >= D) { r -= D; i++; }
+      }
+      if (Math.abs(acc) > LIMIT53 / 4 || ssum <= 0) throw new Error("snd_resample: sum out of range");
+      let y = fdiv(2 * acc + ssum, 2 * ssum);
+      if (y > 32767) y = 32767; else if (y < -32768) y = -32768;
+      out[j] = y;
+      ip += dq; fr += dr;
+      if (fr >= num) { fr -= num; ip++; }
+    }
+    return 0;
+  }
+
+  const K = { cost_argmin, rle_decode_all, xvm_parse_acc, xvm_emit, xvm_verify, xvh_parse_acc, xvh_emit, xvh_verify, hufflens_many, argsort_np,
+              snd_decode, snd_encode, snd_resample };
 
   /* The kernels as Pyodide calls them: a numpy array argument arrives as a PyProxy; getBuffer() gives a
    * typed-array view of its memory (no copy), which is released after the call.  Nothing in a kernel

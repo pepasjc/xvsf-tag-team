@@ -22,9 +22,9 @@ Relocation table (u16 little endian, word index = offset/4 inside the overlay):
         --breakfill  test disc: the dead-code ranges are filled with break, loader NOT installed
         --logo       boot card before the game starts (tools/logopatch.py); changes the image; without --nospeed
                      also the second card (fan-patch notice, tools/card2patch.py)
-        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.1", "TAG HACK 1.0.1" with --nospeed); changes the image
+        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.2", "TAG HACK 1.0.1" with --nospeed, "TAG HACK 1.1" with --nosound); changes the image
 """
-import os, struct, subprocess, sys, json, shutil
+import hashlib, os, struct, subprocess, sys, json, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
@@ -325,6 +325,12 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         dirent = put(finish_dir(d), "directory sector (tables + policy code)")
     elif dmy_lba is not None:
         items = []                                              # (key, data, label)
+        import sndpatch                                         # 1.2: full sound banks (tools/sndpatch.py; --nosound: as 1.1)
+        SND = sndpatch.enabled()
+        if SND:
+            snd_res, snd_sym, snd_dcode = sndpatch.code(s["flushcache"])
+            snd_items, snd_ref = sndpatch.disc_items()
+            items += snd_items                                  # read first at a battle load (the bank list)
         def game(idx, label): items.append((("g", idx), gamefile(idx), label))
         def stages(lo, hi):
             for st in range(lo, hi):
@@ -374,7 +380,11 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         bd = finish_dir(bd, "tagload.ramb.bin")
         if HOT:
             hd = hot_dir_sector({k[1]: p for k, p in pos.items() if k[0] == "hot"}, json.load(open(os.path.join(BUILD, HOTDIR, "steps.json"))))
+        if SND:
+            snd_dir = sndpatch.dir_data(pos, size, snd_ref, snd_dcode)
+            out += sndpatch.exe_patches(snd_res, snd_sym, msf(pos[("snddir",)]) + struct.pack("<I", len(snd_dir)))
         for key, data, label in items:
+            if key == ("snddir",): data = snd_dir
             info.append((pos[key], (d + ahead_area() if AHEAD else d) if key == ("dir",) else bd if key == ("bossdir",) else hd if key == ("hdir",) else data, label))
             if key[0] == "g":
                 out.append((FTABLE + 8 * key[1], msf(pos[key])))    # file table: MSF only, the size stays
@@ -495,6 +505,10 @@ def main():
             assert struct.unpack("<I", exe_read(HOOK_AT, 4))[0] == HOOK_ORIG
             assert struct.unpack("<I", exe_read(EFFHOOK_AT, 4))[0] == EFFHOOK_ORIG
             assert struct.unpack("<I", exe_read(BOSSHOOK_AT, 4))[0] == BOSSHOOK_ORIG
+            import sndpatch
+            if sndpatch.enabled():                              # the words the sound patch replaces are still the game's
+                for a, (n, w) in sndpatch.STOCK_WORDS.items():
+                    b = exe_read(a, n); assert (b == w) if isinstance(w, bytes) else (hashlib.sha1(b).hexdigest() == w), "sound hook %08x" % a
             for addr, data in pl:
                 exe_write(addr, data)
                 print(f"exe patch {addr:08x}-{addr + len(data):08x} {len(data)} bytes")

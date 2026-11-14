@@ -3,7 +3,7 @@
     RANGES    every RAM range written by patches()
 Sources and tests in tools/speed/upload/ (README in work/speed/upload/REPORT.md).
     python tools/speed/upload.py        assemble, check load-delay hazards and ranges, print the patch list"""
-import os, sys, struct
+import hashlib, os, sys, struct
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "upload")
 sys.path.insert(0, SRC)
@@ -48,6 +48,13 @@ RANGES = [(ARENA, ARENA_END), (HELP, KEEP[0]), (KEEP[1], HELP_END)] + ([(DRAW, D
 jal = lambda t: struct.pack("<I", 0x0C000000 | (t >> 2 & 0x03FFFFFF))
 
 
+def _sound():
+    """1.2 sound banks on (tools/sndpatch.py): cdtile reads the stash from where the set-0x37 loader put it"""
+    sys.path.insert(0, os.path.dirname(HERE))
+    import sndpatch
+    return sndpatch.enabled()
+
+
 def build(hint_override=None):
     vc = None
     arena, sa = ulib.gas(os.path.join(SRC, "arena.S"), ARENA, {"VCRES": VCRES if USE_VC else FCRES if USE_FC else 0})
@@ -55,6 +62,7 @@ def build(hint_override=None):
     assert ARENA + len(arena) <= ARENA_END and sa["alloc"] == 0x80058d04 and sa["sweep"] == 0x80058f84
     FB = FCBAD if USE_FC else 0
     fcd = {"FCBAD": FB, "FC": 1 if USE_FC else 0, "FCHITA": FCHITA, "FC_DONE": HELP}
+    fcd["SOUND"] = 1 if _sound() else 0                         # 1.2 sound banks: the SP_EFF2 stash moves (tools/sndpatch.py)
     h0, sh0 = ulib.gas(os.path.join(SRC, "helpers.S"), HELP, dict({"ALLOC_W": sa["alloc_w"], "DECODE": 0x8001b5b0, "LOADIMG": HELP}, **fcd))
     fastload = sh0["fastload"]                                   # (its address does not depend on DECODE / LOADIMG)
     cold = HELP + (len(h0) + 3 & ~3)                             # the cache's cold code (stage setup) after the upload loops
@@ -94,7 +102,7 @@ def build(hint_override=None):
             assert cold + len(stub) <= HELP_END
             exe = ulib.exe_image()
             w = lambda a: struct.unpack_from("<I", exe, a & 0x1fffff)[0]
-            assert [w(FC_RT + 4 * i) for i in range(4)] == [0x90830009, 0x34020001, 0x14620024, 0], "stock 0x8005a2a0 changed"
+            assert hashlib.sha1(struct.pack("<4I", *[w(FC_RT + 4 * i) for i in range(4)])).hexdigest() == "082d94ed799e8f2df4ab1d5e382b82aee7ebec5a", "stock 0x8005a2a0 changed"
             assert w(FC_ALLOC) == 0x0c01620f and w(FCFAIL) == 0x8fa20020
             # jal fc_rt; nop; beqz v0, 0x8005a33c; move a0, v0   (fc_rt(node): 0 = skip the stock unlink, else the node)
             beqz = 0x10400000 | ((0x8005a33c - (FC_RT + 12)) >> 2 & 0xffff)

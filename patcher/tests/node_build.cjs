@@ -34,6 +34,18 @@ const { loadPyodide } = require(path.join(process.env.PYODIDE_DIR, "pyodide.js")
   const progress = (stage, f, text) => { if (stage !== last) { last = stage; console.log("* " + stage); } };
   const log = (line) => { if (process.env.VERBOSE) console.log("   " + line); };
   const t1 = Date.now();
+  if (process.env.SND_PLAN) {
+    // the page's path: plan the sound encoder jobs, run them (here one after the other), memo, sprites, build
+    web.prepare(mounts[files[0]]);
+    const plan = web.sound_plan(mounts[files[0]], JSON.stringify(files.slice(1).map((f) => mounts[f])), JSON.stringify(flags));
+    const meta = JSON.parse(plan.get(0)), arr = plan.get(1), buf = arr.getBuffer("i32"), inputs = buf.data.slice();
+    buf.release(); arr.destroy(); plan.destroy();
+    let total = 0; meta.forEach((m) => { total += 16 * m[3]; });
+    const out = new Uint8Array(total); let o = 0; const ts = Date.now();
+    for (const m of meta) { const [nblk, s1, s2, K, M, B, R] = m.slice(3), r = new Uint8Array(16 * nblk); XVK.snd_encode(inputs.subarray(m[1], m[1] + m[2]), nblk, s1, s2, K, M, B, R, r); out.set(r, o); o += r.length; }
+    console.log("sound plan: %d jobs, %d samples, encoded in %ss (sequential)", meta.length, inputs.length, ((Date.now() - ts) / 1000).toFixed(1));
+    web.sound_results(JSON.stringify(meta), out);
+  }
   const info = JSON.parse(web.build(mounts[files[0]], JSON.stringify(files.slice(1).map((f) => mounts[f])), JSON.stringify(flags), "", idn.sha1, idn.size, progress, log));
   console.log(info.ok ? "build ok" : "build FAILED: " + info.message, "in", ((Date.now() - t1) / 1000).toFixed(1), "s");
   if (!info.ok) process.exit(2);

@@ -1,7 +1,7 @@
 /* Real-browser test of the patcher page: drives Chrome over the DevTools protocol (no dependencies,
  * Node 22+), with real files, and takes screenshots of the page states.
  *
- *   node patcher/tests/browser_test.cjs --disc DISC.bin [--arcade SET.zip] [--file-url] [--shots DIR]
+ *   node patcher/tests/browser_test.cjs --disc DISC.bin [--arcade SET.zip[,PARENT.zip]] [--file-url] [--shots DIR]
  *        [--chrome PATH] [--headed] [--skip-errors] [--only-shots] [--tag NAME] [--set "CSS=0|1,..."] [--also-reject FILE,...]
  *
  *   default: serves patcher/ on http://127.0.0.1:<port>/ (as a static host would); --file-url opens
@@ -51,7 +51,7 @@ function memory(marker) {
 
 (async () => {
   fs.mkdirSync(SHOTS, { recursive: true });
-  const disc = path.resolve(arg("disc")), arcade = arg("arcade") ? path.resolve(arg("arcade")) : null;
+  const disc = path.resolve(arg("disc")), arcade = arg("arcade") ? String(arg("arcade")).split(",").map((f) => path.resolve(f)) : null;   // a clone zip,its parent zip
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "xvsf_patcher_test_")), marker = path.basename(profile), dl = path.join(profile, "dl");
   fs.mkdirSync(dl);
   const srv = arg("file-url") ? null : await serve();
@@ -106,7 +106,7 @@ function memory(marker) {
     await c.until("document.getElementById('st-disc').classList.contains('ok')", 180000, "disc verified");
     console.log("disc verified in %ss:", ((Date.now() - t) / 1000).toFixed(1), (await c.eval("document.getElementById('st-disc').innerText")).replace(/\n/g, " | "));
     if (arcade) {
-      await c.setFiles("#in-arcade", [arcade]);
+      await c.setFiles("#in-arcade", arcade);
       await c.until("document.getElementById('st-arcade').classList.contains('ok')", 120000, "arcade recognised");
       console.log("arcade:", await c.eval("document.getElementById('st-arcade').innerText"));
     }

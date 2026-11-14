@@ -36,14 +36,14 @@ Patch (replaces the earlier invented heuristic: nothing at 0x80076a0c / 0x800340
     through the gate) -> `jal lock`: +0x262 = the same lockout tools/tagpatch.py gives a human
     tag, then the move starts.
 """
-import os, struct, sys
+import hashlib, os, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))       # tools/mipsasm.py
 from mipsasm import Asm, REG
 
 ORG, LIMIT = 0x80010ff4, 0x800110a0          # 172 bytes, break-tested dead code (old aipatch part 1)
 EXE_BASE, EXE_HDR = 0x80010000, 0x800
 GATE_AT = 0x8007cdb8                         # PS1-mode CPU path of the tag input routine 0x8007cd94
-GATE_ORIG = (0x920300E2, 0x34020014)         # lbu v1,0xe2(s0) / ori v0,zero,0x14
+GATE_ORIG = "757e75947ca3f9df671b37a8260565c9fddb4f05"   # SHA-1 of the 2 stock words (lbu v1,0xe2(s0) / ori v0,zero,0x14)
 STOCK_CONT = 0x8007cdc0                      # bne v1,v0,... (stock: tag command -> team super)
 ARCADE_BRANCH = 0x8007cddc
 MOVE_AT, MOVE_ORIG = 0x8007ce9c, 0x0C00C94B  # jal 0x8003252c (delay slot sh zero,8(a0))
@@ -123,7 +123,8 @@ def restore_old_hooks():
 
 def apply_ram(emu):
     """Cold boot, before the first fight (I-cache)."""
-    assert struct.unpack("<2I", emu.ram(GATE_AT, 8)) in (GATE_ORIG, struct.unpack("<2I", patches()[1][1])), "unexpected code at the gate"
+    g = emu.ram(GATE_AT, 8)
+    assert hashlib.sha1(g).hexdigest() == GATE_ORIG or g == patches()[1][1], "unexpected code at the gate"
     for addr, data in restore_old_hooks() + patches():
         emu.poke(addr, data)
 
@@ -131,7 +132,7 @@ def apply_ram(emu):
 if __name__ == "__main__":
     exe = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disc", "files", "SLUS_006.27"), "rb").read()
     rd = lambda a: struct.unpack_from("<I", exe, a - EXE_BASE + EXE_HDR)[0]
-    assert (rd(GATE_AT), rd(GATE_AT + 4)) == GATE_ORIG and rd(MOVE_AT) == MOVE_ORIG
+    assert hashlib.sha1(struct.pack("<2I", rd(GATE_AT), rd(GATE_AT + 4))).hexdigest() == GATE_ORIG and rd(MOVE_AT) == MOVE_ORIG
     assert all(rd(a) == w for a, w in OLD_HOOKS.items())
     for addr, data in patches():
         print(f"{addr:08x} {len(data):4d} {data[:16].hex()}")

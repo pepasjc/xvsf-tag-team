@@ -1,4 +1,4 @@
-"""Optional version line on the main menu of the 2 MB build:  python tools/mktagdisc.py NAME --title["=TAG HACK 1.1"]
+"""Optional version line on the main menu of the 2 MB build:  python tools/mktagdisc.py NAME --title["=TAG HACK 1.2"]
 
 Not part of the default build (build/xvsf_tag23 stays as it is).  The 8 MB build (tools/mkap8disc.py) has its
 own, larger hook in the same place, which also shows "8MB" when the upper memory and its module are usable.
@@ -16,12 +16,14 @@ import toolenv
 GCC = toolenv.mips_prefix()
 RANGE = (0x80054704, 0x800547d4)
 MENU_AT, MENU_FILE, OVL_BASE = 0x800987b8, "P/P4/OPDEMO.BIN", 0x80098000
-DEFAULT = "TAG HACK 1.1"
+DEFAULT = "TAG HACK 1.2"
 DEFAULT_NOSPEED = "TAG HACK 1.0.1"                      # --nospeed: the 1.0.1 image, unchanged
+DEFAULT_NOSOUND = "TAG HACK 1.1"                        # --nosound: the 1.1 image, unchanged
 
 
-def default():
-    return DEFAULT_NOSPEED if "--nospeed" in sys.argv else DEFAULT
+def default(argv=None):
+    argv = sys.argv if argv is None else argv
+    return DEFAULT_NOSPEED if "--nospeed" in argv else DEFAULT_NOSOUND if "--nosound" in argv else DEFAULT
 
 
 def build(text):

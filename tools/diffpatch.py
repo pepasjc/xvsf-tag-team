@@ -18,15 +18,14 @@ RANK_CAPS is an independent switch (None = leave the stock table alone).
 (The tuning of the old invented CPU tag heuristic that used to live here is gone together with
 that heuristic: tools/aipatch.py now lets the CPU tag through the game's own arcade path.)
 """
-import os, struct, sys
+import hashlib, os, struct, sys
 
 CAP_TABLE = 0x80090d6c          # 8 difficulty rows x 8 fights, max rank 0..0x1f
-STOCK_CAPS = bytes.fromhex("080e12161a1a1a1a" "0a0e12161a1a1a1f" "0d161a1c1f1f1f1f" "0d161a1f1f1f1f1f"
-                           "0f1a1c1f1f1f1f1f" "0f1a1f1f1f1f1f1f" "111f1f1f1f1f1f1f" "1f1f1f1f1f1f1f1f")
+STOCK_CAPS = "f243757271da49e02a910530726caa27340df979"   # SHA-1 of the stock 64-byte table
 RANK_CAPS = None                # e.g. a 64-byte table; not used by default
 
 RANK_TICK = 0x80031d3c           # 7 words of the rank ticker 0x80031d34
-RANK_TICK_ORIG = (0x90620000, 0x00000000, 0x2442FFFF, 0xA0620000, 0x00021600, 0x0441002B, 0x00000000)
+RANK_TICK_ORIG = "39314b760f9a243711912d1f5bd7054f990bba1b"   # SHA-1 of the 7 stock words
 
 
 def rank_patches():
@@ -56,15 +55,17 @@ def patches():
 
 def apply_ram(emu):
     """Only before the first fight of a session (I-cache)."""
-    assert emu.ram(CAP_TABLE, 64) in (STOCK_CAPS, bytes(RANK_CAPS or STOCK_CAPS)), "unexpected rank-cap table"
-    assert struct.unpack("<7I", emu.ram(RANK_TICK, 28)) in (RANK_TICK_ORIG, struct.unpack("<7I", rank_patches()[0][1])), "unexpected rank ticker code"
+    t = emu.ram(CAP_TABLE, 64)
+    assert hashlib.sha1(t).hexdigest() == STOCK_CAPS or (RANK_CAPS is not None and t == bytes(RANK_CAPS)), "unexpected rank-cap table"
+    r = emu.ram(RANK_TICK, 28)
+    assert hashlib.sha1(r).hexdigest() == RANK_TICK_ORIG or r == rank_patches()[0][1], "unexpected rank ticker code"
     for addr, data in patches():
         emu.poke(addr, data)
 
 
 if __name__ == "__main__":
     exe = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disc", "files", "SLUS_006.27"), "rb").read()
-    assert exe[CAP_TABLE - 0x80010000 + 0x800:][:64] == STOCK_CAPS
-    assert struct.unpack_from("<7I", exe, RANK_TICK - 0x80010000 + 0x800) == RANK_TICK_ORIG
+    assert hashlib.sha1(exe[CAP_TABLE - 0x80010000 + 0x800:][:64]).hexdigest() == STOCK_CAPS
+    assert hashlib.sha1(exe[RANK_TICK - 0x80010000 + 0x800:][:28]).hexdigest() == RANK_TICK_ORIG
     for addr, data in patches():
         print(f"{addr:08x} {len(data):4d} {data[:16].hex()}")

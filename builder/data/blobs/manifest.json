@@ -1,10 +1,46 @@
 {
  "calls": {
+  "003fa2ee68fccda962d9b8a8a423cb0e2e16d041": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "fec90fd0f5789869db0b2ea4378d789866ea1217.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "titlepatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "fec90fd0f5789869db0b2ea4378d789866ea1217",
+   "size": 213
+  },
+  "00a362bfd23ea11b1c2f1419689eafdc30881e46": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e41a5a5384c58d4678d38e245a380e1d0ce553b8.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "nsppatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "20e51c7a30bbe96b6841e8ade2a5e5bf11e71f51",
+   "size": 3958
+  },
   "0e3fef38f375602e854b2c6ef862e54bd9e2baed": {
    "args": {
     "__tuple__": []
    },
-   "blob": "0edaec484125919edb0545d3648945d2f76eb427.json",
+   "blob": "1fceced264b35f49c9133a5254b3828209eb09cc.json",
    "context": {
     "env": {},
     "nospeed": true
@@ -13,7 +49,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 305
+   "resolved": "0edaec484125919edb0545d3648945d2f76eb427",
+   "size": 299
   },
   "146c0510c1ad4d1e83e730390e308f31c3fc246a": {
    "args": {
@@ -28,13 +65,31 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "eb43da932d2827553d26ec10f029d7fab3a0ba4c",
    "size": 53
+  },
+  "1a77bd4378f60b2234bc8ff3fd5b79282036f130": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "b8ab8bb5546ac39c301fedf039fdd7fef5a07f07.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "padpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5",
+   "size": 87
   },
   "1f8736c2a04de2d42f8204bc489f07f8f5708e8f": {
    "args": {
     "__tuple__": []
    },
-   "blob": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5.json",
+   "blob": "b8ab8bb5546ac39c301fedf039fdd7fef5a07f07.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -43,7 +98,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 77
+   "resolved": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5",
+   "size": 87
   },
   "25e9448d147c8028718d60e37a2ea649e7d24504": {
    "args": {
@@ -58,13 +114,14 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "f5ee781e1311bb8567bfa572ef9d5364c8010249",
    "size": 849
   },
   "2efa8bc3ee42f3607cee6508bafeb2f2ee45167c": {
    "args": {
     "__tuple__": []
    },
-   "blob": "0edaec484125919edb0545d3648945d2f76eb427.json",
+   "blob": "1fceced264b35f49c9133a5254b3828209eb09cc.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -73,13 +130,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 305
+   "resolved": "0edaec484125919edb0545d3648945d2f76eb427",
+   "size": 299
   },
   "36970756240a242a0d74ffb736f6ce2d36758cc9": {
    "args": {
     "__tuple__": []
    },
-   "blob": "ca651fb8a2cf678c556485a361ecb90c8c395898.json",
+   "blob": "273e03e7fb2c09ea852063dd9e585cdc09063c7f.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -88,7 +146,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 31400
+   "resolved": "ca651fb8a2cf678c556485a361ecb90c8c395898",
+   "size": 28947
   },
   "36f1ffb2fc3a77c43efe4a672d1ad48e2d055e79": {
    "args": {
@@ -103,6 +162,7 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b",
    "size": 101
   },
   "3ae3f9f4e8eb589446531eecc70eb85ff5ec9745": {
@@ -111,7 +171,7 @@
      ""
     ]
    },
-   "blob": "05227a995c6dc7baec9fca17c3fc84ec96940040.json",
+   "blob": "995b47e97c4ae2ad58171d54bfb6cec360eef6aa.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -120,7 +180,26 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 20016
+   "resolved": "05227a995c6dc7baec9fca17c3fc84ec96940040",
+   "size": 20491
+  },
+  "3c4cf7496b2c6349e1015e4d9dd9d804734b97c2": {
+   "args": {
+    "__tuple__": [
+     2147578328
+    ]
+   },
+   "blob": "072ab4e3ff3053e83ebc689c2e31caa93ccfeae4.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "sndpatch.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "aa44eb3abab627d1196678327feca241c00afac3",
+   "size": 3619
   },
   "4dab5e2e6d50bd960ab3e53fd7c8e1749acbad45": {
    "args": {
@@ -135,69 +214,10 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7",
    "size": 105
   },
-  "571af21ce39ef2f9ca95bea4ea56460fad7c7f12": {
-   "args": {
-    "__tuple__": []
-   },
-   "blob": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5.json",
-   "context": {
-    "env": {},
-    "nospeed": true
-   },
-   "function": "padpatch.patches",
-   "kwargs": {
-    "__dict__": []
-   },
-   "size": 77
-  },
-  "5c05b8274371f281b9ee970e0b699017ba293060": {
-   "args": {
-    "__tuple__": []
-   },
-   "blob": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b.json",
-   "context": {
-    "env": {},
-    "nospeed": true
-   },
-   "function": "diffpatch.rank_patches",
-   "kwargs": {
-    "__dict__": []
-   },
-   "size": 101
-  },
-  "5d6b4f0dadaea106735ab9bc09a51055ec526da7": {
-   "args": {
-    "__tuple__": []
-   },
-   "blob": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1.json",
-   "context": {
-    "env": {},
-    "nospeed": true
-   },
-   "function": "aipatch.patches",
-   "kwargs": {
-    "__dict__": []
-   },
-   "size": 381
-  },
-  "623f023aab66fa505870419351aa921fa7e4f238": {
-   "args": {
-    "__tuple__": []
-   },
-   "blob": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7.json",
-   "context": {
-    "env": {},
-    "nospeed": true
-   },
-   "function": "bgmpatch.patches",
-   "kwargs": {
-    "__dict__": []
-   },
-   "size": 105
-  },
-  "71d64dd6bd5e48a2d3e0df4ba38dd7fde6c1bf84": {
+  "4e75b56f73a0ee6e990dfcbaba817cb6c97d4aab": {
    "args": {
     "__tuple__": [
      {
@@ -348,10 +368,10 @@
        ]
       ]
      },
-     "TAG HACK 1.1"
+     "TAG HACK 1.2"
     ]
    },
-   "blob": "dfe6ac35a4faa54a555c7ad4a9d3e5f14769a0f4.json",
+   "blob": "5584a6ac8e7dd7afdafde1014cb88b3c7db136fe.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -360,13 +380,130 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 45759
+   "resolved": "30b2d850a03243ceff72af6d776e504001c4d214",
+   "size": 47959
+  },
+  "571af21ce39ef2f9ca95bea4ea56460fad7c7f12": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "b8ab8bb5546ac39c301fedf039fdd7fef5a07f07.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "padpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "0ce30bdcf9dda8089063418b4dab3978f80dbdc5",
+   "size": 87
+  },
+  "5c05b8274371f281b9ee970e0b699017ba293060": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "diffpatch.rank_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b",
+   "size": 101
+  },
+  "5d6b4f0dadaea106735ab9bc09a51055ec526da7": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "aipatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1",
+   "size": 381
+  },
+  "61732d501ab10e6ffd4538e7abc2dd67f427df28": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "diffpatch.rank_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "fba2c9eccf45fa0b750ca2224f115a5a8e34640b",
+   "size": 101
+  },
+  "623f023aab66fa505870419351aa921fa7e4f238": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7.json",
+   "context": {
+    "env": {},
+    "nospeed": true
+   },
+   "function": "bgmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7",
+   "size": 105
+  },
+  "66eae4673be34f2cd836fee55cc4438ce18a9903": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e36beb7d2f1392df9c7050d3557274ad2968db40.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "tagpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ec749ec312578e72f44b25f92562112c51ba123b",
+   "size": 1517
+  },
+  "6cb7dcfdb51380c08e0798cb4d30524c85403a16": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.2"
+    ]
+   },
+   "blob": "04ce72edcaa5d59377f4f4fb4557a4c1ff1b45fe.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "titlepatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "04ce72edcaa5d59377f4f4fb4557a4c1ff1b45fe",
+   "size": 213
   },
   "758327e14a655621e9185a32b9b0a528035129c8": {
    "args": {
     "__tuple__": []
    },
-   "blob": "20e51c7a30bbe96b6841e8ade2a5e5bf11e71f51.json",
+   "blob": "e41a5a5384c58d4678d38e245a380e1d0ce553b8.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -375,13 +512,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 3789
+   "resolved": "20e51c7a30bbe96b6841e8ade2a5e5bf11e71f51",
+   "size": 3958
   },
   "7bd6358883fb0e864a7615fe39dbef09e53033ea": {
    "args": {
     "__tuple__": []
    },
-   "blob": "cfb93e40d121fc0fae93cba8925e426728e20aad.json",
+   "blob": "eee23a6328bf887542b310b240ba89a5f415a0c8.json",
    "context": {
     "env": {},
     "nospeed": true
@@ -390,7 +528,95 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 2949
+   "resolved": "cfb93e40d121fc0fae93cba8925e426728e20aad",
+   "size": 3106
+  },
+  "7ca80245ec46bdf57145854be2483d764866de6b": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "273e03e7fb2c09ea852063dd9e585cdc09063c7f.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "frame.ovl_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca651fb8a2cf678c556485a361ecb90c8c395898",
+   "size": 28947
+  },
+  "804a9e60938aab03b35c136ea174aa73b0d649e0": {
+   "args": {
+    "__tuple__": [
+     ""
+    ]
+   },
+   "blob": "995b47e97c4ae2ad58171d54bfb6cec360eef6aa.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "logopatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "05227a995c6dc7baec9fca17c3fc84ec96940040",
+   "size": 20491
+  },
+  "81805a01ada6fbd2eed5c28cf3b76fc64ee78b14": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1fceced264b35f49c9133a5254b3828209eb09cc.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "roundpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "0edaec484125919edb0545d3648945d2f76eb427",
+   "size": 299
+  },
+  "98ed18ffc5f8035709ddb4488d18850a07170072": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f5ee781e1311bb8567bfa572ef9d5364c8010249.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "hudpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f5ee781e1311bb8567bfa572ef9d5364c8010249",
+   "size": 849
+  },
+  "992dc79a40c582b29402c0ec7dca14f5da5b4094": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "47f25c645fc01450ca0b3cf6dd2ed5c1a777d9cc.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "mktagdisc.ahead_area",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e446c17413d6685731e61611bbaaca264026d8a8",
+   "size": 8568
   },
   "a1877baaa7a0cc084dae37522544304c3ebf06fa": {
    "args": {
@@ -405,13 +631,31 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1",
+   "size": 381
+  },
+  "a20f216620e8439e317bd91c718ce03ca34e153e": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "aipatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "94ef8ced77050c07a39f0a1c0a17f0f0a3061cd1",
    "size": 381
   },
   "a2497b8caf5ecaf2fca326980e6616d717abb1d8": {
    "args": {
     "__tuple__": []
    },
-   "blob": "e9ef44249f3285f5cceb04e0543c83e921395778.json",
+   "blob": "91bb2287eda3f2aaf0915b8ad9a3230ed4defc32.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -420,13 +664,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 22381
+   "resolved": "04a647febeec27a046d3a5e0abbfaeac42d2fdd9",
+   "size": 23401
   },
   "adb2f2026ca0b2cf66230878a2dcd0fbd8423f1c": {
    "args": {
     "__tuple__": []
    },
-   "blob": "e446c17413d6685731e61611bbaaca264026d8a8.json",
+   "blob": "47f25c645fc01450ca0b3cf6dd2ed5c1a777d9cc.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -435,13 +680,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 8208
+   "resolved": "e446c17413d6685731e61611bbaaca264026d8a8",
+   "size": 8568
   },
   "b00ed6fdefc3a25b93498c13f277919ccd3bba7b": {
    "args": {
     "__tuple__": []
    },
-   "blob": "2ad9967a66c49b3a85a36b6a6db511fed66f00fb.json",
+   "blob": "ef35d0f56ab85f6deadd3444a15839f582a4a996.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -450,13 +696,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 1336
+   "resolved": "2ad9967a66c49b3a85a36b6a6db511fed66f00fb",
+   "size": 1369
   },
   "b98bc34ac7888a6d308f8021ebe295c47836afec": {
    "args": {
     "__tuple__": []
    },
-   "blob": "ec749ec312578e72f44b25f92562112c51ba123b.json",
+   "blob": "e36beb7d2f1392df9c7050d3557274ad2968db40.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -465,7 +712,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 1421
+   "resolved": "ec749ec312578e72f44b25f92562112c51ba123b",
+   "size": 1517
   },
   "bbed3558a839604bd5ced2db56f8b9e8dd00ef2a": {
    "args": {
@@ -480,13 +728,31 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "d765bcb47914104f1eea6a2ae17715666f2b5fab",
    "size": 713
+  },
+  "bcfb268939fa80a7535b068326389ea3ed54b131": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "83264f91149755f2202326cce387b74000f9a1e6.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "palpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "10dd8bc6a1a01150b2f18248680481b4dc6a337a",
+   "size": 211
   },
   "c5890d8011b93eae27642de7cfbfae82debefbaf": {
    "args": {
     "__tuple__": []
    },
-   "blob": "3b0808f1b7d0a45ff5a1a34558ce8e349f34a29e.json",
+   "blob": "46a174b3f7924a121e9bde22c60829b5955102f2.json",
    "context": {
     "env": {},
     "nospeed": true
@@ -495,7 +761,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 1249
+   "resolved": "3b0808f1b7d0a45ff5a1a34558ce8e349f34a29e",
+   "size": 1334
   },
   "cbbdcb8767ceb61f53aa78b3769dfd6ff9538d00": {
    "args": {
@@ -510,7 +777,42 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "eb43da932d2827553d26ec10f029d7fab3a0ba4c",
    "size": 53
+  },
+  "cdc9eb77996dd3c54e04fb7a5cdbba79b5a7e5c9": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "bgmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7",
+   "size": 105
+  },
+  "d719b6208a93a10505d1fab0674d9622fd5bb5a6": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f83ebb6a41d88e5de46617f0bf3d9de62257ba80.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "speedpatch.exe_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e9ef44249f3285f5cceb04e0543c83e921395778",
+   "size": 23281
   },
   "e10ebb42ecdac0feb1dc775790f8e4282ee1fa27": {
    "args": {
@@ -525,6 +827,7 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "97d170e1550eee4afc0af065b78cda302a97674c",
    "size": 2
   },
   "e5e7d08ef58304ed4133ed98613a3a5bd95c4132": {
@@ -533,7 +836,7 @@
      "X-MEN VS. STREET FIGHTER  \u00b7  TAG HACK 1.0"
     ]
    },
-   "blob": "640eba14fb5f4c185cba57f8f9ddf6560a62b521.json",
+   "blob": "d85e6b1b42f546a4fc37140003b76e86c2918ff6.json",
    "context": {
     "env": {},
     "nospeed": true
@@ -542,13 +845,14 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 20016
+   "resolved": "640eba14fb5f4c185cba57f8f9ddf6560a62b521",
+   "size": 20617
   },
   "e79e3bdf67c8a15e5f7fd4c3f813847e45113775": {
    "args": {
     "__tuple__": []
    },
-   "blob": "10dd8bc6a1a01150b2f18248680481b4dc6a337a.json",
+   "blob": "83264f91149755f2202326cce387b74000f9a1e6.json",
    "context": {
     "env": {},
     "nospeed": true
@@ -557,24 +861,42 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 177
+   "resolved": "10dd8bc6a1a01150b2f18248680481b4dc6a337a",
+   "size": 211
   },
-  "e7ed131f16213c1c29f2ca7535f46313959c8ab6": {
+  "ea5eceb1e33d27a5e90d13722d4832cef401f643": {
    "args": {
-    "__tuple__": [
-     "TAG HACK 1.1"
-    ]
+    "__tuple__": []
    },
-   "blob": "fec90fd0f5789869db0b2ea4378d789866ea1217.json",
+   "blob": "ef35d0f56ab85f6deadd3444a15839f582a4a996.json",
    "context": {
     "env": {},
+    "nosound": true,
     "nospeed": false
    },
-   "function": "titlepatch.build",
+   "function": "card2patch.build",
    "kwargs": {
     "__dict__": []
    },
-   "size": 213
+   "resolved": "2ad9967a66c49b3a85a36b6a6db511fed66f00fb",
+   "size": 1369
+  },
+  "f00450953bd3d539552225bbedb11cd955615df8": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "eb43da932d2827553d26ec10f029d7fab3a0ba4c.json",
+   "context": {
+    "env": {},
+    "nosound": true,
+    "nospeed": false
+   },
+   "function": "balpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "eb43da932d2827553d26ec10f029d7fab3a0ba4c",
+   "size": 53
   },
   "f2a5feb66ec2e05a199a27636a570155952fa9a6": {
    "args": {
@@ -591,13 +913,14 @@
    "kwargs": {
     "__dict__": []
    },
+   "resolved": "2ce1c4f18011335cbe75bc8d85e94e10fe3081de",
    "size": 217
   },
   "f733853e80fa97c3c8fad2c3d00b037230a0c289": {
    "args": {
     "__tuple__": []
    },
-   "blob": "10dd8bc6a1a01150b2f18248680481b4dc6a337a.json",
+   "blob": "83264f91149755f2202326cce387b74000f9a1e6.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -606,26 +929,40 @@
    "kwargs": {
     "__dict__": []
    },
-   "size": 177
+   "resolved": "10dd8bc6a1a01150b2f18248680481b4dc6a337a",
+   "size": 211
   }
  },
  "files": {
-  "tagload/tagload.chunka.bin": "eca58ebf215ccf147b7100dea230bc59999d1255.bin",
-  "tagload/tagload.chunkb.bin": "ddafd163196ff028b22e3aedd5d0dca7b65ec455.bin",
-  "tagload/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09.bin",
-  "tagload/tagload.chunkd.bin": "fd27e11950461c14768ef8c55fe68aaeb3d7e69e.bin",
-  "tagload/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc.bin",
-  "tagload/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159.bin",
-  "tagload/tagload.chunkg.bin": "6c80d96cb7de19989728fb2119006f8499c29739.bin",
-  "tagload/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf.bin",
-  "tagload/tagload.ram.bin": "201af1bffabaf3fc2f6544ce3dea8e71e50a7f67.bin",
-  "tagload/tagload.ramb.bin": "0c2ed48318f1ebc60eb9f4806021f3f909d2b657.bin",
-  "tagload/tagload.sym": "e743199ac5e3bb3f1d54d054561c80b79eb760c9.bin"
+  "tagload/tagload.chunka.bin": "da48b20f26a00ac32c5f5678d226c8fcbbae6eb3.json",
+  "tagload/tagload.chunkb.bin": "0d664497d805043ef6f6d3eed71fa4970f99f663.json",
+  "tagload/tagload.chunkc.bin": "b52a392c84da14328b5616cf039fee9992154999.json",
+  "tagload/tagload.chunkd.bin": "68414cd4a2c0f899f51f20359d9a47f6ba6f7a26.json",
+  "tagload/tagload.chunke.bin": "6a3fd3677f45aa088691e433828b33c18455f7e7.json",
+  "tagload/tagload.chunkf.bin": "2514e0596c24b07b9aa9b8eb44e56d14c5a85518.json",
+  "tagload/tagload.chunkg.bin": "b854e26b980785650b9c55dd108bafe06fde7dc5.json",
+  "tagload/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802.json",
+  "tagload/tagload.ram.bin": "80c550fda552cd5deac5f6c4b4071e6db104fa5b.json",
+  "tagload/tagload.ramb.bin": "f2a8b182e6a6d79ad82502c3da130219cf37cb21.json",
+  "tagload/tagload.sym": "649be28df3949f1bc2e2724767ec47c45711f292.json"
  },
  "format": 1,
  "note": "our own MIPS code, made by work/release11/record.py; blob name = SHA-1 of the blob; calls keyed by pipeline.call_key",
+ "resolved": {
+  "tagload/tagload.chunka.bin": "51160f3eaf152e831428054085a7bbad67fa9c5a",
+  "tagload/tagload.chunkb.bin": "2f58a69297e521d698c1cb9eda14df40ea2c23f5",
+  "tagload/tagload.chunkc.bin": "3e46b40bf90c741b2de701755ffd9d0f3d10c170",
+  "tagload/tagload.chunkd.bin": "9c58d6f377011a37a5e6ef5047897a06bc9086f2",
+  "tagload/tagload.chunke.bin": "c78ba96bfd401728806f4d83345e65a3f6b85467",
+  "tagload/tagload.chunkf.bin": "0c3a06772e5999180287898012fb0c5bb268126b",
+  "tagload/tagload.chunkg.bin": "93b5171ddab2099d373584f05520ba9e4bade9a4",
+  "tagload/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802",
+  "tagload/tagload.ram.bin": "69dcda451280ed2a1d416952a47be51c3200f8ef",
+  "tagload/tagload.ramb.bin": "aba2bec6f3e03848d785c90d1240ade7f604bbda",
+  "tagload/tagload.sym": "33fffe1bc8636b69dabe092c31ddb0b3f6412ed7"
+ },
  "sources": {
-  "aipatch.py": "608b3acfdbd8c1010c99be6e55a10509ee22ec4e",
+  "aipatch.py": "ac8ec41c8d550ca28ca8f7f2c6815aea00eefd22",
   "ap/aplib.py": "b9f5e2c829da63d9ff624020bfb7e80af81a964f",
   "ap/build8.py": "76532a42acae992b907bd2f3cc90443b88aad5ab",
   "ap/build8k.py": "7e6b94f0f420d1338b4e091e2204e488b0601f0f",
@@ -634,9 +971,10 @@
   "ap/effbuild.py": "5b7e972551da63f83d65956265e9cc3ab9a8fda6",
   "ap/sel2build.py": "4041f0a73fc3e82253320e53065c52e599a72106",
   "ap/selbuild.py": "34661c8d9dddc2ed8ecf5536baa0da859b2c9229",
-  "ap8/ap8boot.c": "f312029dbbe9c7995e856d647065226eb43fc930",
+  "ap/snd8build.py": "d97b27b698e77a31975b9c6e63529029e18612f9",
+  "ap8/ap8boot.c": "97acaa2750505bca85b707b565cffc4915eb6122",
   "ap8/ap8glue.S": "46c5451ce72d1d7da7fba586eedae09b647dad3b",
-  "ap8/ap8mod.c": "ca25fe6b8c850c925583be012602344cae38b4d4",
+  "ap8/ap8mod.c": "41e9e5fd33f2dcd573bdf1ed54a619cf9b587f2c",
   "ap8/hot8.json": "384008a3a7af890c989df902c57ca2277f89b36f",
   "ap8/inflate.h": "ab31bd9093838ae12655dc68353f9e3529eeedaa",
   "ap8/inftest.c": "01769accd9cf684fdda43092b53657f31b89dcc4",
@@ -644,7 +982,7 @@
   "bgmpatch.py": "f58fd89b2e3af6d5d21359f9b0337018d0574a36",
   "card2patch.py": "7579f3076fb2ee5e874c36a34ba441244e2983c3",
   "deadcode.py": "ecd2c92bf367713a1881cbe06ba79f423864d2b2",
-  "diffpatch.py": "92f0ca36f1967333cf6c114904723dc8d740f53e",
+  "diffpatch.py": "347e5c7467e506987d6ca5ff1df15abe7d9b27b8",
   "hudpatch.py": "505e6725d0a0eb5489e35caa34cfb49f9bbcce85",
   "iso.py": "8e25457a20c898158f680102e38da3238e4859df",
   "logo/card.bin": "814670b62c1c057d276ab9cdd26c08ec0f224532",
@@ -655,11 +993,11 @@
   "logopatch.py": "811530489499e73cc99499979ffb4a3c52e7eb6e",
   "mdis.py": "95a49216a0cdad1cea24e0aa1dcd2732e7e6ce9b",
   "mipsasm.py": "3651f92a5acc498230d6a74a40bc9bf18cc6e9eb",
-  "mkap8disc.py": "2542de9b1f2b57673f52b4fe427ee9bd2bf8f1c9",
+  "mkap8disc.py": "73db5613a18b03654bb4eac74c30989b8dcb5880",
   "mkdisc.py": "3c5b1e6de70028842461d79900b7249af1eb42ec",
   "mknspdisc.py": "83956631149beae8d57199b3fe05dfcff534c899",
   "mkrelease.py": "1f16fc2b177c95a04c98a1076ffa9fd2a198a51c",
-  "mktagdisc.py": "1d24a0c5057ab73e3dd90e91b65e6e6565db995f",
+  "mktagdisc.py": "85cfd312c6c65864e7ba976c74d66ddb8eea4635",
   "mktrace.py": "adaa0b4cfbeaf7fd6406a38f976924a479e1b885",
   "nsp.py": "eaa09f7cab945a0b601c668785d58d361c64416c",
   "nsp_codec.py": "495696cc8de5a301734379a58b96036535e550e6",
@@ -684,6 +1022,15 @@
   "reloc.py": "ce155821193c27326c2aa5416a8f512961003e28",
   "retarget.py": "0e82dde6252405b5edec18ab78478aef86fb2113",
   "roundpatch.py": "743487715b99f424bed96893ef5ff2bdcf0c90f9",
+  "snd/__init__.py": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+  "snd/adpcm.py": "1c6ff8620222e135a6ef1787133b1f2ba2b933a3",
+  "snd/resample.py": "651d7f0cceaec9c6d18c6ade0e951c05f0b71259",
+  "snd/sinc_table.py": "2cc52fa43fa06a83d2f77ad286617a21a173f309",
+  "snd/snd.h": "5d0ea07a7825bc12d16ddb6a67d2c218b91be59b",
+  "snd/snddir.c": "58470c27c655d5b0a268e3711b8cc132bf6a1e45",
+  "snd/sndres.S": "2e46b60843cd8bd0a28c58ad579b99d0ea08d290",
+  "snd/vab.py": "9b7c9102a92b6567e2722fb650dbbe26109d169e",
+  "sndpatch.py": "1e5877506f29c76d5028fa36b8dbd2f531871814",
   "speed/decode.py": "f63e3f607f66c92e15ce35a9731a0f837c36856d",
   "speed/decode/ahead.c": "cf1e2d474ef001b857513edb59adec153100ee99",
   "speed/decode/ahead_head.S": "e52fd1220192005b2d20358d9dc7bf73bf7d0981",
@@ -752,12 +1099,12 @@
   "speed/quad/quad_80056340.bin": "d66d71eb6cf68e57f23e1fc2370427f6699ecb20",
   "speed/quad/quad_80057be4.bin": "de3a3705ce7d76f2227fb3d31afa55a409b35676",
   "speed/quad/quad_80057f48.bin": "ddb1ce3e732e420bc3e265bc1f1253a344539496",
-  "speed/upload.py": "3ad2435624bdaaff4e91c60e4ea46f4d42eb2cac",
+  "speed/upload.py": "bd48d7e5c76c719fc9a5a7fddbfd505822fa26b8",
   "speed/upload/arena.S": "191b435bfc4da32791109574b757e3b96d5a6001",
   "speed/upload/draw.c": "b5c57fcbfc1f19ade38cb83562f35348f2eaf099",
   "speed/upload/fcache.c": "99c392e72b25fc351b85519d406bc5d7ba73b00b",
   "speed/upload/fcstub.S": "3a7a187dfa41db2bd1a36697d0d76b3e065098f9",
-  "speed/upload/helpers.S": "c9bb4c87519ab62ff05e81e6556aa79112dd142f",
+  "speed/upload/helpers.S": "3d426a2825233d35575be1f1210e712e7a7902f8",
   "speed/upload/icount.py": "cf574a78fdf65131618516e3933e0c0c5af371e8",
   "speed/upload/test_alloc.py": "151915a10aab0ebe5ea64423511f2b21fdf51fb6",
   "speed/upload/test_helpers.py": "08749e0f2179938d7b0cac23987033cd17c5791d",
@@ -818,7 +1165,7 @@
   "tagload/tagload.tab2.bin": "32fb2e046f09e6dc814a6040b03706174eae7229",
   "tagpatch.py": "148719cc202ad5282b111d3982c4acc7f1f2640a",
   "tagpolicy.py": "caca90197243d7b642788332241ce46840ed6b34",
-  "titlepatch.py": "55baa60e52ba4ac986efd427c7b2304bbb8815f8",
+  "titlepatch.py": "519c369a72e47d2b8e4786e2c3f98fb56fdca5f4",
   "toolenv.py": "ed74db339e37217419eb81aa7042b78d150ab899",
   "xvemu.py": "1b90cb07b4b04b2bc8222f6d6c2e0ec7157b5a53"
  }

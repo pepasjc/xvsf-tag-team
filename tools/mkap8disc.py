@@ -32,7 +32,7 @@ OBJ = os.path.join(BUILD, "ap8obj")
 GCC = M.GCC
 # dead ranges (tools/deadcode.py, break-tested with work/ap8/deadtest8.py), not used by any patch module
 CHUNKS = {".chunkh": (0x8002d9c4, 0x8002daec), ".chunki": (0x8006f2e4, 0x8006f3e0), ".chunkj": (0x80019ae8, 0x80019bd4), ".chunkl": (0x80054704, 0x800547d4), ".chunkm": (0x8004e3e0, 0x8004e490)}
-VERSION = "TAG HACK 1.1"                                # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
+VERSION = "TAG HACK 1.2"                                # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
 SEL_AT, SEL_FILE = 0x8009bc38, "P/P4/SELECT.BIN"      # jal SPRLOAD(0x27, off) of the select screen -> selhook8
 MENU_AT, MENU_FILE = 0x800987b8, "P/P4/OPDEMO.BIN"    # jr ra at the end of the main-menu text routine -> j menuhook
 MOD, MODSECT, MOD_MAGIC = 0x80200000, 12, 0x384d5658         # module area 0x80200000-0x80206000; state 0x80206000, undo list +0x400, raw_dec +0x1000
@@ -112,7 +112,7 @@ def main():
     man, mansel, mansel2 = manifest["chars"], manifest.get("select"), manifest.get("select2")
     out = os.path.join(BUILD, name + ".bin")
     # 1. the 2 MB build, untouched
-    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
+    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal", "--nosound")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
     base_sha = hashlib.sha1(open(out, "rb").read()).hexdigest()
     print("2 MB base image sha1", base_sha)
     syms = M.symbols()
@@ -216,6 +216,42 @@ def main():
         plain.append((("ht8", c), ht, f"char {c:2d} PL{c:02X}.HT8, pre-decode order of {len(ht) // 4 - 2} tiles (fallback)"))
         need.append(len(img)); psum.append(sum(struct.unpack(f"<{len(img) // 4}I", img)) & 0xFFFFFFFF)
     items += plain
+    import sndpatch                                         # 1.2 sound banks: the two 8 MB levels (lossless + arcade samples,
+    snd8items, snd8ref, snd8ex = [], {}, {}                 #  and the same at the arcade rate) behind the other files
+    if sndpatch.enabled():
+        sys.path.insert(0, os.path.join(HERE, "ap"))
+        import snd8build
+        sdir = ([os.path.abspath(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--snd8=")] or [None])[0]
+        lv8, snd8ex = sndpatch.level8(snd8build.load(sdir) if sdir else {})
+        b0 = sndpatch.banks(); seen = {}
+        with open(out, "rb") as f0:                              # the room in the 2 MB image's sound region (its directory's tail)
+            def rs(l):
+                f0.seek(l * 2352 + 24); return f0.read(2048)
+            e0 = sndpatch.code(syms["flushcache"])[1]["sndent"] - M.EXE_BASE + M.EXE_HDR
+            se = rs(lmap[region.EXE][0] + e0 // 2048)[e0 % 2048:][:8]
+            assert len(se) == 8
+            bcd = lambda x: (x >> 4) * 10 + (x & 15)
+            dl = (bcd(se[0]) * 60 + bcd(se[1])) * 75 + bcd(se[2]) - 150; dz = struct.unpack_from("<I", se, 4)[0]
+            tail = b"".join(rs(dl + i) for i in range((dz + 2047) // 2048))[dz - 8:dz]
+            rlba = (bcd(tail[0]) * 60 + bcd(tail[1])) * 75 + bcd(tail[2]) - 150; rsec = struct.unpack_from("<I", tail, 4)[0] // 2048
+        snd8room = []                                          # (lba, data, label) written into that room
+        for l in (sndpatch.L8, sndpatch.LA):                   # level 4 first: every 8 MB battle of a team with these banks reads it
+            for b in [sndpatch.XSB] + list(range(18)):
+                files = lv8[(l, b)]; ref = [None, None]
+                for kind in (0, 1):
+                    if files[kind] == b0[(0, b)][kind]: continue      # the level-0 file of the 2 MB image
+                    h = hashlib.sha1(files[kind]).digest()
+                    if h not in seen:
+                        lab = "sound 8 MB level %d %s %s (%d bytes)" % (l, "XS_MAIN" if b == sndpatch.XSB else "CHR%02X" % b, ("VH", "VB")[kind], len(files[kind]))
+                        n = (len(files[kind]) + 2047) // 2048
+                        if n <= rsec:
+                            seen[h] = ("room", rlba, len(files[kind])); snd8room.append((rlba, files[kind], lab + " (sound region)"))
+                            rlba += n; rsec -= n
+                        else:
+                            seen[h] = ("snd8", l, b, kind); snd8items.append((seen[h], files[kind], lab))
+                    ref[kind] = seen[h]
+                snd8ref[(l, b)] = ref
+        items += snd8items
     maxpack = max(len(d) for k, d, l in items if k[0] == "pack")
     ARENA_END = LT_ADDR - R(maxpack) - 0x800
     eff = open(M.EFFSTOCK, "rb").read()
@@ -340,6 +376,9 @@ def main():
                 f.seek((exe_lba + o // 2048) * 2352 + 24 + o % 2048); r += f.read(1)
             return bytes(r)
         jal = lambda t: struct.pack("<I", 0x0C000000 | ((t >> 2) & 0x03FFFFFF))
+        def rd_sec(l):
+            f.seek(l * 2352 + 24); return f.read(2048)
+        ent8 = lambda key: (M.msf(key[1]) + struct.pack("<I", key[2])) if key[0] == "room" else (M.msf(pos[key]) + struct.pack("<I", size[key]))
         for s, (a, e) in CHUNKS.items():
             d = chunks[s]
             assert a + len(d) <= e, f"{s} too big: {len(d)} > {e - a}"
@@ -355,6 +394,35 @@ def main():
             f.seek(l * 2352 + 24 + o % 2048); assert f.read(4) == old, f"{path}+{o:x}: unexpected code"
             f.seek(l * 2352 + 24 + o % 2048); f.write(new); touched.add(l)
             print(f"overlay patch {path} {addr:08x}: {old.hex()} -> {new.hex()}")
+        if sndpatch.enabled():                                  # 1.2 sound banks: the 8 MB decision asks ap8ready() too;
+            ssym = sndpatch.code(syms["flushcache"])[1]         #  the directory gets the 8 MB levels' entries and lists
+            a8 = ssym["ap8fn"]
+            assert exe_read(a8, 4) == bytes(4), "sound: ap8fn already set"
+            exe_write(a8, struct.pack("<I", sym["ap8ready"])); print(f"sound: ap8fn {a8:08x} = ap8ready {sym['ap8ready']:08x}")
+            se = exe_read(ssym["sndent"], 8)
+            bcd = lambda x: (x >> 4) * 10 + (x & 15)
+            dlba = (bcd(se[0]) * 60 + bcd(se[1])) * 75 + bcd(se[2]) - 150; dsize = struct.unpack_from("<I", se, 4)[0]
+            old_dir = b"".join(rd_sec(dlba + i) for i in range((dsize + 2047) // 2048))[:dsize]
+            ent = {}
+            for l in range(sndpatch.NLEV):
+                for b in range(sndpatch.NB):
+                    o = sndpatch.ENTOFF + (l * sndpatch.NB + b) * 16
+                    e0 = sndpatch.ENTOFF + b * 16
+                    ref = snd8ref.get((l, b))
+                    if ref is None: ent[(l, b)] = (old_dir[o:o + 8], old_dir[o + 8:o + 16])
+                    else: ent[(l, b)] = tuple(old_dir[e0 + 8 * k:e0 + 8 * k + 8] if ref[k] is None else ent8(ref[k]) for k in (0, 1))
+            new_dir = sndpatch.dir_sector(ent, sndpatch.code(syms["flushcache"])[2], sndpatch.lists(snd8ex), sndpatch.stash2())
+            new_dir = new_dir[:dsize - 8] + old_dir[dsize - 8:]
+            assert len(new_dir) == dsize
+            for lba0, data, lab in snd8room:
+                pad = data + bytes(-len(data) % 2048)
+                for i in range(len(pad) // 2048):
+                    f.seek((lba0 + i) * 2352 + 24); assert not any(f.read(2048)), "sound: the room is not empty"
+                    f.seek((lba0 + i) * 2352 + 24); f.write(pad[2048 * i:2048 * i + 2048]); touched.add(lba0 + i)
+                print(f"{lab}: {len(data)} bytes at lba {lba0}")
+            for i in range(dsize // 2048):
+                f.seek((dlba + i) * 2352 + 24); f.write(new_dir[2048 * i:2048 * i + 2048]); touched.add(dlba + i)
+            print(f"sound: directory at lba {dlba}: 8 MB levels {sndpatch.L8}/{sndpatch.LA}, {len(snd8items)} files, extra ids {({hex(b): [hex(i) for i in v] for b, v in snd8ex.items()})}")
         file_patch(SEL_FILE, SEL_AT, jal(0x80053f78), jal(sym["selhook8"]))
         file_patch(MENU_FILE, MENU_AT, struct.pack("<I", 0x03e00008), struct.pack("<I", 0x08000000 | (sym["menuhook"] >> 2 & 0x3ffffff)))
         assert exe_read(syms["tl_dbg"] + 12, 4) == orig[syms["tl_dbg"] + 12 - M.EXE_BASE + M.EXE_HDR:][:4]      # the flag byte: unused dead code so far

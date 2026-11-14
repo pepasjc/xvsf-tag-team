@@ -183,22 +183,36 @@ def stage_sprites(work, jobs=1, progress=None, log=print):
 
 
 # ---------------------------------------------------------------- the harness around tools/
-def _enc(x):
-    if isinstance(x, (bytes, bytearray)): return {"__bytes__": bytes(x).hex()}
-    if isinstance(x, tuple): return {"__tuple__": [_enc(v) for v in x]}
-    if isinstance(x, list): return [_enc(v) for v in x]
-    if isinstance(x, dict): return {"__dict__": [[_enc(k), _enc(v)] for k, v in x.items()]}
+def _enc(x, ref=None):
+    """result -> JSON-able.  ref (record mode): bytes -> gameref segments, so that words of the game are stored as
+    references to the user's disc (gameref.py); without it bytes are stored as they are (call keys, check sums)"""
+    if isinstance(x, (bytes, bytearray)):
+        if ref is None: return {"__bytes__": bytes(x).hex()}
+        segs = ref(bytes(x))
+        return {"__bytes__": segs[0] if segs else ""} if len(segs) <= 1 and all(isinstance(g, str) for g in segs) else {"__bref__": segs}
+    if isinstance(x, tuple): return {"__tuple__": [_enc(v, ref) for v in x]}
+    if isinstance(x, list): return [_enc(v, ref) for v in x]
+    if isinstance(x, dict): return {"__dict__": [[_enc(k, ref), _enc(v, ref)] for k, v in x.items()]}
     assert x is None or isinstance(x, (int, float, str, bool)), type(x)
     return x
 
 
-def _dec(x):
-    if isinstance(x, list): return [_dec(v) for v in x]
+def _dec(x, read=None):
+    """JSON -> result; read(file, offset, count) fills the references from the user's disc"""
+    if isinstance(x, list): return [_dec(v, read) for v in x]
     if isinstance(x, dict):
         if "__bytes__" in x: return bytes.fromhex(x["__bytes__"])
-        if "__tuple__" in x: return tuple(_dec(v) for v in x["__tuple__"])
-        return {_dec(k): _dec(v) for k, v in x["__dict__"]}
+        if "__bref__" in x:
+            from . import gameref
+            return gameref.resolve(x["__bref__"], read)
+        if "__tuple__" in x: return tuple(_dec(v, read) for v in x["__tuple__"])
+        return {_dec(k, read): _dec(v, read) for k, v in x["__dict__"]}
     return x
+
+
+def _plain_sha1(res):
+    """SHA-1 of a result in plain form (bytes as they are): what a blob must resolve to"""
+    return hashlib.sha1(json.dumps(_enc(res), separators=(",", ":")).encode()).hexdigest()
 
 
 # ---------------------------------------------------------------- prebaked blobs (our own MIPS code)
@@ -218,15 +232,18 @@ PREBAKED = [                        # (module, function): everything in tools/ t
     ("mktagdisc", "ahead_area"),    # 1.1 decode-ahead predictor sectors (tools/speed/decode/ahead_sector.py)
     ("titlepatch", "build"), ("logopatch", "build"), ("card2patch", "build"),     # version line, boot card, card 2 stub
     ("mkap8disc", "build"),         # 8 MB boot stub + module (tools/ap8)
+    ("sndpatch", "code"),           # 1.2 sound banks: resident code + the sound directory's code (tools/snd)
 ]
 TAGLOAD_FILES = lambda names: sorted(f for f in names if f == "tagload.sym" or (f.startswith("tagload.") and f.endswith(".bin") and ".tab" not in f))
-CONTEXT_ENV = ("XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
+CONTEXT_ENV = ("XV_SNDTRACE", "XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
 
 
 def context():
     """what the prebaked functions read besides their arguments: --nospeed in the tools' argv (tagpatch, hudpatch,
     nsppatch, speedpatch) and the developers' environment switches of tools/speed and tools/mkap8disc.py"""
-    return dict(nospeed="--nospeed" in sys.argv, env={k: os.environ[k] for k in CONTEXT_ENV if k in os.environ})
+    ctx = dict(nospeed="--nospeed" in sys.argv, env={k: os.environ[k] for k in CONTEXT_ENV if k in os.environ})
+    if "--nosound" in sys.argv: ctx["nosound"] = True     # 1.2: the 1.1 sound path (tools/sndpatch.py; cdtile in the upload module)
+    return ctx
 
 
 def call_key(fname, args, kw, ctx):
@@ -295,6 +312,7 @@ class Tools:
         if mips_prefix: os.environ["XVSF_MIPS_PREFIX"] = mips_prefix          # tools/toolenv.py reads it (record mode only)
         self.man = manifest()
         self.cache_events = []
+        self._corpus = None; self._files = {}
         os.makedirs(self.build, exist_ok=True)
         for p in (os.path.join(self.tools, "ap"), self.tools):
             if p not in sys.path: sys.path.insert(0, p)
@@ -343,7 +361,47 @@ class Tools:
         self.mods[name] = m
         return m
 
-    # ---- prebaked blobs ---------------------------------------------------------------------------
+    # ---- prebaked blobs -----------------------------------------------------------------------------
+    def read_game(self, name, off, n):
+        """bytes of the user's own disc (the checked image): fills blob references.  Files up to 8 MB come from the
+        extracted copies, larger ones (DMY.DAT, the XA files) are read from the image through lba_map.json"""
+        if name not in self._files:
+            p = os.path.join(self.work, "files", *name.split("/"))
+            if os.path.isfile(p): self._files[name] = builtins.open(p, "rb").read()
+            else:
+                lmap = json.load(builtins.open(os.path.join(self.work, "lba_map.json")))
+                if name not in lmap: raise BuildError("builder/data/blobs refers to %s, which is not a file of the disc image" % name, code="toolchain")
+                self._files[name] = tuple(lmap[name])
+        f = self._files[name]
+        if isinstance(f, bytes): return f[off:off + n]
+        lba, size = f
+        if off + n > size: return b""
+        return cdrom.Disc(self.image).read(lba + off // 2048, off % 2048 + n)[off % 2048:]
+
+    def ref(self, data):
+        """record mode: bytes -> gameref segments (words of the game -> references to the files of the disc)"""
+        from . import gameref
+        if self._corpus is None:
+            d = cdrom.Disc(self.image)
+            self._corpus = gameref.Corpus({nm: d.read(l, sz) for nm, l, sz in d.walk()}, first=(self.region.EXE,), cache_all=True)
+        return gameref.encode(data, self._corpus)
+
+    def load_blob(self, sha, resolved, what):
+        """a blob -> its result, references filled from the user's disc and checked against the recorded SHA-1"""
+        res = _dec(json.loads(_blob(sha)), self.read_game)
+        if resolved and _plain_sha1(res) != resolved:
+            raise BuildError("%s: the code filled in from the disc image does not match the recorded result (blob %s)" % (what, sha[:12]), code="toolchain")
+        return res
+
+    def store_blob(self, res):
+        """record mode: result -> blob name (SHA-1 of the stored JSON), and the SHA-1 it must resolve to"""
+        b = json.dumps(_enc(res, self.ref), separators=(",", ":")).encode()
+        sha = hashlib.sha1(b).hexdigest() + ".json"
+        os.makedirs(BLOBS, exist_ok=True)
+        if not os.path.exists(os.path.join(BLOBS, sha)): builtins.open(os.path.join(BLOBS, sha), "wb").write(b)
+        assert _plain_sha1(_dec(json.loads(b), self.read_game)) == _plain_sha1(res)
+        return sha, len(b), _plain_sha1(res)
+
     def prebake(self, m, fname):
         """m.fname -> its recorded result from builder/data/blobs (record mode: run it and record the result)"""
         orig = getattr(m, fname)
@@ -354,11 +412,9 @@ class Tools:
         def wrapped(*args, **kw):
             ctx = context(); key = call_key(fn, args, kw, ctx)
             if self.record:
-                res = orig(*args, **kw); b = json.dumps(_enc(res), separators=(",", ":")).encode()
-                sha = hashlib.sha1(b).hexdigest() + ".json"
-                os.makedirs(BLOBS, exist_ok=True)
-                if not os.path.exists(os.path.join(BLOBS, sha)): open(os.path.join(BLOBS, sha), "wb").write(b)
-                self.man["calls"][key] = dict(function=fn, args=_enc(tuple(args)), kwargs=_enc(dict(kw)), context=ctx, blob=sha, size=len(b))
+                res = orig(*args, **kw)
+                sha, size, rsha = self.store_blob(res)
+                self.man["calls"][key] = dict(function=fn, args=_enc(tuple(args)), kwargs=_enc(dict(kw)), context=ctx, blob=sha, size=size, resolved=rsha)
                 self.cache_events.append((fn, "baked")); self.log("%s: baked %s" % (fn, sha[:12]))
                 return res
             e = self.man["calls"].get(key)
@@ -367,7 +423,7 @@ class Tools:
                                  "(the builder never compiles; the release script work/release11/record.py bakes it)."
                                  % (fn, ", ".join(repr(x)[:40] for x in args)), code="toolchain")
             self.cache_events.append((fn, "prebaked")); self.log("%s: prebaked %s" % (fn, e["blob"][:12]))
-            return _dec(json.loads(_blob(e["blob"])))
+            return self.load_blob(e["blob"], e.get("resolved"), fn)
         wrapped._xvb_prebaked = self; wrapped._xvb_orig = orig
         setattr(m, fname, wrapped)
 
@@ -381,13 +437,14 @@ class Tools:
         tag = os.path.join(self.build, "tagload"); os.makedirs(tag, exist_ok=True)
         if self.record:
             for f in TAGLOAD_FILES(os.listdir(src)):
-                b = open(os.path.join(src, f), "rb").read(); sha = hashlib.sha1(b).hexdigest() + ".bin"
-                os.makedirs(BLOBS, exist_ok=True)
-                if not os.path.exists(os.path.join(BLOBS, sha)): open(os.path.join(BLOBS, sha), "wb").write(b)
-                self.man["files"]["tagload/" + f] = sha
+                b = builtins.open(os.path.join(src, f), "rb").read()
+                sha, size, rsha = self.store_blob(b)
+                self.man["files"]["tagload/" + f] = sha; self.man.setdefault("resolved", {})["tagload/" + f] = rsha
         files = {k.split("/", 1)[1]: v for k, v in self.man["files"].items() if k.startswith("tagload/")}
         if "tagload.sym" not in files: raise BuildError("the prebuilt loader (tagload) is not in builder/data/blobs", code="toolchain")
-        for f, sha in files.items(): open(os.path.join(tag, f), "wb").write(_blob(sha))
+        for f, sha in files.items():
+            b = self.load_blob(sha, self.man.get("resolved", {}).get("tagload/" + f), "tagload/" + f) if sha.endswith(".json") else _blob(sha)
+            builtins.open(os.path.join(tag, f), "wb").write(b)
         if M._CONF0: M._CONF0 = (tag,) + tuple(M._CONF0[1:])     # mktagdisc.configure() restores D from there
         M.D = tag
 
@@ -449,7 +506,7 @@ def stage_arcade(T, arcade, outdir, log):
     del prg, roms
     base = outdir + "_base"                               # step 1: characters + first select-screen set
     effdir = outdir + "_eff"
-    for d in (base, outdir, effdir):
+    for d in (base, outdir, effdir, outdir + "_snd8"):
         if os.path.isdir(d): shutil.rmtree(d)
     bk = T.mod("build8k")                                 # build8.py + the measured extra keep-stock list
     with _argv("build8k.py"):
@@ -462,6 +519,9 @@ def stage_arcade(T, arcade, outdir, log):
     e2 = T.mod("eff2build")                               # step 3: common effects file -> --eff=
     if e2.main(["--arcade", *arcade, "--disc", T.image, "--out", effdir, "--keep", EFF_KEEP]) != 0:
         raise BuildError("The arcade content builder (effects) failed (see the log).", code="arcade")
+    s8 = T.mod("snd8build")                               # step 4 (1.2): the arcade samples the PS1 has no sound for -> --snd8=
+    try: s8.build(arcade, outdir + "_snd8")
+    except s8.Fail as ex: raise BuildError(str(ex), code="arcade")
     return setname
 
 
@@ -469,7 +529,8 @@ def stage_disc8(T, name, apdir, flags):
     """tools/mkap8disc.py NAME --ap8=DIR [flags] -> Overlay (runs the 2 MB build inside)"""
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc"); M8 = T.mod("mkap8disc")
     T.prebake_all()
-    with _argv("mkap8disc.py", name, "--ap8=" + apdir, "--eff=" + apdir + "_eff", *flags): M8.main()
+    snd8 = ["--snd8=" + apdir + "_snd8"] if os.path.isdir(apdir + "_snd8") else []
+    with _argv("mkap8disc.py", name, "--ap8=" + apdir, "--eff=" + apdir + "_eff", *snd8, *flags): M8.main()
     return T.finish(name)
 
 
@@ -503,13 +564,13 @@ def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=N
 
 
 def output_name(arcade, tools_dir=None, flags=()):
-    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.1]" """
+    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.2]" """
     ver = "TAG HACK"
     try:
         tools_dir = tools_dir or os.path.join(REPO, "tools")
         if tools_dir not in sys.path: sys.path.insert(0, tools_dir)
         tp = importlib.import_module("titlepatch")
-        ver = tp.DEFAULT_NOSPEED if "--nospeed" in flags and not arcade else tp.DEFAULT
+        ver = tp.default(list(flags)) if not arcade else tp.DEFAULT      # --nospeed: 1.0.1, --nosound: 1.1 (2 MB)
     except Exception: pass
     return "X-Men vs. Street Fighter (USA) [%s%s]" % (ver.title(), " + Restored Frames" if arcade else "")
 

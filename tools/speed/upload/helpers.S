@@ -765,6 +765,8 @@ fcx_s:  jal     FC_DONE                    # frame cache: the rect holds its fra
 
 # cdtile (set 0x37, tiles streamed from the CD): S[0x28] = S[0xe4] rounded as the original, seek + read
 # e8*e9 bytes to *0x8006a354, S[0x6c] = buffer + S[0xe4] - S[0x28], wait for the read; v0 = S[0x6c].
+# (The "CD" is the SP_EFF2 pixel stash in SPU RAM.  SOUND (tools/sndpatch.py, 1.2): the stash is where the set-0x37
+# loader recorded it, the set's sec2 0x8005c90c: an SPU address, or with bit 31 set main RAM (8 MB), read in place.)
 cdtile: move    $s4, $ra
         lw      $v1, 0xe4($s0)
         nop
@@ -775,15 +777,33 @@ cdtile: move    $s4, $ra
         sll     $v0, $v0, 3
         addiu   $v0, $v0, -8
         sw      $v0, 0x28($s0)
-1:      lbu     $v1, 0xe8($s0)
+1:
+        .if SOUND
+        lui     $v0, 0x8006
+        lw      $v0, -0x36f4($v0)          # 0x8005c90c: the stash
+        lw      $v1, 0xe4($s0)
+        bgez    $v0, 4f                    # SPU
+        nop
+        addu    $v0, $v0, $v1              # main RAM: the tile's bytes in place
+        jr      $s4
+        sw      $v0, 0x6c($s0)
+4:
+        .endif
+        lbu     $v1, 0xe8($s0)
         lbu     $v0, 0xe9($s0)
         nop
         mult    $v1, $v0
         lw      $a0, 0x28($s0)
         lui     $s3, 0x8007
         lw      $s3, -0x5cac($s3)          # *0x8006a354
+        .if SOUND
+        lui     $v0, 0x8006
+        lw      $v0, -0x36f4($v0)          # the stash's SPU address (0x8005c90c)
+        nop
+        .else
         lui     $v0, 6
         ori     $v0, $v0, 0x8000
+        .endif
         addu    $a0, $a0, $v0
         mflo    $s2
         jal     0x800116c8

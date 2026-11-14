@@ -6,13 +6,17 @@
  * slices on demand and never copied into memory - and runs the same pipeline as builder/build.py.
  * The hot loops run as JavaScript (kernels.js) instead of numba.
  *
+ * 1.2 sound: the ADPCM encoder jobs of the sound banks run in sub-workers (the same script, started from
+ * self.location) while this worker encodes the sprites; see builder/xvb/web.py, "encoded in parallel".
+ *
  * Messages in:   {type:"init", pyodide, bundle:ArrayBuffer, zopfli:{glue, wasm}}
  *                {type:"disc", file}            verify a disc image
  *                {type:"arcade", files:[...]}   identify an arcade ROM set
  *                {type:"build", flags:[...]}    build with the files given before
  * Messages out:  {type:"ready"} {type:"status", text} {type:"disc", result} {type:"arcade", result}
  *                {type:"progress", stage, frac, text} {type:"log", line} {type:"done", ...} {type:"error", message}
- * Cancelling = the page terminates the worker and starts a new one.
+ * Sub-worker:    {type:"snd_encode", i, x:Int32Array, prm:[nblk, s1, s2, K, M, B, R]} -> {type:"snd_done", i, out}
+ * Cancelling = the page terminates the worker (and with it its sub-workers) and starts a new one.
  */
 "use strict";
 let py = null, web = null, cfg = null, zopfliReady = false;
@@ -69,6 +73,40 @@ function verifyArcade(files) {
   post({ type: "arcade", result: r });
 }
 
+function soundParallel(meta, inputs, onDone) {
+  // -> Promise of the ADPCM blocks of every job, concatenated in plan order; jobs go to the sub-workers longest first
+  const n = Math.max(1, Math.min(4, (self.navigator && navigator.hardwareConcurrency || 2) - 1));
+  const offs = []; let total = 0;
+  for (const m of meta) { offs.push(total); total += 16 * m[3]; }
+  const out = new Uint8Array(total), order = meta.map((m, i) => i).sort((a, b) => meta[b][2] - meta[a][2] || a - b);
+  return new Promise((resolve, reject) => {
+    let next = 0, done = 0;
+    const subs = [];
+    const give = (w) => {
+      if (next >= order.length) return;
+      const i = order[next++], m = meta[i], x = inputs.slice(m[1], m[1] + m[2]);
+      w.postMessage({ type: "snd_encode", i, x, prm: m.slice(3) }, [x.buffer]);
+    };
+    for (let k = 0; k < Math.min(n, order.length); k++) {
+      const w = new Worker(self.location.href);
+      w.onmessage = (ev) => {
+        const r = ev.data;
+        if (r.type !== "snd_done") { subs.forEach((s) => s.terminate()); reject(new Error("sound sub-worker: " + (r.message || r.type))); return; }
+        out.set(r.out, offs[r.i]); done++; onDone(done, order.length);
+        if (done === order.length) { subs.forEach((s) => s.terminate()); resolve(out); } else give(w);
+      };
+      w.onerror = (ev) => { subs.forEach((s) => s.terminate()); reject(new Error("sound sub-worker: " + (ev.message || "error"))); };
+      subs.push(w); give(w);
+    }
+  });
+}
+
+function sndEncode(m) {
+  const [nblk, s1, s2, K, M, B, R] = m.prm, out = new Uint8Array(16 * nblk);
+  XVK.snd_encode(m.x, nblk, s1, s2, K, M, B, R, out);
+  self.postMessage({ type: "snd_done", i: m.i, out }, [out.buffer]);
+}
+
 async function build(flags) {
   if (!discInfo) throw new Error("no verified disc image");
   if (arcade.length) await needZopfli();
@@ -79,6 +117,22 @@ async function build(flags) {
     if (key !== lastKey || frac >= 1 || t - lastP > 150) { lastKey = key; lastP = t; post({ type: "progress", stage, frac, text: text || "" }); }
   };
   const log = (line) => post({ type: "log", line: String(line) });
+  // the sound encoder jobs to the sub-workers, the sprites here meanwhile; then wait for the sound
+  web.prepare("/in/disc.bin");
+  const plan = web.sound_plan("/in/disc.bin", JSON.stringify(arcade), JSON.stringify(flags));
+  const meta = JSON.parse(plan.get(0)), arr = plan.get(1), buf = arr.getBuffer("i32"), inputs = buf.data.slice();
+  buf.release(); arr.destroy(); plan.destroy();
+  let sndDone = 0, sndTotal = meta.length, spritesDone = false;
+  const sound = meta.length ? soundParallel(meta, inputs, (d, t) => { sndDone = d; if (spritesDone) progress("sound", d / t, d + " of " + t); }) : null;
+  web.sprites(progress, log);
+  spritesDone = true;
+  if (sound) {
+    progress("sound", sndDone / sndTotal, sndDone + " of " + sndTotal);
+    const out = await sound;
+    log("sound: " + meta.length + " encoder jobs done in sub-workers");
+    web.sound_results(JSON.stringify(meta), out);
+    progress("sound", 1, "");
+  }
   const info = JSON.parse(web.build("/in/disc.bin", JSON.stringify(arcade), JSON.stringify(flags), "", discInfo.sha1, discInfo.size, progress, log));
   if (!info.ok) { post({ type: "failed", code: info.code, message: info.message }); return; }
   // checksum of the result, streamed
@@ -108,6 +162,7 @@ self.onmessage = async (ev) => {
     else if (m.type === "disc") verifyDisc(m.file);
     else if (m.type === "arcade") verifyArcade(m.files);
     else if (m.type === "build") await build(m.flags);
+    else if (m.type === "snd_encode") sndEncode(m);
   } catch (e) {
     post({ type: "error", message: String((e && e.message) || e), during: m.type });
   }

@@ -15,7 +15,7 @@ The bundle contains code and measurement tables only; no game data.
 import argparse, base64, hashlib, io, json, os, zipfile
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.abspath(os.path.join(HERE, ".."))
 PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"       # Python 3.11.3, numpy 1.26.4
-SHOW = ("What it does", "Restored frames (8 MB)", "Known issues", "How it works")      # README.md sections shown on the page
+SHOW = ("What it does", "Restored frames (8 MB)", "Known issues")      # README.md sections shown on the page
 
 
 def bundle_files():
@@ -35,6 +35,7 @@ def bundle_files():
     add("tools", lambda f: py(f) and not f.startswith("cold"))
     add("tools/speed", py)                       # speedpatch.py + frame.py are imported (their results come from the blobs)
     add("tools/ap", py)
+    add("tools/snd", py)                         # 1.2 sound banks: VAB editing, resampler, ADPCM encoder (hot loops: src/kernels.js)
     add("tools/ap8", lambda f: f == "hot8.json")  # data: the 8 MB pre-decode order (read by tools/mkap8disc.py)
     add("tools/logo", lambda f: f.endswith(".bin"))   # card2.bin: the second card's own layer (composed with the user's portraits)
     return out

@@ -24,6 +24,7 @@ USA disc (SLUS-00627); the executable is loaded at 0x80010000. Engine facts the 
   - [Pre-decoded tiles (1.1)](#pre-decoded-tiles-11)
 - [Speed](#speed)
   - [Speed (1.1)](#speed-11)
+- [Sound (1.2)](#sound-12)
 - [The disc](#the-disc)
 - [Reproducible builds](#reproducible-builds)
 
@@ -343,11 +344,42 @@ game, with two characters and no tag, has 41 of 110 below full speed in the same
 stored assembled in `builder/data/blobs/` (one file per piece, named by its SHA-1 and checked on every
 read; `manifest.json` maps each code-generating function and its arguments to its piece). The builder
 and the web patcher install these in place of the generating functions and run no compiler or other
-program. [BUILDING.md](../BUILDING.md) describes re-baking them after a source change.
+program. Where a piece keeps some of the game's own instructions, the blob stores a reference (file,
+offset, length) instead of the words, filled in from the user's disc. [BUILDING.md](../BUILDING.md)
+describes re-baking them after a source change.
 
-**Deferred to 1.2.** A frame cache that keeps decoded sprite frames in the arena between frames (`UP_FC`,
-`tools/speed/upload/fcache.c`) froze on a real console after several attract-mode cycles. It is off in
-1.1; the source is included.
+**Not enabled.** A frame cache that keeps decoded sprite frames in the arena between frames (`UP_FC`,
+`tools/speed/upload/fcache.c`) froze on a real console after several attract-mode cycles. It is off; the
+source is included.
+
+## Sound (1.2)
+
+The port loads five sound banks per battle: the common bank `XS_MAIN` and, per side, the main
+character's full bank (`CHRxx`) but only a small `HELPxx` bank for the partner. A partner tagged in
+therefore lost most of its voices and effects. 1.2 loads the full bank of every character in the fight.
+
+- **SPU budget.** Stock samples fill SPU RAM 0x1010-0x68000 (421,872 bytes); the battle stores the
+  `A/A2/SP_EFF2.NSP` pixel data (the FIGHT banner, super cut-in portraits) above it and reads it back tile
+  by tile. SPU 0x7EA80-0x80000 holds the finish-effect palettes, written once at boot and read back at every
+  KO or super finish: it stays untouched. On 2 MB the samples now use 0x1010-0x70CC0 (457,904 bytes) and the
+  `SP_EFF2` data moves up to 0x70CC0-0x7EA80. On 8 MB the `SP_EFF2` data stays in main RAM (0x801F0000, unused on the
+  8 MB path), so the samples use 0x1010-0x7EA80 (514,672 bytes).
+- **Banks.** Each character bank is rebuilt from the disc's `CHRxx` with the ids only its `HELPxx` had,
+  ids the character requests but no bank had (Juggernaut's KO scream, Akuma's Gou Hadouken), and alias
+  tones for the tag voices (their samples are already in the bank under another id, so they cost no SPU
+  memory). `XS_MAIN` drops the round-announcer voices the hack never plays.
+- **Quality levels, made at build time.** Four characters' full banks do not always fit. The builder makes
+  every bank at several levels from the user's disc (`tools/sndpatch.py`, `tools/snd/`): level 0 is the
+  original ADPCM data; 2 MB levels 1 to 3 resample every sample above 20,000 / 17,000 / 14,800 Hz down
+  to that rate (windowed sinc) and re-encode it (search ADPCM encoder), with the pitch raised by the same
+  ratio. Both are integer-only, so every platform and the browser give the same bytes.
+- **Per-battle choice.** A sound directory (3 sectors in `DMY.DAT`, code and tables from
+  `tools/snd/snddir.c`) is read before the banks of each battle; it picks the best level pair for
+  `XS_MAIN` and the characters that fits the budget. On 2 MB every team of four different characters
+  needs a level above 0; smaller teams fit at level 0 or close to it.
+- **8 MB.** Level 4 = level 0 plus the arcade samples the PlayStation has no sound for (Wolverine's third
+  tag voice, taken from the user's arcade set by `tools/ap/snd8build.py`); level 5 caps samples at the
+  arcade's 24,038 Hz. 2,117 of the 2,380 four-character teams play the original samples unchanged.
 
 ## The disc
 
