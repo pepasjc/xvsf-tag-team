@@ -214,10 +214,10 @@
     "--logo",
     "--title"
    ],
-   "sha1": "a296224a6ca784982c4f0cc9fb02761f0b79bffe",
+   "sha1": "67f4e321ca4d79230639dd5eadcc6a8cef26fe43",
    "size": 392393568,
    "what": "2 MB tag hack [--logo --title]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -227,10 +227,10 @@
     "--nopad",
     "--title"
    ],
-   "sha1": "e7a5c0483752c0aa49e4b46fbd772a904c216f81",
+   "sha1": "22c7e7d7a287dae60ebadb8ef95ee91dd72be236",
    "size": 392393568,
    "what": "2 MB tag hack [--logo --title --nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -238,10 +238,10 @@
    "flags": [
     "--title"
    ],
-   "sha1": "9505c9a4f9397057b4cc25166f7ac15957999b21",
+   "sha1": "4e5972300a4fdbe8ef8f6fe53a553a140e12df2a",
    "size": 392393568,
    "what": "2 MB tag hack [--title]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -250,10 +250,10 @@
     "--nopad",
     "--title"
    ],
-   "sha1": "c00af016f110e6a0476e206b771211ec10208ca3",
+   "sha1": "a735996380f463f59aafa2d17d8e97d5a9aa11b1",
    "size": 392393568,
    "what": "2 MB tag hack [--title --nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -261,10 +261,10 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "616fd38802f890061a0e4413321f06d9498371a7",
+   "sha1": "a48185fc401e1a23ad9cf080fed196b32639182c",
    "size": 392393568,
    "what": "2 MB tag hack [--logo]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -273,19 +273,19 @@
     "--logo",
     "--nopad"
    ],
-   "sha1": "07f6195bc6cbd674f16426995f1d79b73557ecd3",
+   "sha1": "b58d4b7e5920126bcc4ff3bd167ce5961e871697",
    "size": 392393568,
    "what": "2 MB tag hack [--logo --nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
    "arcade_set": null,
    "flags": [],
-   "sha1": "d098fc7a2a151cb71dceeb99f84213055e264647",
+   "sha1": "d918897adbc2b9ec982465dc7b2a7d4477684cbf",
    "size": 392393568,
    "what": "2 MB tag hack",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "2mb",
@@ -293,10 +293,10 @@
    "flags": [
     "--nopad"
    ],
-   "sha1": "a75398ad119607c617b3c3f37febbc40d5f8fd1a",
+   "sha1": "42cf913218dadbc32d6e0e937ae8e4a1c517a19e",
    "size": 392393568,
    "what": "2 MB tag hack [--nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -304,19 +304,19 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "667e2dfe23a6f845a41cc1d9cd74e3e48bf526e6",
+   "sha1": "6f4de1f0db092844e04918c0ff17e9f4e9206873",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
    "arcade_set": "xmvsfu (USA 961023)",
    "flags": [],
-   "sha1": "341883b1047329579ce87e645934bdb70c58ec83",
+   "sha1": "7ff041ffd7e94c23a9c1103e0cc33e9d8c789c43",
    "size": 423621072,
    "what": "tag hack + restored frames, xmvsfu (USA 961023)",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -325,10 +325,10 @@
     "--logo",
     "--nopad"
    ],
-   "sha1": "376ad48014b58fe18202cded51793f275178e1c5",
+   "sha1": "d34ad9e72c250fa4a06e4fa5a8ea07a8f09d14de",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo --nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -336,19 +336,19 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "edc180c91d74d315b21030291f53ff2bc60cd99e",
+   "sha1": "73b73a7f5bc2c4851de357b5cfc9794f1841e5db",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
    "arcade_set": "xmvsf (Euro 961004)",
    "flags": [],
-   "sha1": "0dd27988c65ffd5bd606bbc292701b373da5a4fd",
+   "sha1": "343b0a3df24f3f6ecfb589c3577a3191c4801cec",
    "size": 423621072,
    "what": "tag hack + restored frames, xmvsf (Euro 961004)",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -357,10 +357,10 @@
     "--logo",
     "--nopad"
    ],
-   "sha1": "d6e8424854d6ab4e60f41c5747d6aa1bb2626e32",
+   "sha1": "2e3ae36bad874e8e1ad4ff69182f6ff8785dbd81",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo --nopad]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -368,19 +368,19 @@
    "flags": [
     "--logo"
    ],
-   "sha1": "edc180c91d74d315b21030291f53ff2bc60cd99e",
+   "sha1": "73b73a7f5bc2c4851de357b5cfc9794f1841e5db",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo]",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
    "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
    "flags": [],
-   "sha1": "0dd27988c65ffd5bd606bbc292701b373da5a4fd",
+   "sha1": "343b0a3df24f3f6ecfb589c3577a3191c4801cec",
    "size": 423621072,
    "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted)",
-   "release": "1.2"
+   "release": "1.3"
   },
   {
    "variant": "8mb",
@@ -389,10 +389,218 @@
     "--logo",
     "--nopad"
    ],
-   "sha1": "d6e8424854d6ab4e60f41c5747d6aa1bb2626e32",
+   "sha1": "2e3ae36bad874e8e1ad4ff69182f6ff8785dbd81",
    "size": 423973872,
    "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo --nopad]",
-   "release": "1.2"
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--logo",
+    "--title"
+   ],
+   "sha1": "4cdff120196536ccaf97355628943801fcec5ba4",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--logo",
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "32db96c0dda509377749cf9d5cb524f2b32b1478",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --title --nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--title"
+   ],
+   "sha1": "96e6f9939c3d38dc64c80961bc581f521e1c31da",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "061bf266770fecc95962d88a5dd6a09957e52967",
+   "size": 392393568,
+   "what": "2 MB tag hack [--title --nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--logo"
+   ],
+   "sha1": "5f3481f698e3d8296c147011766353d840e8f5a7",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "69f536d950104c50d86ef65322cf135618a8e9c0",
+   "size": 392393568,
+   "what": "2 MB tag hack [--logo --nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach"
+   ],
+   "sha1": "20c1655b21c42ae45a4bea0d36ff4a896678f6fb",
+   "size": 392393568,
+   "what": "2 MB tag hack [--ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--nopad"
+   ],
+   "sha1": "9ab76698521a47b1e64111885b978d0564821575",
+   "size": 392393568,
+   "what": "2 MB tag hack [--nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--ach",
+    "--logo"
+   ],
+   "sha1": "ecbcd88c4965b2a1e10342ad1ae87bb3573dc855",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--ach"
+   ],
+   "sha1": "c7a36895e09bd0cefc3dde4527ffcb593c1f29da",
+   "size": 423621072,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023) [--ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--ach",
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "85b3d28a1ac8c4d2fb3b7799a1beccfbf43ce5ac",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsfu (USA 961023) [--logo --nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--ach",
+    "--logo"
+   ],
+   "sha1": "036479f887699da4f0fbfc1ef9c801bfed7a1a9f",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--ach"
+   ],
+   "sha1": "5704ed8ea86a7e6bb0326100a17dcc479a9f5062",
+   "size": 423621072,
+   "what": "tag hack + restored frames, xmvsf (Euro 961004) [--ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--ach",
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "692743ea969924d7c05085ece0ea0d069f208ea5",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo --nopad --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
+   "flags": [
+    "--ach",
+    "--logo"
+   ],
+   "sha1": "036479f887699da4f0fbfc1ef9c801bfed7a1a9f",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo --ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
+   "flags": [
+    "--ach"
+   ],
+   "sha1": "5704ed8ea86a7e6bb0326100a17dcc479a9f5062",
+   "size": 423621072,
+   "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--ach]",
+   "release": "1.3"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu1d (USA 961004, decrypted)",
+   "flags": [
+    "--ach",
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "692743ea969924d7c05085ece0ea0d069f208ea5",
+   "size": 423973872,
+   "what": "tag hack + restored frames, xmvsfu1d (USA 961004, decrypted) [--logo --nopad --ach]",
+   "release": "1.3"
   }
  ],
  "previous": [
@@ -531,7 +739,187 @@
    "size": 423002496,
    "what": "tag hack + restored frames, xmvsf (Euro 961004) [--logo --nopad]",
    "release": "1.1"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--title"
+   ],
+   "sha1": "a296224a6ca784982c4f0cc9fb02761f0b79bffe",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--logo --title]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "e7a5c0483752c0aa49e4b46fbd772a904c216f81",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--logo --title --nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--title"
+   ],
+   "sha1": "9505c9a4f9397057b4cc25166f7ac15957999b21",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--title]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--nopad",
+    "--title"
+   ],
+   "sha1": "c00af016f110e6a0476e206b771211ec10208ca3",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--title --nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "616fd38802f890061a0e4413321f06d9498371a7",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--logo]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "07f6195bc6cbd674f16426995f1d79b73557ecd3",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--logo --nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [],
+   "sha1": "d098fc7a2a151cb71dceeb99f84213055e264647",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--nopad"
+   ],
+   "sha1": "a75398ad119607c617b3c3f37febbc40d5f8fd1a",
+   "size": 392393568,
+   "what": "1.2: 2 MB tag hack [--nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "667e2dfe23a6f845a41cc1d9cd74e3e48bf526e6",
+   "size": 423973872,
+   "what": "1.2: tag hack + restored frames, xmvsfu (USA 961023) [--logo]",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [],
+   "sha1": "341883b1047329579ce87e645934bdb70c58ec83",
+   "size": 423621072,
+   "what": "1.2: tag hack + restored frames, xmvsfu (USA 961023)",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "376ad48014b58fe18202cded51793f275178e1c5",
+   "size": 423973872,
+   "what": "1.2: tag hack + restored frames, xmvsfu (USA 961023) [--logo --nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--logo"
+   ],
+   "sha1": "edc180c91d74d315b21030291f53ff2bc60cd99e",
+   "size": 423973872,
+   "what": "1.2: tag hack + restored frames, xmvsf (Euro 961004) [--logo]",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [],
+   "sha1": "0dd27988c65ffd5bd606bbc292701b373da5a4fd",
+   "size": 423621072,
+   "what": "1.2: tag hack + restored frames, xmvsf (Euro 961004)",
+   "release": "1.2"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsf (Euro 961004)",
+   "flags": [
+    "--logo",
+    "--nopad"
+   ],
+   "sha1": "d6e8424854d6ab4e60f41c5747d6aa1bb2626e32",
+   "size": 423973872,
+   "what": "1.2: tag hack + restored frames, xmvsf (Euro 961004) [--logo --nopad]",
+   "release": "1.2"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--logo",
+    "--title"
+   ],
+   "sha1": "bd99e77991b4b305aad283d0066274de2ebcaa1e",
+   "what": "1.3 RC: 2 MB + achievements (before the PS2/PS3 ROM check)",
+   "release": "RC",
+   "size": 392393568
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "xmvsfu (USA 961023)",
+   "flags": [
+    "--ach",
+    "--logo"
+   ],
+   "sha1": "85151c9f7a2b30339fa7289d801eb3fcebf655d5",
+   "what": "1.3 RC: 8 MB xmvsfu + achievements (before the PS2/PS3 ROM check)",
+   "release": "RC",
+   "size": 423973872
   }
  ],
- "notes": "expected: images this builder makes now (flags = sorted tools/mktagdisc.py / mkap8disc.py flags; --nospeed = the 1.0.1 configuration, bit-identical to the 1.0.1 release; --nosound = the 1.1 configuration, bit-identical to the 2 MB 1.1 release); 'provisional': recorded before the release was frozen. previous: images of earlier releases that cannot be rebuilt any more (8 MB 1.0.1 and 1.1: the 8 MB module changed), kept so that they are recognised as already patched. Written by work/release12/record.py."
+ "notes": "expected: images this builder makes now (flags = sorted tools/mktagdisc.py / mkap8disc.py flags; --nospeed = the 1.0.1 configuration, bit-identical to the 1.0.1 release; --nosound = the 1.1 configuration, bit-identical to the 2 MB 1.1 release); 'provisional': recorded before the release was frozen. previous: images of earlier releases that cannot be rebuilt any more (8 MB 1.0.1 and 1.1: the 8 MB module changed; 1.2: changed by the 1.3 fixes), kept so that they are recognised as already patched. Written by work/release13/record.py."
 }

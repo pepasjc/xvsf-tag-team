@@ -1,0 +1,8404 @@
+{
+ "calls": {
+  "03e1f51877b863cef3de8d07fd108af12b656e1d": {
+   "args": {
+    "__tuple__": [
+     2147550944,
+     2099886536
+    ]
+   },
+   "blob": "ac44e89b496a4c1e74489ce06f6644387dfef4a1.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "d317beb5110812f4468e65a5e89f2a687641a23c",
+   "size": 103017
+  },
+  "03e943bdaacbab634158a35541c989f456ffabdb": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "04eb8029961add77a4e666461da8ac8a8bf74fd8": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "04f76e96d328b5373e3fdec46d59a6f8ab0677c1": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "0520ae0126f405719569f7d65c882d9ab5626206": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
+  "0589259f89fc00ec3e78390a37f2255d9673db52": {
+   "args": {
+    "__tuple__": [
+     2148532224,
+     2099886536
+    ]
+   },
+   "blob": "a98ff8f033cec1700d319873358f1be929f5e967.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "630c43625dd1b67ae3db1feea180034271124247",
+   "size": 103017
+  },
+  "064ad1f207d5492c858051be75efa28ee5c2b909": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "0899c7b33cd26e2512016b68a46fcbbc58f59546": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "08ac6897cc6640074fe60ee208bfcd9db6476b6c": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "0a1e63137fbb424a9dce7c324ff608319d728b50": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "order.0",
+        2148046008
+       ],
+       [
+        "pst",
+        2148046012
+       ],
+       [
+        "snd_dbg",
+        2148046016
+       ],
+       [
+        "snd_pst",
+        2148046024
+       ],
+       [
+        "stash",
+        2148046028
+       ],
+       [
+        "at",
+        2148046044
+       ],
+       [
+        "full",
+        2148046060
+       ],
+       [
+        "lvl",
+        2148046064
+       ],
+       [
+        "snd_dir",
+        2148046068
+       ],
+       [
+        "tl_dir",
+        2148056656
+       ],
+       [
+        "blob_end",
+        2148059608
+       ],
+       [
+        "tl_strong",
+        2148059608
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "795f15120829264acf019d0b8781f5d41e247253.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      true
+     ]
+    ]
+   },
+   "resolved": "8d1bf4b498ebb99e55f4154a64f7bd41a66aa8f0",
+   "size": 2080
+  },
+  "0c7c48993bb62f524c14d445321a8a19d7a53b80": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "0cdf2dca52ed8e48c576fb5a1a5dc13820fc5b22": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "0f094f8f9651ba3211e36b37b8909ed9cdd772fc": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "0fcc2c52c22fef9e971808ec70b3d215f2087349": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "19a4210f98a431a26b18e436bd5963d75b8297aa": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "1c135205d95b721c6b6f2336428cfd81809c1341": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "1c7b201edb92d303dce377bde706cff0cdbbd4ca": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "1d661ee37e51c127cb7ff3a390709e9bfd09297c": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "1d7abed582cf5dff5f4f23d84d44d91a344b8322": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "1dea44fb192de963f29c209acffab03943e58903": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        1024
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "wsum",
+        2148046008
+       ],
+       [
+        "ap8_main",
+        2148046060
+       ],
+       [
+        "order.0",
+        2148049760
+       ],
+       [
+        "pst",
+        2148049764
+       ],
+       [
+        "snd_dbg",
+        2148049768
+       ],
+       [
+        "snd_pst",
+        2148049776
+       ],
+       [
+        "stash",
+        2148049780
+       ],
+       [
+        "at",
+        2148049796
+       ],
+       [
+        "full",
+        2148049812
+       ],
+       [
+        "lvl",
+        2148049816
+       ],
+       [
+        "pw",
+        2148049820
+       ],
+       [
+        "snd_dir",
+        2148049824
+       ],
+       [
+        "tl8_dir",
+        2148060412
+       ],
+       [
+        "tl_dir",
+        2148061832
+       ],
+       [
+        "blob_end",
+        2148064784
+       ],
+       [
+        "tl_strong",
+        2148064784
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "86c89e0bc19ae9fb001d90289cd76636e7cf8a8e.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "fed6f4597cf5dc53af9c9f199f058a5e4e766ae0",
+   "size": 2074
+  },
+  "1e6624707cc8e51e534e10fe7941d13e396a50a5": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "212142e5197c10d9a7d9da6aa135996304c19d66": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "22482a24b0209bb1d7b8a4d1396726bec202958c": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "22b10d292440f4b5470b9b37795cc7cb2bf0e2e6": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "22c55a0fc2e912ddb672e187c074c157cc646b25": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "237ffc23c534724f4da26a9d4e77f0d9049367ea": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "262368eb91b98fee4d5757273116075da9cdd8c6": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "7035946d52f93d0fac4f0cecb7ea2132907c5edd.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "93ef3f423d27ae2ad1658e5afd6d6cce3e850ee6",
+   "size": 62618
+  },
+  "2654e864e538415c1a8adbf3a147cf2d7cc53343": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1375e6a5846411b26052cb00423798735e9a6f19.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mktag.build_blob",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "2a87ab2396e916e0632ddbcd08203978cace8f62",
+   "size": 40979
+  },
+  "27b74f34ac1dd947f818fb85c7b212f76e14ab86": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        1024
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "wsum",
+        2148046008
+       ],
+       [
+        "ap8_main",
+        2148046060
+       ],
+       [
+        "order.0",
+        2148049760
+       ],
+       [
+        "pst",
+        2148049764
+       ],
+       [
+        "snd_dbg",
+        2148049768
+       ],
+       [
+        "snd_pst",
+        2148049776
+       ],
+       [
+        "stash",
+        2148049780
+       ],
+       [
+        "at",
+        2148049796
+       ],
+       [
+        "full",
+        2148049812
+       ],
+       [
+        "lvl",
+        2148049816
+       ],
+       [
+        "pw",
+        2148049820
+       ],
+       [
+        "snd_dir",
+        2148049824
+       ],
+       [
+        "tl8_dir",
+        2148060412
+       ],
+       [
+        "tl_dir",
+        2148061832
+       ],
+       [
+        "blob_end",
+        2148064784
+       ],
+       [
+        "tl_strong",
+        2148064784
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "86c89e0bc19ae9fb001d90289cd76636e7cf8a8e.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "fed6f4597cf5dc53af9c9f199f058a5e4e766ae0",
+   "size": 2074
+  },
+  "28b605dddf5bce8d28b5da5531903ac85aad54cd": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "28d8add70b63aca7f9332baa9243852edd20d0b5": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "29214b4a3dfe0c5d62d29d3380bb434a4f9087c5": {
+   "args": {
+    "__tuple__": [
+     2148794368
+    ]
+   },
+   "blob": "65896d6cbd79b1627ce3fcab99ce95a6c413adc2.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b9a7520de324a2029515303cf7eb18c7433abfd2",
+   "size": 2538
+  },
+  "29af929439393517eb5a36c9a7904e7542645342": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "7035946d52f93d0fac4f0cecb7ea2132907c5edd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "93ef3f423d27ae2ad1658e5afd6d6cce3e850ee6",
+   "size": 62618
+  },
+  "2b12a4255fbb1a93533af13bf136df6bb251bb2e": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "2b799ec247b7e98cdf9ad9493a3beb8b6acf6c09": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "2c42a6ee176d3fc1ba68cece977bbc809d750cdd": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "2c6a94dcbfc869410c165917813d69f4ea323c2e": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "2e08950c6d66a9bfc0e7979ee89397f21c027e30": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "2ecf3b067c46b7f22098dda7f0fe2a8eaebf19c5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
+  "30f5418dba24eb710bcc5d6590e80e723ab1960c": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "2eb3f56577118e4d974267d409a429a3d3f28507.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "518359315e2a9784b369dcc03f288a0ae0b281ab",
+   "size": 51708
+  },
+  "3106da749da943201bbc78390be6bae042ebe194": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "3207cfc3618c7132d45790af0e18a928b0d72735": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "35c924b87ada20fbb3a04706951b6efd9601bdd5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "38971a1b75907e8875ccc90898636cd4b2b58d0f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "3a48897b80b18d8159962c21982e9075409a6409": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
+  },
+  "3a66e4ee753bf828dbb257d67d6d280dad7f4a6e": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "3a8da0db812daeaea29359725c3bdb97ea03a879": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "76a9285ca58f4afec24aeb99fca21485d588d135.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "5ae70eb213eb917fff9029c29a809f2b27fc4226",
+   "size": 2538
+  },
+  "3c228d3b1a38f9823232d51580b9cf8e09563b20": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "3cae633c1c2d050cb24405e6507b37ad40d02ad7": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "2eb3f56577118e4d974267d409a429a3d3f28507.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "518359315e2a9784b369dcc03f288a0ae0b281ab",
+   "size": 51708
+  },
+  "3d33710ecb4cdf0352ce09d11677ce434b57b345": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "3d4a43670aef373b0bc9b6c89dc82318e91dfcdc": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "3e93aeca5faffe5cfc0be68c17f9fc97a91d349d": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "41d909a05a5ddf86deb7b8752f3bbd67124487bb": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "41e2bc3b314555e642ed7a927e7d60d5136afcea": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
+  "432e3a8b0bd8dd6c5878ea96e44aca49150df974": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "43c76dafd695342fbc08cc3eb893544682c6802a": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "47d11466c755bd64df0edf4175ae7348a0b33a72": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "48471bcd3ea80c8d70db0665eeb3016c52a8cfe2": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "48f001ac12363b1eac18c92789153436f9629ca9": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "49f4a05bed17631b95d2644485e8d800937aa952": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "4b3ae4873c59f0bae165838fe19a921a7dcc7725": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "4b83fb578a854255c5df8a50a65882e4699cacbc": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "516b58da2714d10938cb91a037c934cc02c8d6e2": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "5200deea930f4efca1cc707c77416235b8e340a6": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "524d36f4dff3adfb6237ecfd6be003ae22d144a1": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "5271c6eb54665488a004dde48145e08a9bf6ce9d": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "56d8e5c2ad36a1148a372cb5d79f0ee8783e03cd": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "58261ae52b0bc8315be0747da4f0c433ed30d121": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "653715078199bc062ab89f7dce0b17052979dabf": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "67454f402193bc7f75816b8a034a1457faa9714f": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "order.0",
+        2148046008
+       ],
+       [
+        "pst",
+        2148046012
+       ],
+       [
+        "snd_dbg",
+        2148046016
+       ],
+       [
+        "snd_pst",
+        2148046024
+       ],
+       [
+        "stash",
+        2148046028
+       ],
+       [
+        "at",
+        2148046044
+       ],
+       [
+        "full",
+        2148046060
+       ],
+       [
+        "lvl",
+        2148046064
+       ],
+       [
+        "snd_dir",
+        2148046068
+       ],
+       [
+        "tl_dir",
+        2148056656
+       ],
+       [
+        "blob_end",
+        2148059608
+       ],
+       [
+        "tl_strong",
+        2148059608
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "85d2e52f5adcc26300f155bd8bb641f430b052db.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "33bd537fc137815aac805694732c168b17ec0995",
+   "size": 2074
+  },
+  "67b5438b942ac2259c10de50885a94346c8602ec": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "6848e60725163e74d8745bbcaf4df7d60c1327b1": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "6b4484c592af6d101890c77b7023fe6e6a37dfa4": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "6c2aebf34f4ac25399e5e5b64dd19722d9d97595": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "6d34ac82c722d294ff9f28de45ccdb94a56272c5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "6d5b2cefd835067b3fb60cf7330b71bf30b4a2f7": {
+   "args": {
+    "__tuple__": [
+     2148532224,
+     2099886536
+    ]
+   },
+   "blob": "a98ff8f033cec1700d319873358f1be929f5e967.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "630c43625dd1b67ae3db1feea180034271124247",
+   "size": 103017
+  },
+  "6e39c053c968bed720c3820f6cb9a4154a18fcad": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "6f413b3df1d553fc9cab11d0758ce7dae4e7977f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "6f47187c166ae958e614d871d8986ec29025d764": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
+  },
+  "714dfea4dc1378d32af0514bd8906f9f10c9f35b": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "74b53cb082c80097b4805cff8338466db210b8fc": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "74c3b9b7de0644ac61dba1b854acae28d0714b0a": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "74c651b7f91cd6b0d75ec5b16996abb5045b0497": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
+  },
+  "76060b2fc065a3ed66020f0957ea17a7dfca93f2": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "79a8272b5083e861636598255e1cb7010060d98b": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "7b4d1b81bd633aefac7ed8890dd1fc33190ac267": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "76a9285ca58f4afec24aeb99fca21485d588d135.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "5ae70eb213eb917fff9029c29a809f2b27fc4226",
+   "size": 2538
+  },
+  "7da75e584d25014d90885e9342ca18e45ebffb8f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "7e2d399ec2e500d247cbd0a4e351a09ca2742c02": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "81c7a84440fa093cffcf7e833b9a84ad947765c5": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "order.0",
+        2148046008
+       ],
+       [
+        "pst",
+        2148046012
+       ],
+       [
+        "snd_dbg",
+        2148046016
+       ],
+       [
+        "snd_pst",
+        2148046024
+       ],
+       [
+        "stash",
+        2148046028
+       ],
+       [
+        "at",
+        2148046044
+       ],
+       [
+        "full",
+        2148046060
+       ],
+       [
+        "lvl",
+        2148046064
+       ],
+       [
+        "snd_dir",
+        2148046068
+       ],
+       [
+        "tl_dir",
+        2148056656
+       ],
+       [
+        "blob_end",
+        2148059608
+       ],
+       [
+        "tl_strong",
+        2148059608
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "85d2e52f5adcc26300f155bd8bb641f430b052db.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "33bd537fc137815aac805694732c168b17ec0995",
+   "size": 2074
+  },
+  "833ce4bcbdabcb381578eb0d94256f984d51ca03": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "87fdaeb72dcfe949e5430a9bb407a8145cda7bc3": {
+   "args": {
+    "__tuple__": [
+     2147550944
+    ]
+   },
+   "blob": "0d35663c2c05afd5529972080eebc3224edb58dd.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "74c4b9761598985c5da7c0d941752a9ddf7a9cf9",
+   "size": 2538
+  },
+  "8a1d25a657160f265bf83373083d1d502577752b": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "8c6404eec3a1bc89165c27532e7dde28f645bbbd": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "8ebe3e475f247d0d95741e326c06654c62242052": {
+   "args": {
+    "__tuple__": [
+     2147550944,
+     2099886536
+    ]
+   },
+   "blob": "ac44e89b496a4c1e74489ce06f6644387dfef4a1.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "d317beb5110812f4468e65a5e89f2a687641a23c",
+   "size": 103017
+  },
+  "9159feefc3f175ae4bf7f1599367a4c050899d7b": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "952628b8a9c0df71ca19d489e5b163e1c2411f8c": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "95ba97be5584d2e4ffc99fe737f7c81e0efe4aaf": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "964dc12e017aa638b70ac9fe551b98a9e97b7266": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "99782762b7b7a5be8453002989e42fcc5b344fba": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "9d3d61bf4fffe54d93ef0d10c2de120817d25709": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "9e12cb1631def4528cf19af0ae2fa430cb59a7d8": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "a25a2a7a4a8ce7f7a0e02af4744abd08558d3d94": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "a28d49b062d154de827a5a75033e661cb7e02183": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "a2dedff5866e6c6840705a6591b9132a6318254f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "a3428ba60489029911d3bb34d466a03afc5f1a0c": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "a4a88c98a78c9bdecacb338fcdbfd0e5e346a4e5": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "a8c54b39eaa38e6634236d4b153947e30dad5dc8": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "acc188d8cc3bb63f66555bd2c358c02b233fe495": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "adf15f2040a5e4806c6007326aff229e0db6f94d": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
+  },
+  "af02263bec5b9327f93c64e9e5a724259692ad8a": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1375e6a5846411b26052cb00423798735e9a6f19.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mktag.build_blob",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "2a87ab2396e916e0632ddbcd08203978cace8f62",
+   "size": 40979
+  },
+  "af29b66b4974dc7169b4f0ca9ffb44a60d2549d5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "b17f4905022c3da6e8ba4e9a4ba2d9fae5681449": {
+   "args": {
+    "__tuple__": [
+     2148532224,
+     2099886536
+    ]
+   },
+   "blob": "a98ff8f033cec1700d319873358f1be929f5e967.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "630c43625dd1b67ae3db1feea180034271124247",
+   "size": 103017
+  },
+  "b4632ec2d73e1b641d3bd514d829acb74b841257": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "b4da8ce2be24b7a99624bee4e8793f55ac09b4bb": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "b593ea9fa4aff250bae3f73cf9928843720cb1e3": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "de006d89fc25379f4845d5ebc4d81c484639c65f.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
+   "size": 1336
+  },
+  "bacd89618c6282059b2157e3feea7839c9ed73be": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "bcc1cd7f391d07e1ddfbe063d3f57414641d9a4c": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "bd84b0ff137b4282917c5db549417cd053007e13": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "be95d0a9fd440c5b3cc0eca865018eca4bfcba36": {
+   "args": {
+    "__tuple__": [
+     2147550944
+    ]
+   },
+   "blob": "0d35663c2c05afd5529972080eebc3224edb58dd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "74c4b9761598985c5da7c0d941752a9ddf7a9cf9",
+   "size": 2538
+  },
+  "c05d1080c6ae332c810989485d35658957ad5fc1": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
+  "c0abba56c78ab378ae22a66f0a45dd80b119f333": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
+  "c0daa4f4926bea9d918a9471c8d8af37ce31d976": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "c2cd4f79db964268fb842f1a6e05041432b251c0": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "c3c4c2cf1b18263faedc1cc98b55bf47c336fd3b": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "c41223e420fb63ff0f7195771a3c721e0cef23a8": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "c6154939fc713ac53dbb2bb73df0a4e258816a29": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1375e6a5846411b26052cb00423798735e9a6f19.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "mktag.build_blob",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "2a87ab2396e916e0632ddbcd08203978cace8f62",
+   "size": 40979
+  },
+  "c7b7c82805dfb3461cdc03de8bab848ca3e54d21": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "c8b254ec7edc2002d29c88c7972465d8585b04bb": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "ca68295e56c7ac7b4528912d632c353e1517ddd6": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "cac1a2aec33e2421918e8c6f59c7b0812e6b1810": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "cb2344f75b6d6035a3d7580f08e49fd07de7bbb8": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "cd211e35b00cb7833ece1012dc35428a0f072ee5": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "cf89d1414250217bdc4bc3af81d6b5e8693bf8c4": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "2eb3f56577118e4d974267d409a429a3d3f28507.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "518359315e2a9784b369dcc03f288a0ae0b281ab",
+   "size": 51708
+  },
+  "d537cd951b68247779a718554f4bb6532fc917b7": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        1024
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148040216
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043168
+       ],
+       [
+        "dsize",
+        2148043228
+       ],
+       [
+        "upload",
+        2148043488
+       ],
+       [
+        "snd_reset",
+        2148044112
+       ],
+       [
+        "snd_plan",
+        2148044480
+       ],
+       [
+        "snd_stash",
+        2148045580
+       ],
+       [
+        "snd_load",
+        2148045628
+       ],
+       [
+        "wsum",
+        2148046008
+       ],
+       [
+        "ap8_main",
+        2148046060
+       ],
+       [
+        "order.0",
+        2148049760
+       ],
+       [
+        "pst",
+        2148049764
+       ],
+       [
+        "snd_dbg",
+        2148049768
+       ],
+       [
+        "snd_pst",
+        2148049776
+       ],
+       [
+        "stash",
+        2148049780
+       ],
+       [
+        "at",
+        2148049796
+       ],
+       [
+        "full",
+        2148049812
+       ],
+       [
+        "lvl",
+        2148049816
+       ],
+       [
+        "pw",
+        2148049820
+       ],
+       [
+        "snd_dir",
+        2148049824
+       ],
+       [
+        "tl8_dir",
+        2148060412
+       ],
+       [
+        "tl_dir",
+        2148061832
+       ],
+       [
+        "blob_end",
+        2148064784
+       ],
+       [
+        "tl_strong",
+        2148064784
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "0c3e5905ece00a899667369f81a66cfdc99e6557.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      true
+     ]
+    ]
+   },
+   "resolved": "c09abb6737d10781208a83ddb9c93bcd9425cee4",
+   "size": 2080
+  },
+  "d814448fd1767bb0b6862981ac0fc8139cce66c2": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "d959d5269f0a047ba6c2876d0853b16a03f737b3": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
+  },
+  "daa218fad146693ebf37f3d3728b58ff2f0ba09f": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "76a9285ca58f4afec24aeb99fca21485d588d135.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "5ae70eb213eb917fff9029c29a809f2b27fc4226",
+   "size": 2538
+  },
+  "db059cf0ad4e0f41361419af2fda3fd05f780cb5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "e0e8c3d85e184b3d9bbc3c522a07f15a3e5230b7": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "e1209b3cb56cebe49fec573c7807b9677a75b34f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "e13fc8d5ad6eca56b87ec4ce01051315b3c6558c": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "e519d24b867b0a18d5fda82d957fa60ffb5e99c4": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mram_end",
+        2149574856
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "e73d5e344868f0e341322f03afc42e23992b9948": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "e76ad983d498cc8d968648524f86c983e0161751": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mseg",
+        2149574796
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "e86394ad01d9af9f717bbf07353ae05f82194372": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mfont",
+        2149574780
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "7f703afb991721604f786d49d9e00485e8914407.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ca30d9068d583cbe946b606c0fca7074c95846e2",
+   "size": 2630
+  },
+  "e92a7d033c3235fa6db2ee078b1329e2679c75bf": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
+  },
+  "ea9312134aa11ba9a0accb3d1d83cf859145602f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mram",
+        2149574208
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "c2df5aa3a27f7fbcaff8be590102b6651e52e84a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
+   "size": 2652
+  },
+  "ee5645dc5ce0429beb596536ab0cdae8f4cde884": {
+   "args": {
+    "__tuple__": [
+     2148532224
+    ]
+   },
+   "blob": "76a9285ca58f4afec24aeb99fca21485d588d135.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "5ae70eb213eb917fff9029c29a809f2b27fc4226",
+   "size": 2538
+  },
+  "efc1bff452cfa5c570b92930d58faff86b79bf5b": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
+  "f0c3dc9b3bd478af999db895624f23a571d8d3ee": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0",
+     {
+      "__dict__": [
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mdraw",
+        2149574396
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdig",
+        2149574824
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "29abfe6fc8d9d93d3ba9b247352837edf6c2060b.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
+   "size": 2377
+  },
+  "f177e1a5ad748478f53af071b68b72930da064fa": {
+   "args": {
+    "__tuple__": [
+     2148532224,
+     2099886536
+    ]
+   },
+   "blob": "a98ff8f033cec1700d319873358f1be929f5e967.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "630c43625dd1b67ae3db1feea180034271124247",
+   "size": 103017
+  },
+  "f20dcc8a663568e0e050f6350bb37cad3fb6685e": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--nologo"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "f33950618dae27289cea5b4a1d2c98c1cbc4f72d": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "f380729d8a2b118b44e07ea03800c031822cd396": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "f400a5ed98fdebdd6dc0e7a945a426cc0a49c926": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
+  "f41727e9795b3a62f0c4dcea799b1d805e686469": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "f902e3d1b8985426f7215db698c020b738f8e862": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.0"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": [
+     2147563229,
+     2147563231
+    ],
+    "argv": [
+     "--meter",
+     "--meteron"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
+  },
+  "fcae7c4c78bb23bbd1a37c3d31cbabbba04781db": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--meter"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  }
+ },
+ "files": {
+  "dshdec.bin": "8c17a7a2de9f459d9814eae443e4c5cf363eacc3.json"
+ },
+ "format": 1,
+ "note": "our own MIPS code, made by work/mshvsf_release/record.py; blob name = SHA-1 of the blob",
+ "resolved": {
+  "dshdec.bin": "95cfbe69968d2d28a19a28b92b346262ef1dc16e"
+ },
+ "sources": {
+  "common/dsp/deadscan.py": "138ee69423a2fcdc71b3c9b36e1f58baa74ec29d",
+  "common/dsp/dsa.py": "122fefe78be7a22d4c08fa1345110922fb3047aa",
+  "common/dsp/dsadec.S": "65f51ce93073293e8c7bb829699d356cf2ad0cc0",
+  "common/dsp/dsadec.c": "e82d8c80326b4c636bfaa129711107b7718f3f22",
+  "common/dsp/dsatest.py": "4fc6c20f9bc2e17f8d7dfe2b3f358ea4cc569ee2",
+  "common/dsp/dscut.py": "2086fbac262b29035d7bbd7a1aa69f4be2e4acb8",
+  "common/dsp/dsh.py": "23c8815962543577e757d7a19ed86211597ed7b5",
+  "common/dsp/dshdec.S": "becd178ef1fa069e39a774b4958428780220ac18",
+  "common/dsp/dsm.py": "e05253a6be97bccf35bd42d3dd16383e79a05672",
+  "common/dsp/dsmdec.S": "d072943676bfe8fbe57a7cbd80cc89358e4644d1",
+  "common/dsp/dsmpatch.py": "cbb96dd9c6ed5df07dc9c9f8d65dfcbb782a6b67",
+  "common/dsp/dsmtest.py": "9f9e28dcd2c843d7b4aec17081427fe49448dc56",
+  "common/dsp/dsp.py": "5f05b5b6ef10792f00045dccc64a4d07d57120b3",
+  "common/dsp/dsx.py": "4f4927b2c0ecca43ddb44c30b99773bcd0bb5873",
+  "common/dsp/dsxdec.S": "a423c824329a6e4d941d812c65e6ba3a98126ca0",
+  "common/dsp/hot.py": "39daacdd1e35dd118f59be4f73b87c95e706f86c",
+  "common/dsp/ingame.py": "cbda9ddf451a94b950a68a25718a211ed53ee4cf",
+  "common/dsp/tilecheck.py": "0b3d26045dc2446724810d9cffd0cdbc23c373bf",
+  "common/dsp/tilelog.S": "e29db3c29ecc57cef6365645d624c38ebdcce497",
+  "games/mshvsf/tools/ach/mshach.py": "5d21b87a3dd5decc7d6bce91b2cf80bf03d87679",
+  "games/mshvsf/tools/ach/port.c": "1f768bbd75ffec37a963d762cef9126f279a505d",
+  "games/mshvsf/tools/ach/port.h": "1d769183b60b072572237d1705aa2a2b1c7c57fb",
+  "games/mshvsf/tools/ach/set.py": "f3efe754bb8fc614d05b8c3a73c7ff3ee6a5ec8a",
+  "games/mshvsf/tools/ap/build8.py": "2ad3b6e6baa435f7d808934db5253e2061d8387a",
+  "games/mshvsf/tools/ap8/ap8.c": "98f723c5f26463152dd8fb77483e4ec76e0ff690",
+  "games/mshvsf/tools/ap8/ap8menu.S": "37cc09636934d6609a337221cfb5ec2861bf81fb",
+  "games/mshvsf/tools/ap8/b8bisect.py": "72bf01b8a3ce0d9f5e2f1d89b0c5c1359cee2c8f",
+  "games/mshvsf/tools/ap8/bench8.py": "d2a252a143d909eb0b94784340f7a41d2e6032a0",
+  "games/mshvsf/tools/ap8/dbg8.py": "8758a723a5e27ecf536ebdfd07abac4ffe407ecd",
+  "games/mshvsf/tools/ap8/entry8.S": "87b6383026460d74551f1f408d6c70058a2b4e11",
+  "games/mshvsf/tools/ap8/link8.ld": "2e70f35caaa3f1031c964408d743e0365f4649f5",
+  "games/mshvsf/tools/ap8/mkap8.py": "d837ceeba8e9a1cad6b6f52295da180da41f807f",
+  "games/mshvsf/tools/ap8/t8.py": "1e4398e02c879b9eb0bd84d57f363fbb387ed0fb",
+  "games/mshvsf/tools/ap8/t8opt.py": "bc28b084a184286596b5778a024a1905bc6bc202",
+  "games/mshvsf/tools/ap8/t8snd.py": "cccf1a841deec9fdf9d35f36996f41d11468d6c0",
+  "games/mshvsf/tools/ap8/v8.py": "553ac8f30a1c564b5b210e4dfabdfac424a8a3ca",
+  "games/mshvsf/tools/bench.py": "bccce542ad9aff7d048fc7be8eed22662fa26eff",
+  "games/mshvsf/tools/gameplay/allpatches.py": "67bbdeca1efe7da722b53525fd6725d5e96a6bd9",
+  "games/mshvsf/tools/gameplay/cyber.S": "7ddf53e0c1abb6e9a52b8d64e6fb5226b90f1b6c",
+  "games/mshvsf/tools/gameplay/cyber.py": "99bbb4a318626d15491f3efbaf27c86fb5ee7fa3",
+  "games/mshvsf/tools/gameplay/deadcode.py": "80e847f9e0690da0a04607f8ea4f4e03c479a7f9",
+  "games/mshvsf/tools/gameplay/deadtest.py": "cdd6593d1822deaac1cff546529f3c65048251f2",
+  "games/mshvsf/tools/gameplay/menus.S": "3d7ddf3e345f7ac9d8391e8c94dd20d92dffdc88",
+  "games/mshvsf/tools/gameplay/menus.py": "48516ab933972ca3ae5b6eb4fba542b3297f7562",
+  "games/mshvsf/tools/gameplay/menuversion.py": "41bf723167e5d965acfc67d0877d99bb693ee92d",
+  "games/mshvsf/tools/gameplay/pad.py": "f732b5cdc3b2cd766a6626154e484c947232f57d",
+  "games/mshvsf/tools/gameplay/tagmode.py": "f31a9f4d1540f23521d0c36b9240a860871fbaae",
+  "games/mshvsf/tools/gameplay/training.py": "cfaf81678f78a276c6e3938b539c64382e854bd5",
+  "games/mshvsf/tools/logo/mshcard2.bin": "477cad9751447921539999662d3e964bc2660876",
+  "games/mshvsf/tools/logo/mshcards.py": "119109f3d152d0650af13101d42a96a34329b056",
+  "games/mshvsf/tools/reloc.py": "666e2ae5a20ae47cbf076abbbe838593e5e4f9c5",
+  "games/mshvsf/tools/skip/mshskip.c": "0b2cc1de4d404b20483ea8c0c114532308f15583",
+  "games/mshvsf/tools/skip/mshskip.py": "508fc4f9f0ef8a59c93d7e94beb1f78c9fb2a717",
+  "games/mshvsf/tools/snd/audiocap.py": "9a8689a2f928c8a2372ed1af14a26ff5861018ae",
+  "games/mshvsf/tools/snd/snd.c": "83189351ec4fc433a2cc3e28fbdec0b671cd96c9",
+  "games/mshvsf/tools/snd/sndbank.py": "d614cdfc69ea6adb65a893cef51e1400454c0c0c",
+  "games/mshvsf/tools/snd/sndbuild.py": "ad803a070ec564f57155f16dc6d134b3c7f7dc06",
+  "games/mshvsf/tools/snd/sndcheck.py": "429ae60ad0c2339ff2e9380dcea08e93e820014b",
+  "games/mshvsf/tools/snd/sndfit.py": "aabf29eba7ad9bb1e314ce9ac9d21d922a15962a",
+  "games/mshvsf/tools/snd/sndtrace.S": "a9d8a4038ee6d77defaf1de520a4ef357dd44aa2",
+  "games/mshvsf/tools/snd/spuregs.py": "0ea3b1893f97d0c6bcc37444160d1b80bf9e288a",
+  "games/mshvsf/tools/snd/trace.py": "1b475e2e86a82a5c0e1f5f9e0d3104f11b72282a",
+  "games/mshvsf/tools/snd/unlhook.S": "09c7180b29e2422f8de090ecd594b8c29dd15bb7",
+  "games/mshvsf/tools/snd/voicestats.py": "619d0549e6549739334bd7607814ef71102eda5c",
+  "games/mshvsf/tools/speed/a0mem.py": "83710a4595a172e6ba4ffb051b1b73b32a667244",
+  "games/mshvsf/tools/speed/a0mem/a0mem.S": "7845e38b9cca982647845a4269fc064041af870f",
+  "games/mshvsf/tools/speed/a0mem/bin/C1.bin": "c0fd861d94ce27a652c72c3558b69172c69de59a",
+  "games/mshvsf/tools/speed/a0mem/bin/C2.bin": "5ceb52dcbe6c26bf849482d94b6a3efdbd84fe3b",
+  "games/mshvsf/tools/speed/a0mem/bin/C3.bin": "fede00da8a68450beeebf0ea7861f6378c339642",
+  "games/mshvsf/tools/speed/a0mem/bin/C4.bin": "2fd7ac53936ed87a7b5d9ec44855b4778e81aadc",
+  "games/mshvsf/tools/speed/a0mem/bin/C5.bin": "a128a5d3fa43d4da9bf53c5a17a01b306b4d21e2",
+  "games/mshvsf/tools/speed/a0mem/dtest.py": "4bb9364b6f240602e0d0f52e9c1fac650af1ae31",
+  "games/mshvsf/tools/speed/a0mem/replay.py": "e9bcbd2e17847c1475dfb822a5e92247e5ef8ff1",
+  "games/mshvsf/tools/speed/abwork.py": "06907e17922c55d51eb4347b11ea2be2175413b2",
+  "games/mshvsf/tools/speed/ahead.py": "0a7e45f04992ba13b469962b25e78e0e4bb3dd1a",
+  "games/mshvsf/tools/speed/ahead/ahead.S": "91ebf4a1c6e2ca900fd21b269db9250203e391f0",
+  "games/mshvsf/tools/speed/ahead/aht.py": "64b3db60dac886013165d91792e2595a362f2a79",
+  "games/mshvsf/tools/speed/ahead/bin/A.bin": "82d80325973622c13fe122db246549e571910878",
+  "games/mshvsf/tools/speed/ahead/bin/B.bin": "fa0039f945ac2ffe82538e65cd479df90a167b6c",
+  "games/mshvsf/tools/speed/ahead/bin/C.bin": "bd94c12f9520593b79fd3f227d5dbbdfe5669102",
+  "games/mshvsf/tools/speed/ahead/bin/D.bin": "4c0fe1cfafff9c3825ad9bd66d9b80d901e45bf5",
+  "games/mshvsf/tools/speed/ahead/bin/I.bin": "789be8ac27fe36c1605470d6eabc1a9b663f2a29",
+  "games/mshvsf/tools/speed/ahead/bin/J.bin": "154cc3d3d1abfb1d9ec7add0dceac387b3248b1a",
+  "games/mshvsf/tools/speed/ahead/bin/L.bin": "6b7650919174ad35b08eb2480bd092daf9be19c9",
+  "games/mshvsf/tools/speed/ahead/bin/M.bin": "98792b09b04bf3912253260822a7251c7d35323e",
+  "games/mshvsf/tools/speed/ahead/bin/N.bin": "2d4017c2854c5b4ddf7c800172705fea54e93fe2",
+  "games/mshvsf/tools/speed/ahead/bin/Q.bin": "4f6ee4aacd93b168814f778c4c413f2c7acf0296",
+  "games/mshvsf/tools/speed/ahead/bin/R.bin": "54aeb8745048be92bed2b557e7e2f78ccc06bf2c",
+  "games/mshvsf/tools/speed/ahead/cdprobe.py": "c3c7fed4f8618a7f17949acece22d5afb60107eb",
+  "games/mshvsf/tools/speed/ahead/census.py": "ffcfff588dffd64ed3f66a74cc98d55169e2453a",
+  "games/mshvsf/tools/speed/ahead/census2.py": "c3855db30e31b237251fae8fe434166230a7d983",
+  "games/mshvsf/tools/speed/ahead/census3.py": "94efe72c6308aa79a0a73e0a63d7bb7cc001428e",
+  "games/mshvsf/tools/speed/ahead/census4.py": "62dd09cc6c84040e95f990d8970f47b26d8040c8",
+  "games/mshvsf/tools/speed/ahead/census5.py": "6290bae570a7364bee67ae61ece155f3d05f8934",
+  "games/mshvsf/tools/speed/ahead/frz.py": "3e990a6ead674e1bac4ae6bcd324560f382da16e",
+  "games/mshvsf/tools/speed/ahead/memmap.py": "219534d176fea95acb25883ee92df5cef3fd6ab9",
+  "games/mshvsf/tools/speed/ahead/reusesim.py": "dde25711c4d74ed18ce38ae9ea95df955ecd58e2",
+  "games/mshvsf/tools/speed/ahead/scrcmp.py": "eef0f5cd29e51896fc2e020fcd6f2939ce606286",
+  "games/mshvsf/tools/speed/ahead/why.py": "a8644b6e129b71fd408731ed1f6fdc7606240dbe",
+  "games/mshvsf/tools/speed/capmem.py": "5269d418a83b0e8ca620417a78170be15a3fc983",
+  "games/mshvsf/tools/speed/deadcode.py": "8c752087ed22f9a2e9a8f35e473e49efc6125974",
+  "games/mshvsf/tools/speed/deadtest.py": "d01b42253952f6bb06b5193564c5a67a48b52649",
+  "games/mshvsf/tools/speed/decrate.py": "746fa0cf904ac3afac5029c3a8a3e6702327a60b",
+  "games/mshvsf/tools/speed/fmatch.py": "dd238ba958e10df4256d077af7d1c50af1d1d80e",
+  "games/mshvsf/tools/speed/hotpc.py": "a1ad7548d59359215ffecfdaf24ec4ecd0b60d38",
+  "games/mshvsf/tools/speed/meter.py": "9163c54cd84a7c7628fd770464338b30b9312fd0",
+  "games/mshvsf/tools/speed/meter/bin/R.bin": "c10b8ce2e3682d33194ace952ff7bfabfe474b88",
+  "games/mshvsf/tools/speed/meter/bin/S.bin": "4d21e2be3882f0e46f392415272b9282618284c9",
+  "games/mshvsf/tools/speed/meter/meter.S": "3ab815e20ceb98f6021730bed036be0bf6cbefba",
+  "games/mshvsf/tools/speed/mkhw.py": "f0d9ea9907cec3c25af34bc16072bb0042eaf51b",
+  "games/mshvsf/tools/speed/mlib.py": "c21fcd168bac37c3d1873ebb175034a5f79605c8",
+  "games/mshvsf/tools/speed/mprof.py": "0f4c66fa6e184f6752fb68e348a0ab2c390b656c",
+  "games/mshvsf/tools/speed/par.py": "25b2fa2613549ee4ae9630a36d19d3569845b004",
+  "games/mshvsf/tools/speed/parse.py": "2cbacb6ffa7f8a71d0188d94da1a83a5b1682f67",
+  "games/mshvsf/tools/speed/parse/bin/SEC0.bin": "b521bd3c2e2f2be0df7838bfdc988bf87cb024ca",
+  "games/mshvsf/tools/speed/parse/bin/SEC1.bin": "249ec9f0ac8519bf3bd03f2cc5524fc3d9d10a7c",
+  "games/mshvsf/tools/speed/parse/parse.S": "d47a8d81fcf266434c1d3685d9a2ea0e84be59c4",
+  "games/mshvsf/tools/speed/parse/ptest.py": "8e8e63a7e1fb2546f46a4883cabf1fff4cd248ae",
+  "games/mshvsf/tools/speed/prof_frame.py": "94e9e918e939a41d1a6b7ab84b6f57e23cc9b396",
+  "games/mshvsf/tools/speed/prof_sample.py": "d272f9c281c41ec959ba8cffce7101d08a48207d",
+  "games/mshvsf/tools/speed/slib.py": "5cf4d238b498cf33a76b42d19e1db86120a7d9c2",
+  "games/mshvsf/tools/speed/timeline.py": "3487c754be2daad62517b3bd93300f1c50c4f979",
+  "games/mshvsf/tools/speed/vcheck.py": "3e9bb3beb4a71d3b7dcd3e790be8ee7110bf2a22",
+  "games/mshvsf/tools/tagload/attracttest.py": "489042bf2efc8214ebfd44b5555d7abbf1dd11e0",
+  "games/mshvsf/tools/tagload/coldtest.py": "d2645e06d635568e419fadc22e8c940a70ed0554",
+  "games/mshvsf/tools/tagload/cuttier.py": "facea8f359738442908bbdc8cab60ec3bd58ca80",
+  "games/mshvsf/tools/tagload/fitall.py": "514d9b73d6fbda57dfc5d2c50f7edb3f70e89aee",
+  "games/mshvsf/tools/tagload/fitmodel.py": "1765409013a07f234e7bddc05f4e54e282f11c75",
+  "games/mshvsf/tools/tagload/glue.S": "0d0a5fb79dbbe81358443093901931a9bde511af",
+  "games/mshvsf/tools/tagload/hotall.py": "b481aa0a11c16d2650d4f5b4bac785a221f56f5d",
+  "games/mshvsf/tools/tagload/hotphase.py": "9503fa4deb0cf1b452c4691b7e400864327b24ed",
+  "games/mshvsf/tools/tagload/link.ld": "2c1e8428e747f840729f757d7c58dccae856d2d4",
+  "games/mshvsf/tools/tagload/menutest.py": "4dc5a6e689d0d79b3762edc7e7d34c38151e9558",
+  "games/mshvsf/tools/tagload/mktag.py": "d21d88b890027d354832b16d44e073a4245f0e59",
+  "games/mshvsf/tools/tagload/rcbugs.py": "8aa20778f50cb445909e2c03d845b54d86c9ba90",
+  "games/mshvsf/tools/tagload/tagload.blob.bin": "cab053cdd919efc4fd952490a2b11fa8d6c0335e",
+  "games/mshvsf/tools/tagload/tagload.c": "a730cc7f0dc360b71a7046d201b3aec729632263",
+  "games/mshvsf/tools/tagload/tagload.glue.bin": "14e13ec14f04d88a150475f2101bcca7c21572b3",
+  "games/mshvsf/tools/tagload/tagload.heapcap.bin": "337da5cbef9e2a406ee0c6b180f567e1436c5352",
+  "games/mshvsf/tools/tagload/tiercost.py": "c42ba75197e567e959b420d261a2ba5b83ec7088",
+  "games/mshvsf/tools/tagload/tlbench.py": "b38a14e14ee64ddb5ed2fa3659bce1d385daa156",
+  "games/mshvsf/tools/tagload/tltest.py": "af64a4b8ffee5821e81cd43e72663b7117c3d1ab",
+  "tools/logo/card.bin": "814670b62c1c057d276ab9cdd26c08ec0f224532",
+  "tools/logo/card2.S": "b3077e1d685a5df9b6fc7bbbe851dfd4c27f5cd5",
+  "tools/logo/card2.bin": "92dceb95ecd720b5072c65f74b27c5e1161727f4",
+  "tools/logo/card2_12.bin": "c4a36bf83b49ec188eb6f4433e5f967d1462dc6f",
+  "tools/logo/card_101.bin": "020a7439a0cc61f1db17640999d93c074833c1f4",
+  "tools/logo/logo.S": "d0967446b5f84c757c4f964665816f61bf6f7d4f",
+  "tools/snd/__init__.py": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+  "tools/snd/adpcm.py": "1c6ff8620222e135a6ef1787133b1f2ba2b933a3",
+  "tools/snd/resample.py": "651d7f0cceaec9c6d18c6ade0e951c05f0b71259",
+  "tools/snd/sinc_table.py": "2cc52fa43fa06a83d2f77ad286617a21a173f309",
+  "tools/snd/snd.h": "5d0ea07a7825bc12d16ddb6a67d2c218b91be59b",
+  "tools/snd/snddir.c": "58470c27c655d5b0a268e3711b8cc132bf6a1e45",
+  "tools/snd/sndres.S": "2e46b60843cd8bd0a28c58ad579b99d0ea08d290",
+  "tools/snd/vab.py": "9b7c9102a92b6567e2722fb650dbbe26109d169e",
+  "tools/speed/frame/bghand.py": "cebf1cbb0849830c7eff4750b146b79b199af540",
+  "tools/speed/frame/bgtile.py": "b6a25bc50d6d3a0df8df5af7b51f13d1efbc3a3a",
+  "tools/speed/frame/bin/ovl.json": "128471d6bba0f5c140e94559b2afae834a0a2a78",
+  "tools/speed/frame/bin/region_a.bin": "e9b94ad76425312c19a8f14edb2a2499e270f32b",
+  "tools/speed/frame/bin/region_b.bin": "e0f317317104c2b5128a86f28244a08d5613201e",
+  "tools/speed/frame/bin/region_d.bin": "c9e738e56167cab1c9df7888b5dc09f0e6030f54",
+  "tools/speed/frame/bin/region_q1.bin": "75fb1f1f04dbfc94aec01fcd3e5453118a5f097b",
+  "tools/speed/frame/bin/region_q2.bin": "ffc4d4c2ebdb08a1d4b6828ac151f3f59ecfdea8",
+  "tools/speed/frame/bin/region_q3.bin": "952e5ca3c9b4567ce3c1e711f096dfc4d0dff32d",
+  "tools/speed/frame/cfg.py": "e8d81eb42c1e47ae0f7ff0b9f1f3bb10c3bffbc0",
+  "tools/speed/frame/fprof.py": "b2318d96892493cd93cd4d4c2a688a8a3904022f",
+  "tools/speed/frame/gas.py": "e07790c5834cc27cfdaa23c23e4558b019ed06c0",
+  "tools/speed/frame/hazard.py": "5eac996e3c57f9928ab44ad16e084470c7998fce",
+  "tools/speed/frame/src/gpuq.S": "e24e6d00da2ffa38bf2d04a30b4ef1669fec4509",
+  "tools/speed/frame/src/gpuq2.S": "95f4d21141138679ed3c5fd6771756e01a77d6a5",
+  "tools/speed/frame/src/gpuq3.S": "0ff6dc19735b5410925d15524285b81b46645f49",
+  "tools/speed/frame/src/layers.S": "203aa3f2c412c26c25a0ad5e59fbc4d3b1c2cd10",
+  "tools/speed/frame/src/present.S": "dc452287e7e00ef5203506361a5bf13fc6e2243c",
+  "tools/speed/frame/src/splist.S": "b4559afc2ea71992ef408d50693afafef62e9783"
+ }
+}

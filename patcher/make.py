@@ -12,10 +12,17 @@ The bundle contains code and measurement tables only; no game data.
                     and pass e.g. --pyodide ./pyodide/   (see README.md)
     --bundle-only   write patcher/xvsf_bundle.zip and stop (the Node test harness uses it)
 """
-import argparse, base64, hashlib, io, json, os, zipfile
+import argparse, base64, hashlib, io, json, os, re, zipfile
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.abspath(os.path.join(HERE, ".."))
 PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"       # Python 3.11.3, numpy 1.26.4
-SHOW = ("What it does", "Restored frames (8 MB)", "Known issues")      # README.md sections shown on the page
+SHOW = ("What the hack does", "Restored animation frames (optional, 8 MB)", "Known issues", "How it fits in 2 MB", "Legal")      # the side panel's keys (src/app.js)
+# public repository: the X-Men vs. Street Fighter texts come from docs/xvsf/README.md (section -> the page's key), the
+# legal line from the README's License section
+XVSF_DOC = "docs/xvsf/README.md"
+XVSF_MAP = {"What it does": "What the hack does", "Restored frames (8 MB)": "Restored animation frames (optional, 8 MB)",
+            "Known issues": "Known issues"}
+LEGAL = ("A free fan project, not affiliated with or endorsed by Capcom or Marvel. X-Men vs. Street Fighter and Marvel Super "
+         "Heroes vs. Street Fighter are © Capcom; Marvel characters © Marvel. Use it only with a disc and an arcade ROM set you own.")
 
 
 def bundle_files():
@@ -36,9 +43,19 @@ def bundle_files():
     add("tools/speed", py)                       # speedpatch.py + frame.py are imported (their results come from the blobs)
     add("tools/ap", py)
     add("tools/snd", py)                         # 1.2 sound banks: VAB editing, resampler, ADPCM encoder (hot loops: src/kernels.js)
+    add("tools/ach", lambda f: f in ("xvach.py", "achbuild.py", "setc.py"))   # 1.3: built-in achievements (xvach.code comes from the blobs)
+    add("tools/ach/xvsf", lambda f: f == "set.py")   # (xvach reads the set at import)
     add("tools/ap8", lambda f: f == "hot8.json")  # data: the 8 MB pre-decode order (read by tools/mkap8disc.py)
     add("tools/logo", lambda f: f.endswith(".bin"))   # card2.bin: the second card's own layer (composed with the user's portraits)
-    return out
+    out.append(("builder/games.py", os.path.join(REPO, "builder", "games.py")))     # which game is this disc
+    # MSHvSF: the builder and the tools it runs (the same file list as the command line's tool root, builder/mshb/pipeline.py)
+    import sys
+    sys.path.insert(0, os.path.join(REPO, "builder"))
+    from mshb import pipeline as msh
+    have = {n for n, p in out}
+    out += [(n, p) for n, p in msh.root_files() if n not in have]
+    out += [("builder/data/mshvsf/blobs/" + f, os.path.join(msh.BLOBS, f)) for f in sorted(os.listdir(msh.BLOBS)) if f.endswith(".json")]
+    return sorted(set(out))
 
 
 def make_bundle():
@@ -61,7 +78,29 @@ def readme_sections(md):
         elif line.startswith("- "): out[cur].append(line[2:].strip()); new = False
         elif new: out[cur].append(line.strip()); new = False
         else: out[cur][-1] += " " + line.strip()                   # continuation of a wrapped line
+    return out
+
+
+def page_readme():
+    """the side panel's X-Men vs. Street Fighter sections, under the keys src/app.js reads"""
+    sec = readme_sections(open(os.path.join(REPO, *XVSF_DOC.split("/")), encoding="utf-8").read())
+    link = lambda t: re.sub(r"\[([^\]]+)\]\([^)]+\)", lambda mo: mo.group(1), re.sub(r"\s*\[(Details|The list)\]\([^)]+\)\.?", "", t))        # the page shows no links: [text](url) -> text
+    out = {XVSF_MAP[k]: [link(t) for t in v] for k, v in sec.items() if k in XVSF_MAP}
+    rf = "Restored animation frames (optional, 8 MB)"
+    if rf in out: out[rf] = [""] + out[rf]          # app.js skips the section's first paragraph (the intro in the private README)
+    out["Legal"] = [LEGAL]
     return {k: out[k] for k in SHOW if k in out}
+
+
+def about_sections(md):
+    """patcher/src/mshvsf.md -> {"intro": {title: [item, ...]}, "mshvsf": {...}}  (headings "## key: Title")"""
+    out = {}; cur = None
+    for line in md.splitlines():
+        if line.startswith("## "):
+            k, t = line[3:].split(":", 1); cur = out.setdefault(k.strip(), {}).setdefault(t.strip(), [])
+        elif line.startswith("- ") and cur is not None: cur.append(line[2:].strip())
+        elif line.strip() and cur is not None and cur: cur[-1] += " " + line.strip()
+    return out
 
 
 def main():
@@ -73,15 +112,17 @@ def main():
     if a.bundle_only:
         open(os.path.join(HERE, "xvsf_bundle.zip"), "wb").write(bundle); return
     src = lambda n: open(os.path.join(HERE, "src", n), encoding="utf-8").read()
-    known = json.load(open(os.path.join(REPO, "builder", "data", "known.json")))
+    known = dict(xvsf=json.load(open(os.path.join(REPO, "builder", "data", "known.json"))),
+                 mshvsf=json.load(open(os.path.join(REPO, "builder", "data", "mshvsf", "known.json"))))
     cfg = dict(pyodide=a.pyodide if a.pyodide.endswith("/") else a.pyodide + "/", known=known,
-               readme=readme_sections(open(os.path.join(REPO, "README.md"), encoding="utf-8").read()),
-               bundle_sha1=hashlib.sha1(bundle).hexdigest())
-    worker = src("kernels.js") + "\n" + src("zopfli.js") + "\n" + src("worker.js")
+               readme=page_readme(),
+               bundle_sha1=hashlib.sha1(bundle).hexdigest(), about=about_sections(open(os.path.join(HERE, "src", "mshvsf.md"), encoding="utf-8").read()),
+               about_pt=about_sections(open(os.path.join(HERE, "src", "about_pt.md"), encoding="utf-8").read()))      # PT-BR side panel (src/i18n.js: the other texts)
+    worker = src("kernels.js") + "\n" + src("kernels_msh.js") + "\n" + src("zopfli.js") + "\n" + src("worker.js")
     vz = os.path.join(HERE, "vendor", "zopfli")                # zopfli compiled to WebAssembly (Apache-2.0), for the 8 MB build
     zopfli = dict(glue=open(os.path.join(vz, "libzopfli.js"), encoding="utf-8").read(), wasm=json.load(open(os.path.join(vz, "libzopfli-wasm.json"))))
     page = src("page.html")
-    rep = {"/*{{STYLE}}*/": src("style.css"), "/*{{APP}}*/": src("app.js"),
+    rep = {"/*{{STYLE}}*/": src("style.css"), "/*{{APP}}*/": src("i18n.js") + chr(10) + src("app.js"),
            "{{WORKER}}": base64.b64encode(worker.encode()).decode(), "{{BUNDLE}}": base64.b64encode(bundle).decode(),
            "{{CONFIG}}": json.dumps(cfg).replace("</", "<\\/"), "{{ZOPFLI}}": json.dumps(zopfli).replace("</", "<\\/")}
     for k, v in rep.items():

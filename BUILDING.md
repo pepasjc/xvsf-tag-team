@@ -1,8 +1,8 @@
 # Building
 
-Everything here runs from a checkout of this repository on Windows, Linux or macOS. You need your own
-disc image, and for the restored frames your own arcade ROM set; nothing from either is in the
-repository.
+Everything here runs from a checkout of this repository on Windows, Linux or macOS. You need your own disc image,
+and for the restored frames your own arcade ROM set; nothing from either is in the repository. One builder makes
+both hacks: it recognises the game from the files on the disc.
 
 ## Requirements
 
@@ -10,37 +10,60 @@ repository.
 
       pip install -r requirements.txt
 
-  The versions in `requirements.txt` are the ones the 1.2 references were made with. Without the
-  `zopfli` module the 8 MB build falls back to zlib: the image works but is not identical to the
-  reference.
+  The versions in `requirements.txt` are the ones the reference images were made with. Without the `zopfli`
+  module the restored-frames build of X-Men vs. Street Fighter falls back to zlib: the image works but is not
+  identical to the reference.
 - `chdman` only for `--chd`.
 - No MIPS compiler, unless you change the MIPS sources (see below).
 
 ## Building
 
     python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --out OUT
-    python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip --out OUT
+    python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip xmvsf.zip --out OUT
+    python builder/build.py --disc "Marvel Super Heroes vs. Street Fighter (USA).bin" --out OUT
+    python builder/build.py --disc "Marvel Super Heroes vs. Street Fighter (USA).bin" --arcade mshvsf.zip --out OUT
 
-The first line builds the 2 MB tag hack, the second adds the restored frames for 8 MB machines. A clone
-set in split form takes its parent as well: `--arcade xmvsfu1d.zip xmvsf.zip`.
+Without options the builder makes the release image, the same one the web patcher makes. `--arcade` adds the
+restored frames for 8 MB machines; a clone set in split form takes its parent as well (`--arcade xmvsfu1d.zip
+xmvsf.zip`, `--arcade mshvsfu.zip mshvsf.zip`).
+
+The input image is checked by SHA-1 first; anything but the known dump is refused with the reason (already patched,
+other region, not this game, altered). Every intermediate file is regenerated from the inputs, and the result is
+compared with the reference SHA-1 for the chosen options (`builder/data/known.json`,
+`builder/data/mshvsf/known.json`). A build takes a few minutes; the restored frames add a few more. Details of
+each stage: [builder/README.md](builder/README.md).
+
+### Options for both games
 
 | Option | Effect |
 |---|---|
-| `--no-logo` | no boot card |
-| `--no-menu-version` | no version line on the main menu (2 MB build only; with restored frames the line carries the 8MB indicator) |
-| `--plain` | neither; the plain images the regression references were made with |
-| `--buttons stock` | the game's own button layout instead of HP = R1, HK = R2, 3P = L1, 3K = L2 |
+| `--no-achievements` | leave out the built-in achievements (ACHIEVEMENTS page, popups, memory card file) |
+| `--no-logo` | no boot cards |
 | `--chd` | also write a CHD (`chdman` from PATH, `XVSF_CHDMAN` or `--chdman`) |
-| `--work DIR` | keep the work directory; the re-encoded sprites are reused on the next run |
-| `--jobs N` | processes for the sprite encoders |
-| `--tool-flag=--nosound` | the 1.1 image (2 MB only, without the 1.2 sound banks) |
-| `--tool-flag=--nospeed` | the 1.0.1 image (2 MB only, without the 1.1 speed-ups and the 1.2 sound) |
+| `--name NAME` | base name of the output files |
+| `--work DIR` | keep the work directory; the re-encoded sprites (and sound levels) are reused on the next run |
+| `--jobs N` | processes for the encoders |
+| `--verbose` | print the tools' own output |
 
-The input image is checked by SHA-1 first; anything but the known dump is refused with the reason
-(already patched, other region, not this game, altered). Every intermediate file is regenerated from the
-inputs, and the result is compared with the reference SHA-1 for the chosen options
-(`builder/data/known.json`). A build takes one to three minutes; the restored frames add about two.
-Details of each stage: [builder/README.md](builder/README.md).
+### X-Men vs. Street Fighter only
+
+| Option | Effect |
+|---|---|
+| `--no-menu-version` | no version line on the main menu (2 MB build only; with restored frames the line carries the 8MB indicator) |
+| `--plain` | no boot card and no version line; the plain images the regression references were made with |
+| `--buttons stock` | the game's own button layout instead of HP = R1, HK = R2, 3P = L1, 3K = L2 |
+| `--tool-flag=--nosound` | the 1.1 image (2 MB only, without the 1.2 sound banks and everything newer) |
+| `--tool-flag=--nospeed` | the 1.0.1 image (2 MB only, without the 1.1 speed-ups and everything newer) |
+
+`--nospeed` and `--nosound` rebuild the earlier releases bit for bit, so their results match the hashes published
+with 1.0.1 and 1.1.
+
+### Marvel Super Heroes vs. Street Fighter only
+
+| Option | Effect |
+|---|---|
+| `--ram8` | the 8 MB loader without an arcade set (all four characters in the stock sprite format from upper RAM on 8 MB machines; the image still runs on 2 MB). An arcade set implies it |
+| `--meter on` / `--meter none` | the SPEED METER on at boot / not built in (default: in OPTION MODE, off) |
 
 ## The web patcher
 
@@ -48,11 +71,12 @@ Details of each stage: [builder/README.md](builder/README.md).
 
     python patcher/make.py
 
-It bundles `builder/` and `tools/` into the page; the page runs them under Pyodide in a Web Worker and
-gives the same image as the command line. [patcher/README.md](patcher/README.md) covers hosting and the
-browser tests.
+It bundles `builder/` and the tools the builds run into one page; the page runs them under Pyodide in a Web Worker
+and gives the same image as the command line with no options (with `--arcade` when an arcade ROM set is given).
+The page has no options and is available in English and Brazilian Portuguese.
+[patcher/README.md](patcher/README.md) covers hosting and the browser tests.
 
-## Changing the MIPS code
+## Changing the MIPS code (X-Men vs. Street Fighter)
 
 The code that runs on the PlayStation is stored assembled in `builder/data/blobs/`: one file per piece,
 named by its SHA-1, and `manifest.json`, which maps every code-generating function in `tools/` and its
@@ -69,7 +93,10 @@ instead of the words, and the builder fills them in from your image. The sources
 | `tools/snd/sndres.S`, `snddir.c`, `snd.h` | the 1.2 sound code: resident part and the sound directory (`tools/sndpatch.py` assembles them; `tools/snd/*.py` rebuild the sound banks from your disc at build time) |
 | `tools/ap8/` | the 8 MB boot stub and module |
 | `tools/logo/` | the boot cards (`logo.S`, `card2.S`; `card.bin` and `card2.bin` are the cards' own artwork) |
-| `tools/*patch.py` | patches assembled by `tools/mipsasm.py` (tag, HUD, CPU, rounds, music, ...) and the version line |
+| `tools/*patch.py` | patches assembled by `tools/mipsasm.py` (tag, HUD, CPU, rounds, music, START skip, ARCADE BALANCE, ...) and the version line |
+| `tools/ach/` | the 1.3 achievements runtime (`ach.c`, `eval.c`, `copy.S`, `start.S`; shared with MSHvSF) and the XvSF port and set (`xvsf/`); `xvach.py` patches it in |
+| `tools/skip/xvskip.c` | the 1.3 START skip |
+| `tools/tagload/r12/` | the 1.2 battle loader, kept for the `--nospeed` / `--nosound` images |
 
 After changing a source you need a `mipsel-none-elf-` GCC toolchain (binutils and gcc), plus `capstone`
 for the load-delay check of the speed modules. It is found through `XVSF_MIPS_PREFIX`, else
@@ -104,3 +131,24 @@ is still built from the blobs.
 
 A change to anything the image contains changes the reference hashes; `--record-expected` writes the
 new ones for the options of that run.
+
+## Changing the MIPS code (Marvel Super Heroes vs. Street Fighter)
+
+The same scheme: our MIPS code is stored compiled in `builder/data/mshvsf/blobs/` (game words as references
+filled in from your disc), and the build never compiles anything. The Python tools the build runs are a frozen
+copy in `builder/data/mshvsf/tools/` (repository layout), so the blobs always match the tools that use them.
+The sources of our MSHvSF code:
+
+| Source | What it is |
+|---|---|
+| `games/mshvsf/tools/tagload/` | the battle loader (`tagload.c`, `glue.S`), `mktag.py` builds the 2 MB image |
+| `games/mshvsf/tools/ap8/` | the 8 MB loader and its menu code; `mkap8.py` builds the 8 MB image |
+| `games/mshvsf/tools/gameplay/` | the tag-mode switch, menus, version line, secret characters, training |
+| `games/mshvsf/tools/speed/` | memory routines, parsers, decode-ahead, speed meter |
+| `games/mshvsf/tools/snd/` | the sound bank loader and the bank builder |
+| `games/mshvsf/tools/skip/`, `ach/` | START skip; the achievements port layer and set (the runtime is `tools/ach/`) |
+| `common/dsp/` | the DSM1 / DSH1 sprite codecs (`dsm.py`, `dsh.py`) and their decoders (`dsmdec.S`, `dshdec.S`) |
+
+Re-baking the MSHvSF blobs after a change needs the MIPS toolchain and the development scripts that freeze the
+tool copy and record the blobs and hashes; those scripts are not part of this repository yet.
+

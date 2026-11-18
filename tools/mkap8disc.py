@@ -32,7 +32,7 @@ OBJ = os.path.join(BUILD, "ap8obj")
 GCC = M.GCC
 # dead ranges (tools/deadcode.py, break-tested with work/ap8/deadtest8.py), not used by any patch module
 CHUNKS = {".chunkh": (0x8002d9c4, 0x8002daec), ".chunki": (0x8006f2e4, 0x8006f3e0), ".chunkj": (0x80019ae8, 0x80019bd4), ".chunkl": (0x80054704, 0x800547d4), ".chunkm": (0x8004e3e0, 0x8004e490)}
-VERSION = "TAG HACK 1.2"                                # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
+VERSION = "TAG HACK 1.3"                                # main-menu line (--version=TEXT); the 8 MB machine shows it with "  8MB" appended
 SEL_AT, SEL_FILE = 0x8009bc38, "P/P4/SELECT.BIN"      # jal SPRLOAD(0x27, off) of the select screen -> selhook8
 MENU_AT, MENU_FILE = 0x800987b8, "P/P4/OPDEMO.BIN"    # jr ra at the end of the main-menu text routine -> j menuhook
 MOD, MODSECT, MOD_MAGIC = 0x80200000, 12, 0x384d5658         # module area 0x80200000-0x80206000; state 0x80206000, undo list +0x400, raw_dec +0x1000
@@ -112,7 +112,7 @@ def main():
     man, mansel, mansel2 = manifest["chars"], manifest.get("select"), manifest.get("select2")
     out = os.path.join(BUILD, name + ".bin")
     # 1. the 2 MB build, untouched
-    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal", "--nosound")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
+    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal", "--nosound", "--ach", "--noskip", "--noarcbal")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
     base_sha = hashlib.sha1(open(out, "rb").read()).hexdigest()
     print("2 MB base image sha1", base_sha)
     syms = M.symbols()

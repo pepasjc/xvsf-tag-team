@@ -21,7 +21,7 @@ typedef short s16;
 typedef unsigned char u8;
 
 #ifndef VERSION
-#define VERSION "TAG HACK 1.2"
+#define VERSION "TAG HACK 1.3"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #define MENU_X      88                  /* left edge of the picture is about x = 72 in this routine's coordinates */

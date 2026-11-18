@@ -1,0 +1,98 @@
+{
+ "mshvsf": {
+  "title": "mshvsf (Europe)",
+  "roms": {
+   "03": "61bd581ea4b969298f8a39fe03023b5456cac750",
+   "04": "2d45dbf7bc277b84c6bcd9615ab3b80c42af7781",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfu": {
+  "title": "mshvsfu (USA)",
+  "roms": {
+   "03": "939fb1e3c06c33fc212b26ecfceac3180e108e9d",
+   "04": "787924e04508c83ecd4c3a872882d2be9e57eb50",
+   "05": "b813082a480d42d663c713062892245faabe9101"
+  }
+ },
+ "mshvsfu1": {
+  "title": "mshvsfu1 (USA, older revision)",
+  "roms": {
+   "03": "1fa7e6534d02ec8059153705b1161a55b9cfe803",
+   "04": "e95f7a3fb281e1bafdbe7a1b22532c4fab5ec89d",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfa": {
+  "title": "mshvsfa (Asia)",
+  "roms": {
+   "03": "6a129274711765bbf5acbb225e3fce6d93d7f421",
+   "04": "758fc9c453a864e32588c7fb33166c93e798a39c",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfa1": {
+  "title": "mshvsfa1 (Asia, older revision)",
+  "roms": {
+   "03": "34e6a074734032af74afa52bfebbc213a9c886d7",
+   "04": "f340dda7d5339645fd1ea523e72783fb7bb7aba1",
+   "05": "1b368ebe7680796dc068b511b72359eec546cd9f"
+  }
+ },
+ "mshvsfb": {
+  "title": "mshvsfb (Brazil)",
+  "roms": {
+   "03": "0664fad64996118df86e9887bd6e301d04d84978",
+   "04": "a16f262fd14e726c7837980d0556a9c3bdc7fb11",
+   "05": "b813082a480d42d663c713062892245faabe9101"
+  }
+ },
+ "mshvsfb1": {
+  "title": "mshvsfb1 (Brazil, older revision)",
+  "roms": {
+   "03": "85d0026a691682c195d6e617bf28def50029cb03",
+   "04": "c6fa2b8b727a1192fd21131496067447053b5547",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfh": {
+  "title": "mshvsfh (Hispanic)",
+  "roms": {
+   "03": "dd926a9cac4bff05845615d0b61948e2dc4b1ed8",
+   "04": "594e4383eb776c09075577cd1f4e42ef11748f0f",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfj": {
+  "title": "mshvsfj (Japan)",
+  "roms": {
+   "03": "16820cf3bc7285477e61bd598a3ed4ea5e0e770d",
+   "04": "36db3a3aeaf29369977593c051bf5665cffefb2d",
+   "05": "924a7c82456bb44d7b0be65af11dbe1a2420a3f0"
+  }
+ },
+ "mshvsfj1": {
+  "title": "mshvsfj1 (Japan, older revision)",
+  "roms": {
+   "03": "b2d8a62e394c2eb4070cac742b0f403252e46a25",
+   "04": "ecac71b032b431c63a4cf73a1d1d1be1faebc12b",
+   "05": "eafa877fd4a4e58e7c98336658e986a4a27d6b91"
+  }
+ },
+ "mshvsfj2": {
+  "title": "mshvsfj2 (Japan, older revision)",
+  "roms": {
+   "03": "e9fb93249e48e1bb7c769c3ce674dd4be404574f",
+   "04": "471e44268cebba631b81f131bf31e27b8a28c548",
+   "05": "738a27f83704c208d36d73bf766d861ef2d51a89"
+  }
+ },
+ "mshvsfu1d": {
+  "title": "mshvsfu1d (USA, older revision, decrypted)",
+  "roms": {
+   "03": "53ab6df85a900b221cabd62948e68d91cf6146e4",
+   "04": "51ebede487f955e3f838b7906b619830e67fea52",
+   "05": "777bf7c74110c029c44a363ce79e50c1863950c2"
+  }
+ }
+}

@@ -2,6 +2,9 @@
 # Disc images, built images, work directories and arcade-derived data stay local.
 *.bin
 !tools/**/*.bin
+# our own card artwork layer (MSHvSF), and its copy in the builder's frozen tool tree
+!games/mshvsf/tools/logo/mshcard2.bin
+!builder/data/mshvsf/tools/games/mshvsf/tools/logo/mshcard2.bin
 *.cue
 *.chd
 *.iso
@@ -9,6 +12,9 @@
 /work/
 /build/
 /out/
+/games/*/disc/
+/games/*/build/
+/games/*/work/
 *.npy
 *.npz
 
@@ -24,6 +30,10 @@ tools/nspdec/nspdec.sym
 tools/speed/**/*.bin
 tools/speed/frame/bin/
 tools/speed/*/obj/
+# MSHvSF module build products (the builder uses builder/data/mshvsf/blobs)
+games/**/obj/
+games/**/bin/
+games/mshvsf/tools/tagload/tagload.*.bin
 
 __pycache__/
 *.pyc

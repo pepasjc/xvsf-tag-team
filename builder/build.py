@@ -18,7 +18,7 @@ def tool_flags(a, arcade):
     """command-line options -> the flags of tools/mktagdisc.py / tools/mkap8disc.py (pipeline.tool_flags)"""
     logo = not (a.no_logo or a.plain)
     version = not a.no_menu_version and (bool(arcade) or not a.plain)      # --no-menu-version with an arcade set is refused, with the reason
-    return pipeline.tool_flags(bool(arcade), logo, version, a.buttons, a.menu_version or None, a.tool_flag or [])
+    return pipeline.tool_flags(bool(arcade), logo, version, a.buttons, a.menu_version or None, a.tool_flag or [], not a.no_achievements)
 
 
 def expected(variant, setname, flags):
@@ -27,12 +27,34 @@ def expected(variant, setname, flags):
     return None
 
 
+def other_game(argv):
+    """the disc names another game this builder supports -> its module's main (None: X-Men vs. Street Fighter, below)"""
+    argv = list(sys.argv[1:] if argv is None else argv)
+    disc = next((x.split("=", 1)[1] for x in argv if x.startswith("--disc=")), None)
+    if disc is None and "--disc" in argv and argv.index("--disc") + 1 < len(argv): disc = argv[argv.index("--disc") + 1]
+    if not disc: return None
+    try:
+        path = pipeline.resolve_image(disc)
+        import games
+        det = games.detect(path)
+    except Exception:
+        return None                                         # let the X-Men vs. Street Fighter path report the problem
+    if det.get("game") == "mshvsf":
+        from mshb import cli
+        return lambda: cli.main(argv)
+    if det.get("game") == "mvc":
+        return lambda: (print("ERROR: this is Marvel vs. Capcom (%s); its tag hack is still in progress and cannot be built yet." % det.get("serial")), 2)[1]
+    return None
+
+
 def main(argv=None):
+    og = other_game(argv)
+    if og: return og()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--disc", required=True, help="your original disc image (.bin, or the .cue that names it)")
     ap.add_argument("--arcade", nargs="+", default=[], help="your arcade ROM set (zip; a clone zip followed by its parent zip): adds the restored animation frames")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.2]", with "+ Restored Frames" for an arcade build)')
+    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.3]", with "+ Restored Frames" for an arcade build)')
     ap.add_argument("--work", help="work directory to keep (re-used on the next run: encoded sprites are cached); default: a temporary one")
     ap.add_argument("--jobs", type=int, default=min(6, os.cpu_count() or 1), help="processes for the sprite encoders (default %(default)s)")
     ap.add_argument("--buttons", choices=["modern", "stock"], default="modern", help="default button layout: modern = HP R1, HK R2, 3P L1, 3K L2 (default); stock = the game's own")
@@ -41,6 +63,9 @@ def main(argv=None):
     ap.add_argument("--plain", action="store_true", help="no boot card, and no version line on the 2 MB build: the plain images the regression references were made with")
     ap.add_argument("--menu-version", metavar="TEXT", help="another text for the version line (developers: only texts baked into builder/data/blobs)")
     ap.add_argument("--tool-flag", action="append", metavar="FLAG", help="hand FLAG to tools/mktagdisc.py / mkap8disc.py as it is (developers; repeatable)")
+    ap.add_argument("--no-achievements", action="store_true", help="leave out the built-in achievements (popup, ACHIEVEMENTS page, memory card file; docs/ACHIEVEMENTS.md), "
+                    "which are part of the release image (they switch themselves off on the PS2 / PS3)")
+    ap.add_argument("--achievements", action="store_true", help=argparse.SUPPRESS)      # (older scripts: achievements are always on now; no effect)
     ap.add_argument("--chd", action="store_true", help="also write a .chd (needs chdman: XVSF_CHDMAN, PATH, or --chdman)")
     ap.add_argument("--chdman", help="path of chdman")
     ap.add_argument("--mips-prefix", help='developers, with --record-blobs: MIPS cross toolchain prefix, e.g. "/opt/gcc/bin/mipsel-none-elf-"')

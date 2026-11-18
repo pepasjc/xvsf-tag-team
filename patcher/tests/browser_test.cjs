@@ -3,6 +3,7 @@
  *
  *   node patcher/tests/browser_test.cjs --disc DISC.bin [--arcade SET.zip[,PARENT.zip]] [--file-url] [--shots DIR]
  *        [--chrome PATH] [--headed] [--skip-errors] [--only-shots] [--tag NAME] [--set "CSS=0|1,..."] [--also-reject FILE,...]
+ *        [--lang en|pt]   (page language for the run; the result is also shot in the other language)
  *
  *   default: serves patcher/ on http://127.0.0.1:<port>/ (as a static host would); --file-url opens
  *   patcher/index.html straight from disk instead.
@@ -79,6 +80,8 @@ function memory(marker) {
     const ready = await c.until("document.getElementById('runtime').textContent === '' || document.getElementById('st-build').classList.contains('bad')", 180000, "runtime");
     if (await c.eval("document.getElementById('st-build').classList.contains('bad')")) throw new Error("page failed to start: " + (await c.eval("document.getElementById('st-build').textContent")));
     console.log("runtime ready after %ss (page load to builder ready)", ((Date.now() - t0) / 1000).toFixed(1));
+    const lang = (l) => c.eval(`(() => { if (LANG !== ${JSON.stringify(l)}) document.getElementById("lang").click(); return LANG; })()`);
+    if (arg("lang")) console.log("language:", await lang(String(arg("lang"))));
     await c.shot(TAG + "_02_ready_light");
     await theme("dark"); await sleep(300); await c.shot(TAG + "_03_ready_dark"); await theme("light");
 
@@ -95,8 +98,8 @@ function memory(marker) {
       await c.eval("document.getElementById('arc-clear').click()");
       for (const extra of String(arg("also-reject", "")).split(",").filter(Boolean)) {      // e.g. an already patched image, another region
         await c.setFiles("#in-disc", [path.resolve(extra)]);
-        await c.until("document.getElementById('st-disc').classList.contains('bad') || document.getElementById('st-disc').classList.contains('ok')", 120000, "verdict");
-        console.log(path.basename(extra), "->", await c.eval("document.getElementById('st-disc').innerText"));
+        await c.until("['bad','ok','warn'].some((k) => document.getElementById('st-disc').classList.contains(k))", 120000, "verdict");
+        console.log(path.basename(extra), "->", await c.eval("document.getElementById('st-disc').innerText + ' [' + ((state.disc && state.disc.error) || '') + ' file size ' + (state.discFile && state.discFile.size) + ']'"));
         await c.shot(TAG + "_06_rejected_" + path.basename(extra).replace(/\W+/g, "_").slice(0, 24));
       }
     }
@@ -110,7 +113,7 @@ function memory(marker) {
       await c.until("document.getElementById('st-arcade').classList.contains('ok')", 120000, "arcade recognised");
       console.log("arcade:", await c.eval("document.getElementById('st-arcade').innerText"));
     }
-    await c.eval("document.getElementById('adv').open = true");
+    await c.eval("document.getElementById('adv') && (document.getElementById('adv').open = true)");     // (1.3 final: no options)
     await c.shot(TAG + "_07_verified");
     if (arg("only-shots")) return;
 
@@ -135,6 +138,7 @@ function memory(marker) {
       await sleep(1000);
       const st = await c.eval("JSON.stringify({done: !document.getElementById('card-result').hidden, bad: document.getElementById('st-build').classList.contains('bad'), text: document.getElementById('st-build').innerText, run: (document.querySelector('#stages li.run') || {}).innerText || ''})");
       const s = JSON.parse(st);
+      if (errors.length) throw new Error("page error during the build: " + errors.slice(0, 3).join(" | "));
       if (s.bad) throw new Error("build failed: " + s.text + "\n" + (await c.eval("document.getElementById('log').textContent.slice(-3000)")));
       if (!shotMid && (Date.now() - t) > 25000) { shotMid = true; await c.shot(TAG + "_10_building"); await c.send("Emulation.setDeviceMetricsOverride", { width: 420, height: 900, deviceScaleFactor: 1, mobile: false }); await sleep(300); await c.shot(TAG + "_11_building_narrow"); await c.send("Emulation.clearDeviceMetricsOverride"); }
       if (s.done) break;
@@ -148,6 +152,12 @@ function memory(marker) {
     await c.shot(TAG + "_12_done");
     await theme("dark"); await sleep(300); await c.shot(TAG + "_13_done_dark"); await theme("light");
     await c.send("Emulation.setDeviceMetricsOverride", { width: 420, height: 900, deviceScaleFactor: 1, mobile: false }); await sleep(300); await c.shot(TAG + "_14_done_narrow"); await c.send("Emulation.clearDeviceMetricsOverride");
+    if (arg("lang")) {                                   // the other language on the finished page: texts only, the result stays
+      const other = String(arg("lang")) === "pt" ? "en" : "pt", sha0 = await c.eval("state.result.sha1");
+      await lang(other); await sleep(300); await c.shot(TAG + "_15_done_" + other);
+      console.log("after switching to %s: facts %s | sha1 unchanged %s", other, (await c.eval("document.getElementById('facts').innerText")).split("\n").filter(Boolean).join(" | "), (await c.eval("state.result.sha1")) === sha0);
+      await lang(String(arg("lang")));
+    }
     const shown = await c.eval("state.result.sha1"), name = await c.eval("state.result.name"), size = await c.eval("state.result.size");
     // the download itself: the browser writes the Blob (slices of the input + new sectors) to disk
     t = Date.now();

@@ -160,7 +160,7 @@ void flushcache(void);
  * sprite files are the stock files plus appended data (SPEC 1), so an unpatched overlay draws the stock frames from them. */
 #define FRAMES_OFF  (tl_dbg.title == 3)
 #ifndef VERSION
-#define VERSION "TAG HACK 1.2"
+#define VERSION "TAG HACK 1.3"
 #endif
 #define PRINT       ((void (*)(const char *, int, int, int, int, int))0x8002d79c)   /* (text, x, y, x step, colour, 1) */
 #include "inflate.h"
@@ -1116,59 +1116,106 @@ again:
     st->ldvbl = VSYNC(-1) - st->ldvbl;
 }
 
-/* OPTION MODE gets a 13th line, "ARCADE FRAMES  ON  OFF" (restored frames on / off for this session; on at every boot).
+/* OPTION MODE gets a line "ARCADE FRAMES  ON  OFF" (restored frames on / off for this session; on at every boot).
  * OPDEMO.BIN (main menu + option screen, at 0x80098000) is patched in RAM from the main-menu hook, so a machine without
- * the 8 MB path keeps the stock option screen.  Option screen facts: cursor at 0x80042193 (0..11), labels drawn by the
+ * the 8 MB path keeps the 2 MB option screen.  Option screen facts: cursor at 0x80042193 (0..11), labels drawn by the
  * loop at 0x80098bdc (items 5..7 are 8 apart, the others 16), "PRESS START BUTTON TO EXIT" at the loop's end + 8, cursor
  * wrap at 0x8009927c, pad: 0x8002c8e0(port) = held now, 0x8002c8f8(port) = held before; values are drawn like SOUND MODE
- * (x 0x110 and 0x148, chosen colour 0x30, the other 0x33). */
+ * (x 0x110 and 0x148, chosen colour 0x30, the other 0x33).
+ * Two cases:
+ *  - stock OPDEMO (2 MB built with --noarcbal): 13 lines, ARCADE FRAMES is item 12 (the 1.3 screen before ARCADE BALANCE).
+ *  - the 1.3 disc's OPDEMO with ARCADE BALANCE (tools/arcbalpatch.py: item 12, 13 lines, its functions in the START skip
+ *    module, found through the two jal words): 14 lines.  Items 0..8 stay where they are; items 9..13 are 12 apart
+ *    (164 .. 212, a step function replaces the loop's +8 / +16), the values of items 9..11 follow (start 164, step 12),
+ *    ARCADE BALANCE (theirs) at 200, ARCADE FRAMES (ours, item 13) at 212, the exit line at 224 as on the stock screen. */
 #define OPT_CURSOR  (*(volatile signed char *)0x80042193)
 #define OPT_ITEM    12
 #define PADNOW      ((u32 (*)(int))0x8002c8e0)
 #define PADOLD      ((u32 (*)(int))0x8002c8f8)
 #define SOUND       ((void (*)(int))0x8004d544)
+#define JAL(f)      (0x0c000000u | ((u32)(f) >> 2 & 0x3ffffff))
+#define JTARGET(w)  ((void *)(0x80000000u | ((w) & 0x3ffffffu) << 2))
+static int opt_item = OPT_ITEM;
+static void (*bal_draw)(int) __attribute__((section(".data")));       /* (the module has no BSS) */
+static u32 (*bal_input)(int) __attribute__((section(".data")));
 
-/* end of the label loop: our line at y (the loop's next position); the exit line moves 8 down (back to where it was) */
-static void optdraw(int y)
+static void framesline(int y)
 {
     int on = !FRAMES_OFF;
-    PRINT("ARCADE FRAMES", 0x98, y, 8, OPT_CURSOR == OPT_ITEM ? 0x30 : 0x33, 1);
+    PRINT("ARCADE FRAMES", 0x98, y, 8, OPT_CURSOR == opt_item ? 0x30 : 0x33, 1);
     PRINT("ON", 0x110, y, 8, on ? 0x30 : 0x33, 1);
     PRINT("OFF", 0x148, y, 8, on ? 0x33 : 0x30, 1);
+}
+
+/* end of the label loop: stock OPDEMO: our line at y (the loop's next position), the exit line 16 below;
+   with ARCADE BALANCE: theirs at y, ours at y + 12 (the exit line at y + 24) */
+static void optdraw(int y)
+{
+    if (bal_draw) { bal_draw(y); y += 12; }
+    framesline(y);
+}
+
+/* the label loop's step after item i (14-line screen only) */
+static int optstep(int i)
+{
+    return (unsigned)(i - 5) < 3 ? 8 : i >= 8 ? 12 : 16;
 }
 
 /* replaces the call 0x8002c8e0(port) at 0x800994a8 (after LEFT / RIGHT of items 0..8): LEFT, RIGHT or CROSS on our line */
 static u32 optinput(int port)
 {
-    u32 now = PADNOW(port);
-    if (OPT_CURSOR == OPT_ITEM && (now & ~PADOLD(port) & 0xa040)) {
+    u32 now = bal_input ? bal_input(port) : PADNOW(port);
+    if (OPT_CURSOR == opt_item && (now & ~PADOLD(port) & 0xa040)) {
         tl_dbg.title ^= 1;              /* 2 <-> 3 */
         SOUND(0x84);
     }
     return now;
 }
 
-#define JAL(f)      (0x0c000000u | ((u32)(f) >> 2 & 0x3ffffff))
 static void optpatch(void)
 {
     static const u32 at[9] = { 0x80098c1c, 0x80098c44, 0x80098c48, 0x80098c4c, 0x80098c50, 0x8009927c, 0x80099280, 0x800994a8, 0x8009908c };
     /* the stock words, stored XOR SK so that no game code is in this source; the compiler folds them back */
     #define SK 0x5ec7a11du
     static const u32 old[9] = { 0x7285a11eu ^ SK, 0x6ac2a185u ^ SK, 0x78e1a115u ^ SK, 0x5ec1951du ^ SK, 0x5ec1951eu ^ SK, 0x7685a111u ^ SK, 0x6ac5a116u ^ SK, 0x52c71325u ^ SK, 0x6ad6a1b5u ^ SK };
-    u32 new[9] = {
-        0x2c420004,                     /* sltiu v0,v0,4: items 5..8 8 apart -> the loop ends 16 higher */
-        JAL(optdraw), 0x02202021,       /* jal optdraw ; move a0,s1 */
-        0x34050098, 0x26260010,         /* ori a1,zero,0x98 ; addiu a2,s1,16: the exit line */
-        0x2842000d, 0x3402000c,         /* cursor 0..12 */
-        JAL(optinput),
-        0x341100a0 };                   /* "PRESS X BUTTON" of items 9..11 from y 160 (was 168): follows its labels */
-    int i, n = 0;
+    /* ARCADE BALANCE's words (tools/arcbalpatch.py opt_words; at[1] and at[7] are jal to its functions) */
+    static const u32 bal[9] = { 0x2c420004, 0, 0x02202021, 0x34050098, 0x26260010, 0x2842000d, 0x3402000c, 0, 0x341100a0 };
+    /* 14-line screen: the label loop's step (0x80098c18..0x80098c30, stock words XOR SK) and the values of items 9..11 */
+    static const u32 at2[8] = { 0x80098c18, 0x80098c20, 0x80098c24, 0x80098c28, 0x80098c2c, 0x80098c30, 0x800990f0, 0x8009908c };
+    static const u32 old2[7] = { 0x78855ee6u ^ SK, 0x4e87a11eu ^ SK, 0x5ec7a11du ^ SK, 0x56c5c210u ^ SK, 0x78f6a115u ^ SK, 0x78f6a10du ^ SK, 0x78f6a10du ^ SK };
+    u32 w[9], new[9];
+    int i, n = 0, isbal = 1, isold = 1;
     for (i = 0; i < 9; i++) {
-        u32 w = *(volatile u32 *)at[i];
-        if (w == new[i]) n++;
-        else if (w != old[i]) return;   /* not OPDEMO.BIN as we know it: leave it alone */
+        w[i] = *(volatile u32 *)at[i];
+        if (w[i] != old[i]) isold = 0;
+        if (i == 1 || i == 7 ? (w[i] >> 26) != 3 : w[i] != bal[i]) isbal = 0;
+    }
+    if (isbal) {
+        /* 0x80098c1c gets the step call's delay slot; the others: our jal targets in place of theirs */
+        u32 s2[8] = { JAL(optstep), 0x02228821, 0, 0, 0, 0, 0x2631000c, 0x341100a4 };   /* jal optstep ; (c1c) ; addu s1,s1,v0 ; nops ; values: step 12, from 164 */
+        for (i = 0; i < 6; i++) if (*(volatile u32 *)at2[i] != old2[i]) return;
+        if (*(volatile u32 *)at2[6] != old2[6]) return;
+        bal_draw = JTARGET(w[1]); bal_input = JTARGET(w[7]); opt_item = 13;
+        /* c18 jal optstep, c1c move a0,s2 (delay), c20 addu s1,s1,v0, c24..c30 nop */
+        new[0] = 0x02402021; new[1] = JAL(optdraw); new[2] = 0x02202021; new[3] = 0x34050098; new[4] = 0x26260018;
+        new[5] = 0x2842000e; new[6] = 0x3402000d; new[7] = JAL(optinput); new[8] = 0x341100a4;
+        for (i = 0; i < 9; i++) *(u32 *)at[i] = new[i];
+        for (i = 0; i < 8; i++) *(u32 *)at2[i] = s2[i];
+        flushcache();
+        return;
+    }
+    new[0] = 0x2c420004;                /* sltiu v0,v0,4: items 5..8 8 apart -> the loop ends 16 higher */
+    new[1] = JAL(optdraw); new[2] = 0x02202021;       /* jal optdraw ; move a0,s1 */
+    new[3] = 0x34050098; new[4] = 0x26260010;         /* ori a1,zero,0x98 ; addiu a2,s1,16: the exit line */
+    new[5] = 0x2842000d; new[6] = 0x3402000c;         /* cursor 0..12 */
+    new[7] = JAL(optinput);
+    new[8] = 0x341100a0;                /* "PRESS X BUTTON" of items 9..11 from y 160 (was 168): follows its labels */
+    for (i = 0; i < 9; i++) {
+        if (w[i] == new[i]) n++;
+        else if (w[i] != old[i]) return;   /* not OPDEMO.BIN as we know it (or already the 14-line screen): leave it alone */
     }
     if (n == 9) return;
+    (void)isold;
     for (i = 0; i < 9; i++) *(u32 *)at[i] = new[i];
     flushcache();
 }
@@ -1178,5 +1225,9 @@ void mod_menu(void)
 {
     optpatch();
     loadhook();
-    PRINT(VERSION "  8MB", 88, 222, 8, 0x30, 1);   /* 8 px below the 2 MB line: "  8MB" would touch OPTION MODE (y 208) */
+    /* two lines, "8MB" ending where the 2 MB line ends (y 214, CRT-safe bottom): one line "TAG HACK 1.3  8MB" reached
+       x 224 and ran into OPTION MODE (items start at x 200; OPTION MODE at y 208 in the 5-item menu, 216 with --ach's
+       6 items).  x 88..184 is clear of every item at every y. */
+    PRINT(VERSION, 88, 206, 8, 0x30, 1);
+    PRINT("8MB", 88, 214, 8, 0x30, 1);
 }

@@ -105,7 +105,7 @@
    "args": {
     "__tuple__": []
    },
-   "blob": "f5ee781e1311bb8567bfa572ef9d5364c8010249.json",
+   "blob": "96fbc9715c90a70e88df8c603f569373ae6817be.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -114,8 +114,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "resolved": "f5ee781e1311bb8567bfa572ef9d5364c8010249",
-   "size": 849
+   "resolved": "96fbc9715c90a70e88df8c603f569373ae6817be",
+   "size": 953
   },
   "2efa8bc3ee42f3607cee6508bafeb2f2ee45167c": {
    "args": {
@@ -217,7 +217,7 @@
    "resolved": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7",
    "size": 105
   },
-  "4e75b56f73a0ee6e990dfcbaba817cb6c97d4aab": {
+  "53c0836ab9a9cd1ecc942fa88e057ec69dd63786": {
    "args": {
     "__tuple__": [
      {
@@ -256,7 +256,7 @@
        ],
        [
         "d_end",
-        2147576400
+        2147576404
        ],
        [
         "dirload",
@@ -343,12 +343,12 @@
         2149573804
        ],
        [
-        "ramb_end",
-        2149573996
-       ],
-       [
         "total",
         2149574020
+       ],
+       [
+        "ramb_end",
+        2149574104
        ],
        [
         "upgrade",
@@ -368,10 +368,10 @@
        ]
       ]
      },
-     "TAG HACK 1.2"
+     "TAG HACK 1.3"
     ]
    },
-   "blob": "5584a6ac8e7dd7afdafde1014cb88b3c7db136fe.json",
+   "blob": "1b6647aefec1fef66b37dbba5911837b6046e4d4.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -380,8 +380,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "resolved": "30b2d850a03243ceff72af6d776e504001c4d214",
-   "size": 47959
+   "resolved": "d2db1ae78f920783d2e050891bada3e27f9234c5",
+   "size": 49865
   },
   "571af21ce39ef2f9ca95bea4ea56460fad7c7f12": {
    "args": {
@@ -464,6 +464,26 @@
    "resolved": "76ae7e511edc40498ad6099a32e1a6c937d9e6e7",
    "size": 105
   },
+  "6468481ebdc15fd53ee0c5ef1ced0e0d2bd182ba": {
+   "args": {
+    "__tuple__": [
+     2147551484,
+     2147650556,
+     680571209
+    ]
+   },
+   "blob": "158f7bbaec9f751ccbad16696cb1ddbc5a580ae2.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "xvach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "21f32332893fcb1edb15a3194a1f35f83dda7c75",
+   "size": 90013
+  },
   "66eae4673be34f2cd836fee55cc4438ce18a9903": {
    "args": {
     "__tuple__": []
@@ -481,24 +501,6 @@
    "resolved": "ec749ec312578e72f44b25f92562112c51ba123b",
    "size": 1517
   },
-  "6cb7dcfdb51380c08e0798cb4d30524c85403a16": {
-   "args": {
-    "__tuple__": [
-     "TAG HACK 1.2"
-    ]
-   },
-   "blob": "04ce72edcaa5d59377f4f4fb4557a4c1ff1b45fe.json",
-   "context": {
-    "env": {},
-    "nospeed": false
-   },
-   "function": "titlepatch.build",
-   "kwargs": {
-    "__dict__": []
-   },
-   "resolved": "04ce72edcaa5d59377f4f4fb4557a4c1ff1b45fe",
-   "size": 213
-  },
   "758327e14a655621e9185a32b9b0a528035129c8": {
    "args": {
     "__tuple__": []
@@ -514,6 +516,27 @@
    },
    "resolved": "20e51c7a30bbe96b6841e8ade2a5e5bf11e71f51",
    "size": 3958
+  },
+  "75ac0efaf8030867bff86acb9f831053bec648af": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "12aa2a5974cd1095d6018e59fa4a657a07fda1ae.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "skippatch.code",
+   "kwargs": {
+    "__dict__": [
+     [
+      "arcbal",
+      true
+     ]
+    ]
+   },
+   "resolved": "93295d428fa9f81783f59bff0150e78c77177564",
+   "size": 8851
   },
   "7bd6358883fb0e864a7615fe39dbef09e53033ea": {
    "args": {
@@ -667,6 +690,26 @@
    "resolved": "04a647febeec27a046d3a5e0abbfaeac42d2fdd9",
    "size": 23401
   },
+  "a68b06a885a88d7a65bb19dba946275785ac612a": {
+   "args": {
+    "__tuple__": [
+     2148433920,
+     2147650556,
+     680571209
+    ]
+   },
+   "blob": "db60e320f9980177264d1ea25ad78e0908d1af65.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "xvach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "256bfcd536f6605690faa2cd91fffe7dadee7c02",
+   "size": 90013
+  },
   "adb2f2026ca0b2cf66230878a2dcd0fbd8423f1c": {
    "args": {
     "__tuple__": []
@@ -699,11 +742,29 @@
    "resolved": "2ad9967a66c49b3a85a36b6a6db511fed66f00fb",
    "size": 1369
   },
+  "b8bf01b73fafaaca23704e2843b47a74b4f42d7e": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.3"
+    ]
+   },
+   "blob": "c284a32a7fc710f9d3a2c5789241c1759323a46c.json",
+   "context": {
+    "env": {},
+    "nospeed": false
+   },
+   "function": "titlepatch.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "c284a32a7fc710f9d3a2c5789241c1759323a46c",
+   "size": 213
+  },
   "b98bc34ac7888a6d308f8021ebe295c47836afec": {
    "args": {
     "__tuple__": []
    },
-   "blob": "e36beb7d2f1392df9c7050d3557274ad2968db40.json",
+   "blob": "eadcc07596cd73fd3f5d30414c273774407fa1f3.json",
    "context": {
     "env": {},
     "nospeed": false
@@ -712,8 +773,8 @@
    "kwargs": {
     "__dict__": []
    },
-   "resolved": "ec749ec312578e72f44b25f92562112c51ba123b",
-   "size": 1517
+   "resolved": "280fcf0770b5d4377e1dfdf4b5752bb41dc52284",
+   "size": 1525
   },
   "bbed3558a839604bd5ced2db56f8b9e8dd00ef2a": {
    "args": {
@@ -934,34 +995,69 @@
   }
  },
  "files": {
+  "tagload/r12/tagload.chunka.bin": "da48b20f26a00ac32c5f5678d226c8fcbbae6eb3.json",
+  "tagload/r12/tagload.chunkb.bin": "0d664497d805043ef6f6d3eed71fa4970f99f663.json",
+  "tagload/r12/tagload.chunkc.bin": "b52a392c84da14328b5616cf039fee9992154999.json",
+  "tagload/r12/tagload.chunkd.bin": "68414cd4a2c0f899f51f20359d9a47f6ba6f7a26.json",
+  "tagload/r12/tagload.chunke.bin": "6a3fd3677f45aa088691e433828b33c18455f7e7.json",
+  "tagload/r12/tagload.chunkf.bin": "2514e0596c24b07b9aa9b8eb44e56d14c5a85518.json",
+  "tagload/r12/tagload.chunkg.bin": "b854e26b980785650b9c55dd108bafe06fde7dc5.json",
+  "tagload/r12/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802.json",
+  "tagload/r12/tagload.ram.bin": "80c550fda552cd5deac5f6c4b4071e6db104fa5b.json",
+  "tagload/r12/tagload.ramb.bin": "f2a8b182e6a6d79ad82502c3da130219cf37cb21.json",
+  "tagload/r12/tagload.sym": "649be28df3949f1bc2e2724767ec47c45711f292.json",
   "tagload/tagload.chunka.bin": "da48b20f26a00ac32c5f5678d226c8fcbbae6eb3.json",
   "tagload/tagload.chunkb.bin": "0d664497d805043ef6f6d3eed71fa4970f99f663.json",
   "tagload/tagload.chunkc.bin": "b52a392c84da14328b5616cf039fee9992154999.json",
-  "tagload/tagload.chunkd.bin": "68414cd4a2c0f899f51f20359d9a47f6ba6f7a26.json",
+  "tagload/tagload.chunkd.bin": "e5fc4c958ea12a7ed731468d5fb54641592656a9.json",
   "tagload/tagload.chunke.bin": "6a3fd3677f45aa088691e433828b33c18455f7e7.json",
-  "tagload/tagload.chunkf.bin": "2514e0596c24b07b9aa9b8eb44e56d14c5a85518.json",
+  "tagload/tagload.chunkf.bin": "b8e627a5a03c00961729dca8aba996d71d9c7385.json",
   "tagload/tagload.chunkg.bin": "b854e26b980785650b9c55dd108bafe06fde7dc5.json",
   "tagload/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802.json",
   "tagload/tagload.ram.bin": "80c550fda552cd5deac5f6c4b4071e6db104fa5b.json",
-  "tagload/tagload.ramb.bin": "f2a8b182e6a6d79ad82502c3da130219cf37cb21.json",
-  "tagload/tagload.sym": "649be28df3949f1bc2e2724767ec47c45711f292.json"
+  "tagload/tagload.ramb.bin": "73b3badf8987677870fd49bcbb20e6a5e0ca4ac5.json",
+  "tagload/tagload.sym": "22cbe38f52f1ca241e984b3dfaf81b89b6c632ec.json"
  },
  "format": 1,
  "note": "our own MIPS code, made by work/release11/record.py; blob name = SHA-1 of the blob; calls keyed by pipeline.call_key",
  "resolved": {
+  "tagload/r12/tagload.chunka.bin": "51160f3eaf152e831428054085a7bbad67fa9c5a",
+  "tagload/r12/tagload.chunkb.bin": "2f58a69297e521d698c1cb9eda14df40ea2c23f5",
+  "tagload/r12/tagload.chunkc.bin": "3e46b40bf90c741b2de701755ffd9d0f3d10c170",
+  "tagload/r12/tagload.chunkd.bin": "9c58d6f377011a37a5e6ef5047897a06bc9086f2",
+  "tagload/r12/tagload.chunke.bin": "c78ba96bfd401728806f4d83345e65a3f6b85467",
+  "tagload/r12/tagload.chunkf.bin": "0c3a06772e5999180287898012fb0c5bb268126b",
+  "tagload/r12/tagload.chunkg.bin": "93b5171ddab2099d373584f05520ba9e4bade9a4",
+  "tagload/r12/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802",
+  "tagload/r12/tagload.ram.bin": "69dcda451280ed2a1d416952a47be51c3200f8ef",
+  "tagload/r12/tagload.ramb.bin": "aba2bec6f3e03848d785c90d1240ade7f604bbda",
+  "tagload/r12/tagload.sym": "33fffe1bc8636b69dabe092c31ddb0b3f6412ed7",
   "tagload/tagload.chunka.bin": "51160f3eaf152e831428054085a7bbad67fa9c5a",
   "tagload/tagload.chunkb.bin": "2f58a69297e521d698c1cb9eda14df40ea2c23f5",
   "tagload/tagload.chunkc.bin": "3e46b40bf90c741b2de701755ffd9d0f3d10c170",
-  "tagload/tagload.chunkd.bin": "9c58d6f377011a37a5e6ef5047897a06bc9086f2",
+  "tagload/tagload.chunkd.bin": "eaaa4cc42745e66cdddbb17eb0915ee6b598639f",
   "tagload/tagload.chunke.bin": "c78ba96bfd401728806f4d83345e65a3f6b85467",
-  "tagload/tagload.chunkf.bin": "0c3a06772e5999180287898012fb0c5bb268126b",
+  "tagload/tagload.chunkf.bin": "7dc1f39854f7efe764e0f4817e20990b05756653",
   "tagload/tagload.chunkg.bin": "93b5171ddab2099d373584f05520ba9e4bade9a4",
   "tagload/tagload.dbg.bin": "a0979795d65ef7483cee89ccd22401e13d144802",
   "tagload/tagload.ram.bin": "69dcda451280ed2a1d416952a47be51c3200f8ef",
-  "tagload/tagload.ramb.bin": "aba2bec6f3e03848d785c90d1240ade7f604bbda",
-  "tagload/tagload.sym": "33fffe1bc8636b69dabe092c31ddb0b3f6412ed7"
+  "tagload/tagload.ramb.bin": "408caa281abd1c2d271acfa8c77ee234cb04fa0c",
+  "tagload/tagload.sym": "185e58a7b1b0217b20cbb0c59a755acbc81b06ad"
  },
  "sources": {
+  "ach/ach.c": "293599072948eac45b6a129fa78bc674c87df7c7",
+  "ach/achbuild.py": "5acc902ed0b13e3fab4ea0cda1377b5c1ceea698",
+  "ach/copy.S": "eb64d5d9b7319b223b7d4afd30e23a3bf5a3aec6",
+  "ach/eval.c": "4c878d14ce27a307b6141839e72fa514a0e1e95f",
+  "ach/eval.h": "0fea1d8e7db407a39163d7f4e20053f5a98c67f6",
+  "ach/host/diff.c": "a6fd21bb596dbac524b00505746c00bfb831f953",
+  "ach/meta.h": "8dac7ca264bd63c3ce9d6edd5f40b767209f693f",
+  "ach/setc.py": "e96cbb5c38c6e86d55b39dc4e751c84fe30f4b71",
+  "ach/start.S": "2bf8b0aee67bda5574aca22db41394a0324d2eb8",
+  "ach/xvach.py": "bffbb8d180b9d146b07d316f384c5362bcb0a55d",
+  "ach/xvsf/port.c": "a3018e0c85227853def7f33c8881f9301d466d3f",
+  "ach/xvsf/port.h": "d30dc47d6de1fc7019657098f735da1e1b65bfe1",
+  "ach/xvsf/set.py": "c140499c97ab9795372fab832b23b98f45439b79",
   "aipatch.py": "ac8ec41c8d550ca28ca8f7f2c6815aea00eefd22",
   "ap/aplib.py": "b9f5e2c829da63d9ff624020bfb7e80af81a964f",
   "ap/build8.py": "76532a42acae992b907bd2f3cc90443b88aad5ab",
@@ -972,32 +1068,36 @@
   "ap/sel2build.py": "4041f0a73fc3e82253320e53065c52e599a72106",
   "ap/selbuild.py": "34661c8d9dddc2ed8ecf5536baa0da859b2c9229",
   "ap/snd8build.py": "d97b27b698e77a31975b9c6e63529029e18612f9",
-  "ap8/ap8boot.c": "97acaa2750505bca85b707b565cffc4915eb6122",
+  "ap8/ap8boot.c": "dee9ec393dab0d49d974a05c9138243828188ed9",
   "ap8/ap8glue.S": "46c5451ce72d1d7da7fba586eedae09b647dad3b",
-  "ap8/ap8mod.c": "41e9e5fd33f2dcd573bdf1ed54a619cf9b587f2c",
+  "ap8/ap8mod.c": "26ec02e2427f44613ae33ee60e6e25aa0e6a1c79",
   "ap8/hot8.json": "384008a3a7af890c989df902c57ca2277f89b36f",
   "ap8/inflate.h": "ab31bd9093838ae12655dc68353f9e3529eeedaa",
   "ap8/inftest.c": "01769accd9cf684fdda43092b53657f31b89dcc4",
+  "arcbalpatch.py": "31d3e52b4d5d0c8eade7334124256e656e50d32e",
   "balpatch.py": "d4b320867aca7aa21d21a946efe0d4ee25b0b83a",
   "bgmpatch.py": "f58fd89b2e3af6d5d21359f9b0337018d0574a36",
-  "card2patch.py": "7579f3076fb2ee5e874c36a34ba441244e2983c3",
+  "card2patch.py": "e2ec76fbdbaf01bd80fdae1566b8c97763f3d561",
   "deadcode.py": "ecd2c92bf367713a1881cbe06ba79f423864d2b2",
   "diffpatch.py": "347e5c7467e506987d6ca5ff1df15abe7d9b27b8",
-  "hudpatch.py": "505e6725d0a0eb5489e35caa34cfb49f9bbcce85",
+  "hudpatch.py": "eb1644baa05d258a32b6965252a0767fd5e36cd3",
   "iso.py": "8e25457a20c898158f680102e38da3238e4859df",
   "logo/card.bin": "814670b62c1c057d276ab9cdd26c08ec0f224532",
   "logo/card2.S": "b3077e1d685a5df9b6fc7bbbe851dfd4c27f5cd5",
-  "logo/card2.bin": "c4a36bf83b49ec188eb6f4433e5f967d1462dc6f",
+  "logo/card2.bin": "92dceb95ecd720b5072c65f74b27c5e1161727f4",
+  "logo/card2_12.bin": "c4a36bf83b49ec188eb6f4433e5f967d1462dc6f",
   "logo/card_101.bin": "020a7439a0cc61f1db17640999d93c074833c1f4",
   "logo/logo.S": "d0967446b5f84c757c4f964665816f61bf6f7d4f",
   "logopatch.py": "811530489499e73cc99499979ffb4a3c52e7eb6e",
   "mdis.py": "95a49216a0cdad1cea24e0aa1dcd2732e7e6ce9b",
+  "meter/meter.S": "58c1b3b78d8c97c8b7d8290a129a259b8c390360",
+  "meterpatch.py": "c635310d773bc8cc048a04978c1f19a50359ef35",
   "mipsasm.py": "3651f92a5acc498230d6a74a40bc9bf18cc6e9eb",
-  "mkap8disc.py": "73db5613a18b03654bb4eac74c30989b8dcb5880",
+  "mkap8disc.py": "fb9c3e4c635993648f568b7dd70630e3bea1fdf7",
   "mkdisc.py": "3c5b1e6de70028842461d79900b7249af1eb42ec",
   "mknspdisc.py": "83956631149beae8d57199b3fe05dfcff534c899",
   "mkrelease.py": "1f16fc2b177c95a04c98a1076ffa9fd2a198a51c",
-  "mktagdisc.py": "85cfd312c6c65864e7ba976c74d66ddb8eea4635",
+  "mktagdisc.py": "f47a33c7c872f290074904514f97b4988422a699",
   "mktrace.py": "adaa0b4cfbeaf7fd6406a38f976924a479e1b885",
   "nsp.py": "eaa09f7cab945a0b601c668785d58d361c64416c",
   "nsp_codec.py": "495696cc8de5a301734379a58b96036535e550e6",
@@ -1022,6 +1122,9 @@
   "reloc.py": "ce155821193c27326c2aa5416a8f512961003e28",
   "retarget.py": "0e82dde6252405b5edec18ab78478aef86fb2113",
   "roundpatch.py": "743487715b99f424bed96893ef5ff2bdcf0c90f9",
+  "skip/kdiag.c": "df537b8d3379ff70a5ef8f3505a5e4e1beda90b3",
+  "skip/xvskip.c": "e175275572352aa685ff6133767fae70fc73be68",
+  "skippatch.py": "6b3f095c0e0ff075d0e478281e47aa22e5dd258f",
   "snd/__init__.py": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
   "snd/adpcm.py": "1c6ff8620222e135a6ef1787133b1f2ba2b933a3",
   "snd/resample.py": "651d7f0cceaec9c6d18c6ade0e951c05f0b71259",
@@ -1149,23 +1252,37 @@
   "tagload/jp/tagload.ramb.bin": "1b90a6108203b133f2a3c6ccb1be61eeb341357d",
   "tagload/jp/tagload.sym": "7190c334e017681a0084e6b2ba1b14635e010a96",
   "tagload/link.ld": "4da68f334749067009c4d5eb8042b433688e8698",
-  "tagload/tagload.c": "636e4d3019f07af0da04a963771e94d5ec717eec",
+  "tagload/r12/glue.S": "b9edfbb5711bef43557cba298deaa2da1a8a6452",
+  "tagload/r12/link.ld": "4da68f334749067009c4d5eb8042b433688e8698",
+  "tagload/r12/tagload.c": "40de04f8a39010d3ed525e856c130d312d0567ef",
+  "tagload/r12/tagload.chunka.bin": "eca58ebf215ccf147b7100dea230bc59999d1255",
+  "tagload/r12/tagload.chunkb.bin": "ddafd163196ff028b22e3aedd5d0dca7b65ec455",
+  "tagload/r12/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09",
+  "tagload/r12/tagload.chunkd.bin": "fd27e11950461c14768ef8c55fe68aaeb3d7e69e",
+  "tagload/r12/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc",
+  "tagload/r12/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159",
+  "tagload/r12/tagload.chunkg.bin": "6c80d96cb7de19989728fb2119006f8499c29739",
+  "tagload/r12/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf",
+  "tagload/r12/tagload.ram.bin": "201af1bffabaf3fc2f6544ce3dea8e71e50a7f67",
+  "tagload/r12/tagload.ramb.bin": "0c2ed48318f1ebc60eb9f4806021f3f909d2b657",
+  "tagload/r12/tagload.sym": "3f41886e4aad81541dd8e06939e9a645cd1d3edb",
+  "tagload/tagload.c": "40de04f8a39010d3ed525e856c130d312d0567ef",
   "tagload/tagload.chunka.bin": "eca58ebf215ccf147b7100dea230bc59999d1255",
   "tagload/tagload.chunkb.bin": "ddafd163196ff028b22e3aedd5d0dca7b65ec455",
   "tagload/tagload.chunkc.bin": "3ac0c856873dd5168b051e405e00d215c3b10e09",
-  "tagload/tagload.chunkd.bin": "fd27e11950461c14768ef8c55fe68aaeb3d7e69e",
+  "tagload/tagload.chunkd.bin": "ef94afa0457e756a7b00c23574351a984e87cc7b",
   "tagload/tagload.chunke.bin": "8e768d99b3e94560c946c728d88d50f99fbc44dc",
-  "tagload/tagload.chunkf.bin": "e8172af566743ad13adcf60ea520b4beb6494159",
+  "tagload/tagload.chunkf.bin": "7ac61334fb0f049d385b65af4c22467a61309aa8",
   "tagload/tagload.chunkg.bin": "6c80d96cb7de19989728fb2119006f8499c29739",
   "tagload/tagload.dbg.bin": "2c513f149e737ec4063fc1d37aee9beabc4b4bbf",
   "tagload/tagload.ram.bin": "201af1bffabaf3fc2f6544ce3dea8e71e50a7f67",
-  "tagload/tagload.ramb.bin": "0c2ed48318f1ebc60eb9f4806021f3f909d2b657",
-  "tagload/tagload.sym": "3f41886e4aad81541dd8e06939e9a645cd1d3edb",
+  "tagload/tagload.ramb.bin": "e01cd1165be936b36d9adaf21a07fe361e26b1a8",
+  "tagload/tagload.sym": "9d7a049b5142f45346150ecbe8e205bb3c8d358f",
   "tagload/tagload.tab.bin": "32fb2e046f09e6dc814a6040b03706174eae7229",
   "tagload/tagload.tab2.bin": "32fb2e046f09e6dc814a6040b03706174eae7229",
-  "tagpatch.py": "148719cc202ad5282b111d3982c4acc7f1f2640a",
-  "tagpolicy.py": "caca90197243d7b642788332241ce46840ed6b34",
-  "titlepatch.py": "519c369a72e47d2b8e4786e2c3f98fb56fdca5f4",
+  "tagpatch.py": "932a4eea7aab8272b13496353587f301d10af8cd",
+  "tagpolicy.py": "19dd8f2b73844f000794a4dc53ba36af0bdd5d1a",
+  "titlepatch.py": "1cbbb5840cfe4b2344abbd380d40f82b7344971b",
   "toolenv.py": "ed74db339e37217419eb81aa7042b78d150ab899",
   "xvemu.py": "1b90cb07b4b04b2bc8222f6d6c2e0ec7157b5a53"
  }

@@ -1,14 +1,23 @@
 # patcher — the build in a web page
 
+Language: English or Brazilian Portuguese (`src/i18n.js`, PT side panel `src/about_pt.md`): the browser's language
+picks it (pt* -> PT-BR), the button in the header switches, and the choice is kept in localStorage. Only texts change.
+
 `index.html` is a single self-contained page: pick your disc image (and optionally your arcade ROM zip), the page
-verifies it, runs **the real build** in the browser and hands back `.bin` + `.cue` (or both in one `.zip`).
+recognises the game, verifies the dump, runs **the real build** in the browser and hands back `.bin` + `.cue` (or both
+in one `.zip`).  Games: X-Men vs. Street Fighter (USA, SLUS-00627; `builder/xvb`) and Marvel Super Heroes vs. Street
+Fighter (USA, SLUS-00793; `builder/mshb`).  Which game: `builder/games.py` (the files on the disc; the release from the
+boot file in SYSTEM.CNF; the dump by the SHA-1 of the whole image, hashed only for a supported release).  Marvel vs.
+Capcom (SLUS-01059) is recognised and refused ("in progress"); a new game plugs in as a builder package with a
+`web.py` (identify / check_arcade / sound_plan / build / result_*), an entry in `games.GAMES`, and its options in
+`src/app.js` / `src/page.html`.
 Nothing is uploaded and the page carries no game graphics, sound or code — only this project's code. Where a
 rewritten routine keeps some of the game's original instructions, the page holds a reference instead and fills the
 words in from the user's own disc (`builder/xvb/gameref.py`).
 
 ## Hosting
 
-**What to publish: `index.html`, nothing else** (about 800 KB). It is self-contained except for the Python
+**What to publish: `index.html`, nothing else** (about 1.2 MB with both games). It is self-contained except for the Python
 runtime, which stays on its official CDN. The other files in `patcher/` (`src/`, `vendor/`, `tests/`, `make.py`)
 are sources and need not be published, though publishing the whole folder does no harm (about 1 MB).
 
@@ -46,8 +55,8 @@ Without the CDN (an intranet, an archive copy): download the six files of the CD
 it contains them (the *bundle*: `builder/xvb`, `builder/data` with all of our MIPS code prebaked in
 `builder/data/blobs`, `tools/*.py`, `tools/speed/*.py`, `tools/ap`, `tools/snd/*.py`, `tools/ap8/hot8.json`,
 `tools/logo/*.bin`).
-The page compiles nothing. Re-baking the blobs, recording the reference hashes and running `make.py` are
-described in `builder/README.md`, "After the tools … change".
+The page compiles nothing. `work/release12/record.py` bakes the blobs, records the reference hashes and runs
+`make.py`; see `builder/README.md`, "After the tools … change".
 
 ## How it works
 
@@ -62,28 +71,42 @@ The result is not a copy of the image in memory: the pipeline returns "the origi
 worker builds a `Blob` out of slices of the user's own file and the new sectors. The browser streams it to disk on
 download. The SHA-1 shown is computed over that result and compared with `builder/data/known.json`.
 
-Sound banks: the ADPCM encoder jobs do not depend on each other. Before the build the worker asks Python for all of
-them (`web.sound_plan`), hands them to up to four sub-workers (the same worker script, started from `self.location`)
-and encodes the sprites meanwhile; the results go into a memo that the build's encoder reads by the SHA-1 of its
-input (`web.sound_results`). Jobs that were not planned are encoded in place. The bytes are the same either way, and
-the same as the command-line build's.
+Sound banks (1.2): the ADPCM encoder jobs do not depend on each other. Before the build the worker asks Python for
+all of them (`web.sound_plan`), hands them to up to four sub-workers (the same worker script, started from
+`self.location`) and encodes the sprites meanwhile; the results go into a memo that the build's encoder reads by the
+SHA-1 of its input (`web.sound_results`). Jobs that were not planned are encoded in place. The bytes are the same
+either way, and the same as the command-line build's.
 
-Cancel terminates the worker and its sub-workers (the build is one long synchronous computation) and starts a fresh one.
+Cancel terminates the worker (and its sub-workers) (the build is one long synchronous computation) and starts a fresh one.
 
 ## Supported input
+
+MSHvSF: the raw `.bin` of the USA release (SLUS-00793, 552,894,048 bytes, SHA-1 `6e50ac0d…`); arcade: `mshvsf.zip`,
+or a clone zip (`mshvsfu`, …) together with `mshvsf.zip` (sets identified by their program ROMs,
+`builder/data/mshvsf/arcade_sets.json`; every set gives the same restored frames here).  No options: the release image
+(boot cards, speed meter in OPTION MODE off at boot, built-in achievements), with the 8 MB loader + restored frames
+when an arcade set is given; the 8 MB loader without a set, meter on at boot and no boot cards are command-line only.  The build runs its long jobs in sub-workers: the sprite tiers (207 jobs, each sub-worker loads
+its own Pyodide), the sound levels (one character's bank per job) and the 8 MB arcade frames (one job), all in up to
+five Python sub-workers.  Measured in Chrome 157 (16 cores, 2026-11-16): 2 MB build 298 s, peak about 2.4 GB for all
+browser processes; 8 MB build (mshvsfu + mshvsf) 304 s, peak about 2.9 GB: have about 3 GB free.  Both images are
+bit-identical to the command-line builds (timings measured on a development build; the 1.0 release images are
+`753e7b13…` and, with an arcade set, `e40f9fc4…`).  The same page still builds X-Men vs. Street
+Fighter exactly as before (2 MB 113 s, 8 MB xmvsfu 332 s, hashes unchanged).
+`patcher/tests/node_msh_build.cjs` runs the MSHvSF page path under Node (jobs one after the other).
+
+X-Men vs. Street Fighter:
 
 * Disc: the raw `.bin` (MODE2/2352) of the USA release. A `.cue` dropped with it is ignored; it is not needed.
   CHD/PBP/ECM/2048-byte `.iso` are not read.
 * Arcade: a zip of `xmvsf`, `xmvsfu`, or `xmvsfu1d` together with its parent.
-* Options (Advanced): the defaults are the release configuration — boot card and version line on. Each can be
-  switched off for the 2 MB build, and the stock button layout chosen. With an arcade set the boot card and the
-  button layout can be changed; the version line is always shown (it carries the 8MB indicator). The expected SHA-1
-  for the chosen combination is shown before building. Free version text and experimental switches need the
-  command-line builder.
-* Memory and time (Chrome): the 2 MB build about 2 minutes, peak about 1.4 GB for all browser processes; the 8 MB
-  build about 5-6 minutes, peak about 2.0 GB (worker 700 MB of WebAssembly memory plus the sound sub-workers): have
-  about 2.5 GB free for it.
-* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.2].bin` / `.cue`, or `… [Tag Hack 1.2 + Restored
+* No options: the page always builds the release image (boot card, version line, built-in achievements; 8 MB
+  with restored frames when an arcade set is given). Its expected SHA-1 is shown before building and compared with
+  the result. Every other variant (no boot card, stock buttons, no version line, plain, no achievements, 1.0.1 / 1.1)
+  is built with the command-line builder.
+* Memory and time (Chrome, measured for 1.2): the 2 MB build about 2 minutes, peak about 1.4 GB for all browser
+  processes; the 8 MB build about 5-6 minutes, peak about 2.0 GB (worker 700 MB of WebAssembly memory plus the sound
+  sub-workers): have about 2.5 GB free for it.
+* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.3].bin` / `.cue`, or `… [Tag Hack 1.3 + Restored
   Frames]`; the `.cue` names its `.bin`. No CHD in the browser.
 
 ## Tests

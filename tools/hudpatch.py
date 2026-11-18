@@ -135,12 +135,33 @@ def patches():
         (0x80080ac8, _w(0x1040000C)),                                 # was beq v0,s0
         (0x80081048, _w(lui_v0, lb_v0(0))),                           # frame slot 1 of P1: was lh v0,0x8004238a
         (0x800810b8, _w(lui_v0, lb_v0(1))),                           # frame slot 1 of P2: was lh v0,0x8004238e
-    ]
+    ] + (PORTRAIT if v13() else [])
+
+
+# 1.3: HUD portrait of the character on point.  0x8007f614 draws the P1 / P2 portrait every frame from
+# the four portraits the battle loader copies to VRAM (P1 main, P1 partner, P2 main, P2 partner: texture
+# 0xe4 / 0xe7 / 0xea / 0xed) with the main object's CLUT row (12 / 15).  It picks the partner's picture
+# when the main object's +0x74 ("assist only") is set - true for the stock assist, never for a full
+# partner of the hack: after a tag / KO hand-over / counter / team super the HUD kept the OLD point
+# character's picture, drawn with the new character's colours (forum report "portraits glitched when
+# switching").  Test the "swapped" flag +0x230 instead (set on the main object while the partner's
+# character plays on it, for the stock assist too).
+PORTRAIT = [
+    (0x8007f62c, _w(0x80632C40)),                                 # lb v1,0x2c40(v1) = P1 main +0x230 (was +0x74: 0x2a84)
+    (0x8007f674, _w(0x80632F88)),                                 # lb v1,0x2f88(v1) = P2 main +0x230 (was +0x74: 0x2dcc)
+]
+
+
+def v13(argv=None):
+    """1.3 fixes: off when the image must reproduce an older release (--nospeed = 1.0.1, --nosound = 1.1)."""
+    argv = sys.argv if argv is None else argv
+    return "--nospeed" not in argv and "--nosound" not in argv
 
 
 ORIG = {0x8003402c: 0x0C01D505, 0x80080a68: 0x14400024, 0x80080a78: 0x3C028004, 0x80080a7c: 0x80422A64,
         0x80080a84: 0x1050000C, 0x80080ab8: 0x3C028004, 0x80080abc: 0x80422DAC, 0x80080ac8: 0x1050000C,
-        0x80081048: 0x3C028004, 0x8008104c: 0x8442238A, 0x800810b8: 0x3C028004, 0x800810bc: 0x8442238E}
+        0x80081048: 0x3C028004, 0x8008104c: 0x8442238A, 0x800810b8: 0x3C028004, 0x800810bc: 0x8442238E,
+        0x8007f62c: 0x80632A84, 0x8007f674: 0x80632DCC}
 
 
 def check_orig(read32):

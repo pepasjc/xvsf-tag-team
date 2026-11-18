@@ -17,12 +17,14 @@ const b64bytes = (s) => { const bin = atob(s.trim()), u = new Uint8Array(bin.len
 
 /* ------------------------------------------------------------------ state */
 const state = {
-  ready: false, options: { title: false, logo: false, title_text: "" },
+  ready: false, options: {},
+  game: null,                            // "xvsf" | "mshvsf": from the disc (builder/games.py)
   discFile: null, disc: null,            // File, verification result
   arcadeFiles: [], arcade: null,         // Files, identification result
   building: false, result: null, t0: 0, stageT0: {}, urls: [],
 };
-let worker = null;
+let worker = null, workerUrl = null;
+const subs = {};                          // the build's sub-workers, started here for the worker (worker.js spawnSub)
 
 /* ------------------------------------------------------------------ theme */
 (() => {
@@ -37,19 +39,41 @@ let worker = null;
   };
 })();
 
-/* ------------------------------------------------------------------ the side panel, from README.md */
-(() => {
-  const R = CFG.readme, does = R["What it does"] || [];
-  const isControl = (t) => /HP \+ HK|Default buttons/.test(t);
-  let h = "<h3>What this does</h3><ul>" + does.filter((t) => !isControl(t)).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
-  h += "<h3>Controls</h3><ul>" + does.filter(isControl).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
-  const RF = "Restored frames (8 MB)";
-  if (R[RF]) h += "<h3>Restored frames (optional, 8 MB)</h3><ul>" + R[RF].filter((t, i) => i > 0).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
-  if (R["Known issues"]) h += "<h3>Known issues</h3><ul>" + R["Known issues"].map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
-  if (R["How it works"]) h += "<h3>How it works</h3><p>" + md(R["How it works"][0]) + "</p>";      // the first paragraph: the others link into the repository
+/* ------------------------------------------------------------------ the side panel (README.md, patcher/src/mshvsf.md) */
+const GAME_NAMES = { xvsf: "X-Men vs. Street Fighter", mshvsf: "Marvel Super Heroes vs. Street Fighter" };
+function drawAbout() {
+  const g = state.game;
+  let h = "";
+  if (LANG === "pt") {                     // patcher/src/about_pt.md: the same sections in Portuguese
+    const R = CFG.about_pt[g || "intro"] || {};
+    for (const [title, items] of Object.entries(R)) h += "<h3>" + esc(title) + "</h3><ul>" + items.map((x) => "<li>" + md(x) + "</li>").join("") + "</ul>";
+  } else if (g === "xvsf") {
+    const R = CFG.readme, does = R["What the hack does"] || [];
+    const isControl = (t) => /HP \+ HK|Default buttons/.test(t);
+    h = "<h3>What this does</h3><ul>" + does.filter((t) => !isControl(t)).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
+    h += "<h3>Controls</h3><ul>" + does.filter(isControl).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
+    const RF = "Restored animation frames (optional, 8 MB)";
+    if (R[RF]) h += "<h3>Restored frames (optional, 8 MB)</h3><ul>" + R[RF].filter((t, i) => i > 0).map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
+    if (R["Known issues"]) h += "<h3>Known issues</h3><ul>" + R["Known issues"].map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
+    if (R["How it fits in 2 MB"]) h += "<h3>How it fits in 2 MB</h3>" + R["How it fits in 2 MB"].map((t) => "<p>" + md(t) + "</p>").join("");
+  } else {
+    const R = g === "mshvsf" ? CFG.about.mshvsf : CFG.about.intro;
+    for (const [title, items] of Object.entries(R)) h += "<h3>" + esc(title) + "</h3><ul>" + items.map((t) => "<li>" + md(t) + "</li>").join("") + "</ul>";
+  }
   $("about").innerHTML = h;
-  $("pyosrc").textContent = /^https?:/.test(CFG.pyodide) ? new URL(CFG.pyodide).host + " (pinned version)" : "this site";
-})();
+}
+function drawStatic() {
+  applyStatic();
+  $("legal").innerHTML = (LANG === "pt" ? Object.values(CFG.about_pt.legal || {})[0] || [] : CFG.readme["Legal"] || []).map(md).join(" ");
+  $("fine").innerHTML = t("fine", esc(/^https?:/.test(CFG.pyodide) ? t("pyo.pinned", new URL(CFG.pyodide).host) : t("pyo.site")));
+  drawAbout();
+}
+drawStatic();
+$("lang").onclick = () => {
+  LANG = LANG === "pt" ? "en" : "pt";
+  try { localStorage.setItem("lang", LANG); } catch (e) { /* private window */ }
+  drawStatic(); setArcadeHint(); redraw();
+};
 
 /* ------------------------------------------------------------------ status boxes */
 function status(id, kind, html) {
@@ -61,11 +85,12 @@ function status(id, kind, html) {
 /* ------------------------------------------------------------------ the worker */
 function startWorker() {
   state.ready = false;
-  $("runtime").textContent = "Preparing the builder …";
+  $("runtime").textContent = t("rt.preparing");
   const src = new TextDecoder().decode(b64bytes($("worker-src").textContent));
-  worker = new Worker(URL.createObjectURL(new Blob([src], { type: "text/javascript" })));
+  if (!workerUrl) workerUrl = URL.createObjectURL(new Blob([src], { type: "text/javascript" }));
+  worker = new Worker(workerUrl);
   worker.onmessage = (ev) => onWorker(ev.data);
-  worker.onerror = (ev) => fatal("The build worker stopped: " + (ev.message || "unknown error"));
+  worker.onerror = (ev) => fatal(t("fatal.worker", ev.message || "unknown error"));
   const bundle = b64bytes($("bundle").textContent).buffer;
   worker.postMessage({ type: "init", pyodide: new URL(CFG.pyodide, location.href).href, bundle, zopfli: JSON.parse($("zopfli").textContent) }, [bundle]);
 }
@@ -73,26 +98,37 @@ function startWorker() {
 function fatal(msg) {
   state.ready = false; state.building = false;
   $("runtime").textContent = "";
-  status("st-build", "bad", esc(msg) + '<br><small>Reload the page to try again. The builder needs to download its Python runtime once (about 25 MB); after that it works from the browser cache.</small>');
+  status("st-build", "bad", esc(msg) + "<br><small>" + t("fatal.more") + "</small>");
   refresh();
 }
 
 function onWorker(m) {
-  if (m.type === "status") $("runtime").textContent = m.text + " …";
+  if (m.type === "spawn") {
+    // a sub-worker for the worker: started here (a worker cannot start one from a blob: URL under file://), connected
+    // to the worker by a MessageChannel
+    const w = new Worker(workerUrl), ch = new MessageChannel(), me = worker;
+    w.onerror = (ev) => { if (worker === me) worker.postMessage({ type: "suberror", id: m.id, message: ev.message || "error" }); };
+    w.postMessage({ type: "port", port: ch.port2 }, [ch.port2]);
+    worker.postMessage({ type: "spawned", id: m.id, port: ch.port1 }, [ch.port1]);
+    subs[m.id] = w;
+    return;
+  }
+  if (m.type === "kill") { if (subs[m.id]) subs[m.id].terminate(); delete subs[m.id]; return; }
+  if (m.type === "status") $("runtime").textContent = t("rt." + m.text) + " …";
   else if (m.type === "ready") {
     state.ready = true; state.options = m.options; $("runtime").textContent = "";
     if (state.discFile && !state.disc) worker.postMessage({ type: "disc", file: state.discFile });      // files picked while loading
     if (state.arcadeFiles.length && !state.arcade) worker.postMessage({ type: "arcade", files: state.arcadeFiles });
     refresh();
-  } else if (m.type === "disc") { state.disc = m.result; showDisc(); refresh(); }
+  } else if (m.type === "disc") { state.disc = m.result; setGame(m.result.game || null); showDisc(); refresh(); }
   else if (m.type === "arcade") { state.arcade = m.result; showArcade(); refresh(); }
   else if (m.type === "progress") onProgress(m);
   else if (m.type === "log") onLog(m.line);
   else if (m.type === "done") onDone(m);
-  else if (m.type === "failed") { endBuild(); status("st-build", "bad", esc(m.message)); }
+  else if (m.type === "failed") { endBuild(); status("st-build", "bad", t("err.failed", esc(m.message))); }
   else if (m.type === "error") {
-    if (m.during === "init") fatal("Could not start the builder: " + m.message);
-    else { endBuild(); status("st-build", "bad", "The build stopped with an internal error: " + esc(m.message) + "<br><small>The log below has the details.</small>"); onLog("ERROR " + m.message); }
+    if (m.during === "init") fatal(t("fatal.init", m.message));
+    else { endBuild(); status("st-build", "bad", t("err.internal", esc(m.message))); onLog("ERROR " + m.message); }
   }
 }
 
@@ -116,21 +152,44 @@ function takeDisc(files) {
   clearResult();
   if (!img) {
     state.discFile = null; state.disc = null;
-    status("st-disc", "bad", "A <code>.cue</code> file only names the disc image. Add the <code>.bin</code> file it belongs to.");
+    status("st-disc", "bad", t("disc.cueonly"));
     return refresh();
   }
-  state.discFile = img; state.disc = null;
+  state.discFile = img; state.disc = null; setGame(null);
   $("drop-disc").classList.add("has");
+  $("drop-disc").querySelector(".drop-title").removeAttribute("data-i18n");      // (a language switch keeps the file name)
   $("drop-disc").querySelector(".drop-title").textContent = img.name;
-  status("st-disc", "busy", "Checking " + esc(img.name) + " (" + mb(img.size) + ") …");
+  status("st-disc", "busy", t("disc.checkingsize", esc(img.name), mb(img.size)));
   if (state.ready) worker.postMessage({ type: "disc", file: img });
   refresh();
 }
 
+function setGame(g) {
+  if (g === state.game) return;
+  state.game = g;
+  document.body.dataset.game = g || "";
+  setArcadeHint();
+  if (state.arcadeFiles.length && state.ready && g && !(state.arcade && state.arcade.game === g)) { state.arcade = null; status("st-arcade", "busy", t("arc.checking")); worker.postMessage({ type: "arcade", files: state.arcadeFiles }); }
+  drawAbout();
+}
+
+function setArcadeHint() {
+  $("arcade-hint").innerHTML = t(state.game === "mshvsf" ? "arc.hint.mshvsf" : state.game === "xvsf" ? "arc.hint.xvsf" : "arc.hint");
+}
+setArcadeHint();
+
+/* a message of the builder (English) in the page's language: what it is, then the builder's own text */
+function builderMsg(r) {
+  const pt = (I18N[LANG]["disc.status"] || {})[r.status];
+  return pt ? pt + "<br><small>" + esc(r.message) + "</small>" : esc(r.message);
+}
+
 function showDisc() {
   const r = state.disc;
-  if (r.status === "ok") status("st-disc", "ok", "✓ " + esc(r.message) + ' — verified original<br><span class="mono">SHA-1 ' + r.sha1 + "</span>");
-  else status("st-disc", "bad", esc(r.message) + (r.sha1 ? '<br><span class="mono">SHA-1 of this file: ' + r.sha1 + "</span>" : ""));
+  if (!r) return;
+  if (r.status === "ok") status("st-disc", "ok", t("disc.ok", esc(r.message)) + '<br><span class="mono">SHA-1 ' + r.sha1 + "</span>");
+  else if (r.status === "unsupported") status("st-disc", "warn", builderMsg(r));
+  else status("st-disc", "bad", builderMsg(r) + (r.sha1 ? '<br><span class="mono">' + t("disc.thissha") + " " + r.sha1 + "</span>" : ""));
 }
 
 function takeArcade(files) {
@@ -138,9 +197,10 @@ function takeArcade(files) {
   clearResult();
   state.arcadeFiles = files.slice(0, 3); state.arcade = null;
   $("drop-arcade").classList.add("has");
-  $("drop-arcade").querySelector(".drop-title").innerHTML = files.map((f) => esc(f.name)).join(" + ") + ' <button type="button" class="ghost" id="arc-clear" title="Remove the arcade set">remove</button>';
+  $("drop-arcade").querySelector(".drop-title").removeAttribute("data-i18n");
+  $("drop-arcade").querySelector(".drop-title").innerHTML = files.map((f) => esc(f.name)).join(" + ") + ' <button type="button" class="ghost" id="arc-clear" data-i18n="arc.remove" data-i18n-title="arc.remove.title" title="' + t("arc.remove.title") + '">' + t("arc.remove") + "</button>";
   $("arc-clear").onclick = (e) => { e.preventDefault(); e.stopPropagation(); clearArcade(); };
-  status("st-arcade", "busy", "Checking the ROM set …");
+  status("st-arcade", "busy", t("arc.checking"));
   if (state.ready) worker.postMessage({ type: "arcade", files: state.arcadeFiles });
   refresh();
 }
@@ -148,7 +208,8 @@ function takeArcade(files) {
 function clearArcade() {
   state.arcadeFiles = []; state.arcade = null; clearResult();
   $("drop-arcade").classList.remove("has");
-  $("drop-arcade").querySelector(".drop-title").innerHTML = "Drop the arcade <code>.zip</code> here, or click to choose";
+  $("drop-arcade").querySelector(".drop-title").setAttribute("data-i18n", "arc.drop");
+  $("drop-arcade").querySelector(".drop-title").innerHTML = t("arc.drop");
   status("st-arcade", null);
   if (state.ready) worker.postMessage({ type: "arcade", files: [] });
   refresh();
@@ -157,80 +218,68 @@ function clearArcade() {
 function showArcade() {
   const r = state.arcade;
   if (!r || r.status === "none") return status("st-arcade", null);
-  if (r.status === "ok") status("st-arcade", "ok", "✓ " + esc(r.message) + " — recognised");
-  else status("st-arcade", "bad", esc(r.message).replace(/\n/g, "<br>") + "<br><small>Remove the set to build the normal tag hack, or pick another file.</small>");
+  const name = r.known === false && LANG === "pt" ? t("arc.unknownname") : esc(r.message);
+  if (r.status === "ok") status("st-arcade", r.known === false ? "warn" : "ok", r.known === false ? t("arc.unknown", name) : t("arc.ok", name));
+  else status("st-arcade", "bad", esc(r.message).replace(/\n/g, "<br>") + "<br><small>" + t("arc.bad.more") + "</small>");
 }
 
 /* ------------------------------------------------------------------ what will be built */
 function flags() {
-  // the same rules as pipeline.tool_flags(): release configuration unless switched off
-  const f = [], with8 = withArcade();
-  if ($("opt-logo").checked && state.options.logo) f.push("--logo");
-  if (!with8 && $("opt-title").checked && state.options.title) f.push("--title");      // with an arcade set the version line is always on
-  if (document.querySelector('input[name="buttons"]:checked').value === "stock") f.push("--nopad");
-  return f;
+  // always the release image (builder/xvb/pipeline.py and builder/mshb/pipeline.py tool_flags() defaults): the page has no options
+  if (state.game === "mshvsf") return ["--meter", "--ach"];                 // speed meter in OPTION MODE (off at boot), achievements
+  return withArcade() ? ["--logo", "--ach"] : ["--logo", "--title", "--ach"];   // with an arcade set the 8 MB loader draws the version line
 }
-const withArcade = () => state.arcadeFiles.length > 0 && state.arcade && state.arcade.status === "ok";
+const ram8 = () => false;                 // (MSHvSF: the 8 MB loader comes with an arcade set)
+const withArcade = () => state.arcadeFiles.length > 0 && state.arcade && state.arcade.status === "ok" && state.arcade.game === state.game;
 
 function expectedFor(variant, setName, fl) {
   const key = JSON.stringify(fl.slice().sort());
-  const e = (CFG.known.expected || []).find((x) => x.variant === variant && (x.arcade_set || "") === (setName || "") && JSON.stringify(x.flags) === key);
+  const e = ((CFG.known[state.game] || {}).expected || []).find((x) => x.variant === variant && (x.arcade_set || "") === (setName || "") && JSON.stringify(x.flags) === key);
   return e ? e.sha1 : "";
 }
 
-function refresh() {
-  const with8 = withArcade(), fl = flags();
-  const exp = expectedFor(with8 ? "8mb" : "2mb", with8 ? state.arcade.message : "", fl);
-  let h = "<li><div><strong>Tag hack for the stock 2 MB console</strong> — four full characters per match, tag with HP + HK, no disc access during a fight.</div></li>";
-  h += "<li><div><strong>Full sound for every character in a battle</strong> — partners and tagged-in characters use their own complete sound bank, rebuilt from your disc" +
-       (with8 ? " (8 MB: the original sample quality for almost every team, plus Wolverine's third tag voice from your arcade set)." : ".") + "</div></li>";
-  const extras = [fl.includes("--logo") ? "boot card" : "", with8 || fl.includes("--title") ? "version line on the main menu" : "", fl.includes("--nopad") ? "stock buttons" : ""].filter(Boolean);
-  h += "<li" + (extras.length ? "" : ' class="off"') + "><div>" + (extras.length ? "With " + extras.join(", ") + "." : "Plain build: no boot card, no version line.") + "</div></li>";
-  h += with8
-    ? "<li><div><strong>Restored animation frames</strong> from your arcade set (" + esc(state.arcade.message) + "), used when the machine has 8 MB of RAM. The image grows by about 28 MB.</div></li>"
-    : '<li class="off"><div>Restored animation frames — add an arcade ROM set in step 2 to include them.</div></li>';
-  h += "<li" + (exp ? "" : ' class="off"') + "><div>Output: <code>.bin</code> + <code>.cue</code>" + (exp ? '<br><span class="mono">expected SHA-1 ' + exp + "</span>" : '<br><span class="mono">no reference SHA-1 is recorded for this combination of options</span>') + "</div></li>";
-  $("plan").innerHTML = h;
-  // options that need code this page does not carry are switched off, with the reason
-  $("opt-title").disabled = !state.options.title || with8;
-  if (with8) $("opt-title").checked = true;
-  $("opt-title-note").textContent = with8 ? "(always shown with restored frames)" : state.options.title ? "“" + state.options.title_text + "”" : "(needs the command-line builder)";
-  $("opt-logo").disabled = !state.options.logo;
-  if (state.ready && !state.options.logo) $("opt-logo").checked = false;
-  if (state.ready && !state.options.title && !with8) $("opt-title").checked = false;
-  $("opt-logo-note").textContent = state.options.logo ? "" : "(needs the command-line builder)";
+const LI = (x, off) => "<li" + (off ? ' class="off"' : "") + "><div>" + x + "</div></li>";
 
-  $("adv-note").textContent = "The defaults are the release configuration. Other texts and experimental switches are available in the command-line builder (builder/build.py).";
+function refresh() {
+  const with8 = withArcade(), fl = state.game ? flags() : [];
+  const exp = state.game ? expectedFor(with8 || ram8() ? "8mb" : "2mb", with8 ? state.arcade.message : "", fl) : "";
+  let h = "";
+  if (!state.game) h = LI(t("plan.none"), true);
+  else {
+    const k = state.game === "mshvsf" ? "plan.msh." : "plan.xv.";
+    h = LI(t(k + "tag")) + LI(t(k + "snd", with8)) + LI(t("plan.ach")) + LI(t(k + "extras"));
+    h += with8 ? LI(t(k + "rf", esc(state.arcade.message))) : LI(t("plan.rf.off"), true);
+    h += LI(t("plan.out") + " <code>.bin</code> + <code>.cue</code>" + '<br><span class="mono">' + (exp ? t("plan.exp") + " " + exp : t("plan.noexp")) + "</span>", !exp);
+  }
+  $("plan").innerHTML = h;
   const discOk = state.disc && state.disc.status === "ok";
   const arcOk = !state.arcadeFiles.length || (state.arcade && state.arcade.status === "ok");
-  $("go").disabled = !(state.ready && discOk && arcOk) || state.building;
-  $("go").textContent = with8 ? "Build the patched image (with restored frames)" : "Build the patched image";
+  $("go").disabled = !(state.ready && discOk && arcOk && state.game) || state.building;
+  $("go").textContent = t(with8 ? "build.go8" : "build.go");
   if (!state.building && !state.result) {
-    if (discOk && arcOk && state.ready) status("st-build", "busy", with8 ? "Ready. This build takes several minutes and needs about 2.5 GB of free memory; the page stays responsive." : "Ready. The build takes a few minutes.");
+    if (discOk && arcOk && state.ready) status("st-build", "busy", t(state.game === "mshvsf" ? "ready.msh" : with8 ? "ready.8" : "ready.2"));
     else if (!$("st-build").classList.contains("bad")) status("st-build", null);
   }
 }
-document.querySelectorAll("#adv input").forEach((i) => (i.onchange = () => { clearResult(); refresh(); }));
 
 /* ------------------------------------------------------------------ building */
-const STAGES = [["extract", "Reading the game files", 2], ["sprites", "Re-encoding the character graphics", 75], ["sound", "Rebuilding the sound banks", 10],
-                ["arcade", "Restoring animation frames from the arcade set", 230],
-                ["disc", "Assembling the patched disc", 3], ["digest", "Checksum of the result", 4]];
+const STAGES_MSH = [["extract", 2], ["prep", 85], ["disc", 6], ["digest", 4]];              // titles: t("st." + key)
+const STAGES = [["extract", 2], ["sprites", 75], ["sound", 10], ["arcade", 230], ["disc", 3], ["digest", 4]];
 let run = null;                           // {stages: [{key, title, weight, frac, state, t0, t}], sub: counters}
 
 function startBuild() {
   const with8 = withArcade();
   clearResult(); $("log").textContent = "";
   state.building = true; state.t0 = performance.now();
-  run = { stages: STAGES.filter((s) => s[0] !== "arcade" || with8).map(([key, title, weight]) => ({ key, title, weight: key === "disc" && with8 ? 100 : weight, frac: 0, state: "", t0: 0, t: 0 })), packed: 0, chars: 0 };
+  run = { stages: (state.game === "mshvsf" ? STAGES_MSH : STAGES).filter((s) => s[0] !== "arcade" || with8).map(([key, weight]) => ({ key, weight: key === "disc" && with8 ? 100 : weight, frac: 0, state: "", t0: 0, t: 0 })), packed: 0, chars: 0 };
   $("progress").hidden = false; $("cancel").hidden = false; status("st-build", null);
   drawProgress(); refresh();
-  worker.postMessage({ type: "build", flags: flags() });
+  worker.postMessage({ type: "build", flags: flags(), ram8: ram8() });
   run.timer = setInterval(drawProgress, 500);
 }
 
 function onProgress(m) {
-  if (m.stage === "hash") { if (!state.disc) status("st-disc", "busy", "Checking " + esc(state.discFile.name) + " … " + Math.round(m.frac * 100) + " %"); return; }
+  if (m.stage === "hash") { if (!state.disc) status("st-disc", "busy", t("disc.checking", esc(state.discFile.name)) + " " + Math.round(m.frac * 100) + " %"); return; }
   if (!run) return;
   const i = run.stages.findIndex((s) => s.key === m.stage);
   if (i < 0) return;
@@ -258,9 +307,9 @@ function drawProgress() {
   const total = run.stages.reduce((a, s) => a + s.weight, 0), done = run.stages.reduce((a, s) => a + s.weight * s.frac, 0);
   $("bar-fill").style.width = (100 * done / total).toFixed(1) + "%";
   $("stages").innerHTML = run.stages.map((s) => {
-    const t = s.state === "done" ? secs(s.t) : s.state === "run" ? secs((performance.now() - s.t0) / 1000) : "";
-    return '<li class="' + s.state + '"><span class="dot"></span><span>' + esc(s.title) + (s.state === "run" && s.text ? " — " + esc(s.text) : "") + '</span><span class="t">' + t + "</span></li>";
-  }).join("") + '<li class="run"><span></span><span class="t">elapsed ' + secs((performance.now() - state.t0) / 1000) + "</span><span></span></li>";
+    const tm = s.state === "done" ? secs(s.t) : s.state === "run" ? secs((performance.now() - s.t0) / 1000) : "";
+    return '<li class="' + s.state + '"><span class="dot"></span><span>' + esc(t("st." + s.key)) + (s.state === "run" && s.text ? " — " + esc(s.text) : "") + '</span><span class="t">' + tm + "</span></li>";
+  }).join("") + '<li class="run"><span></span><span class="t">' + t("elapsed") + " " + secs((performance.now() - state.t0) / 1000) + "</span><span></span></li>";
 }
 
 function endBuild() {
@@ -273,11 +322,12 @@ function endBuild() {
 function cancelBuild() {
   // the worker is in the middle of a long synchronous computation: stopping it means ending it
   worker.terminate();
+  for (const id of Object.keys(subs)) { subs[id].terminate(); delete subs[id]; }
   endBuild(); run = null; $("progress").hidden = true;
-  status("st-build", "warn", "Cancelled. Nothing was written.");
+  status("st-build", "warn", t("cancelled"));
   state.disc = null; state.arcade = null;
   startWorker();                          // a fresh worker; the files are verified again when it is ready
-  if (state.discFile) status("st-disc", "busy", "Checking " + esc(state.discFile.name) + " …");
+  if (state.discFile) status("st-disc", "busy", t("disc.checking", esc(state.discFile.name)));
 }
 
 function onDone(m) {
@@ -288,17 +338,30 @@ function onDone(m) {
   state.urls.push(binUrl, cueUrl);
   $("dl-bin").href = binUrl; $("dl-bin").download = m.name + ".bin";
   $("dl-cue").href = cueUrl; $("dl-cue").download = m.name + ".cue";
-  const verdict = !m.expected ? "no reference recorded for these options"
-    : m.expected === m.sha1 ? '<span class="match">✓ identical to the reference build</span>' : '<span class="nomatch">✗ differs from the reference build (' + m.expected + ") — please report this</span>";
-  $("facts").innerHTML =
-    "<dt>File</dt><dd><code>" + esc(m.name) + ".bin</code> + <code>" + esc(m.name) + ".cue</code> (" + mb(m.size) + ")</dd>" +
-    "<dt>Contents</dt><dd>" + (m.variant === "8mb" ? "tag hack + restored frames (" + esc(m.arcadeSet) + ")" : "tag hack, 2 MB") + "</dd>" +
-    '<dt>SHA-1</dt><dd><span class="mono">' + m.sha1 + "</span><br>" + verdict + "</dd>" +
-    "<dt>Built in</dt><dd>" + secs((performance.now() - state.t0) / 1000) + " · " + mb(m.newBytes) + " of new data, the rest is your original image</dd>";
+  m.secs = (performance.now() - state.t0) / 1000;
+  drawFacts();
   $("note-8mb").hidden = m.variant !== "8mb";
   $("card-result").hidden = false;
-  status("st-build", "ok", "✓ Done.");
+  status("st-build", "ok", t("done"));
   $("card-result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function drawFacts() {
+  const m = state.result; if (!m) return;
+  const verdict = !m.expected ? t("v.none")
+    : m.expected === m.sha1 ? '<span class="match">' + t("v.ok") + "</span>" : '<span class="nomatch">' + t("v.bad", m.expected) + "</span>";
+  $("facts").innerHTML =
+    "<dt>" + t("f.file") + "</dt><dd><code>" + esc(m.name) + ".bin</code> + <code>" + esc(m.name) + ".cue</code> (" + mb(m.size) + ")</dd>" +
+    "<dt>" + t("f.contents") + "</dt><dd>" + esc(GAME_NAMES[m.game] || "") + ": " + (m.variant === "8mb" ? t("f.c8", esc(m.arcadeSet)) : t("f.c2")) + "</dd>" +
+    '<dt>SHA-1</dt><dd><span class="mono">' + m.sha1 + "</span><br>" + verdict + "</dd>" +
+    "<dt>" + t("f.built") + "</dt><dd>" + secs(m.secs) + " · " + t("f.newdata", mb(m.newBytes)) + "</dd>";
+}
+
+/* the language changed: every text drawn from the state again (the build itself is not touched) */
+function redraw() {
+  if (state.disc) showDisc();
+  showArcade(); refresh(); drawFacts(); drawProgress();
+  if (state.result) status("st-build", "ok", t("done"));
 }
 
 function clearResult() {

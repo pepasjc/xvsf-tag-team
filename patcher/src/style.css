@@ -85,8 +85,7 @@ main { max-width: 1120px; margin: 0 auto; padding: 8px 16px 24px; display: grid;
 .plan li.off::before { background: var(--line); }
 .plan li.off { color: var(--muted); }
 .plan .mono { font-size: .8rem; color: var(--muted); overflow-wrap: anywhere; }
-.adv { border-top: 1px solid var(--line); padding: 10px 0 2px; margin-bottom: 8px; }
-.adv summary, .log summary { cursor: pointer; color: var(--muted); font-size: .92rem; }
+.log summary { cursor: pointer; color: var(--muted); font-size: .92rem; }
 .optrow { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 8px 0 0; font-size: .93rem; }
 .optname { color: var(--muted); }
 .optchoices { display: flex; flex-wrap: wrap; gap: 4px 18px; }
@@ -103,6 +102,8 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .primary:hover:not(:disabled) { filter: brightness(1.06); }
 .ghost { background: transparent; }
 #theme { padding: 8px; border-radius: 50%; }
+.toprow { display: flex; align-items: center; gap: 6px; flex: none; }
+.langbtn { padding: 6px 10px; border-radius: 999px; font-size: .85rem; font-weight: 600; letter-spacing: .02em; }
 .runtime { color: var(--muted); font-size: .86rem; }
 
 /* progress */
@@ -147,5 +148,4 @@ footer { max-width: 1120px; margin: 0 auto; padding: 4px 18px 40px; color: var(-
   .optrow { grid-template-columns: minmax(0, 1fr); }
 }
 
-.adv .note { margin: 8px 0 0; }
 .result .note { margin: 12px 0 0; }

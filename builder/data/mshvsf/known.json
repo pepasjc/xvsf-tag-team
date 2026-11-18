@@ -1,0 +1,472 @@
+{
+ "input": {
+  "title": "Marvel Super Heroes vs. Street Fighter (USA), SLUS-00793",
+  "serial": "SLUS-00793",
+  "exe": "SLUS_007.93",
+  "sha1": "6e50ac0d4dfc5eaf2ddd0da3cabde19e0ec3721a",
+  "size": 552894048
+ },
+ "reference": {
+  "mshvsf_rc1.bin": "fed1e9574799ec777f768f92136ac2f22c0b2f10",
+  "mshvsf_ap8_rc1.bin": "48682176df6c609e3411436dfb73742118554043",
+  "mshvsf_tag10.bin": "231c7849d268de90d31c7333d56cbe6fd06b6d53",
+  "mshvsf_ap8_10.bin": "4d6c596167eda86af692ee6ca24178915183d3f3"
+ },
+ "expected": [
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "fb9ca317608281bc4f98d2def1ff198be719baf9",
+   "size": 639981552,
+   "config": "2mb",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "232597b5ca255f15f5f414d22088db094114ba04",
+   "size": 639981552,
+   "config": "2mb_nologo",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "dc973a2237ec574e792cd780ac472b69f282e0bb",
+   "size": 639981552,
+   "config": "2mb_meteron",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "6d976978dc411dba7c320eac22593dbc11df8e1c",
+   "size": 639986256,
+   "config": "8mb_loader",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "3265ca5dc9d4535c030181e0a73280f1c1d39645",
+   "size": 639986256,
+   "config": "8mb_loader_nologo",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "1fee70c7b6b0c7efcc7adf311ad534b762f31b50",
+   "size": 639986256,
+   "config": "8mb_loader_meteron",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "2e8d5984a816909e4d4749b56b8a0ee9decc675f",
+   "size": 657038256,
+   "config": "8mb_mshvsf",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "2e8d5984a816909e4d4749b56b8a0ee9decc675f",
+   "size": 657038256,
+   "config": "8mb_mshvsfu",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "c7742d8bc69709b1da39d92c2e836f62ae5ebfaa",
+   "size": 657038256,
+   "config": "8mb_mshvsf_nologo",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "c7742d8bc69709b1da39d92c2e836f62ae5ebfaa",
+   "size": 657038256,
+   "config": "8mb_mshvsfu_nologo",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "0728bd22eba73d9584792a940aa7818976db6429",
+   "size": 657038256,
+   "config": "8mb_mshvsf_meteron",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "0728bd22eba73d9584792a940aa7818976db6429",
+   "size": 657038256,
+   "config": "8mb_mshvsfu_meteron",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "753e7b13130bc05a242eb53d72cdea8562a2be6d",
+   "size": 639981552,
+   "config": "2mb+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "beebaa563cc49ca3b781086ff36b8a8540d15de1",
+   "size": 639981552,
+   "config": "2mb_nologo+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "10913aa77fbc253c55e639a2cb83ed25fa180958",
+   "size": 639981552,
+   "config": "2mb_meteron+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "50190284dff41ad55fb13b60334ab6580e7ccb90",
+   "size": 639986256,
+   "config": "8mb_loader+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "9bbb4119598c3127e6254bd3cf6302a6efef930b",
+   "size": 639986256,
+   "config": "8mb_loader_nologo+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "b57d725c6df1c078a364443b722b7dc38c41f085",
+   "size": 639986256,
+   "config": "8mb_loader_meteron+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "e40f9fc4171c16df7bb8f9b93432d2849640b16d",
+   "size": 657038256,
+   "config": "8mb_mshvsf+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "e40f9fc4171c16df7bb8f9b93432d2849640b16d",
+   "size": 657038256,
+   "config": "8mb_mshvsfu+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--ach",
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "a6b64fda23bbca1de2ab8eae9b7cefca18494ed0",
+   "size": 657038256,
+   "config": "8mb_mshvsf_nologo+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--ach",
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "a6b64fda23bbca1de2ab8eae9b7cefca18494ed0",
+   "size": 657038256,
+   "config": "8mb_mshvsfu_nologo+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--ach",
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "6434321cadcfb12693dc15242effb6992e8b2afa",
+   "size": 657038256,
+   "config": "8mb_mshvsf_meteron+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--ach",
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "6434321cadcfb12693dc15242effb6992e8b2afa",
+   "size": 657038256,
+   "config": "8mb_mshvsfu_meteron+ach",
+   "sprites": "encoded",
+   "release": "1.0"
+  }
+ ],
+ "previous": [
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "231c7849d268de90d31c7333d56cbe6fd06b6d53",
+   "size": 606004560,
+   "config": "2mb",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "ebc0790638b3807fe1836ff3d4829e7ff80af963",
+   "size": 606004560,
+   "config": "2mb_nologo",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "f39f3d3aae610c74bc9fa3a225b2dfa687e9445f",
+   "size": 606004560,
+   "config": "2mb_meteron",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "4d6c596167eda86af692ee6ca24178915183d3f3",
+   "size": 623061264,
+   "config": "8mb_mshvsf",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter"
+   ],
+   "sha1": "4d6c596167eda86af692ee6ca24178915183d3f3",
+   "size": 623061264,
+   "config": "8mb_mshvsfu",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "0f275eb70b9142eea9ca170cf16198a6f23a39c7",
+   "size": 623061264,
+   "config": "8mb_mshvsf_nologo",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter",
+    "--nologo"
+   ],
+   "sha1": "0f275eb70b9142eea9ca170cf16198a6f23a39c7",
+   "size": 623061264,
+   "config": "8mb_mshvsfu_nologo",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsf (Europe)",
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "5f11949ab4b94fa86ed85f78f3e0d9d7b1d48fac",
+   "size": 623061264,
+   "config": "8mb_mshvsf_meteron",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mshvsfu (USA)",
+   "flags": [
+    "--meter",
+    "--meteron"
+   ],
+   "sha1": "5f11949ab4b94fa86ed85f78f3e0d9d7b1d48fac",
+   "size": 623061264,
+   "config": "8mb_mshvsfu_meteron",
+   "sprites": "encoded",
+   "release": "v10"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "da2964a24c0c8c766e2f0601ca15298f3f24a69a",
+   "what": "1.0 RC: 2 MB + achievements (before the PS2/PS3 ROM check)",
+   "release": "RC",
+   "size": 639981552
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": null,
+   "flags": [
+    "--ach",
+    "--meter"
+   ],
+   "sha1": "80b00f6653010221f736eef453c9e1bf29f0f39a",
+   "what": "1.0 RC: 8 MB loader + achievements (before the PS2/PS3 ROM check)",
+   "release": "RC"
+  }
+ ]
+}

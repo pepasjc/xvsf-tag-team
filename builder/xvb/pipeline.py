@@ -233,7 +233,10 @@ PREBAKED = [                        # (module, function): everything in tools/ t
     ("titlepatch", "build"), ("logopatch", "build"), ("card2patch", "build"),     # version line, boot card, card 2 stub
     ("mkap8disc", "build"),         # 8 MB boot stub + module (tools/ap8)
     ("sndpatch", "code"),           # 1.2 sound banks: resident code + the sound directory's code (tools/snd)
+    ("xvach", "code"),              # built-in achievements (tools/ach, --ach; part of the 1.3 release configuration)
+    ("skippatch", "code"),          # 1.3: START skips the end of a match (tools/skippatch.py; default on)
 ]
+TAGLOAD_SUBDIRS = ("", "r12/")      # 1.3: tools/tagload/r12 = the 1.2 loader, used by --nospeed / --nosound (tools/mktagdisc.py configure)
 TAGLOAD_FILES = lambda names: sorted(f for f in names if f == "tagload.sym" or (f.startswith("tagload.") and f.endswith(".bin") and ".tab" not in f))
 CONTEXT_ENV = ("XV_SNDTRACE", "XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
 
@@ -430,20 +433,25 @@ class Tools:
     def prebake_all(self):
         """install the lookups for every PREBAKED function, and the loader files (tools/tagload) from the blobs"""
         self.mod("speedpatch")                            # puts tools/speed on sys.path (frame.py)
+        if os.path.join(self.tools, "ach") not in sys.path: sys.path.insert(0, os.path.join(self.tools, "ach"))     # xvach
         for mn, fn in PREBAKED: self.prebake(self.mod(mn), fn)
         M = self.mod("mktagdisc")
         if not hasattr(M, "_xvb_tagsrc"): M._xvb_tagsrc = M._CONF0[0] if M._CONF0 else M.D     # tools/tagload
         src = M._xvb_tagsrc
         tag = os.path.join(self.build, "tagload"); os.makedirs(tag, exist_ok=True)
         if self.record:
-            for f in TAGLOAD_FILES(os.listdir(src)):
-                b = builtins.open(os.path.join(src, f), "rb").read()
-                sha, size, rsha = self.store_blob(b)
-                self.man["files"]["tagload/" + f] = sha; self.man.setdefault("resolved", {})["tagload/" + f] = rsha
+            for sub in TAGLOAD_SUBDIRS:                   # "" = the current loader; "r12/" = the 1.2 loader (--nospeed / --nosound)
+                d = os.path.join(src, sub)
+                if not os.path.isdir(d): continue
+                for f in TAGLOAD_FILES(os.listdir(d)):
+                    b = builtins.open(os.path.join(d, f), "rb").read()
+                    sha, size, rsha = self.store_blob(b)
+                    self.man["files"]["tagload/" + sub + f] = sha; self.man.setdefault("resolved", {})["tagload/" + sub + f] = rsha
         files = {k.split("/", 1)[1]: v for k, v in self.man["files"].items() if k.startswith("tagload/")}
         if "tagload.sym" not in files: raise BuildError("the prebuilt loader (tagload) is not in builder/data/blobs", code="toolchain")
         for f, sha in files.items():
             b = self.load_blob(sha, self.man.get("resolved", {}).get("tagload/" + f), "tagload/" + f) if sha.endswith(".json") else _blob(sha)
+            os.makedirs(os.path.dirname(os.path.join(tag, f)), exist_ok=True)
             builtins.open(os.path.join(tag, f), "wb").write(b)
         if M._CONF0: M._CONF0 = (tag,) + tuple(M._CONF0[1:])     # mktagdisc.configure() restores D from there
         M.D = tag
@@ -544,7 +552,7 @@ def check_arcade(arcade, tools_dir=None):
 
 
 # ---------------------------------------------------------------- configurations
-def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=None, extra=()):
+def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=None, extra=(), achievements=True):
     """the builder's options -> flags of tools/mktagdisc.py / tools/mkap8disc.py.
 
     The defaults are the RELEASE configuration: boot card + version line on the main menu (2 MB: the tag24
@@ -560,11 +568,13 @@ def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=N
     else:
         if version: f.append("--title=" + version_text if version_text else "--title")
         if buttons == "stock": f.append("--nopad")
+    legacy = any(x in ("--nospeed", "--nosound") for x in extra)     # 1.0.1 / 1.1: never had achievements (their hashes stay)
+    if achievements and not legacy: f.append("--ach")      # built-in achievements: part of the 1.3 release (CLI opt-out --no-achievements)
     return f + list(extra)
 
 
 def output_name(arcade, tools_dir=None, flags=()):
-    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.2]" """
+    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.3]" """
     ver = "TAG HACK"
     try:
         tools_dir = tools_dir or os.path.join(REPO, "tools")

@@ -1,131 +1,126 @@
-# X-Men vs. Street Fighter: Tag Team Hack (PlayStation)
+# Tag Team Hacks for Capcom's versus games (PlayStation)
 
-**Version 1.2**, 2026, by pepa
+by pepa, 2026
 
-Capcom treated us PlayStation fans really poorly, releasing crippled versions of all their CPS2
-fighting games. The Saturn got a really good port, and even the N64 got a nice fan port, so I thought
-the PlayStation deserved better.
+Capcom treated us PlayStation fans really poorly, releasing crippled versions of all their CPS2 fighting games. The
+Saturn got a really good port, and even the N64 got a nice fan port, so I thought the PlayStation deserved better.
 
-This patch restores the full 2-on-2 tag team to the PlayStation port, on a stock console. With 8 MB of
-RAM (modded console, MiSTer or emulator) and your own CPS2 ROM set, it also restores the arcade
-animation frames the port cut.
+These patches restore the full 2-on-2 tag team to the PlayStation ports, on a stock console: four complete
+characters in every match, tag at any time, the arcade rules.
 
-## What it does
+## X-Men vs. Street Fighter Tag Team Hack 1.3
 
-- All four characters loaded in full, no disc access during a fight.
-- **Tag** at any time with **HP + HK**: the partner jumps in with an attack and takes over, with its
-  full move set.
-- One life bar per character; only the benched character recovers red life.
-- A knocked-out character is replaced by its partner. One round; the match ends when both characters
-  of a team are down.
-- The CPU tags on its own, using the arcade logic. Tagging also works against Apocalypse.
-- After a team super or a variable counter, the partner who came in stays on point.
-- The fight against your own partner after Apocalypse is one on one.
-- Music switches to the incoming character's theme after a KO.
-- Arcade difficulty ramp and timer speed.
-- Default buttons: HP = R1, HK = R2, three punches = L1, three kicks = L2 (tag = R1 + R2). KEY CONFIG
-  still changes them.
-- Faster battle loading, and a rewritten sprite engine: full speed in normal play, with far less
-  slowdown in supers.
-- Every character has its full set of voices and sound effects, partners included, and the tag voices
-  play. On 2 MB, teams of four different characters use slightly lower sample rates to fit.
+[![X-Men vs Street Fighter Tag Hack trailer](https://img.youtube.com/vi/aVJAqBGNwyk/maxresdefault.jpg)](https://youtu.be/aVJAqBGNwyk)
 
-## Restored frames (8 MB)
+- Four full characters, tag with HP + HK, two life bars per side, KO hand-over, a CPU that tags, full sound for
+  every character, a rewritten sprite engine.
+- New in 1.3: fixes for the bugs reported on 1.2, START skips the end of a won match, an ARCADE BALANCE option
+  (the arcade's meter gain and super rules), built-in achievements.
+- With 8 MB of RAM and your own arcade ROM set: restored arcade animation frames.
 
-- **Restored:** Wolverine, Cyclops, Storm, Rogue, Gambit (partly), Sabretooth, Juggernaut, Magneto
-  (partly), Dhalsim, Zangief, Cammy, three Ryu sprites, the character select screen and some common
-  effects.
-- **Not restored:** Ken, Chun-Li, M. Bison, Akuma, Charlie, Apocalypse.
-- Used only when 8 MB is present: the main menu shows "8MB", and OPTION MODE gets **ARCADE FRAMES
-  ON / OFF**. On a 2 MB console the same image plays as the normal tag hack.
-- Characters and menu files stay in memory between fights, so loading is shorter.
-- Full sound quality for almost every team, plus Wolverine's tag voice from the arcade set.
-- Supported arcade sets: `xmvsf` (Euro 961004), `xmvsfu` (USA 961023), `xmvsfu1d` (with its parent
-  `xmvsf`).
+Features, hashes and known issues: **[docs/xvsf](docs/xvsf/README.md)** ·
+[changelog](docs/xvsf/CHANGELOG.md) · [achievements](docs/xvsf/achievements.md) ·
+[how it works](docs/xvsf/architecture.md)
 
-Turning on 8 MB: "Enable 8MB RAM" in DuckStation or SwanStation, the 8 MB RAM option of the MiSTer PSX
-core, or a hardware RAM mod on a console.
+## Marvel Super Heroes vs. Street Fighter Tag Team Hack 1.0
 
-## How to apply
+[![Marvel Super Heroes vs Street Fighter Tag Hack trailer](https://img.youtube.com/vi/ms0N8HAE9A0/maxresdefault.jpg)](https://youtu.be/ms0N8HAE9A0)
 
-No patched game is distributed. The builder turns your own disc image (and, optionally, your arcade ROM
-set) into the patched image on your computer.
+- Every Arcade, Versus and Training match becomes a 2-on-2 tag battle with four different, full characters, with
+  the tag rules of the game's own Cross Over mode. Every team fits on every stage.
+- Full sound banks for partners, secret characters without unlocking, START skip, built-in achievements.
+- With 8 MB of RAM and your own arcade ROM set: original sprite quality, characters cached between fights and
+  restored animation frames.
 
-You need *X-Men vs. Street Fighter (USA)* as BIN/CUE, matching redump.org:
+Features, hashes and known issues: **[docs/mshvsf](docs/mshvsf/README.md)** ·
+[changelog](docs/mshvsf/CHANGELOG.md) · [achievements](docs/mshvsf/achievements.md) ·
+[how it works](docs/mshvsf/technical.md)
 
-```
-X-Men vs. Street Fighter (USA).bin
-Size   392393568
-SHA1   c04bf74422c7e1cbb3b961528c38cd67b656856a
-```
+## How to patch
 
-Convert a `.chd` back first: `chdman extractcd -i game.chd -o game.cue`. Other regions are not
-supported.
+No patched game is distributed. The patcher turns your own disc image (and, optionally, your own arcade ROM set)
+into the patched image on your computer. It recognises the game by itself.
+
+| Game | Disc you need (redump BIN/CUE) | SHA-1 of the `.bin` |
+|---|---|---|
+| X-Men vs. Street Fighter (USA), SLUS-00627 | `X-Men vs. Street Fighter (USA).bin`, 392,393,568 bytes | `c04bf74422c7e1cbb3b961528c38cd67b656856a` |
+| Marvel Super Heroes vs. Street Fighter (USA), SLUS-00793 | `Marvel Super Heroes vs. Street Fighter (USA).bin`, 552,894,048 bytes | `6e50ac0d4dfc5eaf2ddd0da3cabde19e0ec3721a` |
+
+Convert a `.chd` back first: `chdman extractcd -i game.chd -o game.cue`. Other regions are not supported.
 
 ### Web patcher
 
-Open **<https://pepasjc.github.io/xvsf-tag-team/>** in a desktop browser (Chrome or Edge).
+Open **<https://pepasjc.github.io/xvsf-tag-team/>** in a desktop browser (Chrome or Edge). The page is available
+in English and Brazilian Portuguese.
 
 1. Choose your `.bin`.
-2. Optional: choose your arcade ROM zip (plus the parent `xmvsf.zip` for a split clone set).
-3. Build, then save the zip with the `.bin` and `.cue`.
+2. Optional, for 8 MB setups: choose your arcade ROM zip (a split clone set takes its parent zip too).
+3. Press **Build**, then save the zip with the `.bin` and `.cue`.
 
-Everything runs locally; your files are never uploaded. The first run downloads about 25 MB of Python
-runtime. The 8 MB build needs about 2.5 GB of free memory.
+There are no other options: the page always builds the release image. Everything runs locally; your files are never
+uploaded. The first run downloads about 25 MB of Python runtime. Have about 3 GB of free memory: Marvel Super Heroes vs.
+Street Fighter needs about that much, X-Men vs. Street Fighter with restored frames about 2.5 GB.
+
+Offline: download the patcher `.html` from the [releases](https://github.com/pepasjc/xvsf-tag-team/releases) and
+open it in the same browsers.
 
 ### Command line
 
 ```
 pip install -r requirements.txt
 python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --out OUT
-python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip --out OUT
+python builder/build.py --disc "Marvel Super Heroes vs. Street Fighter (USA).bin" --out OUT
+python builder/build.py --disc "X-Men vs. Street Fighter (USA).bin" --arcade xmvsfu.zip xmvsf.zip --out OUT
 ```
 
-See [BUILDING.md](BUILDING.md) for the options.
+The command line gives the same images as the page, plus advanced options (no achievements, original button
+layout, no boot card, earlier versions, CHD output): see [BUILDING.md](BUILDING.md).
 
-### Expected results
-
-```
-[Tag Hack 1.2].bin                       SHA1  a296224a6ca784982c4f0cc9fb02761f0b79bffe
-[Tag Hack 1.2 + Restored Frames].bin
-  with xmvsfu                            SHA1  667e2dfe23a6f845a41cc1d9cd74e3e48bf526e6
-  with xmvsf or xmvsfu1d                 SHA1  edc180c91d74d315b21030291f53ff2bc60cd99e
-```
-
-Both the page and the command line check the result.
+Both the page and the command line check the result against the reference SHA-1 listed on each game's page.
 
 ## Compatibility
 
-Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), Beetle PSX and SwanStation.
-
-## Known issues
-
-- Some supers with very large sprites can still slow down on 2 MB.
-- A tag pressed while a move is still finishing is ignored; press again.
-- Turbo is off by default, as in the retail game. The arcade's USA pace is Turbo Speed 2.
-
-## Documentation
-
-- [docs/architecture.md](docs/architecture.md): how the patch works
-- [docs/engine.md](docs/engine.md): engine reference
-- [BUILDING.md](BUILDING.md): building from source
-- [CHANGELOG.md](CHANGELOG.md)
+Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), PSP / PS Vita (Adrenaline) and in emulators.
+PS3 (tested): the games run, achievements switch off automatically; PS2: tested in emulation with a PS2 BIOS (same
+behaviour). Details per game: [X-Men vs. Street Fighter](docs/xvsf/README.md#compatibility),
+[Marvel Super Heroes vs. Street Fighter](docs/mshvsf/README.md#compatibility).
 
 ## Reporting bugs
 
-Open an issue at <https://github.com/pepasjc/xvsf-tag-team/issues> with the build (2 MB or 8 MB),
-the system, the characters, the stage and what happened. A screenshot or video helps.
+Open an issue at <https://github.com/pepasjc/xvsf-tag-team/issues> with the game, the build (2 MB or 8 MB, with or
+without restored frames), the system, the characters, the stage and what happened. A screenshot or video helps.
+
+## Credits
+
+- Hack, tools, builder and patcher: pepa. Follow me @pepasjc.
+- Marvel Super Heroes vs. Street Fighter achievements: adapted from the
+  [RetroAchievements set for this game](https://retroachievements.org/game/16340) by **Lowsun**.
+- X-Men vs. Street Fighter achievements: written for this hack (RetroAchievements has no set for the PlayStation
+  version).
+- AI tools were used in this project.
+- Thanks to everyone who reported bugs.
 
 ## About me
 
-I'm an aerospace software engineer. I lived in Japan for four years and in Germany for five, and I'm
-now based in Brazil. This is a hobby project.
+I'm an aerospace software engineer. I lived in Japan for four years and in Germany for five, and I'm now based in
+Brazil. This is a hobby project.
+
+## Documentation
+
+- [docs/xvsf/](docs/xvsf/README.md): X-Men vs. Street Fighter: features, [changelog](docs/xvsf/CHANGELOG.md),
+  [achievements](docs/xvsf/achievements.md), [ARCADE BALANCE](docs/xvsf/balance.md),
+  [how the patch works](docs/xvsf/architecture.md), [engine reference](docs/xvsf/engine.md)
+- [docs/mshvsf/](docs/mshvsf/README.md): Marvel Super Heroes vs. Street Fighter: features,
+  [changelog](docs/mshvsf/CHANGELOG.md), [achievements](docs/mshvsf/achievements.md),
+  [how the patch works](docs/mshvsf/technical.md)
+- [BUILDING.md](BUILDING.md): building from source, command-line options
+- [builder/README.md](builder/README.md), [patcher/README.md](patcher/README.md)
 
 ## License
 
-- Source code (`builder/`, `patcher/`, `tools/`): [MIT](LICENSE).
+- Source code (`builder/`, `common/`, `games/`, `patcher/`, `tools/`): [MIT](LICENSE).
 - Documentation: [CC BY-NC-SA 4.0](LICENSE-DATA).
 - Third party: zopfli (Apache-2.0, included); Pyodide (MPL-2.0) and numpy are loaded from jsDelivr.
 
 This is a free fan project. It must not be sold or bundled with a disc image.
-X-Men vs. Street Fighter is © Capcom. X-Men characters © Marvel.
+X-Men vs. Street Fighter and Marvel Super Heroes vs. Street Fighter are © Capcom. Marvel characters © Marvel.

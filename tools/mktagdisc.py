@@ -22,7 +22,11 @@ Relocation table (u16 little endian, word index = offset/4 inside the overlay):
         --breakfill  test disc: the dead-code ranges are filled with break, loader NOT installed
         --logo       boot card before the game starts (tools/logopatch.py); changes the image; without --nospeed
                      also the second card (fan-patch notice, tools/card2patch.py)
-        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.2", "TAG HACK 1.0.1" with --nospeed, "TAG HACK 1.1" with --nosound); changes the image
+        --ach        built-in achievements (tools/ach/xvach.py, docs/ACHIEVEMENTS.md); changes the image
+        --noskip     no START skip of the end of a match (tools/skippatch.py; default on in the 1.3 US
+                     configuration, never with --nospeed / --nosound)
+        --noarcbal   no ARCADE BALANCE option line (tools/arcbalpatch.py, docs/BALANCE.md; default on with the START skip)
+        --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.3", "TAG HACK 1.0.1" with --nospeed, "TAG HACK 1.1" with --nosound); changes the image
 """
 import hashlib, os, struct, subprocess, sys, json, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -79,11 +83,16 @@ def configure():
     if _CONF0 is None: _CONF0 = (D, dict(CHUNKS), DIRTABLES, RAMORG, FASTDIR)
     D, CHUNKS, DIRTABLES, RAMORG, FASTDIR = _CONF0[0], dict(_CONF0[1]), _CONF0[2], _CONF0[3], _CONF0[4]
     HOT = "--hot" in sys.argv and "--nospeed" not in sys.argv and region.REGION == "us"   # opt-in: needs 0x80055c34-0x80055ebc (now upload's)
+    if R12() and not HOT and region.REGION == "us":
+        D = os.path.join(D, "r12")                           # 1.3: --nospeed / --nosound keep the 1.2 loader (no -DBOSSP1), bit for bit
     if HOT:
         D = os.path.join(HERE, region.TAGDIR, "hot")
         CHUNKS[".chunkh"] = (0x80055c34, 0x80055ebc)          # tools/speed/quad.py FREED range
         DIRTABLES += 8; RAMORG += 8                          # + the hot directory entry
         FASTDIR = HOTDIR + "/base"
+
+
+R12 = lambda: "--nospeed" in sys.argv or "--nosound" in sys.argv     # the configurations that reproduce 1.0.1 / 1.1 images
 
 
 HDIRADDR, HDIRCODE, HSTEPS = 0x801fd804, 0x801fdc7c, 9
@@ -133,6 +142,11 @@ def hot_dir_sector(regpos, steps):
 
 def build():
     cf = ["-mips1", "-G0", "-mno-abicalls", "-fno-pic"]
+    if not R12():
+        cf.append("-DBOSSP1")                         # 1.3: boss fight with the player on pad 2 on the new loader (tagload.c bossprep)
+    elif not HOT and region.REGION == "us":           # tools/tagload/r12: the 1.2 loader, built from the same sources without -DBOSSP1
+        os.makedirs(D, exist_ok=True)
+        for fn in ("tagload.c", "glue.S", "link.ld"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
     if HOT:                                           # 1.1 loader: sources copied into tools/tagload/hot
         os.makedirs(D, exist_ok=True)
         for fn in ("tagload.c", "glue.S"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
@@ -419,7 +433,7 @@ def main():
     sys.argv = [argv[0], name, "--dir=" + FASTDIR, "--tag", "--eff1=" + EFFDEFAULT]
     if region.REGION != "us":                         # the EXE patches are applied below, re-targeted; here only the files
         sys.argv = [argv[0], name, "--dir=" + FASTDIR, "--noexe", "--eff1=" + EFFDEFAULT]
-    sys.argv += [a for a in argv if a == "--nospeed"]           # nsppatch (inside mknspdisc) must see it too
+    sys.argv += [a for a in argv if a in ("--nospeed", "--nosound")]   # nsppatch / tagpatch (inside mknspdisc) must see them too
     mknspdisc.main()
     sys.argv = argv
     out = os.path.join(BUILD, name + ".bin")
@@ -541,6 +555,20 @@ def main():
             if "--nospeed" not in sys.argv and region.REGION == "us":     # 1.1: second card (fan-patch notice, tools/card2patch.py);
                 import card2patch                                           # --nospeed keeps the 1.0.x image
                 card2patch.apply(exe_read, exe_write, orig, region.FILES)
+        if "--ach" in sys.argv:                             # built-in achievements (tools/ach, docs/ACHIEVEMENTS.md); last: chains pc0
+            sys.path.insert(0, os.path.join(HERE, "ach"))
+            import xvach
+            xvach.apply(f, lmap, exe_read, exe_write, orig, touched)
+        if "--noskip" not in sys.argv and not R12() and region.REGION == "us":     # 1.3: START skips the end of a match
+            import skippatch                                                        # (tools/skippatch.py; chains pc0)
+            bal = "--noarcbal" not in sys.argv              # 1.3: ARCADE BALANCE option (tools/arcbalpatch.py, docs/BALANCE.md)
+            sk = skippatch.apply(exe_read, exe_write, arcbal=bal)
+            if bal:
+                import arcbalpatch
+                arcbalpatch.apply(f, lmap, touched, sk["bal"])
+        if "--meter" in sys.argv:                           # TEST BUILDS ONLY: on-screen speed meter (tools/meterpatch.py)
+            import meterpatch
+            meterpatch.apply(exe_read, exe_write)
         for sec in sorted(touched):
             f.seek(sec * 2352); raw = bytearray(f.read(2352))
             fix_sector(raw)

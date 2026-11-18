@@ -18,70 +18,51 @@
     <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="9" width="22" height="22" rx="5" class="m1"/><rect x="15" y="9" width="22" height="22" rx="5" class="m2"/></svg>
     <div>
       <h1>Tag Hack Patcher</h1>
-      <p class="sub">X-Men vs. Street Fighter (PlayStation, USA) as a real tag-team game</p>
+      <p class="sub" data-i18n="sub"></p>
     </div>
   </div>
-  <button id="theme" class="ghost" type="button" title="Switch between light and dark" aria-label="Switch between light and dark">
+  <div class="toprow">
+  <button id="lang" class="ghost langbtn" type="button" data-i18n="lang.button" data-i18n-title="lang.title"></button>
+  <button id="theme" class="ghost" type="button" data-i18n-title="theme.title">
     <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
   </button>
+  </div>
 </header>
 
 <main>
   <section class="col">
-    <p class="lead">Pick your own disc image; this page builds the patched image <strong>on your computer</strong> and hands it back.
-      Nothing is uploaded, and the page contains no game data.</p>
+    <p class="lead" data-i18n="lead"></p>
 
     <!-- 1. the disc image -->
     <article class="card" id="card-disc">
-      <h2><span class="n">1</span>Your disc image</h2>
+      <h2><span class="n">1</span><span data-i18n="disc.h"></span></h2>
       <label class="drop" id="drop-disc" tabindex="0">
         <input type="file" id="in-disc" multiple accept=".bin,.cue,.img,application/octet-stream">
-        <span class="drop-title">Drop the <code>.bin</code> here, or click to choose</span>
-        <span class="drop-hint">Raw image of the USA disc (SLUS-00627), about 374 MB. A <code>.cue</code> may come along; it is not needed.</span>
+        <span class="drop-title" data-i18n="disc.drop"></span>
+        <span class="drop-hint" data-i18n="disc.hint"></span>
       </label>
       <div class="status" id="st-disc" hidden></div>
     </article>
 
     <!-- 2. the optional arcade set -->
     <article class="card" id="card-arcade">
-      <h2><span class="n">2</span>Arcade ROM set <span class="opt">optional</span></h2>
-      <p class="note">Adds animation frames the PlayStation port cut. They are used when the machine has 8 MB of RAM
-        (DuckStation / SwanStation: <em>Settings → Console → Enable 8MB RAM</em>; on a MiSTer or a modified console, its 8 MB RAM option).
-        The same image also runs on a stock 2 MB console, as the normal tag hack.</p>
+      <h2><span class="n">2</span><span data-i18n="arc.h"></span> <span class="opt" data-i18n="arc.opt"></span></h2>
+      <p class="note" data-i18n="arc.note"></p>
       <label class="drop small" id="drop-arcade" tabindex="0">
         <input type="file" id="in-arcade" multiple accept=".zip,application/zip">
-        <span class="drop-title">Drop the arcade <code>.zip</code> here, or click to choose</span>
-        <span class="drop-hint">Your own ROM set of the arcade game (<code>xmvsf</code>, <code>xmvsfu</code>, or a clone together with its parent zip).</span>
+        <span class="drop-title" data-i18n="arc.drop"></span>
+        <span class="drop-hint" id="arcade-hint"></span>
       </label>
       <div class="status" id="st-arcade" hidden></div>
     </article>
 
-    <!-- 3. what will be built + options -->
+    <!-- 3. what will be built (always the release image: no options) -->
     <article class="card" id="card-build">
-      <h2><span class="n">3</span>Build</h2>
+      <h2><span class="n">3</span><span data-i18n="build.h"></span></h2>
       <ul class="plan" id="plan"></ul>
-      <details class="adv" id="adv">
-        <summary>Advanced options</summary>
-        <div class="optrow">
-          <span class="optname">Default buttons</span>
-          <span class="optchoices">
-            <label><input type="radio" name="buttons" value="modern" checked> Modern <small>HP R1 · HK R2 · 3P L1 · 3K L2</small></label>
-            <label><input type="radio" name="buttons" value="stock"> Stock <small>HP L1 · HK R1 · 3P L2 · 3K R2</small></label>
-          </span>
-        </div>
-        <div class="optrow">
-          <span class="optname">Main menu</span>
-          <label><input type="checkbox" id="opt-title" checked> Show the version line <small id="opt-title-note"></small></label>
-        </div>
-        <div class="optrow">
-          <span class="optname">Boot</span>
-          <label><input type="checkbox" id="opt-logo" checked> Boot card before the game starts <small id="opt-logo-note"></small></label>
-        </div>
-        <p class="note" id="adv-note"></p>
-      </details>
       <div class="actions">
-        <button id="go" class="primary" type="button" disabled>Build the patched image</button>
-        <button id="cancel" class="ghost" type="button" hidden>Cancel</button>
+        <button id="go" class="primary" type="button" disabled></button>
+        <button id="cancel" class="ghost" type="button" hidden data-i18n="build.cancel"></button>
         <span class="runtime" id="runtime"></span>
       </div>
       <div class="progress" id="progress" hidden>
@@ -93,18 +74,18 @@
 
     <!-- 4. the result -->
     <article class="card result" id="card-result" hidden>
-      <h2><span class="n ok">✓</span>Your patched image</h2>
+      <h2><span class="n ok">✓</span><span data-i18n="result.h"></span></h2>
       <dl class="facts" id="facts"></dl>
       <div class="actions">
-        <a class="primary button" id="dl-bin">Download .bin</a>
-        <a class="button" id="dl-cue">Download .cue</a>
-        <button class="button" id="dl-zip" type="button">Both in one .zip</button>
+        <a class="primary button" id="dl-bin" data-i18n="dl.bin"></a>
+        <a class="button" id="dl-cue" data-i18n="dl.cue"></a>
+        <button class="button" id="dl-zip" type="button" data-i18n="dl.zip"></button>
       </div>
-      <p class="note">Keep the <code>.bin</code> and the <code>.cue</code> together under the same name. They load in emulators as they are and can be converted to CHD with <code>chdman createcd</code>.</p>
-      <p class="note" id="note-8mb" hidden>Restored frames need 8 MB of RAM: in DuckStation / SwanStation switch on <em>Settings → Console → Enable 8MB RAM</em>; on a MiSTer or a modified console use its 8 MB RAM option. The main menu then shows “8MB” next to the version, and OPTION MODE has an ARCADE FRAMES ON / OFF line. Without it this image plays as the normal 2 MB tag hack.</p>
+      <p class="note" data-i18n="result.note"></p>
+      <p class="note" id="note-8mb" hidden data-i18n="result.note8"></p>
     </article>
 
-    <details class="log"><summary>Build log</summary><pre id="log"></pre></details>
+    <details class="log"><summary data-i18n="log"></summary><pre id="log"></pre></details>
   </section>
 
   <aside class="col side">
@@ -113,10 +94,9 @@
 </main>
 
 <footer>
-  <p id="legal">A free fan project, not affiliated with or endorsed by Capcom or Marvel. X-Men vs. Street Fighter is © Capcom; the X-Men are © Marvel. Use it only with a disc and an arcade ROM set you own.</p>
-  <p class="fine">Source code, documentation and bug reports: <a href="https://github.com/pepasjc/xvsf-tag-team" rel="noopener">github.com/pepasjc/xvsf-tag-team</a>.</p>
-  <p class="fine">Runs on <a href="https://pyodide.org/" rel="noopener">Pyodide</a> (Python in WebAssembly), loaded from <span id="pyosrc"></span>.
-    The build is the project's own Python pipeline; the result is bit-for-bit what the command-line builder produces.</p>
+  <p id="legal"></p>
+  <p class="fine" id="fine"></p>
+  <p class="fine" data-i18n="src.link"></p>
 </footer>
 
 <script type="application/json" id="cfg">{{CONFIG}}</script>

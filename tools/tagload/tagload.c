@@ -329,6 +329,22 @@ SEC(".ramb") void bossprep(int stage, s16 *list, int unused, u8 *heap)
     int k;
     /* new loader: boss = P2 main only (its "partner" is the boss id again = no list entry), a normal
      * player side, and the fixed layout must end below the ending renderer's buffers */
+#ifdef BOSSP1
+    /* 1.3: the same with the player on pad 2 (arcade started from pad 2: the CPU boss is P1 main, the player's
+     * team P2).  Before, that fight took the stock slots: the player's partner was a reduced assist set (no tag). */
+    int b = -1;
+    if (ids[2] == 0x10 && ids[0] != 0x10 && ids[1] != 0x10 && list[0] >= 0 && list[2] == 8 && list[3] < 0) b = 0;
+    if (ids[0] == 0x10 && ids[2] != 0x10 && ids[3] != 0x10 && list[2] >= 0 && list[0] == 8 && list[1] < 0) b = 2;
+    if (b >= 0) {
+        u32 t = (u32)heap + POOL + need(8, T_MID);
+        for (k = b; k < b + 2; k++)
+            if (list[k] >= 0) t += need(list[k], T_FAT);
+        if (t <= BOSSLIMIT) {
+            tl_dbg.dropped = BOSSNEW;
+            return;
+        }
+    }
+#else                                               /* 1.0.1 .. 1.2 (tools/tagload/r12: --nospeed, --nosound) */
     if (ids[2] == 0x10 && ids[0] != 0x10 && ids[1] != 0x10 && list[0] >= 0 && list[2] == 8 && list[3] < 0) {
         u32 t = (u32)heap + POOL + need(8, T_MID);
         for (k = 0; k < 2; k++)
@@ -338,6 +354,7 @@ SEC(".ramb") void bossprep(int stage, s16 *list, int unused, u8 *heap)
             return;
         }
     }
+#endif
     if (ids[0] != 0x10 && ids[2] != 0x10) return;   /* the stock test for the extra boss file: bossfin() will run */
     for (k = 0; k < 2; k++) {
         int c = list[2 * k];

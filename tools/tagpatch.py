@@ -47,6 +47,12 @@ KO_SWAP_TEST = 0x80071b18   # hit handler: "swapped characters cannot be KO'd" t
 MOVE_TEAM, TEAM_TAG_OUT = 0x2a, 0x14    # move 0x2a = team moves, +0xe2 selects which (0x14 = arcade tag out)
 
 
+def v13(argv=None):
+    """1.3 gameplay fixes: on unless the image must reproduce an older release (--nospeed = 1.0.1, --nosound = 1.1)."""
+    argv = sys.argv if argv is None else argv
+    return "--nospeed" not in argv and "--nosound" not in argv
+
+
 class A(Asm):               # the two instructions mipsasm lacks
     def srlv(self, rd, rt, rs):
         self._i(lambda pc, L: 0x06 | REG[rs] << 21 | REG[rt] << 16 | REG[rd] << 11)
@@ -89,6 +95,12 @@ def build():
     a.xor_("$t4", "$t4", "$t5")
     a.xor_("$t5", "$t5", "$t0")
     a.or_("$t5", "$t5", "$t4")
+    if v13():
+        # 1.3: the test below sees a CHANGE of both buttons, so RELEASING HP+HK after holding them also
+        # tagged: hold the buttons through a team super / counter / tag-in (lockout over) and the release
+        # sent the new point character straight back out (forum report "counter / team super don't
+        # switch").  Only a press counts: AND with the newest sample (+0xcc) = both buttons down now.
+        a.and_("$t5", "$t5", "$t0")
     a.andi("$t5", "$t5", HP_HK)
     a.xori("$t5", "$t5", HP_HK)
     a.bne("$t5", "$zero", "pre_out")

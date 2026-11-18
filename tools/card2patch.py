@@ -35,7 +35,8 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
 import toolenv
 GCC = toolenv.mips_prefix()
-DATA = os.path.join(HERE, "logo", "card2.bin")
+DATA = os.path.join(HERE, "logo", "card2.bin")              # 1.3 card (with the "Follow me" line)
+DATA_12 = os.path.join(HERE, "logo", "card2_12.bin")        # the 1.1 / 1.2 card: --nosound (the 1.1 image) keeps it, unchanged
 OBJ = os.path.join(ROOT, "build", "card2obj")
 EXE_BASE, EXE_HDR = 0x80010000, 0x800
 ZERO = (0x80099000, 0x800f0000)
@@ -55,6 +56,7 @@ TITLE, SUB = "X-MEN VS. STREET FIGHTER", "TAG TEAM HACK"
 LINES_TEXT = ["A free fan-made patch. Not affiliated with", "or endorsed by Capcom or Marvel.",
               "This patch is free. If you paid for it,", "you were scammed."]
 URL = "github.com/pepasjc/xvsf-tag-team"
+FOLLOW = "Follow me @pepasjc"                    # None = the 1.2 card (no follow line, 1.2 spacing)
 
 
 def polys():
@@ -102,7 +104,7 @@ def _grad(top, bot, h):
 
 def layer():
     import numpy as np
-    raw = zlib.decompress(open(DATA, "rb").read())
+    raw = zlib.decompress(open(DATA_12 if "--nosound" in sys.argv else DATA, "rb").read())
     assert len(raw) == W * H * 3
     pmap = np.frombuffer(raw[:W * H], np.uint8).reshape(H, W)
     ov = np.frombuffer(raw[W * H:], "<u2").reshape(H, W)
@@ -198,14 +200,18 @@ def render():
             for dx, dy in ((1, 1), (2, 2), (1, 2), (2, 1)): d.text((x + dx, y + dy - bb[1]), s, font=font, fill=(0, 0, 0))
         d.text((x, y - bb[1]), s, font=font, fill=fill)
         return bb[3] - bb[1]
-    y = BOT + 7
-    y += text_c(y, TITLE, F("impact.ttf", 20), (255, 210, 40)) + 3
-    y += text_c(y, SUB, F("impact.ttf", 15), (240, 50, 40), shadow=False) + 6
+    tight = FOLLOW is not None                         # the follow line needs ~13 px: tighter spacing above it
+    y = BOT + (5 if tight else 7)
+    y += text_c(y, TITLE, F("impact.ttf", 20), (255, 210, 40)) + (2 if tight else 3)
+    y += text_c(y, SUB, F("impact.ttf", 15), (240, 50, 40), shadow=False) + (4 if tight else 6)
     f = F("arialbd.ttf", 12)
     for i, s in enumerate(LINES_TEXT):
-        y += text_c(y, s, f, (235, 235, 235)) + (3 if i != 1 else 6)
-    y += 4
+        y += text_c(y, s, f, (235, 235, 235)) + ((2 if tight else 3) if i != 1 else (4 if tight else 6))
+    y += 3 if tight else 4
     y += text_c(y, URL, F("arialbd.ttf", 13), (110, 200, 255))
+    if tight:
+        y += 2
+        y += text_c(y, FOLLOW, F("arialbd.ttf", 11), (255, 210, 40))
     assert y <= H - 12, y                               # last text row above the bottom 8 lines a TV / SwanStation crops
     a = np.asarray(im).astype(np.uint16) >> 3
     c15 = a[..., 0] | a[..., 1] << 5 | a[..., 2] << 10
