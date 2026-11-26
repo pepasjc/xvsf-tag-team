@@ -33,12 +33,29 @@ struct vars ach_v __attribute__((section(".vars")));
 #define G8(o)   G[o]
 #define G16(o)  (*(const uint16_t*)(G + (o)))
 
+#ifdef PORT_INFBYTE       /* (room: one section instead of three 4-aligned ones) */
+static struct { uint16_t olife[2]; uint8_t ostage, owins_opp; } po;
+#define olife po.olife
+#define ostage po.ostage
+#define owins_opp po.owins_opp
+#else
 static uint16_t olife[2];
 static uint8_t ostage, owins_opp;
+#endif
 
 void port_derive(void) {
 	struct vars* v = &ach_v;
+#ifdef PORT_VSMENU        /* --vsmenu: VERSUS CPU (mt_vsmode, common/mtap; mode 1 = VERSUS) never counts: no human side */
+	const uint32_t hum = (*(volatile const uint8_t*)PORT_VSMENU && U8(0x800250acu) == 1)
+#ifdef PORT_INFBYTE       /* --infmeter: INFINITE SUPER METER ON (exopt.py OPTB + 7) is a cheat: nothing counts */
+		|| *(volatile const uint8_t*)PORT_INFBYTE
+#endif
+		? 0 : G8(0x0a91);
+#elif defined(PORT_INFBYTE)
+	const uint32_t hum = *(volatile const uint8_t*)PORT_INFBYTE ? 0 : G8(0x0a91);
+#else
 	const uint32_t hum = G8(0x0a91);
+#endif
 	const uint32_t side = hum == 2 ? 2 : hum ? 1 : 0, p2 = side == 2;
 	const uint32_t me = p2 ? OBJ_P2 : OBJ_P1, op = p2 ? OBJ_P1 : OBJ_P2;
 	const uint32_t phase = G8(0x0778), stage = G8(0x07c4);
@@ -105,6 +122,9 @@ void port_popup(const char* head, const char* line, int first) {
 	uint8_t* b = GBUF;
 	int16_t* used = (int16_t*)(b + 0xde);
 	uint32_t i;
+#ifdef PORT_POPBYTE      /* EX OPTIONS "ACHIEVEMENT POPUP" (games/mshvsf/tools/gameplay/exopt.py): 1 = OFF, nothing drawn */
+	if (U8(PORT_POPBYTE)) { cap.layer = -1; return; }
+#endif
 	if (first || cap.layer < 0) {
 		uint32_t tails[3], i0 = (uint16_t)*used;
 		for (i = 0; i < 3; i++) tails[i] = ((uint32_t*)b)[i];
@@ -173,24 +193,49 @@ const uint8_t ach_file_title[64] = {
 	0x82,0x73, 0x82,0x72, 0 };
 
 /* the main menu's text table (OPDEMO 0x80099404 draws 7 entries from here at stride 13; mshach.py) */
+#if defined(PORT_EXOPT) && defined(PORT_VSMENU)   /* + VERSUS CPU row: 9 lines, table in the EXE (tools/mtap/mtmenu.h) */
+#define MENU_N 9
+#define MENU_Y 0x80
+#elif defined(PORT_EXOPT)   /* + EX OPTIONS (games/mshvsf/tools/gameplay/exopt.py: PORT_EXOPT = its state handler); the 8-line
+                            table (PORT_MENUTAB) is exopt's, in the OPE.ARC slack: loaded with the menu (no kernel bytes) */
+#define MENU_N 8
+#define MENU_Y 0x8c
+#else
+#define MENU_N 7
 const char ach_menutab[7][13] __attribute__((section(".keep"))) = { "BATTLE", "VERSUS", "TRAINING", "HERO BATTLE", "ACHIEVEMENTS", "OPTION", "GALLERY" };
+#endif
 
 /* the menu overlay (OPDEMO / OPE.ARC entry 0) is patched in RAM, by us, once it is loaded (the disc keeps the stock
    file: without our runtime - boot guard - the game runs stock).  Recognised by the sum of the words at the sites as
    the disc has them (PORT_OVL_SUM, computed at build time); afterwards the sum differs.  FlushCache after the stores. */
 void bios_flushcache(void);
-static const uint32_t ovl_at[9] = { 0x8009942cu, 0x80099434u, 0x800994b8u, 0x800994c0u, 0x80099c8cu, 0x80099c90u,
+#ifdef PORT_EXOPT        /* + state 8 (EX OPTIONS) and the first line 12 pixels higher (8 lines end at y 0xe0) */
+#define OVL_N 11
+static const uint32_t ovl_at[OVL_N] = { 0x8009942cu, 0x80099434u, 0x800994b8u, 0x800994c0u, 0x80099c8cu, 0x80099c90u,
+	0x800b6274u, 0x800b6278u, 0x800b627cu, 0x800b6280u, 0x80099428u };
+#else
+#define OVL_N 9
+static const uint32_t ovl_at[OVL_N] = { 0x8009942cu, 0x80099434u, 0x800994b8u, 0x800994c0u, 0x80099c8cu, 0x80099c90u,
 	0x800b6274u, 0x800b6278u, 0x800b627cu };
+#endif
 void port_ovl(void) {
-	uint32_t s = 0, i, w[9];
+	uint32_t s = 0, i, w[OVL_N];
+#ifdef PORT_EXOPT
+	const uint32_t t = PORT_MENUTAB;
+#else
 	const uint32_t t = (uint32_t)ach_menutab;
-	for (i = 0; i < 9; i++) s += *(volatile uint32_t*)ovl_at[i];
+#endif
+	for (i = 0; i < OVL_N; i++) s += *(volatile uint32_t*)ovl_at[i];
 	if (s != (uint32_t)PORT_OVL_SUM) return;
 	w[0] = 0x3c020000u | ((t + 0x8000u) >> 16 & 0xffffu);   /* lui v0, %hi(tab) */
 	w[1] = 0x24520000u | (t & 0xffffu);                     /* addiu s2, v0, %lo(tab) */
-	w[2] = 0x2a220007u; w[3] = 0x2652000du;                 /* 7 entries, stride 13 */
-	w[4] = 0x28420007u; w[5] = 0x24020006u;                 /* cursor wraps in 0..6 */
+	w[2] = 0x2a220000u | MENU_N; w[3] = 0x2652000du;        /* 7 (8) entries, stride 13 */
+	w[4] = 0x28420000u | MENU_N; w[5] = 0x24020000u | (MENU_N - 1);   /* cursor wraps in 0..6 (0..7) */
 	w[6] = (uint32_t)ach_state; w[7] = 0x80099e44u; w[8] = 0x80099e90u;   /* states 5 (ours), 6 OPTION, 7 GALLERY */
-	for (i = 0; i < 9; i++) *(volatile uint32_t*)ovl_at[i] = w[i];
+#ifdef PORT_EXOPT
+	w[9] = PORT_EXOPT;                                       /* state 8: EX OPTIONS */
+	w[10] = 0x24130000u | MENU_Y;                            /* addiu s3, zero, y (first line y; stock 0x98) */
+#endif
+	for (i = 0; i < OVL_N; i++) *(volatile uint32_t*)ovl_at[i] = w[i];
 	bios_flushcache();
 }

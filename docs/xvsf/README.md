@@ -102,13 +102,3 @@ hashes (`builder/data/known.json`).
 Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), PSP / PS Vita (Adrenaline) and in emulators
 (Beetle PSX, SwanStation). PS3 (tested): runs, achievements switch off automatically; PS2: tested in emulation
 with a PS2 BIOS (same behaviour).
-
-## Known issues
-
-- Some supers with very large sprites can still slow down on 2 MB.
-- A tag pressed while a move is still finishing is ignored; press again.
-- With 8 MB, the Apocalypse fight played from controller 2 uses the 2 MB loader: that one fight has the port's
-  frames, not the restored ones.
-- Turbo is off by default, as in the retail game. The arcade's USA pace is Turbo Speed 2.
-- One or two players: there is no multitap support.
-- STAGE ANIM and INFINITE SUPER METER are not saved; they are FULL / OFF at every start.

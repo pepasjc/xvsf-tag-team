@@ -55,12 +55,10 @@ each stage: [builder/README.md](builder/README.md).
 | `--plain` | no boot card and no version line; the plain images the regression references were made with |
 | `--buttons stock` | the game's own button layout instead of HP = R1, HK = R2, 3P = L1, 3K = L2 |
 | `--tool-flag=--nosound` | the 1.1 image (2 MB only, without the 1.2 sound banks and everything newer) |
-
-The 1.3 images are no longer built (they are recognised as already patched).
 | `--tool-flag=--nospeed` | the 1.0.1 image (2 MB only, without the 1.1 speed-ups and everything newer) |
 
 `--nospeed` and `--nosound` rebuild the earlier releases bit for bit, so their results match the hashes published
-with 1.0.1 and 1.1.
+with 1.0.1 and 1.1. The 1.3 images are no longer built (they are recognised as already patched).
 
 ### Marvel Super Heroes vs. Street Fighter only
 
@@ -110,8 +108,8 @@ instead of the words, and the builder fills them in from your image. The sources
 | `tools/ap8/` | the 8 MB boot stub and module |
 | `tools/logo/` | the boot cards (`logo.S`, `card2.S`; `card.bin` and `card2.bin` are the cards' own artwork) |
 | `tools/*patch.py` | patches assembled by `tools/mipsasm.py` (tag, HUD, CPU, rounds, music, START skip, ARCADE BALANCE, ...) and the version line |
-| `tools/ach/` | the 1.3 achievements runtime (`ach.c`, `eval.c`, `copy.S`, `start.S`; shared with MSHvSF) and the XvSF port and set (`xvsf/`); `xvach.py` patches it in |
-| `tools/skip/xvskip.c` | the 1.3 START skip |
+| `tools/ach/` | the achievements runtime (`ach.c`, `eval.c`, `copy.S`, `start.S`; shared with MSHvSF) and the XvSF port and set (`xvsf/`); `xvach.py` patches it in |
+| `tools/skip/xvskip.c` | the START skip |
 | `tools/exopt/xvex.c`, `tools/expatch.py` | the 1.4 EX OPTIONS menu, pause rows, FRAME SKIP, STAGE ANIM, SPEED METER |
 | `tools/mtap/` + `common/mtap/` | the 1.4 VERSUS CPU main-menu row (`mtmenu.h`, `mtgame.h`, `xvmtap.py`; the shared core `mtcore.c`, `mtvsui.c`, `mtbuild.py`, `mtpatch.py`) |
 | `tools/tagload/r12/` | the 1.2 battle loader, kept for the `--nospeed` / `--nosound` images |

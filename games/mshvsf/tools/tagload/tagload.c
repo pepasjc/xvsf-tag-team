@@ -41,7 +41,19 @@ typedef unsigned char u8;
 #ifndef REGION_SHRINK
 #define REGION_SHRINK 0                         /* test builds only (mktag --testshrink=N): pretend N bytes less room */
 #endif
+#ifndef PSTALL
+#define PSTALL 0                                /* (mshvsf 1.1, mshspeed) mktag --pstall: partners' kind-6 sets in SPU in every
+                                                   battle (the pst floor as the start): ~16-18 KB more sprite RAM, effect
+                                                   sound one or more sample-rate levels lower (tools/snd/sndfit.py) */
+#endif
+#ifdef L2G
+/* (mshvsf 1.1, mshspeed) mktag --l2g: the g2get image + RAM block (games/mshvsf/tools/l2) live at G2AT, right below
+ * the strong decoder: the region ends there.  The packed sec1 of the tier files makes the characters smaller. */
+#define REGION_END   (G2AT - REGION_SHRINK)
+u32 tl_l2img[L2WORDS] = { 1 };              /* the image (filled by mktag.py), copied to G2AT after the last read */
+#else
 #define REGION_END   (0x801fea00u - 2048u - REGION_SHRINK)      /* CD reads write whole sectors: keep one sector of spill */
+#endif
 #define SLOT0_BASE   0x800bc000u
 #define FTAB         ((u32 *)0x800247dcu)       /* game file table: 8-byte entries (BCD MSF, size) */
 #define SPARE        0x10f                      /* unused file-table entry: our reads */
@@ -105,6 +117,15 @@ static u32 stock_size(int idx) { return FTAB[idx * 2 + 1]; }
 
 static u32 a8(u32 x) { return (x + 7) & ~7u; }
 
+#ifdef L2G
+/* (mshvsf 1.1, mshspeed) the after-match quote / continue overlay writes GPU primitives at 0x801f5000-0x801f5300
+ * while the characters are still drawn (regress gameover2): a packed sec1's head (header, tables, anchors) must not
+ * lie there, or every group of that character is lost.  sec1 offset per character and tier: tl_l2o1 (mktag). */
+#define L2HL 0x801f4f00u
+#define L2HH 0x801f5300u
+#define L2PROT 1024u
+u32 tl_l2o1[0x17 * NT] = { 1 };
+#endif
 static u32 place(u32 cur, const struct chr *h)
 {
     u32 p = a8(cur + 0x1c);                     /* P = data base (8-aligned), file at P - 0x1c */
@@ -151,6 +172,24 @@ static u32 dspsize(int c, const struct chr *h, int t)
 #define KANJI ((void (*)(void *))0x8002a244)  /* the stock reader: RD(0x65, a), *0x80070530 = a */
 static u32 kanji_at(u32 dsp_end) { return ((dsp_end >> 3) + 1) << 3; }   /* the stock rounding (+8 when aligned) */
 static int pst;     /* 1: the partners' kind-6 sets go to SPU like the mains' (only when nothing else fits) */
+#ifdef L2G
+static u32 placet(u32 cur, const struct chr *h, int s, int c, int t)
+{
+    int k;
+    u32 p = place(cur, h), o, a;
+    for (k = 0; k < 4; k++) {
+        o = t < NT - 1 ? tl_l2o1[filechar(c) * NT + t] : 0;
+        if (!o) break;
+        a = p - 0x1c + h->codefp[(s & 1) && !pst] + o;
+        if (a >= L2HH || a + L2PROT <= L2HL) break;
+        cur += a8(L2HH - a);                    /* move the character up until its sec1 head is past the overlay */
+        p = place(cur, h);
+    }
+    return p;
+}
+#else
+#define placet(cur, h, s, c, t) place(cur, h)
+#endif
 
 static u32 total(signed char *list, int *tier, u32 start)
 {
@@ -161,7 +200,7 @@ static u32 total(signed char *list, int *tier, u32 start)
         int c = list[s];
         if (c < 0) continue;
         h = &tl_dir.c[filechar(c)];
-        cur = place(cur, h) - 0x1c + h->codefp[(s & 1) && !pst] + dspsize(c, h, tier[s]);
+        cur = placet(cur, h, s, c, tier[s]) - 0x1c + h->codefp[(s & 1) && !pst] + dspsize(c, h, tier[s]);
         if (c == 0) cur = kanji_at(cur) + stock_size(KANJI_IDX);   /* Apocalypse: KANJI.TEX behind his sprites */
     }
     return cur;
@@ -173,6 +212,9 @@ int tl_main(signed char *list)
     u32 cur, p, start;
 
     tl_dbg[0] = 0; tl_dbg[1] = 0; tl_dbg[2] = 0;
+#ifdef L2G
+    *(volatile u32 *)G2AT = 0;                  /* every battle load: the EXE gate sees no image until it is copied */
+#endif
     snd_reset();                                                /* every battle, also when declining: stock tables */
     if (tl_dir.magic != 0x4c474154) { tl_dbg[0] = 0xfd; return 0; }
     /* only where tools/gameplay/tagmode.py switches the tag rules on: BATTLE (arcade, 0), VERSUS (1) and TRAINING
@@ -199,7 +241,7 @@ int tl_main(signed char *list)
      * sets in SPU (like the mains'; the sound level drops to make room); everybody on the cut tier (the greedy step
      * below upgrades cut characters back to DSH1 first, so only as many as needed stay cut).  tools/tagload/fitall.py
      * proves the last floor fits every team on every stage. */
-    pst = 0;
+    pst = PSTALL;
     for (s = 0; s < 4; s++) tier[s] = DSMT;
     if (total(list, tier, start) > REGION_END)
         for (s = 0; s < 4; s++) tier[s] = DSHT;
@@ -242,7 +284,7 @@ int tl_main(signed char *list)
         int c = list[s];
         if (c < 0) continue;
         h = &tl_dir.c[filechar(c)];
-        p = place(cur, h);
+        p = placet(cur, h, s, c, tier[s]);
         F = (u8 *)(p - 0x1c);
         need = a8(h->a0.size) + 2048;
         T = F;
@@ -280,7 +322,22 @@ int tl_main(signed char *list)
         u32 *d = (u32 *)STRONG_AT, n = tl_dir.strong_size >> 2;
         for (k = 0; k < (int)n; k++) d[k] = tl_strong[k];
         flushcache();
+#ifdef MCFIX
+        /* --mcfix (MvC rc1 lesson): the meter part is installed now; kill the arena copy's magic so the battle-init
+         * MCOPY (tools/speed/meter.S chunk C) cannot re-copy it from arena bytes the game may have reused meanwhile.
+         * Declined (stock-loader) battles keep MCOPY: the glue re-reads the blob into the arena right before. */
+        if (n > (0x801fe640u - STRONG_AT) >> 2) tl_strong[(0x801fe640u - STRONG_AT) >> 2] = 0;
+#endif
     }
+#ifdef L2G
+    {                                                            /* after the last read: image, RAM block zeroed, */
+        u32 *d = (u32 *)G2AT;                                    /* magic word last (the gate's key) */
+        for (k = 1; k < L2WORDS; k++) d[k] = tl_l2img[k];
+        for (; k < (int)((0x801fe200u - G2AT) >> 2); k++) d[k] = 0;
+        flushcache();
+        d[0] = tl_l2img[0];
+    }
+#endif
     *(u32 *)(tl_dbg + 4) = cur;
     tl_dbg[0] = 1;
     return 1;

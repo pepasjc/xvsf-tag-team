@@ -57,7 +57,7 @@ def build_c():
     ld = os.path.join(OBJ, "skip.ld")
     open(ld, "w").write("SECTIONS { . = 0x%08x; .text : { *(.text.skip_entry) *(.text*) } .rodata : { *(.rodata*) } "
                         ".data : { *(.data*) *(.sdata*) } .bss : { *(.bss*) *(.sbss*) *(COMMON) } /DISCARD/ : { *(.comment) *(.MIPS.*) *(.reginfo) *(.pdr) *(.gnu.attributes) } }" % BASE)
-    defs = ["-D%s=%d" % kv for kv in NOTICE.items()]
+    defs = ["-D%s=%d" % kv for kv in NOTICE.items()] + (["-DCYBERFIX"] if "--cyberfix" in sys.argv else [])   # 1.1: final-boss bench fix
     subprocess.check_call([gcc + "gcc", "-Os", "-G0", "-mips1", "-mno-abicalls", "-fno-pic", "-ffreestanding", "-nostdlib",
                            "-ffunction-sections", "-msoft-float", "-c", SRC, "-o", os.path.join(OBJ, "mshskip.o")] + defs)
     subprocess.check_call([gcc + "ld", "-T", ld, "-o", os.path.join(OBJ, "mshskip.elf"), os.path.join(OBJ, "mshskip.o")])
@@ -124,6 +124,46 @@ def apply_ram(emu):
 if __name__ == "__main__":
     c, sym = build_c()
     print("%d bytes" % len(c), {k: hex(v) for k, v in sym.items()})
+
+
+CYFIX_AT = 0x800222cc            # EXE 0x800222cc-0x80022310: an 8 MB-menu chunk (dead in 2 MB builds; CODESPACE.md)
+
+
+CYFIX2_AT = 0x8004c6e4           # second part: EXE 0x8004c6e4-0x8004c724 (8 MB-menu chunk too)
+
+
+def cyfix_patch():
+    """(1.1 / 1.0.1 hotfix, --cyberfix; 2 MB builds only) after the ARCADE final boss (stage 7) the stock game loads P1
+    main's character into the P2 slot at its fixed addresses 0x801448e0.. (to 0x801f81e0) from match phase 16 while the
+    battle is still drawn.  The tag layout can put P1's partner there (P1 main is packed first, always below) and the
+    tag win pose has it on screen -> its sprites are overwritten while drawn -> VRAM allocator crash (1.0 user report).
+    Called every frame by the START skip entry stub (jal after tick):
+        if phase >= 16 && mode == ARCADE && stage >= 7 (8 once the boss is beaten): P1 partner active = 0   (even when on point: blank P1 for the
+        ~240 frames before the post-boss scene beats a crash)
+    Hand-assembled (7 + 13 words), load delays / delay slots checked.  -> [(addr, bytes), (addr, bytes)]"""
+    q = [0x3c098007,              # lui   t1, 0x8007
+         0x91280778,              # lbu   t0, 0x778(t1)      match phase
+         0x3c0b8002,              # lui   t3, 0x8002
+         0x816a50ac,              # lb    t2, 0x50ac(t3)     menu mode (0 ARCADE)
+         0x912b07c4,              # lbu   t3, 0x7c4(t1)      ARCADE stage
+         0x08000000 | (CYFIX2_AT >> 2 & 0x3ffffff),    # j part 2
+         0x8d2c1560]              # lw    t4, 0x1560(t1)     (delay) P1 partner +0x250 (character data base)
+    r = [0x2d080010,              # sltiu t0, t0, 16
+         0x15000009,              # bnez  t0, 9f
+         0x256bfff9,              # addiu t3, t3, -7         (delay)
+         0x15400007,              # bnez  t2, 9f
+         0x3c0d8014,              # lui   t5, 0x8014         (delay)
+         0x05600005,              # bltz  t3, 9f             (stage >= 7: the counter is already 8 after the boss win)
+         0x35ad48e0,              # ori   t5, t5, 0x48e0     (delay)
+         0x00000000,              # nop   (no range test: P1 main is packed first from the region start and ends
+         0x00000000,              # nop    below 0x801448e0; the partner always reaches into the load window - team 7,8:
+                                  #        base 0x8012afb0, sprites above.  Stock's partner is an inactive assist anyway)
+         0x00000000,              # nop
+         0xa1201310,              # sb    zero, 0x1310(t1)   P1 partner benched
+         0x03e00008,              # 9: jr ra
+         0x00000000]              # nop
+    assert len(q) * 4 <= 0x80022310 - CYFIX_AT and len(r) * 4 <= 0x8004c724 - CYFIX2_AT
+    return [(CYFIX_AT, struct.pack("<%dI" % len(q), *q)), (CYFIX2_AT, struct.pack("<%dI" % len(r), *r))]
 
 
 def link(code_result, prev_pc0):

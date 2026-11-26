@@ -4,7 +4,7 @@
 ## intro: Quais jogos
 - **X-Men vs. Street Fighter** (EUA, SLUS-00627): tag hack 1.4.
 - **Marvel Super Heroes vs. Street Fighter** (EUA, SLUS-00793): tag hack 1.1.
-- Marvel vs. Capcom (EUA, SLUS-01059): em andamento, esta página ainda não monta ele.
+- **Marvel vs. Capcom** (EUA, SLUS-01059): tag hack 1.0.
 - A página reconhece o jogo pelos arquivos do seu disco e confere o dump exato pelo SHA-1. Outros lançamentos (Japão, Europa), imagens que já estão com patch e dumps alterados são recusados, com o motivo.
 
 ## xvsf: O que isto faz
@@ -37,13 +37,6 @@
 - Carregamento mais curto com 8 MB: os personagens ficam na memória entre as lutas, junto com os arquivos das telas de seleção, vitória e VS. Isso economiza uns 3 a 6 segundos entre uma luta e outra.
 - ROM sets do arcade suportados: `xmvsf`, `xmvsfu`, `xmvsfu1d` (com o set pai).
 
-## xvsf: Problemas conhecidos
-- Golpes com sprites muito grandes ficam lentos. O jogo original tem o mesmo problema; este hack tenta igualar a velocidade do original nesses momentos, não superar.
-- Uma troca apertada enquanto um golpe ainda está terminando é ignorada; aperte de novo.
-- O turbo vem desligado, como no jogo original. O ritmo padrão do arcade americano corresponde a Options → Turbo Speed 2.
-- Nos times mais pesados e nos cenários maiores, um ou mais personagens usam uma codificação de sprites mais lenta.
-- Com os quadros restaurados, a linha de versão no menu principal sempre aparece (ela mostra o indicador 8MB).
-
 ## xvsf: Como cabe em 2 MB
 - Quatro personagens completos precisam de uns 2,0 MB; só há uns 1,24 MB livres. Os sprites dos personagens são recodificados com um codec mais compacto e decodificados por uma rotina colocada dentro do jogo, o código dos personagens é realocado na hora do carregamento, e um novo carregador de lutas junta tudo e escolhe, a cada luta, a codificação de sprites mais rápida que ainda cabe.
 
@@ -68,10 +61,8 @@
 - A imagem de 8 MB tem tudo da 1.1, mais **vozes melhoradas**: as vozes vêm da memória extra com qualidade total, e 345 amostras de voz são as gravações do próprio arcade (cerca de 12 kHz, duração completa), convertidas na montagem a partir do seu ROM set. Cada animação restaurada é conferida com os dados do arcade (restaurada inteira ou não).
 - Eles só são usados quando o console tem 8 MB de RAM (DuckStation / SwanStation: Settings → Console → Enable 8MB RAM). Aí o menu principal mostra “8MB”. Num console de 2 MB, a mesma imagem roda como o tag hack normal.
 
-## mshvsf: Problemas conhecidos
+## mshvsf: Compatibilidade
 - Testado num PlayStation de verdade (PSIO), no MiSTer (2 MB e 8 MB), no PSP / PS Vita (Adrenaline) e em emuladores. PS3 (testado): roda, e as conquistas se desligam sozinhas; PS2: testado em emulação com uma BIOS de PS2 (mesmo comportamento).
-- Times pesados podem ficar mais lentos nos super golpes (o jogo decodifica mais dados de sprite do que nas lutas originais com dois personagens).
-- Nas lutas com quatro personagens, os bancos de som podem ficar com taxa de amostragem reduzida em 2 MB, para os quatro caberem na RAM de som.
 
 ## legal: Aviso legal
 - Este é um projeto de fã não oficial, sem ligação nem aprovação da editora do jogo ou dos donos dos direitos. Todo o conteúdo do jogo continua sendo propriedade dos seus donos. Use só com um disco que seja seu.

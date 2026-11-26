@@ -1,6 +1,6 @@
 # X-Men vs. Street Fighter Tag Hack: achievements
 
-Built into the 1.3 image: an **ACHIEVEMENTS** page in the main menu (above OPTION MODE), a popup when one
+Built into the image (since 1.3): an **ACHIEVEMENTS** page in the main menu (above OPTION MODE), a popup when one
 unlocks, and progress saved in its own memory card file. Nothing is sent anywhere; the set runs on the console.
 
 RetroAchievements has no set for X-Men vs. Street Fighter on the PlayStation, so this set was written for the

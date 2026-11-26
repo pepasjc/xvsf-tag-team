@@ -55,6 +55,11 @@ extern void snd_reset(void);                    /* tools/snd/snd.c: full sound b
 extern void snd_plan(signed char *list);
 extern u32 snd_stash(int s, u32 dflt);
 extern int snd_load(int s, int c, u8 *sec3, u8 *scratch);
+/* 8 MB voice streaming (tools/ap8/s8: engine + battle sound, a binary read from the disc into upper RAM) */
+#include "s8/s8.h"
+struct schr_ { u8 lv[12 * 36]; u16 stash; u16 pad; };          /* tools/snd/snd.c struct schr (SND_NL = 36, mkap8.py checks) */
+extern struct { u32 magic; u32 hook[30]; struct schr_ c[0x18]; } snd_dir;
+struct s8dir tl8_snd __attribute__((section(".dir8"))) = { 0x44384e53 };
 #define SND_SCRATCH ((u8 *)0x80100000u)         /* level files: the 2 MB character area is unused in 8 MB fights */
 
 #define SLOT0_BASE   0x800bc000u
@@ -111,6 +116,8 @@ struct cslot {
     u32 a0sum, dspsum, hlpsum;
     u32 used;                                   /* tick of the last battle that used it */
     u32 ap8msf, ap8n, ap8sum;                   /* animation patch (ap8n 0: none) */
+    u32 sn8msf, sn8n, sn8sum;                   /* voice streaming file (.SN8, snd8.c; sn8n 0: none) */
+    u32 base, size, odsp, ohlp, oap8, osn8;     /* where the record is, its part offsets (layout()) */
 };
 struct chdr {
     u32 magic, tick;
@@ -126,6 +133,10 @@ static int filechar(int c)
     if (c == 0x19) return 7;
     return c;
 }
+
+static int snd8_on(void) { return tl8_snd.magic == 0x44384e53 && tl8_snd.on; }
+static u32 snd8_top(void) { return tl8_snd.comat; }
+#define snd8_file(c) (&tl8_snd.c[filechar(c)])
 
 static u32 a8(u32 x) { return (x + 7) & ~7u; }
 
@@ -158,6 +169,24 @@ static u32 wsum(const u32 *p, u32 n)
     n = (n + 3) >> 2;
     while (n--) s += *p++;
     return s;
+}
+
+static void spare(u32 msf, u32 size);
+
+/* engine binary into S8_CODE (when its word sum differs: first battle, or someone wrote over it), then its plan */
+static int snd8_begin(signed char *list, u8 *const *sp, int first)
+{
+    u32 st[4];
+    int s;
+    if (tl8_snd.code.size > S8_CODEMAX) return 0;
+    if (wsum((u32 *)S8_CODE, tl8_snd.code.size) != tl8_snd.codesum) {
+        spare(tl8_snd.code.msf, tl8_snd.code.size);
+        RD(SPARE, (void *)S8_CODE);
+        flushcache();
+        if (wsum((u32 *)S8_CODE, tl8_snd.code.size) != tl8_snd.codesum) return 0;
+    }
+    for (s = 0; s < 4; s++) st[s] = list[s] < 0 ? 0 : (u32)snd_dir.c[filechar(list[s])].stash << 4;
+    return ((int (*)(signed char *, u8 *const *, const struct s8dir *, const u32 *, int))S8_BEGIN)(list, sp, &tl8_snd, st, first);
 }
 
 static void wcopy(u32 *d, const u32 *s, u32 n)
@@ -202,42 +231,101 @@ static void spare(u32 msf, u32 size)
     FTAB[SPARE * 2 + 1] = size;
 }
 
-static u8 *slotp(int k) { return (u8 *)(CACHE + k * CS); }
+static u32 r2k(u32 x) { return (x + 2047) & ~2047u; }
 
-/* make the cache slot of char c hold A0 + sprites (+ helper sound when partner); returns the slot */
+/* Cache record placement.  Fixed slots (discs without voice streaming): slot k at CACHE + k * CS, parts at the
+ * tl8_dir offsets.  Voice streaming discs (snd8_on): one arena from CACHE to COMMON.SN8 (snd8_top), each record
+ * exactly as big as its character's files ([A0 + table][sprites][animation patch][.SN8], 2 KB steps, no helper bank:
+ * the .SN8 has the bank); a miss takes the first gap that fits, evicting least recently used records not in this
+ * battle (mkap8.py checks that the four biggest characters fit together). */
+static void layout(struct cslot *e, int k, u32 apn, u32 snn)
+{
+    if (!snd8_on()) {
+        e->base = CACHE + k * CS; e->odsp = C_DSP; e->ohlp = C_HLP; e->oap8 = C_AP8; e->osn8 = 0; e->size = CS;
+        return;
+    }
+    e->odsp = r2k(e->a0n);
+    e->ohlp = e->odsp + r2k(e->dspn);
+    e->oap8 = e->ohlp;
+    e->osn8 = e->oap8 + r2k(apn);
+    e->size = e->osn8 + r2k(snn);
+}
+
+static int fits(u32 a, u32 size, int self)
+{
+    int j;
+    if (a < CACHE || a + size > snd8_top()) return 0;
+    for (j = 0; j < NCSMAX; j++) {
+        const struct cslot *o = &H->s[j];
+        if (j != self && o->c && a < o->base + o->size && a + size > o->base) return 0;
+    }
+    return 1;
+}
+
+static u32 gap(u32 size, int self)
+{
+    int j;
+    if (fits(CACHE, size, self)) return CACHE;
+    for (j = 0; j < NCSMAX; j++) {
+        const struct cslot *o = &H->s[j];
+        if (j != self && o->c && fits(r2k(o->base + o->size), size, self)) return r2k(o->base + o->size);
+    }
+    return 0;
+}
+
+/* make the cache record of char c hold A0 + sprites (+ helper sound when partner, fixed slots); -1: no room (arena) */
 static int fill(int c, int partner, u32 busy)
 {
     const struct chr *h = &tl_dir.c[filechar(c)];
     const struct a8ent *r = &tl8_dir.c[filechar(c)];
     int rest = tl8_dir.on && r->dsp.size && tl_dbg[13];      /* OPTION ARCADE FRAMES (1 = on) */
+#ifdef AFOPT
+    if (*(volatile u8 *)AFOPT) rest = 0;                       /* EX OPTIONS ARCADE FRAMES OFF (OPTB + 9, 1 = OFF): stock frames */
+#endif
     u32 dmsf = rest ? r->dsp.msf : FTAB[(c + 4) * 2], dn = rest ? r->dsp.size : FTAB[(c + 4) * 2 + 1];
     u32 hmsf = FTAB[(c + 0x2c) * 2], hn = FTAB[(c + 0x2c) * 2 + 1];
+    u32 apn = rest ? r->ap8.size : 0, snn = snd8_on() ? snd8_file(c)->size : 0;
+    int nrec = snd8_on() ? NCSMAX : NCS;
     struct cslot *e = 0;
     int k, best = -1, need = 0;
     u8 *P;
-    for (k = 0; k < NCS; k++) {
+    for (k = 0; k < nrec; k++) {
         e = &H->s[k];
         if (e->c == (u32)c + 1 && e->a0msf == h->a0.msf && e->a0n == h->a0.size && e->dspmsf == dmsf && e->dspn == dn) break;
     }
-    if (k == NCS) {                     /* not cached: an empty slot, else the least recently used one not in this battle */
-        for (k = 0; k < NCS; k++) {
+    if (k == nrec) {                    /* not cached: an empty record, else the least recently used one not in this battle */
+        for (k = 0; k < nrec; k++) {
             if (busy & (1u << k)) continue;
             if (!H->s[k].c) { best = k; break; }
             if (best < 0 || H->s[k].used < H->s[best].used) best = k;
         }
+        if (best < 0) return -1;
         k = best;
         e = &H->s[k];
-        e->c = c + 1;
+        e->c = 0;
         e->a0msf = h->a0.msf; e->a0n = h->a0.size; e->dspmsf = dmsf; e->dspn = dn;
-        e->hlpn = 0; e->ap8n = 0;
+        e->hlpn = 0; e->ap8n = 0; e->sn8n = 0;
+        layout(e, k, apn, snn);
+        if (snd8_on()) {
+            u32 a;
+            while (!(a = gap(e->size, k))) {        /* evict the least recently used record not in this battle */
+                int j, v = -1;
+                for (j = 0; j < NCSMAX; j++)
+                    if (j != k && H->s[j].c && !(busy & (1u << j)) && (v < 0 || H->s[j].used < H->s[v].used)) v = j;
+                if (v < 0) return -1;
+                H->s[v].c = 0;
+            }
+            e->base = a;
+        }
+        e->c = c + 1;
         need = 3;
     } else {
-        P = slotp(k);
+        P = (u8 *)e->base;
         if (wsum((u32 *)(P + C_A0), e->a0n) != e->a0sum) need |= 1;
-        if (wsum((u32 *)(P + C_DSP), e->dspn) != e->dspsum) need |= 2;
+        if (wsum((u32 *)(P + e->odsp), e->dspn) != e->dspsum) need |= 2;
         H->hits += 2 - (need & 1) - (need >> 1);
     }
-    P = slotp(k);
+    P = (u8 *)e->base;
     if (need & 1) {
         spare(e->a0msf, e->a0n);
         RD(SPARE, P + C_A0);
@@ -245,30 +333,42 @@ static int fill(int c, int partner, u32 busy)
         H->reads++;
     }
     if (need & 2) {
-        if (rest) { spare(dmsf, dn); RD(SPARE, P + C_DSP); }
-        else RD(c + 4, P + C_DSP);
-        e->dspsum = wsum((u32 *)(P + C_DSP), e->dspn);
+        if (rest) { spare(dmsf, dn); RD(SPARE, P + e->odsp); }
+        else RD(c + 4, P + e->odsp);
+        e->dspsum = wsum((u32 *)(P + e->odsp), e->dspn);
         H->reads++;
     }
-    if (partner && hn) {
-        if (e->hlpmsf != hmsf || e->hlpn != hn || wsum((u32 *)(P + C_HLP), hn) != e->hlpsum) {
+    if (partner && hn && !snd8_on()) {
+        if (e->hlpmsf != hmsf || e->hlpn != hn || wsum((u32 *)(P + e->ohlp), hn) != e->hlpsum) {
             e->hlpn = 0;
-            RD(c + 0x2c, P + C_HLP);
+            RD(c + 0x2c, P + e->ohlp);
             e->hlpmsf = hmsf; e->hlpn = hn;
-            e->hlpsum = wsum((u32 *)(P + C_HLP), hn);
+            e->hlpsum = wsum((u32 *)(P + e->ohlp), hn);
             H->reads++;
         } else H->hits++;
     }
     if (rest && r->ap8.size) {
-        if (e->ap8msf != r->ap8.msf || e->ap8n != r->ap8.size || wsum((u32 *)(P + C_AP8), r->ap8.size) != e->ap8sum) {
+        if (e->ap8msf != r->ap8.msf || e->ap8n != r->ap8.size || wsum((u32 *)(P + e->oap8), r->ap8.size) != e->ap8sum) {
             e->ap8n = 0;
             spare(r->ap8.msf, r->ap8.size);
-            RD(SPARE, P + C_AP8);
+            RD(SPARE, P + e->oap8);
             e->ap8msf = r->ap8.msf; e->ap8n = r->ap8.size;
-            e->ap8sum = wsum((u32 *)(P + C_AP8), r->ap8.size);
+            e->ap8sum = wsum((u32 *)(P + e->oap8), r->ap8.size);
             H->reads++;
         } else H->hits++;
     } else e->ap8n = 0;
+    if (snn) {
+        const struct s8fent *f = snd8_file(c);
+        u8 *Q = P + e->osn8;
+        if (e->sn8msf != f->msf || e->sn8n != f->size || wsum((u32 *)Q, f->size) != e->sn8sum) {
+            e->sn8n = 0;
+            spare(f->msf, f->size);
+            RD(SPARE, Q);
+            e->sn8msf = f->msf; e->sn8n = f->size;
+            e->sn8sum = wsum((u32 *)Q, f->size);
+            H->reads++;
+        } else H->hits++;
+    } else e->sn8n = 0;
     e->used = H->tick;
     return k;
 }
@@ -296,10 +396,12 @@ static void anim_patch(u8 *F, const u32 *a, u32 *T)
 
 static int load8(signed char *list)
 {
-    int s, k, slot[4];
+    int s, k, slot[4], st8 = 0;
     u32 busy = 0, poolend;
+    u8 *sp[4];
+    int first = !tl_dbg[12] || H->magic != MAGIC;
     if (!tl_dbg[12] || H->magic != MAGIC || NCS > NCSMAX) {     /* first battle of this boot, or no header: empty cache */
-        for (k = 0; k < NCS; k++) H->s[k].c = 0;
+        for (k = 0; k < NCSMAX; k++) H->s[k].c = 0;
         H->tick = 0;
         H->magic = MAGIC;
         tl_dbg[12] = 1;
@@ -309,7 +411,19 @@ static int load8(signed char *list)
     for (s = 0; s < 4; s++) {
         if (list[s] < 0) continue;
         slot[s] = fill(list[s], s & 1, busy);
+        if (slot[s] < 0) {                      /* arena: records of this battle in the way -> empty it, fill in order */
+            for (k = 0; k < NCSMAX; k++) H->s[k].c = 0;
+            busy = 0;
+            for (s = 0; s < 4; s++) if (list[s] >= 0) { slot[s] = fill(list[s], s & 1, busy); busy |= 1u << slot[s]; }
+            break;
+        }
         busy |= 1u << slot[s];
+    }
+    if (snd8_on()) {
+        for (s = 0; s < 4; s++) sp[s] = list[s] >= 0 && H->s[slot[s]].sn8n ? (u8 *)H->s[slot[s]].base + H->s[slot[s]].osn8 : 0;
+        for (s = 0; s < 4; s++) if (list[s] >= 0 && !sp[s]) break;
+        st8 = s == 4 && snd8_begin(list, sp, first);
+        if (!st8) snd_plan(list);               /* no streaming files for someone / no fit: the full-bank plan */
     }
     for (s = 0; s < 4; s++) {
         const struct chr *h;
@@ -318,27 +432,29 @@ static int load8(signed char *list)
         int c = list[s];
         if (c < 0) continue;
         h = &tl_dir.c[filechar(c)];
-        C = slotp(slot[s]);
+        C = (u8 *)H->s[slot[s]].base;
         p = place(WORK + s * WA, h);
         F = (u8 *)(p - 0x1c);
         hdr = (u32 *)(C + C_A0);                                /* u32 3, (off, size) x 3 */
         wcopy((u32 *)F, (u32 *)(C + C_A0), hdr[3] + hdr[4]);
         reloc((u32 *)F, (const u16 *)(C + C_A0 + ((h->a0size + 3) & ~3u)), (int)(p - SLOT0_BASE));
         if (H->s[slot[s]].ap8n)
-            anim_patch(F, (const u32 *)(C + C_AP8), (u32 *)(((u32)F + hdr[3] + hdr[4] + 7) & ~3u));
+            anim_patch(F, (const u32 *)(C + H->s[slot[s]].oap8), (u32 *)(((u32)F + hdr[3] + hdr[4] + 7) & ~3u));
         flushcache();
         ((init_t)(INIT_TAB[c] + (p - SLOT0_BASE)))((int)(p - SLOT0_BASE), SLOT0_BASE);
         if (s & 1)
             REG(s + 8, F + hdr[3], 0);
         else
-            STASH(s + 8, F + hdr[3], 4, hdr[4], snd_stash(s, SPU_STASH[s]));
-        if (!snd_load(s, c, C + C_A0 + hdr[5], SND_SCRATCH)) {      /* the cache copy stays pristine (level files: scratch) */
+            STASH(s + 8, F + hdr[3], 4, hdr[4], st8 ? ((u32 (*)(int))S8_STASH)(s) : snd_stash(s, SPU_STASH[s]));
+        if (st8) ((void (*)(int))S8_LOAD)(s);
+        else if (!snd_load(s, c, C + C_A0 + hdr[5], SND_SCRATCH)) {      /* the cache copy stays pristine (level files: scratch) */
             if (!(s & 1)) SND(s + 1, C + C_A0 + hdr[5], hdr[6]);
-            else if (H->s[slot[s]].hlpn) SND(s + 1, C + C_HLP, H->s[slot[s]].hlpn);
+            else if (H->s[slot[s]].hlpn) SND(s + 1, C + H->s[slot[s]].ohlp, H->s[slot[s]].hlpn);
         }
-        REG(s, C + C_DSP, 0);
+        REG(s, C + H->s[slot[s]].odsp, 0);
         if (c == 0) KANJI((void *)KANJI_AT);
     }
+    if (st8) { ((void (*)(void))S8_END)(); flushcache(); }
     /* the GPU primitive pool back to its stock size (heapcap capped it for the 2 MB area, unused in this mode) */
     poolend = *(u32 *)(tl_dbg + 8);
     if (poolend - POOL_CAP >= 0x80094800u && poolend < POOL_END) {
@@ -346,7 +462,7 @@ static int load8(signed char *list)
         POOLINIT((void *)(poolend - POOL_CAP), POOL_END - (poolend - POOL_CAP));
         *(u32 *)(tl_dbg + 8) = POOL_END;
     }
-    *(u32 *)(tl_dbg + 4) = UPEND;
+    *(u32 *)(tl_dbg + 4) = snd8_on() ? snd8_top() : UPEND;
     tl_dbg[1] = tl_dbg[2] = (NT - 1) * 0x11;                   /* stock RLE everywhere (speed meter: 9) */
     tl_dbg[0] = 1;
     return 1;
@@ -367,6 +483,6 @@ int ap8_main(signed char *list)
         if (list[s] > 0x19) return tl_main(list);
     tl_dbg[1] = tl_dbg[2] = 0;
     snd_reset();
-    snd_plan(list);
+    if (!snd8_on()) snd_plan(list);             /* streaming builds plan after the cache fill (load8) */
     return load8(list);
 }

@@ -25,6 +25,10 @@ glue:
         sw      $a0, 0x10($sp)
         la      $t1, tl_dbg
         sb      $zero, 0($t1)
+#ifdef L2G
+        lui     $t0, %hi(G2AT)          /* (mshvsf 1.1, mshspeed) --l2g: every battle load invalidates the L2 image; */
+        sw      $zero, %lo(G2AT)($t0)   /* only tl_main's success path writes its magic again (last)             */
+#endif
         li      $s0, 3                  /* tries */
 1:      la      $t0, blobent
         lw      $t1, 0($t0)
@@ -59,8 +63,10 @@ glue:
         lw      $a0, 0x10($sp)
         bnez    $v0, 9f
         nop
-        b       8f
+#ifndef L2G
+        b       8f                      /* (falls through to 8 anyway; --l2g uses the 2 words above) */
         nop
+#endif
 8:      la      $t1, tl_dbg             /* t0 = reason when the blob did not run */
         lbu     $t2, 0($t1)
         nop

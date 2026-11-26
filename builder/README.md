@@ -1,16 +1,18 @@
 # builder — one command from your disc image to the patched image
 
     python builder/build.py --disc "path/to/original.bin" --out OUTDIR
-    python builder/build.py --disc original.bin --arcade xmvsfu.zip --out OUTDIR
+    python builder/build.py --disc original.bin --arcade xmvsfu.zip xmvsf.zip --out OUTDIR
 
-The first form builds the 2 MB tag hack. With `--arcade` (your own arcade ROM set; a clone zip followed by
-its parent zip) the image also carries the restored animation frames for 8 MB setups. Output:
-`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.3].bin` + `.cue` (`… [Tag Hack 1.3 + Restored Frames]` with an
+`build.py` recognises the game from the files on the disc (`builder/games.py`) and hands it to its package:
+X-Men vs. Street Fighter `xvb` (this page), Marvel Super Heroes vs. Street Fighter `mshb`, Marvel vs. Capcom `mvcb`
+(sections below). The first form builds the 2 MB tag hack. With `--arcade` (your own arcade ROM set; a clone zip
+followed by its parent zip) the image also carries the 8 MB parts. Output for X-Men vs. Street Fighter:
+`OUTDIR/X-Men vs. Street Fighter (USA) [Tag Hack 1.4].bin` + `.cue` (`… [Tag Hack 1.4 + Restored Frames]` with an
 arcade set; `--name` changes it), `build.log`, and a `.chd` with `--chd` when `chdman` is found (`XVSF_CHDMAN`,
 PATH, `--chdman PATH`).
 
 The default is the **release configuration**: boot card + version line on the main menu + the built-in achievements
-(docs/ACHIEVEMENTS.md; they switch themselves off on the PS2 / PS3).
+(docs/xvsf/achievements.md; they switch themselves off on the PS2 / PS3).
 
 | options | 2 MB | with `--arcade` |
 |---|---|---|

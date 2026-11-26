@@ -23,6 +23,8 @@ BIN = os.path.join(HERE, "a0mem", "bin")
 CHUNKS = {"C1": (0x80010a38, 0x80010aec), "C2": (0x8001117c, 0x800111d8), "C3": (0x80013a38, 0x80013a9c), "C4": (0x80013acc, 0x80013afc),
           "C5": (0x800147bc, 0x800147f0)}
 MEM_BIOS_MIN = 0x400
+GALFIX = "--galfix" in sys.argv   # (2026-11-25) chunk C2 (0x8001117c) is NOT dead: libgpu DrawPrim, the GALLERY picture overlay
+                                  # ILLUST.BIN calls it (jal at file +0x15e4); bzero then fills with the byte loop only
 # stub address, entry symbol, A0 number, register holding n (5 = a1 bzero, 6 = a2 memcpy)
 STUBS = [(0x80014498, "f_bzero", 0x28, 5), (0x800144a8, "f_memcpy", 0x2a, 6)]
 EXPECT = {0x80014498: "4c1ff663724d006bd2bd53e2362cecc0bf517e58", 0x800144a8: "3c813cf8d2ec4c9380ce30a69b131415c6f87cf7"}    # SHA-1 of the 4 stock words of each stub
@@ -46,6 +48,13 @@ def symbols():
 def patches():
     S = symbols()
     out = [(lo, open(os.path.join(BIN, "%s.bin" % k), "rb").read()) for k, (lo, hi) in CHUNKS.items()]
+    if GALFIX:                       # (2026-11-25) C2 = libgpu DrawPrim, called by ILLUST.BIN (GALLERY pictures): keep it stock
+        out = [(a, d) for a, d in out if a != CHUNKS["C2"][0]]
+        jw = 0x80013a50                                                  # f_bzero's `j fill` -> `j fbyte4` (RAM byte loop, C4)
+        c3 = bytearray(dict(out)[CHUNKS["C3"][0]]); o = jw - CHUNKS["C3"][0]
+        assert struct.unpack_from("<I", c3, o)[0] == 0x08000000 | (S["fill"] >> 2 & 0x3ffffff), "C3 layout changed"
+        struct.pack_into("<I", c3, o, 0x08000000 | (S["fbyte4"] >> 2 & 0x3ffffff))
+        out = [(a, bytes(c3) if a == CHUNKS["C3"][0] else d) for a, d in out]
     for stub, name, n, nreg in STUBS:
         off = (S[name] - (stub + 8)) >> 2
         assert -0x8000 <= off < 0x8000

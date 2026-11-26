@@ -15,7 +15,7 @@ The bundle contains code and measurement tables only; no game data.
 import argparse, base64, hashlib, io, json, os, zipfile
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.abspath(os.path.join(HERE, ".."))
 PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"       # Python 3.11.3, numpy 1.26.4
-SHOW = ("What the hack does", "Restored animation frames (optional, 8 MB)", "Known issues", "How it fits in 2 MB", "Legal")      # README.md sections shown on the page
+SHOW = ("What the hack does", "Restored animation frames (optional, 8 MB)", "How it fits in 2 MB", "Legal")      # README.md sections shown on the page
 
 
 def bundle_files():

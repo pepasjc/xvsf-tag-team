@@ -1,6 +1,7 @@
-# ARCADE BALANCE (1.3)
+# ARCADE BALANCE
 
-A line in OPTION MODE, **ARCADE BALANCE OFF / ON**, saved on the memory card with the game's other options.
+A row in EX OPTIONS, **ARCADE BALANCE OFF / ON**, saved on the memory card with the game's other options (in 1.3
+it was a line in OPTION MODE).
 Default OFF.
 
 - **OFF:** the PlayStation game exactly as before.

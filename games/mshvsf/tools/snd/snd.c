@@ -39,6 +39,7 @@ typedef unsigned char u8;
 #define UNLOAD     ((void (*)(int))0x8007b06c)
 #define WAITIDLE   ((void (*)(void))0x8007adc0)
 #define SPUW       ((int (*)(u32, void *, u32))0x8007b1ec)
+#define SPUREAD    ((void (*)(u32, void *, u32, u32))0x80085040)   /* stock kind-6 fetch: SPU (a + off) -> dst, n; waits */
 #define RD         ((int (*)(int, void *))0x80024554)
 #define FTAB       ((u32 *)0x800247dcu)
 #define SPARE      0x10f
@@ -104,6 +105,33 @@ static u32 dsize(int s, int c, int L)
     return r64((u32)(s >= 0 && full[s] ? v->dall : v->dpart) << 4);
 }
 
+#ifdef SNDVFY
+/* --sndverify (MvC rc4 lesson, games/mvc/tools/snd/snd.c): an SPU upload can end short while the RAM entry table takes
+ * the new level -> table and SPU at different levels -> a voice that loops in sustain can freeze the game.  Every
+ * upload is read back (first and last 64 bytes) and repeated (up to 4 times) until both match; snd_dbg[6] counts
+ * the repeats. */
+static u8 vbuf[64];
+static int same64(u32 a, const u8 *src)
+{
+    int i;
+    SPUREAD(a, vbuf, 0, 64);
+    for (i = 0; i < 64 && vbuf[i] == src[i]; i++) ;
+    return i == 64;
+}
+static void spuw(u32 a, void *src, u32 n)
+{
+    int t;
+    for (t = 0; t < 4; t++) {
+        SPUW(a, src, n);
+        if (n < 64 || (same64(a, (const u8 *)src) && same64(a + n - 64, (const u8 *)src + n - 64))) return;
+        snd_dbg[6]++;
+    }
+}
+#define SPUWV(a, s, n) spuw((a), (s), (n))
+#else
+#define SPUWV(a, s, n) SPUW((a), (s), (n))
+#endif
+
 /* entries of `bank` (an .SE image in RAM) into the table / OVF, then the samples to SPU (as 0x8007ae24 does) */
 static void upload(int b, const u8 *bank, int n, int nall, u32 spu, u32 sz)
 {
@@ -132,7 +160,7 @@ static void upload(int b, const u8 *bank, int n, int nall, u32 spu, u32 sz)
     }
     FB18[b] = n < cap ? n : cap;
     CD48[b] = spu; CD60[b] = sz;
-    SPUW(spu, (u8 *)bank + (u32)(nall + 1) * 20, sz);
+    SPUWV(spu, (u8 *)bank + (u32)(nall + 1) * 20, sz);
     snd_dbg[1] += ovf;
 }
 

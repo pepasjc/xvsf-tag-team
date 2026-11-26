@@ -580,7 +580,10 @@ def stage_disc8(T, name, apdir, flags):
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc"); M8 = T.mod("mkap8disc")
     T.prebake_all()
     snd8 = ["--snd8=" + apdir + "_snd8"] if os.path.isdir(apdir + "_snd8") else []
-    if "--ex" in flags: M8.HOT8 = os.path.join(T.tools, "ap8", ARCADE_HOT8)        # 1.4 (mkap8disc --hot8=; not a flag: no path in the flags)
+    if "--ex" in flags:                                                              # 1.4 (mkap8disc --hot8=; not a flag: no path in the flags)
+        M8.HOT8 = os.path.join(T.tools, "ap8", ARCADE_HOT8)
+        if not os.path.exists(M8.HOT8):                                              # mkap8disc would silently use no order -> another image
+            raise BuildError("tools/ap8/%s is missing: the 8 MB pre-decode order the reference image was made with" % ARCADE_HOT8, code="toolchain")
     with _argv("mkap8disc.py", name, "--ap8=" + apdir, "--eff=" + apdir + "_eff", *snd8, *flags): M8.main()
     return T.finish(name)
 

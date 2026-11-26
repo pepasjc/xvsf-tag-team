@@ -113,14 +113,3 @@ Without achievements (`--no-achievements`): 2 MB `faeea6e8c08c703a20b99c3d912637
 Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), PSP / PS Vita (Adrenaline) and in emulators
 (Beetle PSX, SwanStation). PS3 (tested): runs, achievements switch off automatically; PS2: tested in emulation
 with a PS2 BIOS (same behaviour).
-
-## Known issues
-
-- Heavy teams slow down in supers and team supers, more than the original's two-character fights: the game has
-  to unpack more sprite data. The 8 MB mode avoids most of this.
-- On 2 MB some sound effects play at a lower sample rate in four-character fights.
-- When the final-boss fix fires (your partner on point at the knock-out), only the partner appears in the
-  post-fight dialogue.
-- One or two players: there is no multitap support.
-- In about 0.07 % of teams (one character of a very large team on the tightest stages) a few sprite tiles that
-  never showed up in testing are left blank to make the team fit.

@@ -1,0 +1,1 @@
+SECTIONS { . = 0x80000000; .all : { KEEP(*(.text.mt_tick)) KEEP(*(.text.mt_mask_v)) KEEP(*(.text.mt_sel_j)) KEEP(*(.rodata.vmtab9)) KEEP(*(.rodata.vmtab8)) *(.text*) *(.rodata*) *(.data*) *(.bss*) *(COMMON) } /DISCARD/ : { *(.comment) *(.pdr) *(.reginfo) *(.MIPS.*) *(.gnu.*) *(.note*) } }

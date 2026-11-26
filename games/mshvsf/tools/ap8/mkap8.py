@@ -29,6 +29,14 @@ CACHE = UP + 0x1000 + 4 * WA
 C_A0CAP = 0x32000
 HLPCAP = 0x6000
 NCSMAX = 16
+S8_CODE, S8_CODEMAX = 0x807f0000, 0x3000         # s8/s8.h: engine code, state above it (to 0x80800000)
+# 1.1 8 MB (--exopt): ARCADE FRAMES ON / OFF is the last EX OPTIONS row (--afrow, exopt.py: option byte OPTB + 9 =
+# AFOPT, 0 = ON; shown only on an 8 MB console).  (Before 2026-11-24 the slack had no room: FRAME SKIP / SPEED METER rows
+# were removed since.)  OPTB is the meter's flag word (tools/speed/meter.py), fixed: exopt.screen asserts optb == AFOPT_OPTB.  --l2g is 2 MB only: its EXE gate is the 8 MB menu's span
+# 0x80011bd4 (ap8menu.S) and the 8 MB path never runs g2get (whole stock / restored SP_PLxx.DSP files from upper RAM).
+EXOPT = "--exopt" in sys.argv
+OPTB = 0x800243c0                                 # exopt option bytes (mktag: the meter's flag word); AFOPT = OPTB + 9
+assert "--l2g" not in sys.argv, "--l2g is 2 MB only (gate span = the 8 MB menu's; the 8 MB path reads no tier files)"
 
 
 @contextlib.contextmanager
@@ -61,18 +69,45 @@ def link(GCC, pad):
     return out, sym
 
 
+def build_s8():
+    """8 MB voice streaming: engine + battle sound (s8/s8.c, s8/snd8e.c) linked at S8_CODE, a disc file (not in the
+    blob) -> code bytes (4-padded).  Its own function: the release builder prebakes it (no compiler there)."""
+    import mktag
+    GCC, CF = mktag.GCC, mktag.CF
+    os.makedirs(OBJ, exist_ok=True)
+    for f in ("s8", "snd8e"):
+        subprocess.check_call([GCC + "gcc"] + CF + ["-Os", "-ffreestanding", "-msoft-float", "-Wall", "-c",
+                              os.path.join(HERE, "s8", f + ".c"), "-o", f + ".o"], cwd=OBJ)
+    subprocess.check_call([GCC + "ld", "-T", os.path.join(HERE, "s8", "s8.ld"), "s8.o", "snd8e.o", "-o", "s8.elf"], cwd=OBJ)
+    subprocess.check_call([GCC + "objcopy", "-O", "binary", "-j", ".text", "s8.elf", "s8.bin"], cwd=OBJ)
+    code = open(os.path.join(OBJ, "s8.bin"), "rb").read()
+    assert len(code) <= S8_CODEMAX
+    return code + bytes(-len(code) % 4)
+
+
 def build_blob8():
     import mktag
     GCC, CF = mktag.GCC, mktag.CF
     os.makedirs(OBJ, exist_ok=True)
     cc = lambda args: subprocess.check_call([GCC + "gcc"] + CF + args, cwd=OBJ)
-    cc(["-Os", "-ffreestanding", "-msoft-float", "-Wall", "-c", os.path.join(TL, "tagload.c"), "-o", "tagload.o"])
+    # the 2 MB loader inside (no 8 MB / not a tag fight) gets mktag.build_blob's defines: the same 2 MB behaviour
+    shrink = next((int(a.split("=", 1)[1]) for a in sys.argv if a.startswith("--testshrink=")), 0)
+    xdef = ["-DREGION_SHRINK=%d" % shrink] + (["-DMCFIX"] if "--mcfix" in sys.argv else []) + (
+        ["-DPSTALL=1"] if "--pstall" in sys.argv else [])
+    gdef = []
+    if mktag.L2G:
+        xdef += ["-DL2G", "-DG2AT=0x%xu" % mktag.L2IMG[0], "-DL2WORDS=%d" % (len(mktag.L2IMG[1]) // 4)]
+        gdef = ["-DL2G", "-DG2AT=0x%x" % mktag.L2IMG[0]]
+    cc(["-Os", "-ffreestanding", "-msoft-float", "-Wall"] + xdef + ["-c", os.path.join(TL, "tagload.c"), "-o", "tagload.o"])
     import re
     nt = int(re.search(r"(?m)^#define NT (\d+)", open(os.path.join(TL, "tagload.c")).read()).group(1))
-    cc(["-Os", "-ffreestanding", "-msoft-float", "-Wall", "-DNT=%d" % nt, "-c", os.path.join(HERE, "ap8.c"), "-o", "ap8.o"])
-    cc(["-c", os.path.join(TL, "glue.S"), "-o", "glue.o"])
+    cc(["-Os", "-ffreestanding", "-msoft-float", "-Wall", "-DNT=%d" % nt] + (["-DAFOPT=0x%xu" % (OPTB + 9)] if EXOPT else []) +
+       ["-c", os.path.join(HERE, "ap8.c"), "-o", "ap8.o"])
+    cc(gdef + ["-c", os.path.join(TL, "glue.S"), "-o", "glue.o"])
     mktag.sndbuild.objects(GCC, CF, OBJ)                       # tools/snd/snd.c (full sound banks, v10)
     cc(["-c", os.path.join(HERE, "entry8.S"), "-o", "entry8.o"])
+    build_s8()
+    assert mktag.sndbank.NL == 36, "ap8.c struct schr_ assumes SND_NL 36"
     # mktag.py reserves ceil((blob + 4) / 2048) sectors for the blob but appends the strong decoder + the check word
     # after it: pad the blob so that they fit in those sectors
     strong = os.path.getsize(mktag.DSHDEC) if os.path.exists(mktag.DSHDEC) else 0
@@ -95,7 +130,10 @@ def build_blob8():
         assert open(p, "rb").read() == out[sec], "resident %s differs from the 2 MB build" % sec
     print("ap8 blob", len(blob), "bytes (pad %d, arena limit %d)" % (pad, 0x80091e00 - mktag.ARENA))
     import menus
-    menus.AP8 = (sym["tl_dbg"] + 13, sym["tl_dbg"] + 15)       # OPTION line "ARCADE FRAMES": flag, show-if
+    if not EXOPT: menus.AP8 = (sym["tl_dbg"] + 13, sym["tl_dbg"] + 15)   # OPTION line "ARCADE FRAMES": flag, show-if
+    else:
+        sys.path.insert(0, os.path.join(GAME, "tools", "gameplay")); import exopt
+        exopt.TLDBG = sym["tl_dbg"]                                      # EX OPTIONS row ARCADE FRAMES: shown if tl_dbg[15]
     build_blob8.sym = sym
     return out[".glue"], blob, sym, out[".heapcap"]
 
@@ -126,8 +164,10 @@ def menu_part(title):
 def r2k(x): return (x + 2047) & ~2047
 
 
-def geometry(content):
-    """cache slot geometry for the files of this disc -> (cs, c_dsp, c_hlp, c_ap8, ncs), and the A0 checks"""
+def geometry(content, sn8=None):
+    """cache slot geometry for the files of this disc -> (cs, c_dsp, c_hlp, c_ap8, ncs), and the A0 checks;
+    sn8 = {bank: .SN8 bytes} (tools/snd/sn8build.py): a slot part for the character's file, COMMON's below the engine
+    (geometry.c_sn8 / geometry.comat)"""
     import mktag
     dmax = 0; amax = 0
     for c in range(mktag.NCHAR):
@@ -147,13 +187,35 @@ def geometry(content):
         h = os.path.join(mktag.FILES, f"HLP{c:02X}.SE")
         assert not os.path.exists(h) or r2k(os.path.getsize(h)) <= HLPCAP
     c_dsp = C_A0CAP; c_hlp = c_dsp + r2k(dmax); c_ap8 = c_hlp + HLPCAP; cs = c_ap8 + r2k(amax)
-    ncs = min(NCSMAX, (0x80800000 - CACHE) // cs)
+    top = 0x80800000
+    geometry.c_sn8 = geometry.comat = 0
+    if sn8:
+        # voice streaming disc: ap8.c packs the cache records in one arena (exact sizes) up to COMMON.SN8; the four
+        # biggest records of a battle (list ids 0x17-0x19 are separate records of the files of 2 / 8 / 7) must fit
+        import sn8build
+        geometry.comat = top = S8_CODE - r2k(len(sn8[sn8build.S.COMMON]))
+        rec = {}
+        for c in range(0x1a):
+            f = {0x17: 2, 0x18: 8, 0x19: 7}.get(c, c)
+            a0 = mktag.a0_file(f)[0]
+            d = os.path.getsize(os.path.join(mktag.FILES, f"SP_PL{f:02X}.DSP"))
+            ap = 0
+            if content and os.path.exists(os.path.join(content, "SP_PL%02X.DSP" % f)):
+                d = max(d, os.path.getsize(os.path.join(content, "SP_PL%02X.DSP" % f)))
+                ap = os.path.getsize(os.path.join(content, "PL%02X.AP8" % f))
+            rec[c] = r2k(len(a0)) + r2k(d) + r2k(ap) + r2k(len(sn8[f]))
+        worst = sum(sorted(rec.values())[-4:])
+        print("arena %#x (%.2f MB), worst four records %#x (%.2f MB)" % (top - CACHE, (top - CACHE) / 2 ** 20, worst, worst / 2 ** 20))
+        assert worst <= top - CACHE, "four characters do not fit in the cache arena"
+        return cs, c_dsp, c_hlp, c_ap8, NCSMAX
+    ncs = min(NCSMAX, (top - CACHE) // cs)
     assert ncs >= 4, "four characters do not fit in the cache"
     return cs, c_dsp, c_hlp, c_ap8, ncs
 
 
-def add_content(name, content, blob, sym, geo):
-    """append the content files after the end of the built image, fill tl8_dir in the blob on the disc"""
+def add_content(name, content, blob, sym, geo, sn8=None):
+    """append the content files (and the .SN8 voice streaming files) after the end of the built image, fill tl8_dir
+    and tl8_snd in the blob on the disc"""
     import mktag
     out = os.path.join(mktag.BUILD, name + ".bin")
     files = []
@@ -163,7 +225,8 @@ def add_content(name, content, blob, sym, geo):
     end = os.path.getsize(out) // 2352
     img = mktag.Img(out)
     n = sum((len(x[0]) + 2047) // 2048 + (len(x[1]) + 2047) // 2048 for x in files if x)
-    if n: img.extend(end, n + 150)
+    nsn = sum((len(b) + 2047) // 2048 for b in sn8.values()) + 4 if sn8 else 0
+    if n + nsn: img.extend(end, n + nsn + 150)
     lba = end; ents = b""
     for x in files:
         if not x: ents += bytes(16); continue
@@ -176,6 +239,20 @@ def add_content(name, content, blob, sym, geo):
     dirb = b"AP8D" + struct.pack("<6I", *geo, 1 if n else 0) + ents
     blob = bytearray(blob[:-4])
     blob[d8:d8 + len(dirb)] = dirb
+    if sn8:
+        import sn8build
+        pos = {}
+        for c in [sn8build.S.COMMON] + list(range(0x17)):
+            pos[c] = mktag.msf(lba) + struct.pack("<I", len(sn8[c]))
+            img.wsectors(lba, sn8[c]); lba += (len(sn8[c]) + 2047) // 2048
+        ds = sym["tl8_snd"] - mktag.ARENA
+        assert blob[ds:ds + 4] == b"SN8D"
+        code = build_s8()
+        cpos = mktag.msf(lba) + struct.pack("<I", len(code)); img.wsectors(lba, code); lba += (len(code) + 2047) // 2048
+        csum = (0x5a17 + sum(struct.unpack("<%dI" % (len(code) // 4), code))) & 0xffffffff
+        sdb = b"SN8D" + struct.pack("<3I", 1, csum, geometry.comat) + cpos + pos[sn8build.S.COMMON] + b"".join(pos[c] for c in range(0x17))
+        blob[ds:ds + len(sdb)] = sdb
+        print("sn8: %d sectors (COMMON at %#x, slot part %#x)" % (nsn, geometry.comat, geometry.c_sn8))
     blob += struct.pack("<I", -sum(struct.unpack(f"<{len(blob) // 4}I", blob)) & 0xFFFFFFFF)
     dmy_lba, dmy_size = mktag.LBA["DMY.DAT"]
     img.wsectors(dmy_lba, bytes(blob))
@@ -198,20 +275,35 @@ def main(argv):
         sys.path.insert(0, os.path.join(GAME, "tools", "ap"))
         import build8
         prg, roms, desc = build8.read_arcade(arc)
-        content = os.path.join(GAME, "work", "ap", "b8", "set_" + hashlib.sha1(json.dumps(desc, sort_keys=True).encode()).hexdigest()[:10])
-        build8.main(["build8", "--arcade"] + arc + ["--out", content])
-    args = [a for a in argv[1:] if a not in ("--chd", "--content", "--arcade") and a != content and a not in arc
-            and not a.startswith("--content=")]
+        content = os.path.join(GAME, "work", "ap", "b8", "set_" + hashlib.sha1(json.dumps(desc, sort_keys=True).encode()).hexdigest()[:10]
+                               + ("_introfx" if "--introfx" in argv else ""))
+        # --introfx: Blackheart's intro pool animations (build8.INTRO_FX_SET) restored too (8 MB content only)
+        build8.main(["build8", "--arcade"] + arc + ["--out", content] + (["--introfx"] if "--introfx" in argv else []))
+    # --sn8arc ZIP [ZIP]: the sound ROMs for the arcade voices when the frames come from --content (release builder)
+    snarc = []
+    if "--sn8arc" in argv:
+        i = argv.index("--sn8arc") + 1
+        while i < len(argv) and not argv[i].startswith("--"): snarc.append(argv[i]); i += 1
+    args = [a for a in argv[1:] if a not in ("--chd", "--content", "--arcade", "--sn8arc", "--introfx") and a != content and a not in arc
+            and a not in snarc and not a.startswith("--content=")]
+    sys.path.insert(0, os.path.join(GAME, "tools", "snd"))
+    import sn8build
+    # 8 MB voice streaming (arcade voices with --arcade; --sn8stock: stock voices; --nosn8: none, the v10 banks)
+    # --sn8full (1.1 8 MB, user): arcade voices to the arcade sample's own end, not cut to the PS1 span
+    sn8 = None if "--nosn8" in argv else sn8build.all_files(None if "--sn8stock" in argv else (arc or snarc or None),
+                                                            full="--sn8full" in argv)
+    args = [a for a in args if a not in ("--nosn8", "--sn8stock", "--sn8full")]
     with lock():
-        geo = geometry(content)
+        geo = geometry(content, sn8)
         mktag.build_blob = build_blob8
         allp = mktag.allpatches
         p0, o0 = allp.patches, allp.overlay_patches
         allp.patches = lambda title=allp.menuversion.DEFAULT, msyms=None: p0(title, msyms) + (menu_part(title)[0] if title else [])
         allp.overlay_patches = lambda title=allp.menuversion.DEFAULT, msyms=None: o0(title, msyms) + (
             [("OPDEMO.BIN", MENU_AT - OVL_BASE, menu_part(title)[1])] if title else [])
+        if EXOPT: args = args + ["--afrow"]                  # EX OPTIONS row ARCADE FRAMES (8 MB discs only)
         patches, blob, sym = mktag.main([argv[0]] + args)
-        blob = add_content(name, content, blob, sym, geo)
+        blob = add_content(name, content, blob, sym, geo, sn8)
     if chd:
         out = os.path.join(mktag.BUILD, name)
         subprocess.check_call([mktag.toolenv.chdman(), "createcd", "-i", out + ".cue", "-o", out + ".chd", "-f"],

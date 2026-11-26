@@ -9,7 +9,9 @@ mode; in Arcade and Versus the partner is a special partner (assist) only. This 
 match a real 2-on-2 tag battle with four different, complete characters plus a special partner, on a stock 2 MB
 PlayStation.
 
-How to build the image: [README](../../README.md#how-to-patch). Other pages: [changelog](CHANGELOG.md).
+How to build the image: the web patcher at <https://pepasjc.github.io/xvsf-tag-team/> or the command line, see the
+[README](../../README.md#how-to-patch). Other pages: [changelog](CHANGELOG.md). How it was made:
+[Making of the Tag Team Hacks](https://youtu.be/MMOk-eOUVok).
 
 ## What it does
 
@@ -87,9 +89,3 @@ Marvel vs. Capcom (USA) [Tag Hack 1.0 8MB].bin   with mvsc   SHA1  6423a1466e0a7
 
 Tested on a real PlayStation (PSIO), MiSTer and in emulators (Beetle PSX, SwanStation 2 MB and 8 MB). PS3 / PS2:
 achievements, assists and the VERSUS CPU row switch off automatically; PS2 tested in emulation with a PS2 BIOS.
-
-## Known issues
-
-- Heavy teams slow down in supers and team supers, more than the original's two-character fights: the game has to
-  unpack more sprite data. ASSISTS OFF and the 8 MB mode help.
-- One or two players: there is no multitap support.

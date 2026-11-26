@@ -3,7 +3,7 @@
 ## intro: Which games
 - **X-Men vs. Street Fighter** (USA, SLUS-00627): tag hack 1.4.
 - **Marvel Super Heroes vs. Street Fighter** (USA, SLUS-00793): tag hack 1.1.
-- Marvel vs. Capcom (USA, SLUS-01059): in progress, not built by this page yet.
+- **Marvel vs. Capcom** (USA, SLUS-01059): tag hack 1.0.
 - The page recognises the game from the files on your disc and checks the exact dump by its SHA-1. Other releases (Japan, Europe), already patched images and altered dumps are refused, with the reason.
 
 ## mshvsf: What this does
@@ -27,7 +27,5 @@
 - Built in: 46 achievements adapted from the RetroAchievements set by Lowsun, an ACHIEVEMENTS page in the main menu, unlock popups, progress saved on the memory card.
 - On a PS2 or PS3 they switch themselves off and the game runs as usual.
 
-## mshvsf: Known issues
+## mshvsf: Compatibility
 - Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), PSP / PS Vita (Adrenaline) and in emulators. PS3 (tested): runs, achievements switch off automatically; PS2: tested in emulation with a PS2 BIOS (same behaviour).
-- Heavy teams can slow down in super moves (the game decodes more sprite data than in the original two-character fights).
-- In four-character battles the sound banks may be stored at reduced sample rates on 2 MB, so that all four fit in sound RAM.

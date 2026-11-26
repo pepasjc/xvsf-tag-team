@@ -5,10 +5,9 @@ picks it (pt* -> PT-BR), the button in the header switches, and the choice is ke
 
 `index.html` is a single self-contained page: pick your disc image (and optionally your arcade ROM zip), the page
 recognises the game, verifies the dump, runs **the real build** in the browser and hands back `.bin` + `.cue` (or both
-in one `.zip`).  Games: X-Men vs. Street Fighter (USA, SLUS-00627; `builder/xvb`) and Marvel Super Heroes vs. Street
-Fighter (USA, SLUS-00793; `builder/mshb`).  Which game: `builder/games.py` (the files on the disc; the release from the
-boot file in SYSTEM.CNF; the dump by the SHA-1 of the whole image, hashed only for a supported release).  Marvel vs.
-Capcom (SLUS-01059) is recognised and refused ("in progress"); a new game plugs in as a builder package with a
+in one `.zip`).  Games: X-Men vs. Street Fighter (USA, SLUS-00627; `builder/xvb`), Marvel Super Heroes vs. Street
+Fighter (USA, SLUS-00793; `builder/mshb`) and Marvel vs. Capcom: Clash of Super Heroes (USA, SLUS-01059; `builder/mvcb`).  Which game: `builder/games.py` (the files on the disc; the release from the
+boot file in SYSTEM.CNF; the dump by the SHA-1 of the whole image, hashed only for a supported release).  A new game plugs in as a builder package with a
 `web.py` (identify / check_arcade / sound_plan / build / result_*), an entry in `games.GAMES`, and its options in
 `src/app.js` / `src/page.html`.
 Nothing is uploaded and the page carries no game graphics, sound or code — only this project's code. Where a
@@ -17,7 +16,7 @@ words in from the user's own disc (`builder/xvb/gameref.py`).
 
 ## Hosting
 
-**What to publish: `index.html`, nothing else** (about 1.2 MB with both games). It is self-contained except for the Python
+**What to publish: `index.html`, nothing else** (about 9 MB with the three games). It is self-contained except for the Python
 runtime, which stays on its official CDN. The other files in `patcher/` (`src/`, `vendor/`, `tests/`, `make.py`)
 are sources and need not be published, though publishing the whole folder does no harm (about 1 MB).
 
@@ -51,7 +50,8 @@ Without the CDN (an intranet, an archive copy): download the six files of the CD
 
     python patcher/make.py            # src/ + the bundle -> index.html
 
-`index.html` is generated; edit `src/`. The page must be rebuilt whenever `builder/` or `tools/` change, because
+`index.html` is generated; edit `src/`. The released page is made by running `make.py` in the full development
+tree (it reads that tree's README and tools); this repository carries the sources and the generated page. The page must be rebuilt whenever `builder/` or `tools/` change, because
 it contains them (the *bundle*: `builder/xvb`, `builder/data` with all of our MIPS code prebaked in
 `builder/data/blobs`, `tools/*.py`, `tools/speed/*.py`, `tools/ap`, `tools/snd/*.py`, `tools/ap8/hot8.json`,
 `tools/logo/*.bin`).
@@ -105,7 +105,7 @@ X-Men vs. Street Fighter:
 * Memory and time (Chrome, measured for 1.2): the 2 MB build about 2 minutes, peak about 1.4 GB for all browser
   processes; the 8 MB build about 5-6 minutes, peak about 2.0 GB (worker 700 MB of WebAssembly memory plus the sound
   sub-workers): have about 2.5 GB free for it.
-* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.3].bin` / `.cue`, or `… [Tag Hack 1.3 + Restored
+* Output names: `X-Men vs. Street Fighter (USA) [Tag Hack 1.4].bin` / `.cue`, or `… [Tag Hack 1.4 + Restored
   Frames]`; the `.cue` names its `.bin`. No CHD in the browser.
 
 ## Tests

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #define U8(a)  (*(volatile uint8_t*)(a))
 #define S8(a)  (*(volatile int8_t*)(a))
+#define U32(a) (*(volatile uint32_t*)(a))
 #define U16(a) (*(volatile uint16_t*)(a))
 #define S16(a) (*(volatile int16_t*)(a))
 
@@ -15,6 +16,9 @@
 #define QSTATE  0x80070a96u      /* quote overlay state (exit 0x0e) */
 #define QSTATE2 0x80070a98u
 #define SUB12   0x80071ad2u      /* scene 12: 0 = first frame (loads), 1 = quote overlay running */
+#define STAGE   0x800707c4u      /* ARCADE stage (7 = the final boss) */
+#define OBJ0    0x80070b50u      /* P1 main object; OBJ2 = P1 partner (stride 0x3c0 x 2) */
+#define OBJ2    0x80071310u
 #define PHASE   0x80070778u      /* +0 phase, +5 result (1 / 2 = winner side + 1), +6 s16 timer */
 #define PAD0    0x80027d60u
 #define PAD1    0x80027d62u
@@ -76,6 +80,10 @@ __asm__(
 	"	sw $ra, 16($sp)\n"
 	"	jal tick\n"
 	"	sw $v0, 20($sp)\n"
+#ifdef CYBERFIX
+	"	jal 0x800222cc\n"           /* (1.1 / 1.0.1, mktag --cyberfix) final-boss bench check, mshskip.cyfix_patch */
+	"	nop\n"
+#endif
 	"	lw $t0, 20($sp)\n"
 	"	lw $ra, 16($sp)\n"
 	"	jr $t0\n"

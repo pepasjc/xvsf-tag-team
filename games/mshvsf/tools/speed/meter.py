@@ -8,7 +8,7 @@
 """
 import os, sys, struct
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, "meter", "meter.S")
+SRC = os.path.join(HERE, "meter", "fpsmeter.S" if "--fpsmeter" in sys.argv else "meter.S")   # --fpsmeter: 1.1 user SPEED METER (mshfeat)
 STRONG_AT, MRAM, MEND = 0x801fe200, 0x801fe640, 0x801fea00
 CHUNKS = {"S": (0x80024378, 0x800243d0),      # break-filled (deadtest attract, versus, cross)
           "C": (0x8003d91c, 0x8003d9c0),      # tail of the tagmode range (gameplay break-fill)

@@ -19,11 +19,11 @@ How it was made (memory layout, speed work and the hardest bugs): **[Making of t
 - New in 1.4: VERSUS CPU in the main menu, an EX OPTIONS menu (ARCADE BALANCE, STAGE ANIM, achievement popups,
   INFINITE SUPER METER), Apocalypse's pre-fight dialogue, the chemical plant exploding on the first KO, the arcade's
   PERFECT rule, and the 8 MB idle animation fix.
-- Since 1.3: START skips the end of a won match, ARCADE BALANCE (the arcade's meter gain and super rules),
+- Also: START skips the end of a won match, ARCADE BALANCE (the arcade's meter gain and super rules),
   built-in achievements.
 - With 8 MB of RAM and your own arcade ROM set: restored arcade animation frames.
 
-Features, hashes and known issues: **[docs/xvsf](docs/xvsf/README.md)** ·
+Features and hashes: **[docs/xvsf](docs/xvsf/README.md)** ·
 [changelog](docs/xvsf/CHANGELOG.md) · [achievements](docs/xvsf/achievements.md) ·
 [how it works](docs/xvsf/architecture.md)
 
@@ -40,7 +40,7 @@ Features, hashes and known issues: **[docs/xvsf](docs/xvsf/README.md)** ·
   between fights, restored animation frames and enhanced voices (streamed at full quality; the arcade's own
   recordings for 345 voice samples).
 
-Features, hashes and known issues: **[docs/mshvsf](docs/mshvsf/README.md)** ·
+Features and hashes: **[docs/mshvsf](docs/mshvsf/README.md)** ·
 [changelog](docs/mshvsf/CHANGELOG.md) · [achievements](docs/mshvsf/achievements.md) ·
 [how it works](docs/mshvsf/technical.md)
 
@@ -56,7 +56,7 @@ Features, hashes and known issues: **[docs/mshvsf](docs/mshvsf/README.md)** ·
   BALANCE, INFINITE SUPER METER), saved with the game's memory card save.
 - With 8 MB of RAM and your own arcade ROM set: arcade animation frames, full-resolution effects and arcade voices.
 
-Features, hashes and known issues: **[docs/mvc](docs/mvc/README.md)** · [changelog](docs/mvc/CHANGELOG.md)
+Features and hashes: **[docs/mvc](docs/mvc/README.md)** · [changelog](docs/mvc/CHANGELOG.md)
 
 ## How to patch
 
@@ -82,7 +82,7 @@ in English and Brazilian Portuguese.
 
 There are no other options: the page always builds the release image. Everything runs locally; your files are never
 uploaded. The first run downloads about 25 MB of Python runtime. Have about 3 GB of free memory: Marvel Super Heroes vs.
-Street Fighter needs about that much, X-Men vs. Street Fighter with restored frames about 2.5 GB.
+Street Fighter and Marvel vs. Capcom need about that much, X-Men vs. Street Fighter with restored frames about 2.5 GB.
 
 Offline: download the patcher `.html` from the [releases](https://github.com/pepasjc/xvsf-tag-team/releases) and
 open it in the same browsers.
@@ -106,8 +106,8 @@ Both the page and the command line check the result against the reference SHA-1 
 ## Compatibility
 
 Tested on a real PlayStation (PSIO), MiSTer (2 MB and 8 MB), PSP / PS Vita (Adrenaline) and in emulators.
-PS3 (tested): the games run, achievements switch off automatically; PS2: tested in emulation with a PS2 BIOS (same
-behaviour). Details per game: [X-Men vs. Street Fighter](docs/xvsf/README.md#compatibility),
+PS3 (tested): the games run, achievements switch off automatically (Marvel vs. Capcom: also its assists and the
+VERSUS CPU row); PS2: tested in emulation with a PS2 BIOS (same behaviour). Details per game: [X-Men vs. Street Fighter](docs/xvsf/README.md#compatibility),
 [Marvel Super Heroes vs. Street Fighter](docs/mshvsf/README.md#compatibility),
 [Marvel vs. Capcom](docs/mvc/README.md#compatibility).
 

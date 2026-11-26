@@ -26,7 +26,11 @@ int port_card_idle(void);
 #define PORT_POPUP_OK()    1
 #define PORT_CARD_SAFE()   port_card_safe()
 #define PORT_CARD_IDLE()   port_card_idle()
+#ifdef PORT_POPBYTE      /* EX OPTIONS "ACHIEVEMENT POPUP" OFF (byte 1): no unlock sound either */
+#define PORT_SFX_UNLOCK()  do { if (!*(volatile uint8_t*)(PORT_POPBYTE)) ((f_1)SFX_FN)(0x91); } while (0)
+#else
 #define PORT_SFX_UNLOCK()  ((f_1)SFX_FN)(0x91)
+#endif
 #define PORT_SFX_CONFIRM() ((f_1)SFX_FN)(0x91)
 #define PORT_SFX_CURSOR()  ((f_1)SFX_FN)(0x84)
 #define PORT_SFX_CANCEL()  ((f_1)SFX_FN)(0x82)

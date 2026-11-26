@@ -31,6 +31,10 @@ w32 = lambda *v: struct.pack("<%dI" % len(v), *v)
 
 
 OVL_AT = [0x8009942c, 0x80099434, 0x800994b8, 0x800994c0, 0x80099c8c, 0x80099c90, 0x800b6274, 0x800b6278, 0x800b627c]   # port.c ovl_at
+# 1.1 options (games/mshvsf/tools/gameplay/exopt.py; mktag.py sets these): EXOPT = the EX OPTIONS state handler (8th
+# menu item, state 8, port.c PORT_EXOPT), POPBYTE = the ACHIEVEMENT POPUP option byte (port.c PORT_POPBYTE)
+# (INFBYTE: --infmeter's option byte, port.c PORT_INFBYTE)
+EXOPT = POPBYTE = MENUTAB = VSMENU = INFBYTE = None          # (MENUTAB: the 8-line menu text table, exopt's, in the OPE.ARC slack)
 # MSHvSF's START skip lives at 0x80007c00-0x80008000: our span below it may reach 0x80007c00
 SPANS = [(a, 0x80007CC0 if b == 0x80007A00 else b) for a, b in achbuild.SPANS]      # (the START skip starts at 0x80007cc0)
 
@@ -43,7 +47,12 @@ def code(prev_pc0, ovl_sum):
     """our code only (the release builder prebakes this: builder/mshb/pipeline.py PREBAKED): prev_pc0 = the EXE entry
     the copy stub chains to, ovl_sum = sum of the menu-overlay words (as the disc has them) the runtime patches in RAM.
     -> dict(exe=[(addr, bytes)] (the boot copy only), ovl=[] (nothing on the disc), pc0, ram, hooks, info)"""
-    segs, info = build(dict(PORT_OVL_SUM="0x%08xu" % ovl_sum, ACH_NOCOST=1, CARD_SIMPLE=1, ACH_NOWD=1))      # (room: no cost counters, one card message, no watchdog)
+    d = dict(PORT_OVL_SUM="0x%08xu" % ovl_sum, ACH_NOCOST=1, CARD_SIMPLE=1, ACH_NOWD=1)      # (room: no cost counters, one card message, no watchdog)
+    if EXOPT: d.update(PORT_EXOPT="0x%08xu" % EXOPT, PORT_MENUTAB="0x%08xu" % MENUTAB)
+    if VSMENU: d["PORT_VSMENU"] = "0x%08xu" % VSMENU     # --vsmenu: mt_vsmode (tools/mtap/mtap4.py VSMODE); 9 menu lines
+    if POPBYTE: d["PORT_POPBYTE"] = "0x%08xu" % POPBYTE
+    if INFBYTE: d["PORT_INFBYTE"] = "0x%08xu" % INFBYTE   # --infmeter: INFINITE SUPER METER ON = no human side
+    segs, info = build(d)
     sym = info["sym"]
     A0 = achbuild.SPAN_BASE
     hooks = [(HOOK_IDLE[0], 0x0C000000 | ((A0 + 0x10) >> 2 & 0x03FFFFFF)), (HOOK_FRAME[0], 0x0C000000 | (A0 >> 2 & 0x03FFFFFF))]
@@ -64,7 +73,7 @@ def parts(read_exe, read_hdr, stock_ovl=None, cur_ovl=None):
         names = [st[12 * i:12 * i + 12].split(bytes(1))[0].decode() for i in range(7)]
         assert names[:4] == MENU[:4] and names[5:] == ["OPTION", "GALLERY"], names
     rd = cur_ovl or stock_ovl
-    ovl_sum = sum(struct.unpack("<I", rd(a, 4))[0] for a in OVL_AT) & 0xffffffff
+    ovl_sum = sum(struct.unpack("<I", rd(a, 4))[0] for a in OVL_AT + ([0x800b6280, 0x80099428] if EXOPT else [])) & 0xffffffff
     c = code(struct.unpack("<I", read_hdr(0x10, 4))[0], ovl_sum)
     copy = c["exe"][0][1]
     assert read_exe(COPY_AT, len(copy)) == bytes(len(copy)), "copy area not zero in the EXE image"

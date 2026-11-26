@@ -15,7 +15,8 @@ MAGIC = b"SND1"
 
 
 def objects(GCC, CF, out):
-    subprocess.check_call([GCC + "gcc"] + CF + ["-Os", "-ffreestanding", "-msoft-float", "-Wall", f"-DSND_NL={S.NL}",
+    subprocess.check_call([GCC + "gcc"] + CF + ["-Os", "-ffreestanding", "-msoft-float", "-Wall", f"-DSND_NL={S.NL}"]
+                          + (["-DSNDVFY"] if "--sndverify" in sys.argv else []) + [      # SPU upload readback (MvC rc4.1)
                                                 "-c", os.path.join(HERE, "snd.c"), "-o", os.path.join(out, "snd.o")])
     return [os.path.join(out, "snd.o")]
 
