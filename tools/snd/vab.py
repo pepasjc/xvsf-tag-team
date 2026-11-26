@@ -10,7 +10,15 @@ VB: the VAG bodies concatenated in VAG number order.
 The game keys note = tone index (id & 15) on program id >> 4, so a tone's playback rate is
     44100 * 2 ** ((note + 12 - center - shift / 128) / 12).
 """
-import struct, math
+import struct, math, os, sys
+
+
+def pitchfix():
+    """(2026-11-25, GitHub #6) libsnd ADDS the tone's fine tune: rate = 44100 * 2 ** ((note + 12 - center + shift / 128) / 12).
+    The 1.2-1.4 levels used the opposite sign (stock banks have shift 0, so only our raised tones were hit: they
+    played 2 * shift / 128 semitones too high).  --pitchfix / XV_PITCHFIX=1: the correct encoding.  Off = the released
+    recipes' bytes."""
+    return "--pitchfix" in sys.argv or os.environ.get("XV_PITCHFIX") == "1"
 
 EMPTY = (0, 255)
 FILLER = bytes([0, 7]) + bytes([0x77]) * 14         # the block every game VAG ends with
@@ -43,14 +51,19 @@ class Tone:
 
     def rate(self, note=None):
         n = self.mn if note is None else note
+        if pitchfix(): return 44100 * 2 ** ((n + 12 - self.center + self.shift / 128) / 12)
         return 44100 * 2 ** ((n + 12 - self.center - self.shift / 128) / 12)
 
     def pitch128(self):
         """center + shift in 1/128 semitone"""
+        if pitchfix(): return self.center * 128 - self.shift
         return self.center * 128 + self.shift
 
     def set_pitch128(self, p):
         assert 0 <= p < 128 * 128
+        if pitchfix():                                    # center rounded up, the fine tune brings it back down
+            c = -(-p // 128); self.center, self.shift = c, c * 128 - p
+            return
         self.center, self.shift = p >> 7, p & 127
 
 

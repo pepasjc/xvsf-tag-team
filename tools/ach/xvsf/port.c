@@ -41,10 +41,38 @@ static uint8_t oalive_op, owins_op, owin2[2];
 
 static uint32_t alive2(uint32_t o) { return (G16(o + LIFE) != 0) + (G16(o + PARTNER + LIFE) != 0); }
 
+#ifdef ACH_INFMETER
+/* --infmeter: EX OPTIONS row INFINITE SUPER METER (the EX module's extra-row hook ex_xrow, tools/expatch.py) and, while ON,
+   every fighter's meter held full in battle: level +0x228 = 3, gauge +0x226 = 0 (the game's own maximum: a gain at
+   level 3 clamps there) on both teams' main and partner objects (the partner copies the main), CPU sides too */
+uint8_t ach_im;          /* 0 OFF (power-on) / 1 ON, session only */
+#define SCENE 0x2774           /* u16: 8 battle */
+static void im_fill(void) {
+	static const uint16_t o[4] = { OBJ_P1, OBJ_P2, 0x3178, 0x34b8 };   /* partners measured (work/infm/xprobe.py) */
+	uint32_t k;
+	for (k = 0; k < 4; k++) { *(volatile uint8_t*)(0x80040000u + o[k] + 0x228) = 3; *(volatile uint16_t*)(0x80040000u + o[k] + 0x226) = 0; }
+}
+__attribute__((section(".keeptext.imrow"))) void ach_imrow(int y, int sel, uint32_t nw) {
+	if (nw & (PORT_B_LEFT | PORT_B_RIGHT | 0x40)) { ach_im ^= 1; ((f_1)SFX_FN)(0x84); }
+	((f_text)TEXT_FN)("INFINITE SUPER METER", IM_LX, y, 8, sel ? 0x30 : 0x33, 1);
+	((f_text)TEXT_FN)("OFF", IM_VX, y, 8, ach_im ? 0x33 : 0x30, 1);
+	((f_text)TEXT_FN)("ON", IM_VX + 0x28, y, 8, ach_im ? 0x30 : 0x33, 1);
+}
+#endif
+
 void port_derive(void) {
 	struct vars* v = &ach_v;
+#ifdef ACH_INFMETER
+	if (ach_im && G16(SCENE) == 8) im_fill();
+#endif
 	const uint32_t hum = G8(HUMANS), phase = G8(PHASE);
+#if defined(ACH_VSMENU) && defined(ACH_INFMETER)   /* --infmeter: INFINITE SUPER METER ON = a cheat: nothing counts */
+	const uint32_t side = hum > 3 || ach_im || (*(volatile const uint8_t*)ACH_VSMODE && G8(MODE) == 2) ? 0 : hum, p2 = side == 2;
+#elif defined(ACH_VSMENU)  /* --vsmenu: VERSUS CPU (mt_vsmode, common/mtap) never counts: no human side */
+	const uint32_t side = hum > 3 || (*(volatile const uint8_t*)ACH_VSMODE && G8(MODE) == 2) ? 0 : hum, p2 = side == 2;
+#else
 	const uint32_t side = hum > 3 ? 0 : hum, p2 = side == 2;
+#endif
 	const uint32_t me = p2 ? OBJ_P2 : OBJ_P1, op = p2 ? OBJ_P1 : OBJ_P2;
 	const int fight = phase == 8 || phase == 10;
 	uint32_t k, t;
@@ -110,7 +138,11 @@ uint16_t port_pad_new(void) {
    (cursor 4) opens the page here, OPTION moved to cursor 5: the menu sets state = cursor + 1 = 6, put back to 5. */
 #define MENU    ((volatile uint8_t*)0x80042180u)
 extern const char ach_menutab[6][16];
+#ifdef EX_MENUIN       /* 1.4 EX OPTIONS module (tools/expatch.py) owns the menu overlay patch and calls ach_menuin */
+#define MENU_LOADED (*(const uint32_t*)0x8009bf54u == (0x0c000000u | ((uint32_t)(EX_MENUIN) >> 2 & 0x03ffffffu)))
+#else
 #define MENU_LOADED (*(const uint32_t*)0x80098748u == (0x3c110000u | (((uint32_t)ach_menutab + 0x8000u) >> 16)))
+#endif
 int port_card_safe(void) { return !(MENU[0] == 5 && MENU_LOADED); }
 int port_card_idle(void) { return MENU[0] == 0 && MENU_LOADED; }
 
@@ -119,9 +151,14 @@ int port_card_idle(void) { return MENU[0] == 0 && MENU_LOADED; }
    patched sites (PORT_OVL_SUM, from the user's disc at build time); afterwards the sum differs, so it is done once
    per load.  FlushCache after the stores (the overlay may already have run from the I-cache). */
 #define JAL(t) (0x0c000000u | ((uint32_t)(t) >> 2 & 0x03ffffffu))
+#ifndef EX_MENUIN
 static const uint32_t ovl_at[7] = { 0x80098748u, 0x8009874cu, 0x80098770u, 0x80098794u, 0x80098948u, 0x8009894cu, 0x8009bf54u };
+#endif
 void bios_flushcache(void);
 __attribute__((section(".keeptext"))) void ach_menuin(void);
+#ifdef EX_MENUIN
+void port_ovl(void) { }
+#else
 void port_ovl(void) {
 	uint32_t s = 0, i, w[7];
 	for (i = 0; i < 7; i++) s += *(volatile uint32_t*)ovl_at[i];
@@ -137,6 +174,7 @@ void port_ovl(void) {
 	for (i = 0; i < 7; i++) *(volatile uint32_t*)ovl_at[i] = w[i];
 	bios_flushcache();
 }
+#endif
 
 int ach_page(void);
 static uint8_t page;
@@ -147,8 +185,12 @@ __attribute__((section(".keeptext"))) void ach_menuin(void) {
 	port_menu_frame = ach_dbg_frames();
 	s = MENU[0]; c = MENU[0x12];
 	((void (*)(void))MENU_FN)();
+#ifdef ACH_VSMENU          /* --vsmenu: VERSUS CPU row on cursor 2 -> ACHIEVEMENTS on 5; the row wrapper maps the rest */
+	if (s == 0 && MENU[0] == 6 && c == 5) { MENU[0] = 0; page = 1; }
+#else
 	if (s == 0 && MENU[0] == 5 && c == 4) { MENU[0] = 0; page = 1; }      /* ACHIEVEMENTS chosen */
 	else if (s == 0 && MENU[0] == 6) MENU[0] = 5;                        /* OPTION, now on cursor 5 */
+#endif
 }
 
 uint16_t port_page_cost[2];                                            /* hblanks of the last page call, the most (tests) */
@@ -165,11 +207,13 @@ void port_page_idle(void) {
 	if (!page) { MENU[0] = MENU[1] = MENU[2] = MENU[3] = 0; }              /* back: the menu starts again */
 }
 
+#ifndef EX_MENUIN
 /* menu strings, 16-byte stride; byte 15 = the x of the line (the draw loop reads it: xvach.py), so that
    ACHIEVEMENTS (12 characters) is centred like the others, which centre with leading spaces */
 const char ach_menutab[6][16] __attribute__((section(".keep"))) = {
 	" BATTLE MODE\0\0\0\xc8", " VERSUS MODE\0\0\0\xc8", "TRAINING MODE\0\0\xc8", "SURVIVAL MODE\0\0\xc8",
 	"ACHIEVEMENTS\0\0\0\xcc", " OPTION MODE\0\0\0\xc8" };
+#endif
 
 /* memory card file: title (Shift-JIS "XvSF ACHIEVEMENTS") */
 const uint8_t ach_file_title[64] = {

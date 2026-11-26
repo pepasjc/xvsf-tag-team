@@ -25,7 +25,9 @@
 #define PAD1    0x8004c2b2u
 #define VCOUNT  0x800220c8u
 #define TEXT_FN 0x8002d79cu      /* (text, x, y, advance, colour, 1) */
+#ifndef GAME_FN                  /* 1.4 --ex: tools/exopt ex_logic, which calls 0x80028dc8 */
 #define GAME_FN 0x80028dc8u
+#endif
 #define OBJLIST 0x80042650u      /* object list head, +0x2c next; type at +0x24, state at +6 */
 #define B_START 0x0800
 #define B_SELECT 0x0100

@@ -718,6 +718,10 @@ static void pdend(struct state *st, struct blk **use)
     st->pdvbl = VSYNC(-1) - st->pdt0;
 }
 
+#ifdef APODLG
+int dirload(const struct xent *ent);    /* tools/tagload (defsym) */
+extern const struct xent bossdirent;
+#endif
 u32 mod_eff(int set, u32 off, s16 *list)
 {
     s16 *ids = IDS;
@@ -732,6 +736,9 @@ u32 mod_eff(int set, u32 off, s16 *list)
         tl_dbg.effp = 0;                /* stock path: the records are stock (effundo), stock effects */
         return effhook(set, off, list);
     }
+#ifdef APODLG
+    if (boss) dirload(&bossdirent);     /* 1.4 --apodlg: bossfin() calls apofont() in the boss directory (tools/tagload) */
+#endif
     tl_dbg.ap8 = 1;
     tl_dbg.dropped = boss ? BOSSNEW : 0;
     tl_dbg.fat = 0x80;                  /* stock RLE effects file */
@@ -1220,10 +1227,26 @@ static void optpatch(void)
     flushcache();
 }
 
+#ifdef EX_XROW
+/* 1.4 EX OPTIONS (tools/exopt/xvex.c): ARCADE FRAMES is a row of the EX OPTIONS page (ex_xrow), OPTION MODE stays stock */
+static void framesrow(int y, int sel, u32 nw)
+{
+    int on = !FRAMES_OFF;
+    if (nw & 0xa040) { tl_dbg.title ^= 1; SOUND(0x84); on = !on; }       /* LEFT, RIGHT, CROSS: 2 <-> 3 */
+    PRINT("ARCADE FRAMES", EX_LX, y, 8, sel ? 0x30 : 0x33, 1);
+    PRINT("ON", EX_VX0, y, 8, on ? 0x30 : 0x33, 1);
+    PRINT("OFF", EX_VX0 + 0x28, y, 8, on ? 0x33 : 0x30, 1);
+}
+#endif
+
 /* main menu, every frame (menuhook in the EXE, only when the 8 MB path is usable) */
 void mod_menu(void)
 {
+#ifdef EX_XROW
+    *(void (**)(int, int, u32))EX_XROW = framesrow;
+#else
     optpatch();
+#endif
     loadhook();
     /* two lines, "8MB" ending where the 2 MB line ends (y 214, CRT-safe bottom): one line "TAG HACK 1.3  8MB" reached
        x 224 and ran into OPTION MODE (items start at x 200; OPTION MODE at y 208 in the 5-item menu, 216 with --ach's

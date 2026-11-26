@@ -96,15 +96,32 @@ def load_words(flag):
             0xa0390000 | lo]                # sb t9,lo(arcbal)(at)
 
 
-def ovl_patches(bal):
-    """[(address, word)] for P/P4/OPDEMO.BIN"""
-    out = list(zip(OPT_AT, opt_words(bal)))
-    out += [(SAVE_AT + 4 * i, w) for i, w in enumerate(save_words(bal["flag"]))]
-    out += [(LOAD_AT + 4 * i, w) for i, w in enumerate(load_words(bal["flag"]))]
+def save_words_card(sv):
+    """--excard (tools/exopt/xvex.c EX_CARD): +9 = every EX OPTIONS row packed by ex_cardsv (keeps all registers, t9 out)"""
+    return [0xa2030001, 0xa2040002, 0xa2050003, 0xa2060004,     # sb v1,1(s0) ; sb a0,2(s0) ; sb a1,3(s0) ; sb a2,4(s0)
+            _jal(sv), 0x00000000,                               # jal ex_cardsv ; nop
+            0xa2190000 | SLOT, 0x00000000]                      # sb t9,9(s0) ; nop
+
+
+def load_words_card(ld):
+    """--excard: ex_cardld unpacks +9 (t9 in) into the rows; a save without our bits = every default"""
+    return [0x92030001, 0x92040002, 0x92050003, 0x92060004,     # lbu v1,1(s0) ; lbu a0,2(s0) ; lbu a1,3(s0) ; lbu a2,4(s0)
+            0x92190000 | SLOT,                                  # lbu t9,9(s0)
+            _jal(ld), 0x00000000, 0x00000000]                   # jal ex_cardld ; nop ; nop
+
+
+def ovl_patches(bal, optscreen=True, card=None):
+    """[(address, word)] for P/P4/OPDEMO.BIN (optscreen False: 1.4 EX OPTIONS has the line, OPTION MODE stays stock;
+    card = the EX module's symbols for --excard)"""
+    out = list(zip(OPT_AT, opt_words(bal))) if optscreen else []
+    sw = save_words_card(card["ex_cardsv"]) if card else save_words(bal["flag"])
+    lw = load_words_card(card["ex_cardld"]) if card else load_words(bal["flag"])
+    out += [(SAVE_AT + 4 * i, w) for i, w in enumerate(sw)]
+    out += [(LOAD_AT + 4 * i, w) for i, w in enumerate(lw)]
     return out
 
 
-def apply(f, lmap, touched, bal):
+def apply(f, lmap, touched, bal, optscreen=True, card=None):
     """the OPDEMO.BIN words (f = the image, r+b); bal = skippatch.code(arcbal=True)["bal"]"""
     lba = lmap[MENU_FILE][0]
     pos = lambda a: (lba + (a - OVL_BASE) // 2048, (lba + (a - OVL_BASE) // 2048) * 2352 + 24 + (a - OVL_BASE) % 2048)
@@ -114,11 +131,12 @@ def apply(f, lmap, touched, bal):
         assert rd(a) == old, "arcbal: OPDEMO.BIN not as expected at %08x" % a
     for at, sha in ((SAVE_AT, SAVE_SHA), (LOAD_AT, LOAD_SHA)):
         assert hashlib.sha1(b"".join(struct.pack("<I", rd(at + 4 * i)) for i in range(8))).hexdigest() == sha, "arcbal: OPDEMO.BIN options save / load not stock at %08x" % at
-    for a, w in ovl_patches(bal):
+    for a, w in ovl_patches(bal, optscreen, card):
         l, p = pos(a)
         f.seek(p); f.write(struct.pack("<I", w)); touched.add(l)
-    print("ARCADE BALANCE: flag %08x, optdraw %08x, optinput %08x, gates %s, OPDEMO option / save / load" % (
-        bal["flag"], bal["draw"], bal["input"], " ".join("%08x" % g[0] for g in GATES)))
+    print("ARCADE BALANCE: flag %08x, optdraw %08x, optinput %08x, gates %s, OPDEMO %ssave / load%s" % (
+        bal["flag"], bal["draw"], bal["input"], " ".join("%08x" % g[0] for g in GATES), "option / " if optscreen else "(EX OPTIONS line) ",
+        " (--excard: every EX OPTIONS row, ex_cardsv %08x / ex_cardld %08x)" % (card["ex_cardsv"], card["ex_cardld"]) if card else ""))
 
 
 def apply_ram(emu, flag, on):

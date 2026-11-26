@@ -156,6 +156,7 @@ SEC(".ram") int choose(s16 *list, u32 cap)
     return -1;
 }
 
+#ifndef FORCETIER
 SEC(".ram") int guard(s16 *list, u32 cap)
 {
     s16 *ids = IDS;
@@ -175,6 +176,7 @@ SEC(".ram") int guard(s16 *list, u32 cap)
     tl_dbg.strong = m;
     return m;
 }
+#endif
 
 SEC(".ram") u32 total(s16 *list, u8 *tier)
 {
@@ -227,6 +229,27 @@ SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
     for (i = 0; i < 4; i++) tier[i] = (m >> i) & 1;
     tl_dbg.loaded = 0;
     hotplan(list, cap - total(list, tier), tier);       /* base characters only; also next to strong ones */
+}
+#elif defined(FORCETIER)
+/* measurement-only builds (mktagdisc --forcetier=c:t,..., default off): tier per character from FT0..FT2 (nibble per
+ * character id, 0 base / 1 strong / 2 fat / 3 mid).  No guard / fit check: the builder's caller checks the fit offline
+ * (work/x14/l2/tiers.py); tl_dbg as plan() writes it. */
+SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
+{
+    int i;
+    u32 mid = 0, fat = 0, m = 0;
+    for (i = 0; i < 4; i++) {
+        int c = list[i], t = 0;
+        if (c >= 0) t = ((c < 8 ? FT0 : c < 16 ? FT1 : FT2) >> 4 * (c & 7)) & 15;
+        tier[i] = t;
+        if (t == T_MID) mid |= 16 << i;
+        if (t == T_FAT) fat |= 1 << i;
+        if (t == T_STRONG) m |= 1 << i;
+    }
+    tl_dbg.dropped = 0;
+    tl_dbg.strong = m;
+    tl_dbg.loaded = mid;
+    tl_dbg.fat |= fat;
 }
 #else
 SEC(".ram0") void plan(s16 *list, u32 cap, u8 *tier)
@@ -315,12 +338,42 @@ SEC(".ramb") void bossdone(void)
 }
 
 /* replaces LOADFILE(0x10c, slot base + 0x42000) at 0x8002b2d0: the stock slot loop is over */
+#ifndef APODLG
 SEC(".chunkg") int bossfin(int idx, u8 *dest)
 {
     if (tl_dbg.dropped == BOSSNEW) return 0;        /* new loader: no stock slots, the extra file is not loaded */
     if (tl_dbg.dropped == BOSSRLE) bossdone();      /* the boss directory (with its code) is still in RAM */
     return LOADFILE(idx, dest);
 }
+#else
+/* 1.4 --apodlg (tools/apodlg.py): Apocalypse pre-fight dialogue.  The speaker's 16 KB tile file (in the boss
+ * directory's apoent[]) replaces the extra boss file KANJI.TEX: on the new loader at APOFONT (free during the load
+ * and the intro), on the stock-file path at the stock address.  apo_ptr = glyph base read by PL08's text routine.
+ * Directory unreadable (0xFA): KANJI.TEX as stock, apo_ptr = its address (no English text in that fallback). */
+#define APOFONT     0x801f0000u
+extern u8 *apo_ptr;
+void apofont(u8 *dest);
+SEC(".chunkg") int bossfin(int idx, u8 *dest)
+{
+    if (tl_dbg.dropped == BOSSNEW) dest = (u8 *)APOFONT;
+    else if (tl_dbg.dropped == BOSSRLE) bossdone();
+    else {
+        apo_ptr = dest;
+        return LOADFILE(idx, dest);
+    }
+    apofont(dest);                                  /* in the boss directory sector: still in RAM */
+    return 0;
+}
+
+extern const struct xent apoent[19];
+SEC(".ramb") void apofont(u8 *dest)
+{
+    s16 *ids = IDS;
+    int c = (ids[2] == 0x10 ? ids[0] : ids[2]) >> 1;    /* the player's point character (main) */
+    if ((unsigned)c < 19) LOADFILE(FAKE(&apoent[c]), dest);
+    apo_ptr = dest;
+}
+#endif
 
 /* in the boss directory sector: main characters -> stock RLE files, until bossfin() */
 SEC(".ramb") void bossprep(int stage, s16 *list, int unused, u8 *heap)

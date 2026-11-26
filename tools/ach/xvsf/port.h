@@ -29,7 +29,12 @@ uint16_t port_pad_new(void);
 #define PORT_IDLE_PREV()   ((f_v4)IDLE_PREV)(a0, a1, a2, a3)
 #define PORT_TEXT(s, x, y, c) port_text((s), (x), (y), (c))
 #define PORT_POPUP(h, l, f) port_popup((h), (l), (f))
+#ifdef EX_POP                     /* 1.4 EX OPTIONS: ACHIEVEMENT POPUP byte (0 ON, 1 OFF: unlocks still recorded, queue dropped) */
+#define PORT_POPUP_OK()    (*(volatile uint8_t*)(EX_POP) == 0)
+#define PORT_POPUP_DROP
+#else
 #define PORT_POPUP_OK()    1
+#endif
 #define PORT_CARD_SAFE()   port_card_safe()
 #define PORT_CARD_IDLE()   port_card_idle()
 #define PORT_SFX_UNLOCK()  ((f_1)SFX_FN)(0x91)

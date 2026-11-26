@@ -96,7 +96,7 @@ def build(hint_override=None):
         out = [(ARENA, arena), (HELP, helpers[:KEEP[0] - HELP]), (KEEP[1], helpers[KEEP[1] - HELP:])]
         out += [(a, jal(sh[n])) for a, n in E60_JALS.items()]
         if vc:
-            out += [(VC_CODE, vc[0]), (VC_API, vc[3]), (cold, vc[4]), (VC_E60_DECODE, jal(vc[1]))] + vc[2]
+            out += [x for x in [(VC_CODE, vc[0]), (VC_API, vc[3]), (cold, vc[4]), (VC_E60_DECODE, jal(vc[1]))] if x[1]] + vc[2]   # (empty API segment with VC_NOAPI: not written)
         if fc:
             stub, ss = ulib.gas(os.path.join(SRC, "fcstub.S"), cold, {"FC_DROP": fc[1]["fc_drop"]})
             assert cold + len(stub) <= HELP_END

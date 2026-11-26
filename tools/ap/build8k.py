@@ -3,7 +3,8 @@ aplib.KEEP_STOCK and dirbuild.KEEP_STOCK themselves are not changed: the frozen 
 
     python build8k.py --keep-file KEEP.json  <every argument of build8.py>
 
-KEEP.json: {"body": {"<character>": [[group, index], ...]}, "direct": {"<character>": [overlay offset of the animation's first record, ...]}}
+KEEP.json: {"body": {"<character>": [[group, index], ...]}, "direct": {"<character>": [overlay offset of the animation's first record, ...]},
+           "unkeep": {"<character>": [[group, index], ...]} (removed from aplib.KEEP_STOCK)}
 Nothing here is derived from either game; the keep file holds only animation numbers."""
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +22,10 @@ def main(argv=None):
         cur = dirbuild.KEEP_STOCK.setdefault(int(c), [])
         for o in L:
             if int(o) not in cur: cur.append(int(o))
+    for c, L in k.get("unkeep", {}).items():          # 1.4: animations taken OFF aplib.KEEP_STOCK (restored; the 8 MB tile cache absorbs them)
+        cur = aplib.KEEP_STOCK.get(int(c), [])
+        for g, j in L:
+            if (g, j) in cur: cur.remove((g, j))
     print("extra keep-stock:", json.dumps(k))
     sys.argv = [sys.argv[0]] + argv
     return build8.main()

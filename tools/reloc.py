@@ -47,8 +47,8 @@ class Reloc:
 
     def __init__(self, char):
         self.char = char
-        self.a = open(path(char, 0), "rb").read()
-        self.b = open(path(char, 1), "rb").read()
+        self.a = OVERRIDE[(char, 0)] if (char, 0) in OVERRIDE else open(path(char, 0), "rb").read()
+        self.b = OVERRIDE[(char, 1)] if (char, 1) in OVERRIDE else open(path(char, 1), "rb").read()
         assert len(self.a) == len(self.b), "P0/P2 size mismatch"
         self.size = len(self.a)
         self.n = n = self.size // 4
@@ -200,6 +200,7 @@ class Reloc:
 
 
 _cache = {}
+OVERRIDE = {}       # (char, slot) -> patched overlay bytes (tools/apodlg.py via mktagdisc --apodlg); empty = disc files
 
 
 def get(char):

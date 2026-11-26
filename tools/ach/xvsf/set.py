@@ -47,7 +47,10 @@ ach(5, 5, "Tag, You're It", "KO a foe with your 2nd pick",
     f"{H(SIDE)}>0_{H(ACTP)}=1_{H(KOS)}>{D(KOS)}")
 ach(6, 10, "Perfect Partners", "Win, both at full life",
     f"{H(SIDE)}>0_{H(FULL)}=1_{H(WINS)}>{D(WINS)}")
-ach(7, 5, "Last One Standing", "Win after losing your 1st pick", f"{H(SIDE)}>0_{H(ALIVE)}=1_{H(WINS)}>{D(WINS)}")
+# (ach audit 2026-11-21, env XVSF_ACHFIX=1, not in 1.3): ALIVE=1 alone also takes a win after losing the 2nd pick; the
+# survivor on point being the 2nd pick (ACTP) = the 1st pick fell.  Default (released) set unchanged.
+ach(7, 5, "Last One Standing", "Win after losing your 1st pick",
+    f"{H(SIDE)}>0_{H(ALIVE)}=1_{H(WINS)}>{D(WINS)}" + (f"_{H(ACTP)}=1" if __import__("os").environ.get("XVSF_ACHFIX") == "1" else ""))
 ach(8, 5, "Combo Rookie", "10-hit combo", f"{H(SIDE)}>0_{H(COMBO)}>=10")
 ach(9, 10, "Combo Expert", "20-hit combo", f"{H(SIDE)}>0_{H(COMBO)}>=20")
 ach(30, 25, "Infinite Combo", "35-hit combo", f"{H(SIDE)}>0_{H(COMBO)}>=35")

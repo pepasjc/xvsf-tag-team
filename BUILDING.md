@@ -2,7 +2,7 @@
 
 Everything here runs from a checkout of this repository on Windows, Linux or macOS. You need your own disc image,
 and for the restored frames your own arcade ROM set; nothing from either is in the repository. One builder makes
-both hacks: it recognises the game from the files on the disc.
+every hack: it recognises the game from the files on the disc.
 
 ## Requirements
 
@@ -35,7 +35,7 @@ compared with the reference SHA-1 for the chosen options (`builder/data/known.js
 `builder/data/mshvsf/known.json`, `builder/data/mvc/known.json`). A build takes a few minutes; the restored frames add a few more. Details of
 each stage: [builder/README.md](builder/README.md).
 
-### Options for both games
+### Options for X-Men vs. Street Fighter and Marvel Super Heroes vs. Street Fighter
 
 | Option | Effect |
 |---|---|
@@ -75,8 +75,8 @@ final-boss freeze fix and the Blackheart fix; EX OPTIONS, ARCADE BALANCE and VER
 
 ### Marvel vs. Capcom
 
-The builder makes the two release images only (2 MB; 8 MB with `--arcade mvsc.zip`); the options above for both
-other games do not apply, except `--out`, `--name`, `--work`, `--jobs` and `--chd`. The MvC build runs the hack's own tools unmodified
+The builder makes the two release images only (2 MB; 8 MB with `--arcade mvsc.zip`); the options above
+do not apply, except `--out`, `--name`, `--work`, `--jobs` and `--chd`. The MvC build runs the hack's own tools unmodified
 from the frozen copy in `builder/data/mvc/tools` (sources under `games/mvc/tools/`, shared parts in `tools/` and
 `common/`), with the MIPS toolchain's results recorded in `builder/data/mvc/tc`; see
 [builder/README.md](builder/README.md).

@@ -108,9 +108,11 @@ def main(argv=None):
                     "which needs loader support (SPEC.md section 12) - use a separate output folder")
     ap.add_argument("--shared", action="store_true", help="also restore the shared-VRAM-slot frames of the characters in aplib.SHARED_OK: sets slot_table in the "
                     "manifest, which needs loader support (SPEC.md section 11) - use a separate output folder")
+    ap.add_argument("--whole", action="store_true", help="restore an animation completely or not at all (aplib.build_whole; 1.4 8 MB final)")
     ap.add_argument("--debug", action="store_true", help="also write PLxx_anim.json (arcade sprite address -> frame id) for the test harness")
     a = ap.parse_args(argv)
     chars = [int(x) for x in a.chars.split(",")]
+    _build = (lambda ctx, ch, **kw: __import__("aplib").build_whole(ctx, ch, **kw)) if a.whole else None
     if a.direct and a.chars == ",".join(map(str, DEFAULT)): chars = sorted(chars + [9])       # Ryu: uncut body, three cut sprites in his direct animations
     try:
         setname, prg, roms = read_arcade(a.arcade)
@@ -128,14 +130,15 @@ def main(argv=None):
         for ch in chars:
             if a.direct:
                 import dirbuild
-                r = aplib.build(ctx, ch, extra=dirbuild.add); first = False
+                bf = _build or aplib.build
+                r = bf(ctx, ch, extra=dirbuild.add); first = False
                 if any("file limit" in k for x in r["direct"]["report"] for k in x["left"]):          # the file is full: direct animations first (Magneto)
-                    r = aplib.build(ctx, ch, extra=dirbuild.add, extra_first=True); first = True
+                    r = bf(ctx, ch, extra=dirbuild.add, extra_first=True); first = True
                 dtot, dbad = dirbuild.check(ctx, r, work)
                 if dbad: raise Fail("character %d: self-check of the direct animations failed (%d bad frames)" % (ch, dbad))
                 if ch not in DEFAULT and not r["stats"].get("new"):       # uncut body (Ryu): keep the stock body records, only the direct patches matter
                     r["recpatch"] = []; r["sub2"] = r["sub2"][:r["old_nframes"]]
-            else: r = aplib.build(ctx, ch)
+            else: r = (_build or aplib.build)(ctx, ch)
             tot, bad = aplib.check(ctx, r, work)
             if bad or r["over"] or r["nsp"][16 + r["sec"][0] + r["sec"][1]:][:4] in (b"XVM1", b"XVH1", b"XVF1"):
                 raise Fail("character %d: self-check failed (%d bad frames, over limit %s)" % (ch, bad, r["over"]))
@@ -160,6 +163,7 @@ def main(argv=None):
                       f"{sum(x['restored'] for x in d['report'])}, left {sum(sum(x['left'].values()) for x in d['report'])}" + (" (direct animations first)" if first else ""))
             m = man["chars"]["%02X" % ch]                     # what the loader must do for this character (SPEC.md sections 3, 11, 12)
             m["loader"] = dict(ap8=True, ad8=bool(m.get("direct", {}).get("patches")), slot_table=m["slot_table"])
+            if a.whole: print(f"   whole animations: {len(r['whole_kept'])} records kept stock with their animations (would have mixed)")
             print(f"{ch:2d} {aplib.NAMES[ch]:11s} sprites {r['stock_sprites']} -> {r['arc_sprites']}  file {len(r['nsp'])}  frames {r['old_nframes']} -> {len(r['sub2'])}  "
                   f"patches {len(r['recpatch'])}  left stock {r['unchanged'] + r['unpaired']}  check {tot} frames ok", flush=True)
         import selbuild

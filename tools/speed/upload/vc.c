@@ -253,6 +253,7 @@ u32 vc_load(u16 *rect, u32 data)
 }
 
 
+#ifndef VC_NOAPI   /* 1.4 speed table (opt-in, UP_VC_DEFS=VC_NOAPI): no decode-ahead API (its home 0x80055c34 is sndpatch's now) */
 /* the sprite layer's sweep freed the blocks of its LoadImages before the GPU ran them: the arena may be used outside
  * the sprite layer only when none of those is still pending (checked once per main-loop iteration; later blocks of
  * the idle hook are allocated live) */
@@ -317,3 +318,4 @@ __attribute__((section(".text.hapi"))) int vc_prefetch(const struct ahead_tile *
     STAT(ST_PREF, r);
     return r;
 }
+#endif /* VC_NOAPI */

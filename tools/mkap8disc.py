@@ -40,6 +40,7 @@ STATEA = MOD + 2048 * MODSECT
 OVL_BASE, EFFAREA = 0x80098000, STATEA + 0x1800
 EFFHMAX = 400                                                   # pre-decode list of the effects set in the module table (ap8mod.c)
 HOT8 = os.path.join(SRC, "hot8.json")                           # per-tile scores for the pre-decode order (work/speed/8mb/mkhot.py)
+HOT8 = next((a[7:] for a in sys.argv if a.startswith("--hot8=")), HOT8)   # 1.4: --hot8=tools/ap8/hot8_idle.json (content with the restored standing idle)
 SLOTPTR, SLOTSIZE = 0x8005c65c, 5 * 2048 + 0x800               # shared-slot table pointers per set; bytes of extended tables per battle (4 characters + effects)
 DT_ADDR, LT_ADDR = 0x807f0000, 0x807e0000      # decode tables: 2 x 32768 u16
 R = lambda n: (n + 2047) & ~2047
@@ -50,13 +51,19 @@ def build(syms, version):
     os.makedirs(OBJ, exist_ok=True)
     cf = ["-mips1", "-G0", "-mno-abicalls", "-fno-pic"]
     defs = [f"-DMODWORDS={MODSECT * 512}", f'-DVERSION="{version}"', f"-DSTATEA=0x{STATEA:08x}u", f"-DEFFHMAX={EFFHMAX}"] + (["-DNOCACHE"] if os.environ.get("XV8_NOCACHE") else [])   # developers: no tile cache (A/B)
+    if "--ex" in sys.argv:                            # 1.4 EX OPTIONS: ARCADE FRAMES as an EX OPTIONS row (tools/expatch.py ex_xrow), OPTION MODE stock
+        import expatch
+        expatch.NOFS, expatch.NOSM = "--nofskip" in sys.argv, "--nosmeter" in sys.argv
+        row = "ex_frow" if expatch.NOFS else "ex_xrow"   # 1.4 final: ARCADE FRAMES in FRAME SKIP's freed slot (ex_xrow = --infmeter)
+        defs += ["-DEX_XROW=0x%08xu" % expatch.build(0x80007e60, syms["flushcache"])[1][row], "-DEX_LX=%d" % expatch.LAYOUT["EX_LX"], "-DEX_VX0=%d" % expatch.LAYOUT["EX_VX0"]]
+    if "--apodlg" in sys.argv: defs.append("-DAPODLG")  # 1.4 final: the boss path reads the boss directory (bossfin -> apofont)
     for src, opt in (("ap8boot.c", "-Os"), ("ap8mod.c", "-Os")):      # size first; the decoder loop itself is O2 by attribute (inflate.h)
         subprocess.check_call([GCC + "gcc", opt, "-ffreestanding", "-msoft-float", "-fno-tree-loop-distribute-patterns", *cf, *defs,      # no memset/memcpy calls: there is no libc
                                "-c", os.path.join(SRC, src), "-o", os.path.join(OBJ, src[:-2] + ".o")])
     sdefs = [f"-DSTATEA=0x{STATEA:08x}", f"-DEFFHMAX={EFFHMAX}"]
     subprocess.check_call([GCC + "gcc", *cf, *sdefs, "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8glue.o")])
     subprocess.check_call([GCC + "gcc", *cf, *sdefs, "-DMODULE", "-c", os.path.join(SRC, "ap8glue.S"), "-o", os.path.join(OBJ, "ap8modhead.o")])
-    defs = [f"--defsym={n}=0x{syms[n]:08x}" for n in ("effhook", "hook", "flushcache", "tl_dbg", "varload")]
+    defs = [f"--defsym={n}=0x{syms[n]:08x}" for n in ("effhook", "hook", "flushcache", "tl_dbg", "varload") + (("dirload", "bossdirent") if "--apodlg" in sys.argv else ())]
     disc = "/DISCARD/ : { *(.reginfo) *(.MIPS.abiflags) *(.pdr) *(.comment) *(.gnu.attributes) *(.mdebug*) *(.eh_frame) *(.bss) %s }"
     open(os.path.join(OBJ, "boot.ld"), "w").write("SECTIONS {\n" + "".join(
         f"  {s} 0x{a:08x} : {{ *({s}_head) *({s}) *({s}_data) {'*(.rodata*)' if s == '.chunkl' else ''} }}\n" for s, (a, e) in CHUNKS.items()) + "  " + disc % "" + "\n}\n")
@@ -102,6 +109,28 @@ def effhot(eff):
     return struct.pack("<I", len(o)) + b"".join(struct.pack("<I", t | s << 16) for t, s in o) + bytes(4 * (EFFHMAX - len(o)))
 
 
+def _ftab_entry(out, lmap, idx):
+    """(lba, size) of the game's file table entry idx in the built image's EXE"""
+    exe_lba = lmap[region.EXE][0]
+    o = M.FTABLE - M.EXE_BASE + M.EXE_HDR + 8 * idx
+    with open(out, "rb") as f:
+        f.seek((exe_lba + o // 2048) * 2352 + 24 + o % 2048); e = f.read(8)
+        if o % 2048 > 2040:                                  # (entry across a sector end)
+            f.seek((exe_lba + o // 2048 + 1) * 2352 + 24); e = (e + f.read(8))[:8]
+    bcd = lambda x: (x >> 4) * 10 + (x & 15)
+    return (bcd(e[0]) * 60 + bcd(e[1])) * 75 + bcd(e[2]) - 150, struct.unpack_from("<I", e, 4)[0]
+
+
+def _ftab_size(out, lmap, idx): return _ftab_entry(out, lmap, idx)[1]
+
+
+def _ftab_data(out, lmap, idx):
+    lba, size = _ftab_entry(out, lmap, idx); r = b""
+    with open(out, "rb") as f:
+        for i in range((size + 2047) // 2048): f.seek((lba + i) * 2352 + 24); r += f.read(2048)
+    return r[:size]
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     name = args[0] if args else "xvsf_ap8e"
@@ -112,7 +141,9 @@ def main():
     man, mansel, mansel2 = manifest["chars"], manifest.get("select"), manifest.get("select2")
     out = os.path.join(BUILD, name + ".bin")
     # 1. the 2 MB build, untouched
-    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal", "--nosound", "--ach", "--noskip", "--noarcbal")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
+    if "--apodlg" in sys.argv: os.environ["XV_APO8"] = "1"      # apo_ptr off the .dbg bytes this module uses (tools/tagload/glue.S)
+    if "--excard" in sys.argv: os.environ["XV_EXCARD8"] = "1"   # --excard: ARCADE FRAMES (tl_dbg.title) saved too (8 MB disc only)
+    argv = sys.argv; sys.argv = [argv[0], name] + [a for a in argv if a in ("--logo", "--nopad", "--nopal", "--noai", "--nohud", "--nobgm", "--norank", "--nobal", "--nosound", "--ach", "--noskip", "--noarcbal", "--noahead", "--ex", "--mtap", "--vsmenu", "--achfix", "--st7ko", "--infmeter", "--apodlg", "--perfect", "--voldef", "--trsync", "--rdfix", "--pitchfix", "--nofskip", "--nosmeter", "--excard")]; M.main(); sys.argv = argv     # --logo: boot card, see tools/logopatch.py
     base_sha = hashlib.sha1(open(out, "rb").read()).hexdigest()
     print("2 MB base image sha1", base_sha)
     syms = M.symbols()
@@ -176,6 +207,16 @@ def main():
         npat = struct.unpack_from("<I", sa, 8)[0]
         assert sa[:4] == b"AS8\x01" and struct.unpack_from("<I", sa, 4)[0] == len(selbin) and sa[12:28] == hashlib.sha1(selbin).digest()[:16] and len(sa) == 28 + 8 * npat
         assert len(sn) % 4 == 0
+        # 1.4 --vsmenu: the game loads a longer SELECT.BIN copy (DMY.DAT; tools/mtap/xvmtap.py select_copy_m = the stock
+        # file + the VERSUS CPU module).  ap8mod.c mod_sel / sel2 check the patch file's size word against the file table
+        # size (FT_SIZE(1)): give them the copy's size (the patched words are in the stock part, which the copy keeps).
+        # Without this the 8 MB select screen silently showed the stock sprites (x14_8f1 / x14_8g2).
+        selsz = _ftab_size(out, lmap, 1)
+        if selsz != len(selbin):
+            assert "--vsmenu" in sys.argv and selsz > len(selbin), f"SELECT.BIN file table size {selsz} (stock {len(selbin)})"
+            assert _ftab_data(out, lmap, 1)[:len(selbin)] == selbin, "the SELECT.BIN copy does not start with the stock file"
+            sa = sa[:4] + struct.pack("<I", selsz) + sa[8:]
+            print(f"select: SELECT.AP8 size word {len(selbin)} -> {selsz} (the --vsmenu SELECT.BIN copy)")
         items += [("sel0", sn, f"RESTORED SP_SEL0 ({len(sn)} bytes)"), ("selap", sa, f"SELECT.AP8 ({npat} patches)")]
         selsize = len(sn)
     wsum = lambda d: sum(struct.unpack(f"<{(len(d) + 15) // 16 * 4}I", d + bytes(-len(d) % 16))) & 0xFFFFFFFF
@@ -192,6 +233,9 @@ def main():
         # it lives where the game's own SP_SEL0 would have been loaded (free on the 8 MB path): must fit that file's size
         assert R(len(s2)) + R(len(a2)) <= lmap["A/A2/SP_SEL0.NSP"][1], "the second select set does not fit the place of the stock SP_SEL0"
         test = ([a.split("=", 1)[1] for a in sys.argv if a.startswith("--sel2-test=")] or [None])[0]      # developers: validation tests
+        if selsz != len(selbin):                                # (--vsmenu copy, as SELECT.AP8 above)
+            a2 = a2[:4] + struct.pack("<I", selsz) + a2[8:]
+            print(f"select: SELECT2.AP8 size word {len(selbin)} -> {selsz}")
         sel2sum, selap2sum = wsum(s2), wsum(a2)
         if test == "stub": a2 = a2[:-8] + bytes([a2[-8] ^ 0x5a]) + a2[-7:]            # damaged stub, sum not updated -> error 1
         if test == "site":                                                              # one call site that is not a jal, sum updated -> error 4
@@ -394,6 +438,16 @@ def main():
             f.seek(l * 2352 + 24 + o % 2048); assert f.read(4) == old, f"{path}+{o:x}: unexpected code"
             f.seek(l * 2352 + 24 + o % 2048); f.write(new); touched.add(l)
             print(f"overlay patch {path} {addr:08x}: {old.hex()} -> {new.hex()}")
+            if "--vsmenu" in sys.argv and path.endswith("/SELECT.BIN"):      # 1.4 --vsmenu: the game loads the SELECT.BIN copy
+                sys.path.insert(0, os.path.join(HERE, "mtap")); import xvmtap  # in DMY.DAT (tools/mtap/xvmtap.py select_copy_m)
+                e = exe_read(xvmtap.FTAB_SELECT, 8)
+                bcd = lambda x: (x >> 4) * 10 + (x & 15)
+                lc = (bcd(e[0]) * 60 + bcd(e[1])) * 75 + bcd(e[2]) - 150
+                assert lc != lmap[path][0] and addr < xvmtap.SEL_BASE + xvmtap.SEL_SIZE, "vsmenu: SELECT.BIN copy"
+                l = lc + o // 2048
+                f.seek(l * 2352 + 24 + o % 2048); assert f.read(4) == old, f"{path} copy +{o:x}: unexpected code"
+                f.seek(l * 2352 + 24 + o % 2048); f.write(new); touched.add(l)
+                print(f"overlay patch {path} (vsmenu copy at lba {lc}) {addr:08x}: {old.hex()} -> {new.hex()}")
         if sndpatch.enabled():                                  # 1.2 sound banks: the 8 MB decision asks ap8ready() too;
             ssym = sndpatch.code(syms["flushcache"])[1]         #  the directory gets the 8 MB levels' entries and lists
             a8 = ssym["ap8fn"]

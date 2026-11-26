@@ -50,6 +50,9 @@ NOTICE = dict(NOTICE_X=130, NOTICE_Y=0xd2, NOTICE_COL=0x10, NOTICE_MODE=1, NOTIC
 def _jal(t): return 0x0C000000 | ((t >> 2) & 0x03FFFFFF)
 
 
+GAME_FN = None                                  # 1.4 --ex: the per-frame call goes to the EX module's ex_logic (tools/expatch.py)
+
+
 def build_c(arcbal=False):
     """compile tools/skip/xvskip.c at BASE (BASE_BAL with the ARCADE BALANCE option) -> (image bytes, symbols)"""
     arcbal = arcbal and not KDIAG
@@ -60,7 +63,7 @@ def build_c(arcbal=False):
     ld = os.path.join(OBJ, "skip.ld")
     open(ld, "w").write("SECTIONS { . = 0x%08x; .text : { *(.text.skip_entry) *(.text*) } .rodata : { *(.rodata*) } "
                         ".data : { *(.data*) *(.sdata*) } .bss : { *(.bss*) *(.sbss*) *(COMMON) } /DISCARD/ : { *(.comment) *(.MIPS.*) *(.reginfo) *(.pdr) *(.gnu.attributes) } } __base = 0x%08x;" % (base, base))
-    defs = ["-D%s=%d" % kv for kv in NOTICE.items()] + (["-DARCBAL"] if arcbal else [])
+    defs = ["-D%s=%d" % kv for kv in NOTICE.items()] + (["-DARCBAL"] if arcbal else []) + (["-DGAME_FN=0x%08xu" % GAME_FN] if GAME_FN else [])
     subprocess.check_call([gcc + "gcc", "-Os", "-G0", "-mips1", "-mno-abicalls", "-fno-pic", "-ffreestanding", "-nostdlib",
                            "-ffunction-sections", "-msoft-float", "-c", SRC_DIAG if KDIAG else SRC, "-o", os.path.join(OBJ, "xvskip.o")] + defs)
     subprocess.check_call([gcc + "ld", "-T", ld, "-o", os.path.join(OBJ, "xvskip.elf"), os.path.join(OBJ, "xvskip.o")])

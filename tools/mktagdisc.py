@@ -23,9 +23,25 @@ Relocation table (u16 little endian, word index = offset/4 inside the overlay):
         --logo       boot card before the game starts (tools/logopatch.py); changes the image; without --nospeed
                      also the second card (fan-patch notice, tools/card2patch.py)
         --ach        built-in achievements (tools/ach/xvach.py, docs/ACHIEVEMENTS.md); changes the image
+        --vsmenu     with --ex: VERSUS CPU main-menu row below VERSUS (tools/mtap/mtmenu.h; replaces --mtap / --vscpu)
+        --achfix     with --ach: "Last One Standing" needs the 1st pick down (tools/ach/xvsf/set.py; 1.5)
+        --infmeter   with --ex --ach: EX OPTIONS row INFINITE SUPER METER OFF / ON (default OFF; ON = every fighter's
+                     meter held at level 3, achievements never unlock; tools/ach/xvsf/port.c ACH_INFMETER)
         --noskip     no START skip of the end of a match (tools/skippatch.py; default on in the 1.3 US
                      configuration, never with --nospeed / --nosound)
         --noarcbal   no ARCADE BALANCE option line (tools/arcbalpatch.py, docs/BALANCE.md; default on with the START skip)
+        --apodlg     1.4 final: Apocalypse pre-fight dialogue (JP arcade) with our own English text (tools/apodlg.py;
+                     loader built with -DAPODLG in tools/tagload/apo; PL08 code + text, 19 tile files in DMY.DAT)
+        --nofskip    1.4 final: no FRAME SKIP row (EX OPTIONS page + battle pause menu), option forced OFF (= stock)
+        --nosmeter   1.4 final (with --nofskip): no SPEED METER row; battle pause menu stock (test builds keep it)
+        --perfect    1.4 final: PERFECT needs the whole team undamaged like the arcade (0x8003b780 bnez -> nop)
+        --trsync     1.4 (with --ex): fix of a stock bug - START on the attract demo's SCORE / VS RANKING screen could garble the
+                     screen (the attract -> title transition cleared the draw buffers without waiting for the GPU)
+        --rdfix      1.4 (with --ex, issue #15): fix of a stock bug - a Raging Demon that ends the match left its voice in SPU
+                     noise mode; the bank loader's silence wait (0x8004cb68) then never ended (NOW LOADING + noise).  The wait
+                     now keys off noise voices and clears NON first (tools/expatch.py RDFIX).
+        --voldef     1.4 (issue #5): power-on OPTION defaults BGM VOLUME 3 / S.E. VOLUME 5 (stock 4 / 4; scale 0-8 stars).
+                     Boot init 0x800f00a0-0x800f00b8 only; a memory card save still loads the player's own values.
         --title[=TEXT]  version line on the main menu (tools/titlepatch.py; default text "TAG HACK 1.3", "TAG HACK 1.0.1" with --nospeed, "TAG HACK 1.1" with --nosound); changes the image
 """
 import hashlib, os, struct, subprocess, sys, json, shutil
@@ -83,8 +99,14 @@ def configure():
     if _CONF0 is None: _CONF0 = (D, dict(CHUNKS), DIRTABLES, RAMORG, FASTDIR)
     D, CHUNKS, DIRTABLES, RAMORG, FASTDIR = _CONF0[0], dict(_CONF0[1]), _CONF0[2], _CONF0[3], _CONF0[4]
     HOT = "--hot" in sys.argv and "--nospeed" not in sys.argv and region.REGION == "us"   # opt-in: needs 0x80055c34-0x80055ebc (now upload's)
+    if FORCETIER() and not HOT and not R12() and region.REGION == "us":
+        D = os.path.join(D, "ft")                            # measurement builds (--forcetier): own build dir, tools/tagload untouched
     if R12() and not HOT and region.REGION == "us":
         D = os.path.join(D, "r12")                           # 1.3: --nospeed / --nosound keep the 1.2 loader (no -DBOSSP1), bit for bit
+    if APODLG():                                             # 1.4 final: loader with -DAPODLG in its own build directory
+        assert region.REGION == "us" and not HOT and not R12() and not FORCETIER(), "--apodlg: US 1.3+ loader only"
+        D = os.path.join(D, "apo8" if os.environ.get("XV_APO8") else "apo")     # (relative to the loader base: the release
+                                                             # builder's prebaked tree; apo8 = the 8 MB disc's -DAPO8 loader)
     if HOT:
         D = os.path.join(HERE, region.TAGDIR, "hot")
         CHUNKS[".chunkh"] = (0x80055c34, 0x80055ebc)          # tools/speed/quad.py FREED range
@@ -92,7 +114,12 @@ def configure():
         FASTDIR = HOTDIR + "/base"
 
 
+PREBUILT = False      # the release builder (builder/xvb, no compiler) sets it: the --apodlg loader comes prebaked (tagload/apo, apo8)
 R12 = lambda: "--nospeed" in sys.argv or "--nosound" in sys.argv     # the configurations that reproduce 1.0.1 / 1.1 images
+APODLG = lambda: "--apodlg" in sys.argv                                 # 1.4 final: Apocalypse dialogue (tools/apodlg.py)
+# 1.4 L2 study (work/x14/L2.md), measurement only, default off: --forcetier=C:T,... (hex character id : tier 0 base,
+# 1 strong, 2 fat, 3 mid; unnamed characters base) -> tagload.c plan() -DFORCETIER, built in tools/tagload/ft
+FORCETIER = lambda: next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--forcetier=")), None)
 
 
 HDIRADDR, HDIRCODE, HSTEPS = 0x801fd804, 0x801fdc7c, 9
@@ -161,6 +188,19 @@ def build():
     extra = ["-DPOOL=%su" % a.split("=")[1] for a in sys.argv if a.startswith("--pool=")]      # experiment only
     if "--oldlayout" in sys.argv: extra.append("-DSLOTORDER")       # tag14 disc layout: characters loaded in slot order
     if "--noflush" in sys.argv: extra.append("-DNOFLUSH")           # diagnosis build: never call BIOS FlushCache
+    if APODLG():                                                    # tools/tagload/apo: sources copied, -DAPODLG (bossfin + apofont)
+        os.makedirs(D, exist_ok=True)
+        for fn in ("tagload.c", "glue.S", "link.ld"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
+        extra.append("-DAPODLG")
+        if os.environ.get("XV_APO8"): extra.append("-DAPO8")     # 8 MB disc (mkap8disc): apo_ptr in .chunkf_data
+    if FORCETIER() and region.REGION == "us" and not R12():         # measurement build (see FORCETIER)
+        ft = [0, 0, 0]
+        for kv in FORCETIER().split(","):
+            c, t = (int(x, 16) for x in kv.split(":")); assert 0 <= c < 19 and t in (0, 1, 2, 3)
+            ft[c >> 3] |= t << 4 * (c & 7)
+        os.makedirs(D, exist_ok=True)
+        for fn in ("tagload.c", "glue.S", "link.ld"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
+        extra += ["-DFORCETIER", *("-DFT%d=0x%08xu" % (k, v) for k, v in enumerate(ft))]
     if region.REGION != "us":                         # separate build directory: sources copied, addresses by -D, link script re-addressed
         os.makedirs(D, exist_ok=True)
         for fn in ("tagload.c", "glue.S"): shutil.copyfile(os.path.join(DSRC, fn), os.path.join(D, fn))
@@ -173,7 +213,7 @@ def build():
         open(os.path.join(D, "link.ld"), "w").write(ld)
         extra += [f"-D{k}=0x{v:08x}" for k, v in LOADER_MACROS.items()]
     subprocess.check_call([GCC + "gcc", "-Os", "-ffreestanding", "-msoft-float", *cf, *extra, "-c", "tagload.c", "-o", "tagload.o"], cwd=D)
-    subprocess.check_call([GCC + "gcc", *cf, "-c", "glue.S", "-o", "glue.o"], cwd=D)
+    subprocess.check_call([GCC + "gcc", *cf, *(["-DAPODLG"] if APODLG() else []), *(["-DAPO8"] if APODLG() and os.environ.get("XV_APO8") else []), "-c", "glue.S", "-o", "glue.o"], cwd=D)
     subprocess.check_call([GCC + "ld", "-T", "link.ld", "glue.o", "tagload.o", "-o", "tagload.elf"], cwd=D)
     for sec in list(CHUNKS) + [".ram", ".ramb"]:
         subprocess.check_call([GCC + "objcopy", "-O", "binary", "-j", sec, "tagload.elf", "tagload" + sec + ".bin"], cwd=D)
@@ -352,7 +392,7 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         stages(0, 6)
         game(G_AKE, "AKE.PAC"); game(G_EFF2, "SP_EFF2"); game(G_EFF0, "SP_EFF0")
         for st in range(11): game(G_SO + st, f"SP_SO{st:02X}")
-        AHEAD = "--nospeed" not in sys.argv and region.REGION == "us"         # 1.1: decode-ahead predictor read with the directory
+        AHEAD = "--nospeed" not in sys.argv and region.REGION == "us" and "--noahead" not in sys.argv   # 1.1: decode-ahead predictor read with the directory (1.4 --noahead: dropped, see work/x14/AUDIT.md)
         items.append((("dir",), bytes(2048 * (3 if AHEAD else 1)), "directory sector (tables + policy code)" + (" + decode-ahead predictor (2 sectors)" if AHEAD else "")))
         items.append((("bossdir",), bytes(2048), "boss directory sector (stock RLE files + boss-path code)"))
         game(G_EFF1, "SP_EFF1 (XVM1, in the game file table)")
@@ -375,6 +415,10 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         if HOT: items.append((("hdir",), bytes(2048), "hot directory sector (steps + hplan)"))
         for c in range(19):                                     # boss path: the game's original files
             items.append((("rle", c), open(os.path.join(RLEDIR, "SP_PL%02X.NSP" % c), "rb").read(), f"char {c:2d} stock RLE SP_PL{c:02X}"))
+        if APODLG():                                            # Apocalypse dialogue: the speaker's English text tiles
+            import apodlg
+            for c, data in enumerate(apodlg.font_files(apodlg.kanji_from(region.FILES))[0]):
+                items.append((("apo", c), data, f"char {c:2d} Apocalypse dialogue tiles"))
         pos = {}; lba = dmy_lba
         for key, data, label in items:
             assert len(data) % 4 == 0 or key[0] in ("g", "code")
@@ -392,6 +436,11 @@ def patches(dmy_lba=None, info=None, gamefile=None, base_lba=None):
         bd = (b"".join(ent(("code", c)) for c in range(19)) + bytes(19 * 8) + b"".join(ent(("fat", c)) for c in range(19))
               + b"".join(ent(("rle", c)) for c in range(19)) + ent(("eff",)) + (bytes(8) if HOT else b""))
         bd = finish_dir(bd, "tagload.ramb.bin")
+        if APODLG():                                            # apoent[19] in the boss directory's code part
+            o = s["apoent"] - DIRADDR
+            assert o % 8 == (FTABLE - DIRADDR) % 8 == 0 and bd[o:o + 152] == bytes(152) and s["apoent"] + 152 <= s["ramb_end"]
+            bd = bytearray(bd); bd[o:o + 152] = b"".join(ent(("apo", c)) for c in range(19))
+            struct.pack_into("<I", bd, 2044, sum(struct.unpack_from("<510I", bd, 0)) & 0xFFFFFFFF); bd = bytes(bd)
         if HOT:
             hd = hot_dir_sector({k[1]: p for k, p in pos.items() if k[0] == "hot"}, json.load(open(os.path.join(BUILD, HOTDIR, "steps.json"))))
         if SND:
@@ -426,8 +475,16 @@ def main():
     configure()
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     name = args[0] if args else region.DISC
-    if "--build" in sys.argv or not os.path.exists(os.path.join(D, "tagload.sym")):
+    if "--build" in sys.argv or FORCETIER() or (APODLG() and not PREBUILT) or not os.path.exists(os.path.join(D, "tagload.sym")):
         build()
+    if APODLG():                                        # patched Apocalypse code (both links) for the relocation tables
+        import apodlg
+        apodlg.APO_PTR = symbols()["apo_ptr"]          # 0x8001735c (.dbg tail); 8 MB disc: .chunkf_data (XV_APO8)
+        assert apodlg.APO_PTR == 0x8001735c or os.environ.get("XV_APO8"), "apodlg: apo_ptr moved"
+        _apotab = apodlg.font_files(apodlg.kanji_from(region.FILES))[1]
+        for slot, L in ((0, apodlg.P0_BASE), (1, apodlg.P2_BASE)):
+            reloc.OVERRIDE[(8, slot)] = apodlg.patch_code(open(reloc.path(8, slot), "rb").read(), L, _apotab)
+        reloc._cache.pop(8, None); _cf.pop(8, None)
     import mknspdisc
     argv = sys.argv
     sys.argv = [argv[0], name, "--dir=" + FASTDIR, "--tag", "--eff1=" + EFFDEFAULT]
@@ -475,6 +532,36 @@ def main():
                     wr_data(lba + (off + i) // 2048, (off + i) % 2048, data[i:i + 1])
             n_ovl = speedpatch.apply_overlays(None, iso_write)
             if n_ovl: print(f"speed: {n_ovl} stage overlay patches")
+            if "--st7ko" in sys.argv:                       # 1.4 final: chemical plant (stage 7) explodes on the first KO
+                ST7 = "P/P4/STAGE7.BIN"                     #  like the arcade (games/mvc/docs/STAGE_TRANSITION.md): its
+                lba7, size7 = lmap[ST7]                     #  handler reads round 0x80042349 in PS1 mode -> read the arcade
+                for off in (0x960, 0xb18, 0xf84):           #  KO flag 0x80042372 instead (one-round tag battles)
+                    f.seek((lba7 + off // 2048) * 2352 + 24 + off % 2048); old = f.read(4)
+                    assert old == struct.pack("<I", 0x80422349), f"st7ko: unexpected word at STAGE7+{off:#x}: {old.hex()}"
+                    iso_write(ST7, off, struct.pack("<I", 0x80422372))
+                print("st7ko: STAGE7.BIN 3 words (round -> KO trigger)")
+            if APODLG():                                    # stock-slot path reads the disc's own PL08 files: same patch
+                for slot, pth in ((0, "P/P0/PL08_10.BIN"), (1, "P/P2/PL08_20.BIN")):
+                    new = reloc.OVERRIDE[(8, slot)]; old = open(reloc.path(8, slot), "rb").read()
+                    lba8, size8 = lmap[pth]; assert size8 == len(new) == len(old)
+                    cur = b"".join((f.seek((lba8 + i) * 2352 + 24), f.read(2048))[1] for i in range((size8 + 2047) // 2048))[:size8]
+                    assert cur == old, f"apodlg: {pth} on the image is not the disc file"
+                    for o in range(0, size8, 4):
+                        if new[o:o + 4] != old[o:o + 4]: iso_write(pth, o, new[o:o + 4])
+                print("apodlg: PL08_10 / PL08_20 intro calls + text routine + English text table")
+            if "--voldef" in sys.argv:                      # issue #5: power-on BGM 3 / SE 5 (the master block 0x800421aa/ab + apply calls)
+                VD = [(0x800f00a0, 0xa03021aa, 0x34040003),   # sb s0,0x21aa(at)  -> ori a0,zero,3
+                      (0x800f00a8, 0x34040004, 0xa02421aa),   # (jal delay) ori a0,zero,4 -> sb a0,0x21aa(at)  (BGM master = arg = 3)
+                      (0x800f00b0, 0xa03021ab, 0x34040005),   # sb s0,0x21ab(at)  -> ori a0,zero,5
+                      (0x800f00b8, 0x34040004, 0xa02421ab)]   # (jal delay) ori a0,zero,4 -> sb a0,0x21ab(at)  (SE master = arg = 5)
+                for a, old_w, new_w in VD:
+                    assert exe_read(a, 4) == struct.pack("<I", old_w), "voldef: unexpected word at %08x" % a
+                    exe_write(a, struct.pack("<I", new_w))
+                print("voldef: power-on BGM VOLUME 3 / S.E. VOLUME 5 (boot init 0x800f00a0-b8)")
+            if "--perfect" in sys.argv:                     # arcade PERFECT rule: always the team branch (main + partner life)
+                assert exe_read(0x8003b780, 4) == struct.pack("<I", 0x14400011), "perfect: unexpected word at 0x8003b780"
+                exe_write(0x8003b780, bytes(4))
+                print("perfect: 0x8003b780 bnez -> nop (PERFECT = whole team undamaged)")
             info = []
             def gamefile(idx):
                 ent = exe_read(FTABLE + 8 * idx, 8)
@@ -555,9 +642,36 @@ def main():
             if "--nospeed" not in sys.argv and region.REGION == "us":     # 1.1: second card (fan-patch notice, tools/card2patch.py);
                 import card2patch                                           # --nospeed keeps the 1.0.x image
                 card2patch.apply(exe_read, exe_write, orig, region.FILES)
+        EXOPT = "--ex" in sys.argv                          # 1.4: EX OPTIONS + in-battle options (tools/expatch.py)
+        VSMENU = "--vsmenu" in sys.argv                     # 1.4 final: VERSUS CPU main-menu row (tools/mtap/mtmenu.h, common/mtap)
+        assert not VSMENU or (EXOPT and "--mtap" not in sys.argv and "--vscpu" not in sys.argv), "--vsmenu needs --ex, replaces --mtap / --vscpu"
+        if EXOPT:
+            assert "--noahead" in sys.argv and "--noskip" not in sys.argv and "--noarcbal" not in sys.argv and not R12() and region.REGION == "us",                 "--ex needs --noahead and the START skip / ARCADE BALANCE module"
+            import expatch, skippatch
+            expatch.NOFS = "--nofskip" in sys.argv          # 1.4 final: FRAME SKIP row removed, forced OFF (xvex.c EX_NOFS)
+            expatch.NOSM = "--nosmeter" in sys.argv         # 1.4 final: SPEED METER row removed (dev/test builds keep it)
+            expatch.TRSYNC = "--trsync" in sys.argv or expatch.TRSYNC     # 1.4: attract -> title transition waits for the GPU (stock bug)
+            expatch.RDFIX = "--rdfix" in sys.argv or expatch.RDFIX           # 1.4: #15 Raging Demon NOW LOADING hang (stock bug)
+            expatch.CARD = "--excard" in sys.argv           # (2026-11-24) EX OPTIONS rows in the game's option save (card image +9)
+            if expatch.CARD and expatch.TLTITLE is None and os.environ.get("XV_EXCARD8"):   # (set by tools/mkap8disc.py: 8 MB disc)
+                expatch.TLTITLE = symbols()["tl_dbg"] + 13
+            if VSMENU:
+                sys.path.insert(0, os.path.join(HERE, "mtap")); import xvmtap
+                expatch.VSMENU = xvmtap.MENU_J
+            sys.path.insert(0, os.path.join(HERE, "speed")); import frame as _frame
+            _bal = skippatch.build_c(arcbal=True)[1]["arcbal"]
+            ex_sym = expatch.apply(exe_read, exe_write, _bal, symbols()["flushcache"], _frame.symbols()["EBV"])
+            skippatch.GAME_FN = ex_sym["ex_logic"]          # FRAME SKIP MAX runs per logic frame (via the skip module's hook)
+            assert skippatch.build_c(arcbal=True)[1]["arcbal"] == _bal
         if "--ach" in sys.argv:                             # built-in achievements (tools/ach, docs/ACHIEVEMENTS.md); last: chains pc0
             sys.path.insert(0, os.path.join(HERE, "ach"))
+            if "--achfix" in sys.argv:                      # 1.5: "Last One Standing" = win after losing the 1st pick
+                os.environ["XVSF_ACHFIX"] = "1"             # (tools/ach/xvsf/set.py; ach audit 2026-11-21)
             import xvach
+            if EXOPT: xvach.EX = ex_sym
+            xvach.VSMENU = VSMENU
+            xvach.INFMETER = "--infmeter" in sys.argv       # 1.4 final: EX OPTIONS row INFINITE SUPER METER (tools/ach/xvsf/port.c)
+            assert not xvach.INFMETER or EXOPT, "--infmeter needs --ex --ach"
             xvach.apply(f, lmap, exe_read, exe_write, orig, touched)
         if "--noskip" not in sys.argv and not R12() and region.REGION == "us":     # 1.3: START skips the end of a match
             import skippatch                                                        # (tools/skippatch.py; chains pc0)
@@ -565,7 +679,37 @@ def main():
             sk = skippatch.apply(exe_read, exe_write, arcbal=bal)
             if bal:
                 import arcbalpatch
-                arcbalpatch.apply(f, lmap, touched, sk["bal"])
+                arcbalpatch.apply(f, lmap, touched, sk["bal"], optscreen=not EXOPT, card=ex_sym if EXOPT and "--excard" in sys.argv else None)
+            assert "--excard" not in sys.argv or (EXOPT and bal), "--excard needs --ex and ARCADE BALANCE"
+        if VSMENU:                                          # VERSUS CPU row: vs CPU core (no multitap) in the EXE string block
+            sys.path.insert(0, os.path.join(HERE, "mtap")); import xvmtap
+            mtc = xvmtap.apply_m(exe_read, exe_write, ex_sym, symbols()["flushcache"])
+        if "--mtap" in sys.argv:                            # 1.4: multitap 2-4 players (tools/mtap/xvmtap.py, common/mtap; EXE
+            sys.path.insert(0, os.path.join(HERE, "mtap"))  # debug-string block only, checks every word it replaces is stock)
+            import xvmtap
+            if "--vscpu" not in sys.argv:
+                xvmtap.apply(exe_read, exe_write)
+            else:                                           # (vs cpu lead) VERSUS vs CPU seats: + a longer SELECT.BIN copy with
+                mtc = xvmtap.apply_v(exe_read, exe_write)   # the select module, in the free tail of DMY.DAT; entry 1 -> it
+        if VSMENU or ("--mtap" in sys.argv and "--vscpu" in sys.argv):
+                sys.path.insert(0, os.path.join(HERE, "mtap")); import xvmtap
+                ent = exe_read(xvmtap.FTAB_SELECT, 8)
+                bcd = lambda b: (b >> 4) * 10 + (b & 15)
+                lba_s = (bcd(ent[0]) * 60 + bcd(ent[1])) * 75 + bcd(ent[2]) - 150
+                size_s = struct.unpack_from("<I", ent, 4)[0]
+                assert size_s == xvmtap.SEL_SIZE, "vscpu: SELECT.BIN size %d" % size_s
+                sel = b"".join((f.seek((lba_s + i) * 2352 + 24), f.read(2048))[1] for i in range((size_s + 2047) // 2048))[:size_s]
+                cp = xvmtap.select_copy_m(sel, mtc) if VSMENU else xvmtap.select_copy(sel, mtc)
+                nsec = (len(cp) + 2047) // 2048
+                lba_c = dmy_lba + dmy_size // 2048 - nsec  # the tail of DMY.DAT (the hack's items fill it from the front)
+                assert info and info[-1][0] + (len(info[-1][1]) + 2047) // 2048 <= lba_c, "vscpu: DMY.DAT tail not free"
+                pad = cp + bytes(nsec * 2048 - len(cp))
+                for i in range(nsec):
+                    f.seek((lba_c + i) * 2352); raw = f.read(2352)
+                    assert raw[15] == 2 and not raw[18] & 0x20 and not any(raw[24:2072]), "vscpu: DMY.DAT sector not empty"
+                    wr_data(lba_c + i, 0, pad[i * 2048:(i + 1) * 2048])
+                exe_write(xvmtap.FTAB_SELECT, msf(lba_c) + struct.pack("<I", len(cp)))
+                print(f"vscpu: SELECT.BIN copy {len(cp)} B (module {len(mtc['ovl'][1])} B at {xvmtap.SEL_END:08x}) at lba {lba_c}, {nsec} sectors")
         if "--meter" in sys.argv:                           # TEST BUILDS ONLY: on-screen speed meter (tools/meterpatch.py)
             import meterpatch
             meterpatch.apply(exe_read, exe_write)

@@ -33,3 +33,14 @@ bk:     .space 16                       /* two exchanged file-table entries */
         .byte 0xff, 0xff, 0, 0          /* characters they belong to: none */
         .section .dbg, "aw"
 tl_dbg: .space 12
+#ifdef APODLG
+        .globl apo_ptr, apoent
+#ifdef APO8                             /* 8 MB disc: .dbg bytes 12..14 are the 8 MB module's (ap8 / title / effp) */
+        .section .chunkf_data, "aw"
+#endif
+apo_ptr: .space 4                       /* glyph base of the Apocalypse dialogue (tools/apodlg.py APO_PTR) */
+        .section .ramb, "ax"
+        .balign 8
+        .space 4                        /* file entries at 4 mod 8 (the game file table's residue) */
+apoent: .space 8 * 19                   /* MSF + size of the 19 dialogue tile files (disc builder) */
+#endif

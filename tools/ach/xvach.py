@@ -38,8 +38,20 @@ SPANS = [(a, 0x80007880) if (a, b) == (0x80007600, 0x80007A00) else (a, b) for a
 assert SPANS != achbuild.SPANS
 
 
+VSMENU = False  # --vsmenu (mktagdisc): VERSUS CPU main-menu row
+VSMODE_AT = 0x80010008   # = tools/mtap/xvmtap.VSMODE (mt_vsmode)
+EX = None       # 1.4: tools/expatch.py symbols (mktagdisc --ex sets it): the EX module owns the menu overlay patch
+INFMETER = False  # --infmeter (mktagdisc, needs EX): INFINITE SUPER METER row = the EX module's extra-row hook ex_xrow
+
+
 def build(defines=None):
     spans = SPANS
+    if EX:
+        defines = dict(defines or {}, EX_MENUIN="0x%08xu" % EX["ex_menuin"], EX_POP="0x%08xu" % (EX["ex_opt"] + 3))
+        if VSMENU: defines.update(ACH_VSMENU="1", ACH_VSMODE="0x%08xu" % VSMODE_AT)     # --vsmenu: ACHIEVEMENTS on cursor 5 (tools/mtap/mtmenu.h)
+        if INFMETER:                # row drawn by our ach_imrow at the EX page's layout (tools/expatch.py LAYOUT)
+            import expatch
+            defines.update(ACH_INFMETER="1", IM_LX="%d" % expatch.LAYOUT["EX_LX"], IM_VX="%d" % expatch.LAYOUT["EX_VX0"])   # 2026-11-25: shared value columns
     if "--meter" in sys.argv:       # TEST builds with the speed meter (tools/meterpatch.py): keep its kernel ranges free
         base = SPANS if "--arcbal" in sys.argv else achbuild.SPANS          # (no ARCADE BALANCE module: whole 7600 span)
         spans = [(a, min(b, 0x80009A90) if a == 0x80009A10 else b) for a, b in base if a != 0x80009410]
@@ -53,9 +65,11 @@ def code(prev_pc0, ds, ovl_sum):
     segs, info = build(dict(PORT_OVL_SUM="0x%08xu" % ovl_sum))
     sym = info["sym"]
     A0 = achbuild.SPAN_BASE
-    hooks = [(0x800285e0, jal(A0)), (ds, jal(A0 + 0x10)), (0x80028638, jal(sym["ach_menuin"]))]
+    hooks = [(0x800285e0, jal(A0)), (ds, jal(A0 + 0x10))]
+    hooks.append((EX["ex_achmenu"], sym["ach_menuin"]) if EX else (0x80028638, jal(sym["ach_menuin"])))   # EX: its menu wrapper calls ours
     copy = achbuild.copy_stub_spans(COPY_AT, segs, hooks, prev_pc0, gd=sym.get("ach_gd"))      # (ACH_GDIAG builds only)
     inf = {k: v for k, v in info.items() if k not in ("sym", "size")}
+    if INFMETER: return dict(copy=copy, hooks=hooks, segs=segs, info=inf, imrow=sym["ach_imrow"], im=sym["ach_im"])
     return dict(copy=copy, hooks=hooks, segs=segs, info=inf)
 
 
@@ -64,7 +78,8 @@ def apply(f, lmap, exe_read, exe_write, orig, touched):
     loaded EXE and flushes; the menu overlay is patched in RAM by the runtime (port.c port_ovl).  The disc's EXE code
     and overlay files stay stock."""
     u32 = lambda a: struct.unpack("<I", exe_read(a, 4))[0]
-    assert u32(0x800285e0) == jal(0x8002d1e8) and u32(0x80028638) == jal(0x800987c0), "frame / menu hook site not stock"
+    assert u32(0x800285e0) == jal(0x8002d1e8) and u32(0x80028638) == jal(EX["ex_menuin"] if EX else 0x800987c0), "frame / menu hook site not stock"
+    if EX: assert u32(EX["ex_achmenu"]) == 0, "EX ex_achmenu not zero"
     ds = [a for a in range(PRESENT[0], PRESENT[1], 4) if u32(a) == jal(DRAWSYNC)]
     assert len(ds) == 1, "present: DrawSync call not found once: %s" % ds
     prev_pc0 = struct.unpack("<I", exe_read(EXE_BASE - EXE_HDR + 0x10, 4))[0]
@@ -83,6 +98,13 @@ def apply(f, lmap, exe_read, exe_write, orig, touched):
     assert COPY_AT + len(copy) <= COPY_END and exe_read(COPY_AT, len(copy)) == bytes(len(copy)), "copy area not zero"
     exe_write(COPY_AT, copy)
     exe_write(EXE_BASE - EXE_HDR + 0x10, struct.pack("<I", COPY_AT))
+    if INFMETER:                    # the EX module's extra row (BSS, zero in the image; the 8 MB module would own it) -> ours
+        assert u32(EX["ex_xrow"]) == 0, "EX ex_xrow not zero"
+        exe_write(EX["ex_xrow"], struct.pack("<I", c["imrow"]))
+        if "ex_imptr" in EX:        # --excard: the EX module saves / loads INFINITE SUPER METER through this pointer
+            assert u32(EX["ex_imptr"]) == 0, "EX ex_imptr not zero"
+            exe_write(EX["ex_imptr"], struct.pack("<I", c["im"]))
+        print("infinite meter: row %08x, byte %08x (ex_xrow %08x)" % (c["imrow"], c["im"], EX["ex_xrow"]))
     print("achievements: %d (%d pts), runtime %d bytes in %d spans %s (free %d), copy %08x (%d bytes), idle hook %08x" % (
         info["achievements"], info["points"], info["image"], len(c["segs"]), info["segments"], info["free"], COPY_AT, len(copy), ds[0]))
     return c

@@ -325,6 +325,8 @@ def _src_key():
     for f in ("sndpatch.py", "snd/vab.py", "snd/adpcm.py", "snd/resample.py", "snd/sinc_table.py"):
         h.update(open(os.path.join(HERE, f), "rb").read().replace(b"\r\n", b"\n"))
     h.update(repr(LEVELS).encode())
+    from snd import vab
+    if vab.pitchfix(): h.update(b"pitchfix")              # (2026-11-25) other bank bytes: own cache entry
     return h.hexdigest()[:16]
 
 
