@@ -37,7 +37,13 @@ def build(msyms=None):
     return out, syms, plan
 
 
+VSMENU = "--vsmenu" in sys.argv   # (1.1 final) VERSUS CPU main-menu row below VERSUS (tools/mtap/mtmenu.h; needs --exopt)
+EXOPT = "--exopt" in sys.argv     # 1.1 EX OPTIONS (exopt.py): no extra OPTION lines (the stock OPTION screen stays stock;
+                                  # their ranges hold exopt's code), a 7th main-menu item EX OPTIONS (state 7)
+
+
 def patches(msyms=None):
+    if EXOPT: return []
     out, syms, plan = build(msyms)
     return [(RANGES[k][0], b) for k, b in out.items()]
 
@@ -51,10 +57,23 @@ GAL_H = 0x80099e90                  # the GALLERY handler
 
 
 def overlay_patches(msyms=None):
-    S = symbols(msyms)
     W = lambda a, *w: (OVL, a - OVL_BASE, struct.pack("<%dI" % len(w), *w))
     J = lambda op, t: 0x08000000 * (op == 2) + 0x0c000000 * (op == 3) | (t >> 2 & 0x3ffffff)
     txt = lambda s: s.encode().ljust(12, b"\0")
+    if EXOPT:                     # 7 entries (the stock count / wrap words), entries 4-6 OPTION / GALLERY / EX OPTIONS
+        import exopt
+        assert AP8 is None, "--exopt: the 8 MB build's OPTION line (menus.AP8) is not ported to EX OPTIONS"
+        base = [(OVL, 0x800b5e3c + 48 - OVL_BASE, txt("OPTION") + txt("GALLERY") + txt("EX OPTIONS")),
+                W(0x800b6274, OPT_H, GAL_H, exopt.EXST)]                  # states 5, 6, 7
+        if not VSMENU: return base
+        sys.path.insert(0, os.path.join(GAME, "tools", "mtap")); import mtap4     # VERSUS CPU row (tools/mtap/mtmenu.h):
+        t = mtap4.VT8                                     # 8 lines from the EXE table (stride 13) without the achievements runtime
+        return base + [W(0x80099428, 0x2413008c),                                             # first line y 0x8c
+                       W(0x8009942c, 0x3c020000 | ((t + 0x8000) >> 16 & 0xffff)), W(0x80099434, 0x24520000 | (t & 0xffff)),
+                       W(0x800994b8, 0x2a220008), W(0x800994c0, 0x2652000d),                  # 8 lines, stride 13
+                       W(0x80099c8c, 0x28420000 | 8, 0x24020000 | 7),                                 # cursor wraps in 0..7
+                       W(0x80099e08, J(2, mtap4.SELJ), 0x00602021)]                           # START: j mt_sel_j; move a0, v1
+    S = symbols(msyms)
     return [W(0x800994b8, 0x2a220006),                        # main menu: draw 6 entries
             W(0x80099c8c, 0x28420006, 0x24020005),            #   cursor wraps in 0..5
             (OVL, 0x800b5e3c + 48 - OVL_BASE, txt("OPTION") + txt("GALLERY") + bytes(12)),

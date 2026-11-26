@@ -33,8 +33,11 @@ REPO = os.path.abspath(os.path.join(BUILDER, ".."))
 DATA = os.path.join(BUILDER, "data")
 SPRITE_DIRS = dict(base="nspm", strong="nsp", mid="nspm4", fat="nspfat2", strong_hot="nsph4")    # strong_hot: 1.1 strong tier
 EFF_OUT = ("nspm_eff", "SP_EFF1.NSP")
-ARCADE_FLAGS = ["--direct", "--shared"]               # the content set of the reference 8 MB build
-ARCADE_KEEP = "keep_v3.json"                           # extra keep-stock animations measured on the built disc (work/ap/SPEC.md 19)
+ARCADE_FLAGS = ["--direct", "--shared", "--whole"]   # 1.4 final: --whole (no mixed animations: sprite audit)               # the content set of the reference 8 MB build
+ARCADE_KEEP = "keep_v6.json"                           # 1.4 final x14_8g2: v6 = v5 + Storm direct 54540 / 56480;                           # extra keep-stock animations measured on the built disc (work/ap/SPEC.md 19); 1.4: v5 =
+                                                       # v3 minus the standing idle of Storm / Gambit / Juggernaut (+ Juggernaut's walk
+                                                       # forward, "unkeep"): the 1.3 8 MB idle bug (work/x14/NOTES.md)
+ARCADE_HOT8 = "hot8_idle6.json"                        # 1.4: tools/ap8 pre-decode order measured on that content (mkap8disc --hot8=)
 EFF_KEEP = "streak_burst,launch_ring,ring_in,burst_ring,dust_cloud,flame_wisps,electric_arcs,dust_lines,dark_burst"   # effects left stock (SPEC 17/19)
 
 
@@ -235,10 +238,20 @@ PREBAKED = [                        # (module, function): everything in tools/ t
     ("sndpatch", "code"),           # 1.2 sound banks: resident code + the sound directory's code (tools/snd)
     ("xvach", "code"),              # built-in achievements (tools/ach, --ach; part of the 1.3 release configuration)
     ("skippatch", "code"),          # 1.3: START skips the end of a match (tools/skippatch.py; default on)
+    ("skippatch", "build_c"),       # 1.4: the --ex path links the skip module itself (ARCADE BALANCE byte, GAME_FN = ex_logic)
+    ("expatch", "build"),           # 1.4: EX OPTIONS module (tools/exopt/xvex.c; --ex)
+    ("mtpatch", "code"),            # 1.4: VERSUS CPU row (common/mtap core + tools/mtap/mtmenu.h; --vsmenu)
+    ("frame", "symbols"), ("decode", "symbols"),     # 1.4: symbol tables of the 1.1 speed modules (their linked output is not shipped)
 ]
-TAGLOAD_SUBDIRS = ("", "r12/")      # 1.3: tools/tagload/r12 = the 1.2 loader, used by --nospeed / --nosound (tools/mktagdisc.py configure)
+KEY_ARGS = {                        # call-key arguments that would carry a machine path: made relative to the tools directory
+    "mtpatch.code": lambda T, args, kw: (({"cfg_sha1": hashlib.sha1(json.dumps(_enc(dict(args[0], dir=os.path.relpath(args[0]["dir"], T.tools).replace(os.sep, "/"))),
+                                                                                sort_keys=True).encode()).hexdigest()},) + tuple(args[1:]), kw),   # (the cfg holds stock words: only its SHA-1 goes into the manifest)
+}
+X14_FLAGS = ("--ex", "--vsmenu", "--achfix", "--noahead", "--st7ko", "--infmeter", "--apodlg", "--perfect", "--nofskip", "--nosmeter", "--excard", "--trsync", "--voldef", "--pitchfix", "--rdfix")      # 1.4 flags the prebaked functions read from argv (module state they set)
+TAGLOAD_SUBDIRS = ("", "r12/", "apo/", "apo8/")   # 1.4 final: apo = --apodlg loader (2 MB), apo8 = its 8 MB twin (-DAPO8)      # 1.3: tools/tagload/r12 = the 1.2 loader, used by --nospeed / --nosound (tools/mktagdisc.py configure)
 TAGLOAD_FILES = lambda names: sorted(f for f in names if f == "tagload.sym" or (f.startswith("tagload.") and f.endswith(".bin") and ".tab" not in f))
-CONTEXT_ENV = ("XV_SNDTRACE", "XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
+CONTEXT_ENV = ("XV_EXCARD8", "XV_RDFIX",   # (--excard: tools/mkap8disc.py sets it -> the 8 MB EX module differs from the 2 MB one)
+                "XV_SNDTRACE", "XV_SPEED", "UP_FC", "UP_VC", "UP_DRAW", "UP_VCRES", "UP_VC_DEFS", "UP_VC_AHEAD", "XV8_NOCACHE", "FRAME_DEBUG_SKIP", "FRAME_DEBUG_NOOVL")
 
 
 def context():
@@ -246,6 +259,8 @@ def context():
     nsppatch, speedpatch) and the developers' environment switches of tools/speed and tools/mkap8disc.py"""
     ctx = dict(nospeed="--nospeed" in sys.argv, env={k: os.environ[k] for k in CONTEXT_ENV if k in os.environ})
     if "--nosound" in sys.argv: ctx["nosound"] = True     # 1.2: the 1.1 sound path (tools/sndpatch.py; cdtile in the upload module)
+    x14 = sorted(set(a for a in sys.argv if a in X14_FLAGS))
+    if x14: ctx["x14"] = x14                              # 1.4 (absent before: the 1.0.1 / 1.1 / 1.3 keys are unchanged)
     return ctx
 
 
@@ -413,18 +428,19 @@ class Tools:
         fn = m.__name__ + "." + fname
 
         def wrapped(*args, **kw):
-            ctx = context(); key = call_key(fn, args, kw, ctx)
+            ka, kk = KEY_ARGS[fn](self, args, kw) if fn in KEY_ARGS else (args, kw)
+            ctx = context(); key = call_key(fn, ka, kk, ctx)
             if self.record:
                 res = orig(*args, **kw)
                 sha, size, rsha = self.store_blob(res)
-                self.man["calls"][key] = dict(function=fn, args=_enc(tuple(args)), kwargs=_enc(dict(kw)), context=ctx, blob=sha, size=size, resolved=rsha)
+                self.man["calls"][key] = dict(function=fn, args=_enc(tuple(ka)), kwargs=_enc(dict(kk)), context=ctx, blob=sha, size=size, resolved=rsha)
                 self.cache_events.append((fn, "baked")); self.log("%s: baked %s" % (fn, sha[:12]))
                 return res
             e = self.man["calls"].get(key)
             if e is None:
                 raise BuildError("This combination of options needs our code %s(%s), which is not prebaked in builder/data/blobs "
                                  "(the builder never compiles; the release script work/release11/record.py bakes it)."
-                                 % (fn, ", ".join(repr(x)[:40] for x in args)), code="toolchain")
+                                 % (fn, ", ".join(repr(x)[:40] for x in ka)), code="toolchain")
             self.cache_events.append((fn, "prebaked")); self.log("%s: prebaked %s" % (fn, e["blob"][:12]))
             return self.load_blob(e["blob"], e.get("resolved"), fn)
         wrapped._xvb_prebaked = self; wrapped._xvb_orig = orig
@@ -434,6 +450,12 @@ class Tools:
         """install the lookups for every PREBAKED function, and the loader files (tools/tagload) from the blobs"""
         self.mod("speedpatch")                            # puts tools/speed on sys.path (frame.py)
         if os.path.join(self.tools, "ach") not in sys.path: sys.path.insert(0, os.path.join(self.tools, "ach"))     # xvach
+        if os.path.join(self.tools, "mtap") not in sys.path: sys.path.insert(0, os.path.join(self.tools, "mtap"))   # xvmtap (1.4 --vsmenu)
+        self.mod("xvmtap")                                # puts common/mtap on sys.path (mtpatch)
+        fix = os.environ.get("XVSF_ACHFIX") == "1"        # tools/ach/xvsf/set.py reads it at import (mktagdisc sets it before
+        x = sys.modules.get("xvach")                      # its own import; here xvach is imported first): set by _achfix_env()
+        if x is not None and getattr(x, "_xvb_achfix", fix) != fix: del sys.modules["xvach"]; self.mods.pop("xvach", None)
+        self.mod("xvach")._xvb_achfix = fix
         for mn, fn in PREBAKED: self.prebake(self.mod(mn), fn)
         M = self.mod("mktagdisc")
         if not hasattr(M, "_xvb_tagsrc"): M._xvb_tagsrc = M._CONF0[0] if M._CONF0 else M.D     # tools/tagload
@@ -454,6 +476,7 @@ class Tools:
             os.makedirs(os.path.dirname(os.path.join(tag, f)), exist_ok=True)
             builtins.open(os.path.join(tag, f), "wb").write(b)
         if M._CONF0: M._CONF0 = (tag,) + tuple(M._CONF0[1:])     # mktagdisc.configure() restores D from there
+        M.PREBUILT = not self.record                     # (1.4 --apodlg: its loader is a prebaked file set too, never rebuilt here)
         M.D = tag
 
     def save_manifest(self):
@@ -466,6 +489,14 @@ class Tools:
 
     def finish(self, name):
         """the Overlay of build/<name>.bin, sealed"""
+        if self.record:                                   # 1.4 --apodlg: its loaders are compiled into this work copy (tagload/apo,
+            tag = os.path.join(self.build, "tagload")    # apo8 = the 8 MB -DAPO8 twin): record them from here, not the repository
+            for sub in ("apo/", "apo8/"):
+                d = os.path.join(tag, sub)
+                if not os.path.isdir(d): continue
+                for f in TAGLOAD_FILES(os.listdir(d)):
+                    sha, size, rsha = self.store_blob(builtins.open(os.path.join(d, f), "rb").read())
+                    self.man["files"]["tagload/" + sub + f] = sha; self.man.setdefault("resolved", {})["tagload/" + sub + f] = rsha
         ov = self.overlays[self._key(os.path.join(self.build, name + ".bin"))]
         t0 = time.time(); n = ov.seal_marked(); self.seal_time = time.time() - t0
         self.log("sealed %d sectors (EDC/ECC); %d sectors differ from or follow the original image" % (n, len(ov.dirty)))
@@ -499,8 +530,18 @@ def _argv(*args):
     finally: sys.argv = old
 
 
+def _achfix_env(flags):
+    """1.4 --achfix: tools/mktagdisc.py sets XVSF_ACHFIX=1 before it imports xvach (the set reads it at import)"""
+    if "--achfix" in flags: os.environ["XVSF_ACHFIX"] = "1"
+    else: os.environ.pop("XVSF_ACHFIX", None)
+    os.environ.pop("XV_EXCARD8", None)            # (--excard) tools/mkap8disc.py sets it for its own build; never carried into a 2 MB one
+    os.environ.pop("XV_PITCHFIX", None)
+    os.environ.pop("XV_RDFIX", None)              # (--rdfix: tools/mktagdisc.py sets expatch.RDFIX from the flag)           # (--pitchfix, tools/snd/vab.py) only the flag decides: older recipes keep their bytes
+
+
 def stage_disc(T, name, flags):
     """tools/mktagdisc.py NAME [flags] -> Overlay"""
+    _achfix_env(flags)
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc")
     T.prebake_all()
     with _argv("mktagdisc.py", name, *flags): M.main()
@@ -535,9 +576,11 @@ def stage_arcade(T, arcade, outdir, log):
 
 def stage_disc8(T, name, apdir, flags):
     """tools/mkap8disc.py NAME --ap8=DIR [flags] -> Overlay (runs the 2 MB build inside)"""
+    _achfix_env(flags)
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc"); M8 = T.mod("mkap8disc")
     T.prebake_all()
     snd8 = ["--snd8=" + apdir + "_snd8"] if os.path.isdir(apdir + "_snd8") else []
+    if "--ex" in flags: M8.HOT8 = os.path.join(T.tools, "ap8", ARCADE_HOT8)        # 1.4 (mkap8disc --hot8=; not a flag: no path in the flags)
     with _argv("mkap8disc.py", name, "--ap8=" + apdir, "--eff=" + apdir + "_eff", *snd8, *flags): M8.main()
     return T.finish(name)
 
@@ -552,36 +595,45 @@ def check_arcade(arcade, tools_dir=None):
 
 
 # ---------------------------------------------------------------- configurations
+RELEASE = "1.4"
+RELEASE_TITLE = "TAG HACK 1.4"                         # the version line (2 MB: --title=, 8 MB: --version=)
+RELEASE_X14 = ["--noahead", "--ex", "--vsmenu", "--st7ko", "--apodlg", "--perfect", "--nofskip", "--nosmeter", "--excard", "--trsync", "--voldef", "--pitchfix", "--rdfix"]   # (2026-11-26 final x14_xc6 / x14_8xc5)   # 1.4 final (x14_xc2 / x14_8xc1: + --excard, EX OPTIONS rows in the card save)        # 1.4: no predictor area, EX OPTIONS (+ in-battle options), VERSUS CPU row
+RELEASE_ACH = ["--ach", "--achfix", "--infmeter"]     # (--infmeter lives in the achievements runtime: needs --ach)                    # built-in achievements (+ the 1.4 "Last One Standing" rule)
+
+
 def tool_flags(arcade, logo=True, version=True, buttons="modern", version_text=None, extra=(), achievements=True):
     """the builder's options -> flags of tools/mktagdisc.py / tools/mkap8disc.py.
 
-    The defaults are the RELEASE configuration: boot card + version line on the main menu (2 MB: the tag24
-    image; with an arcade set: the ap8f image, whose version line is part of the 8 MB loader).
-    logo=False, version=False gives the plain build the regression references were made with."""
+    The defaults are the RELEASE configuration (1.4 = build/x14_f3, 8 MB build/x14_8g2): boot card + version line on the main menu,
+    achievements, EX OPTIONS, the VERSUS CPU row (2 MB; with an arcade set the 8 MB loader draws the version line).
+    logo=False, version=False gives the plain build.  extra --nospeed / --nosound: the 1.0.1 / 1.1 images (2 MB)."""
+    legacy = any(x in ("--nospeed", "--nosound") for x in extra)     # 1.0.1 / 1.1: never had achievements or the 1.4 modules
     f = []
     if logo: f.append("--logo")
     if arcade:
-        # tools/mkap8disc.py runs the 2 MB build itself and hands --logo and --nopad through
+        # tools/mkap8disc.py runs the 2 MB build itself and hands --logo, --nopad and the 1.4 flags through
         if not version: raise BuildError("With an arcade set the version line cannot be switched off: the 8 MB loader always draws it (it carries the 8MB indicator).", code="option")
-        if version_text: f.append("--version=" + version_text)
+        if legacy: raise BuildError("The 1.0.1 / 1.1 configurations are 2 MB only.", code="option")
+        f.append("--version=" + (version_text or RELEASE_TITLE))
         if buttons == "stock": f.append("--nopad")
     else:
-        if version: f.append("--title=" + version_text if version_text else "--title")
+        if version: f.append("--title" if legacy and not version_text else "--title=" + (version_text or RELEASE_TITLE))
         if buttons == "stock": f.append("--nopad")
-    legacy = any(x in ("--nospeed", "--nosound") for x in extra)     # 1.0.1 / 1.1: never had achievements (their hashes stay)
-    if achievements and not legacy: f.append("--ach")      # built-in achievements: part of the 1.3 release (CLI opt-out --no-achievements)
+    if not legacy:
+        f += RELEASE_X14
+        if achievements: f += RELEASE_ACH                  # (CLI opt-out --no-achievements)
     return f + list(extra)
 
 
 def output_name(arcade, tools_dir=None, flags=()):
-    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.3]" """
-    ver = "TAG HACK"
-    try:
-        tools_dir = tools_dir or os.path.join(REPO, "tools")
-        if tools_dir not in sys.path: sys.path.insert(0, tools_dir)
-        tp = importlib.import_module("titlepatch")
-        ver = tp.default(list(flags)) if not arcade else tp.DEFAULT      # --nospeed: 1.0.1, --nosound: 1.1 (2 MB)
-    except Exception: pass
+    """file name (without extension) of the result, e.g. "X-Men vs. Street Fighter (USA) [Tag Hack 1.4]" """
+    ver = RELEASE_TITLE
+    if any(x in ("--nospeed", "--nosound") for x in flags):
+        try:
+            tools_dir = tools_dir or os.path.join(REPO, "tools")
+            if tools_dir not in sys.path: sys.path.insert(0, tools_dir)
+            ver = importlib.import_module("titlepatch").default(list(flags))     # --nospeed: 1.0.1, --nosound: 1.1 (2 MB)
+        except Exception: ver = "TAG HACK"
     return "X-Men vs. Street Fighter (USA) [%s%s]" % (ver.title(), " + Restored Frames" if arcade else "")
 
 

@@ -1,6 +1,6 @@
 # Marvel Super Heroes vs. Street Fighter: Tag Team Hack (PlayStation)
 
-**Version 1.0**, 2026, by pepa
+**Version 1.1**, 2026, by pepa
 
 [![Marvel Super Heroes vs Street Fighter Tag Hack trailer](https://img.youtube.com/vi/ms0N8HAE9A0/maxresdefault.jpg)](https://youtu.be/ms0N8HAE9A0)
 
@@ -37,10 +37,17 @@ How to build the image: [README](../../README.md#how-to-patch). Other pages: [ch
   START BUTTON TO SHORT CUT" blinks after a win.
 - **Achievements** built in: 46 achievements adapted from the RetroAchievements set by Lowsun, an ACHIEVEMENTS
   page in the main menu, popups, progress in its own memory card file. [The list](achievements.md).
-- **Menus:** CROSS OVER is removed from the main menu (every mode is a tag mode now). OPTION MODE has a
-  **SPEED METER** line (off by default): a small frame-rate readout during fights.
+- **VERSUS CPU** in the main menu, below VERSUS: the player who picks it (controller 1 or 2) chooses both teams
+  and fights the CPU, at the OPTION difficulty. Achievements do not count there.
+- **EX OPTIONS** in the main menu (not saved; reset at power-on): **STAGE ANIM** ON / OFF, **ACHIEVEMENT POPUP**
+  ON / OFF, **ARCADE BALANCE** OFF / ON (default OFF; ON = the arcade's super meter gain, meter when blocking,
+  counter hits and per-character defence) and **INFINITE SUPER METER** OFF / ON (default OFF; ON keeps every
+  fighter's meter full, both teams; achievements do not unlock while it is ON).
+- **Norimaro** is selectable (he is complete on the US disc; only the links into his select-screen cell were cut),
+  with an English ending text of our own.
+- **Menus:** CROSS OVER is removed from the main menu (every mode is a tag mode now).
 - **Boot cards:** PEPA SOFT HOUSE, then a notice that this is a free fan patch (portraits taken from your disc).
-  The main menu shows the version, "TAG HACK 1.0".
+  The main menu shows the version, "TAG HACK 1.1".
 
 ## 8 MB
 
@@ -50,14 +57,19 @@ every supported set gives the same frames) and the image carries the 8 MB loader
 
 - all four characters in their original sprite format (no slower encodings), cached between fights for shorter
   loading, and full-quality sound;
-- animation frames the PlayStation port dropped, rebuilt from the arcade graphics at build time, with **ARCADE
-  FRAMES ON / OFF** in OPTION MODE;
+- animation frames the PlayStation port dropped, rebuilt from the arcade graphics at build time (every restored
+  animation is checked against the arcade data: an animation is restored completely or not at all);
+- **enhanced voices**: the character and announcer voices are streamed from the extra memory instead of sharing the
+  sound chip's memory, so they play at full quality, and with an arcade set 345 of them are the arcade's own
+  recordings (higher sample rate, full length) converted at build time;
 - "8MB" before the version line on the main menu.
+
+The 8 MB images have every 1.1 feature (EX OPTIONS, VERSUS CPU, Norimaro, ARCADE BALANCE, INFINITE SUPER METER).
 
 Restored frames by character:
 
 - **Restored:** Cyclops, Captain America, Hulk, Wolverine, Shuma-Gorath, Omega Red, Spider-Man, Blackheart,
-  Dhalsim, Zangief, Sakura, Cyber-Akuma, Mech-Zangief and Dark Sakura; a few frames for Ryu and Ken.
+  Dhalsim, Zangief, Sakura, Norimaro, Cyber-Akuma, Mech-Zangief and Dark Sakura; a few frames for Ryu and Ken.
 - **Not restored:** Apocalypse, Chun-Li,
   M. Bison, Akuma, Dan, Shadow.
 
@@ -88,14 +100,13 @@ character data is appended after the original data. It still fits an 80-minute C
 With the default options (the web patcher's result):
 
 ```
-Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.0].bin    SHA1  753e7b13130bc05a242eb53d72cdea8562a2be6d
-Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.0 + Restored Frames].bin
-  with mshvsf (or mshvsfu + mshvsf)                                 SHA1  e40f9fc4171c16df7bb8f9b93432d2849640b16d
+Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.1].bin    SHA1  0c782cd7f2addad8a13334de3ab76295eaac1c45
+Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.1 + Restored Frames].bin
+  with mshvsf (or mshvsfu + mshvsf)                                 SHA1  ae2f516685afd86972568c15c7bdeac6daa6fbfe
 ```
 
-Command line: the 8 MB loader without an arcade set (`--ram8`) `50190284dff41ad55fb13b60334ab6580e7ccb90`.
-Without achievements (`--no-achievements`): 2 MB `fb9ca317608281bc4f98d2def1ff198be719baf9`, `--ram8`
-`6d976978dc411dba7c320eac22593dbc11df8e1c`, restored frames `2e8d5984a816909e4d4749b56b8a0ee9decc675f`.
+Command line: the 8 MB loader without an arcade set (`--ram8`, "[Tag Hack 1.1 8 MB]"; stock voices, streamed) `0d28aa3902a1e65f4c80b3173bb960474a70df29`.
+Without achievements (`--no-achievements`): 2 MB `faeea6e8c08c703a20b99c3d9126377e4c9ab90f`, `--ram8` `3df681f805e1158c05b5d69aeb8e75ce1be2a61a`.
 
 ## Compatibility
 
@@ -108,5 +119,8 @@ with a PS2 BIOS (same behaviour).
 - Heavy teams slow down in supers and team supers, more than the original's two-character fights: the game has
   to unpack more sprite data. The 8 MB mode avoids most of this.
 - On 2 MB some sound effects play at a lower sample rate in four-character fights.
+- When the final-boss fix fires (your partner on point at the knock-out), only the partner appears in the
+  post-fight dialogue.
+- One or two players: there is no multitap support.
 - In about 0.07 % of teams (one character of a very large team on the tightest stages) a few sprite tiles that
   never showed up in testing are left blank to make the team fit.

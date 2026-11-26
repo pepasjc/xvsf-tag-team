@@ -31,8 +31,8 @@ def options_available():
     exp = pipeline.known().get("expected", [])
     has = lambda f: any(sorted(f) == e["flags"] for e in exp)
     ram8 = any(e["variant"] == "8mb" and not e.get("arcade_set") for e in exp)
-    return json.dumps(dict(ram8=ram8, logo_off=has(pipeline.tool_flags(logo=False)), meter_on=has(pipeline.tool_flags(meter="on")),
-                           meter_none=has(pipeline.tool_flags(meter="none")), version=pipeline.output_name(False), blobs=len(calls)))
+    return json.dumps(dict(ram8=ram8, logo_off=has(pipeline.tool_flags(logo=False)), meter_on=False,        # (1.1: no speed meter in the release)
+                           meter_none=False, version=pipeline.output_name(False, pipeline.RELEASE_TITLE), blobs=len(calls)))
 
 
 def prepare(disc):
@@ -157,8 +157,8 @@ def expected(variant, setname, flags_json):
     return e["sha1"] if e else ""
 
 
-def tool_flags(logo, meter):
-    return json.dumps(pipeline.tool_flags(logo=bool(logo), meter=str(meter)))
+def tool_flags(logo, meter, ap8=False):
+    return json.dumps(pipeline.tool_flags(logo=bool(logo), meter=str(meter), ap8=bool(ap8)))
 
 
 _arc = {}

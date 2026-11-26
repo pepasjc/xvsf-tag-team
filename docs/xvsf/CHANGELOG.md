@@ -1,5 +1,35 @@
 # X-Men vs. Street Fighter Tag Team Hack: changelog
 
+## 1.4 (2026)
+
+A VERSUS CPU mode, an EX OPTIONS menu, cut arcade content restored, and fixes.
+
+- Main menu: **VERSUS CPU**, right below VERSUS MODE. The player who confirms it (controller 1 or 2) picks both
+  teams; the other side is played by the CPU, at the difficulty set in OPTION MODE. VERSUS MODE itself is
+  unchanged (two players). Achievements do not count in VERSUS CPU.
+- Main menu: **EX OPTIONS** (not saved, reset at power-on):
+  - ARCADE BALANCE OFF / ON (moved here from OPTION MODE; still saved with the OPTION MODE memory-card save).
+  - STAGE ANIM FULL / OFF: OFF stops the animated stage objects, which saves time in heavy scenes.
+  - ACHIEVEMENT POPUP ON / OFF.
+  - INFINITE SUPER METER OFF / ON (default OFF): every fighter's meter stays full, both teams; achievements do not
+    unlock while it is ON.
+  - 8 MB: ARCADE FRAMES ON / OFF is an EX OPTIONS row now; OPTION MODE is the game's own again.
+- **Apocalypse's pre-fight dialogue** from the Japanese arcade version is back, with an English text of our own
+  (drawn with the game's own font from your disc).
+- **The chemical plant explodes on the first knock-out**, as in the arcade (the stage changes in the middle of the
+  fight).
+- **PERFECT** needs the whole team undamaged, as in the arcade (it was given when only the last character standing
+  was undamaged).
+- 8 MB: Storm, Gambit and Juggernaut no longer stand still in their idle pose; Juggernaut's walk forward is
+  animated again. Every restored animation is now checked against the arcade data and restored completely or not at
+  all (Gambit, Magneto and two of Storm's animations mixed arcade and PlayStation frames in 1.3).
+- Achievement "Last One Standing" now needs the win to come from your second character after your first pick was
+  knocked out (it also unlocked when the second pick had been knocked out).
+- Removed the 1.1 decode-ahead predictor routine: it had nothing left to predict since 1.2 and could in rare
+  cases jump into memory that another part of the game had reused.
+- One or two players, as in the original game: there is no multitap support.
+- Version line TAG HACK 1.4.
+
 ## 1.3 (2026)
 
 Fixes for the bugs reported on 1.2, a faster after-match flow, an ARCADE BALANCE option and built-in achievements.

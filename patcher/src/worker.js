@@ -26,7 +26,7 @@
  * Cancelling = the page terminates the worker (and with it its sub-workers) and starts a new one.
  */
 "use strict";
-let py = null, web = null, mweb = null, games = null, cfg = null, zopfliReady = false;
+let py = null, web = null, mweb = null, vweb = null, games = null, cfg = null, zopfliReady = false;
 let mountSeq = 0, discPath = null;
 let disc = null, discInfo = null, arcade = [], arcadeFiles = [], game = null;
 let replyPort = null;                         // a sub-worker answers through the port the page gave it
@@ -74,8 +74,14 @@ async function init(c) {
   web.use_js_kernels(XVK.forPyodide());
   mweb = py.pyimport("mshb.web");
   mweb.use_js_kernels(MSK.forPyodide(), XVK.forPyodide());
+  if (py.FS.analyzePath("/xvsf/builder/mvcb/web.py").exists) {          // MvC (builder/mvcb): before games (it enables the game there)
+    vweb = py.pyimport("mvcb.web");
+    vweb.use_js_kernels(MVK.forPyodide(), MSK.forPyodide(), XVK.forPyodide());
+  }
   games = py.pyimport("games");
-  post({ type: "ready", options: { xvsf: JSON.parse(web.options_available()), mshvsf: JSON.parse(mweb.options_available()) } });
+  const options = { xvsf: JSON.parse(web.options_available()), mshvsf: JSON.parse(mweb.options_available()) };
+  if (vweb) options.mvc = JSON.parse(vweb.options_available());
+  post({ type: "ready", options });
 }
 
 async function needZopfli() {
@@ -106,11 +112,11 @@ function verifyArcade(files) {
   const paths = files.map((f, i) => dir + "/set" + i + ".zip");
   // the set belongs to the game of the disc; before a disc is recognised, the first game that accepts it
   let r = null;
-  for (const g of game ? [game] : ["xvsf", "mshvsf"]) {
-    r = JSON.parse((g === "mshvsf" ? mweb : web).check_arcade(JSON.stringify(paths))); r.game = g;
+  for (const g of game ? [game] : (vweb ? ["xvsf", "mshvsf", "mvc"] : ["xvsf", "mshvsf"])) {
+    r = JSON.parse((g === "mvc" ? vweb : g === "mshvsf" ? mweb : web).check_arcade(JSON.stringify(paths))); r.game = g;
     if (r.status === "ok") break;
   }
-  if (!game && r.status !== "ok") r.message = "This is not an arcade ROM set of X-Men vs. Street Fighter or Marvel Super Heroes vs. Street Fighter. " + r.message;
+  if (!game && r.status !== "ok") r.message = "This is not an arcade ROM set of X-Men vs. Street Fighter" + (vweb ? ", Marvel Super Heroes vs. Street Fighter or Marvel vs. Capcom. " : " or Marvel Super Heroes vs. Street Fighter. ") + r.message;
   files.forEach((f, i) => { r.message = r.message.split(paths[i]).join(f.name); });       // messages name the user's file, not the mount point
   if (r.status === "ok") { arcade = paths; arcadeFiles = files; }
   post({ type: "arcade", result: r });
@@ -160,6 +166,7 @@ function pyParallel(jobs, onResult, onDone, n) {
       const i = next++, j = jobs[i];
       if (j.kind === "spr") { const data = j.data(); w.postMessage({ type: "spr_job", i, tier: j.tier, char: j.char, data }, [data.buffer]); }
       else if (j.kind === "snd") { const data = j.data(); w.postMessage({ type: "snd_char", i, char: j.char, data }, [data.buffer]); }
+      else if (j.kind === "msnd") { const data = j.data(); w.postMessage({ type: "msnd", i, name: j.name, env: j.env, data }, [data.buffer]); }
       else w.postMessage({ type: "arc_job", i, disc: j.disc, arcade: j.arcade });
     };
     for (let k = 0; k < Math.min(n, jobs.length); k++) {
@@ -175,7 +182,7 @@ function pyParallel(jobs, onResult, onDone, n) {
       };
       w.onerror = (ev) => fail(ev.message || "error");
       subs.push(w);
-      w.postMessage({ type: "spr_init", pyodide: cfg.pyodide, bundle: cfg.bundle.slice(0) });
+      w.postMessage({ type: "spr_init", pyodide: cfg.pyodide, bundle: cfg.bundle.slice(0), game });
     }
   });
 }
@@ -190,8 +197,13 @@ let sub = null, subPy = null;                 // a Python sub-worker's own Pyodi
 async function sprInit(m) {
   subPy = await loadRuntime(m.pyodide, m.bundle, true);
   subPy.pyimport("xvb.web").use_js_kernels(XVK.forPyodide());      // the sound kernels (tools/snd) too
-  sub = subPy.pyimport("mshb.web");
-  sub.use_js_kernels(MSK.forPyodide(), XVK.forPyodide());
+  if (m.game === "mvc") {                                           // MvC: one sound bank per job (builder/mvcb/web.py)
+    sub = subPy.pyimport("mvcb.web");
+    sub.use_js_kernels(MVK.forPyodide(), MSK.forPyodide(), XVK.forPyodide());
+  } else {
+    sub = subPy.pyimport("mshb.web");
+    sub.use_js_kernels(MSK.forPyodide(), XVK.forPyodide());
+  }
   post({ type: "spr_ready" });
 }
 function sprJob(m) {
@@ -201,6 +213,11 @@ function sprJob(m) {
 }
 function sndJob(m) {
   const names = JSON.parse(sub.sound_char(m.char, m.data)), files = {}, bufs = [];
+  for (const name of names) { const b = sub.sound_file(name), u8 = b.toJs(); b.destroy(); files[name] = u8; bufs.push(u8.buffer); }
+  post({ type: "snd_char_done", i: m.i, files }, bufs);
+}
+function mvSndJob(m) {
+  const names = JSON.parse(sub.sound_bank(m.name, m.data, JSON.stringify(m.env))), files = {}, bufs = [];
   for (const name of names) { const b = sub.sound_file(name), u8 = b.toJs(); b.destroy(); files[name] = u8; bufs.push(u8.buffer); }
   post({ type: "snd_char_done", i: m.i, files }, bufs);
 }
@@ -256,6 +273,8 @@ async function buildMsh(flags, ram8) {
   // every long job in sub-workers that run Python themselves, longest first: the 8 MB arcade frames, the sound levels
   // (one character's bank per job), the sprite tiers (one tier of one character per job)
   const progress = makeProgress();
+  // 1.1 8 MB with an arcade set: the arcade voices (tools/snd/sn8build.py: its peak limiter uses scipy.ndimage)
+  if (arcade.length) { post({ type: "status", text: "Loading scipy" }); await py.loadPackage("scipy", { messageCallback: () => {} }); }
   progress("extract", 0, "");
   mweb.prepare(discPath);
   progress("extract", 1, "");
@@ -289,10 +308,28 @@ async function buildMsh(flags, ram8) {
   return { w: mweb, info: JSON.parse(mweb.build(discPath, JSON.stringify(arcade), JSON.stringify(flags), "", discInfo.sha1, discInfo.size, progress, log, !!ram8)) };
 }
 
+async function buildMvc() {
+  // MvC (builder/mvcb): this worker verifies, extracts and rebuilds the graphics files; the sound banks (one per job) go to
+  // sub-workers with their own Pyodide; then the build here (its sound stage finds every bank made).  With the arcade
+  // set: arcade frames (in process) + arcade voices (tools/snd/sn8build.py: scipy)
+  const progress = makeProgress();
+  if (arcade.length) { post({ type: "status", text: "Loading scipy" }); await py.loadPackage("scipy", { messageCallback: () => {} }); }
+  const banks = JSON.parse(vweb.prepare(discPath, JSON.stringify(arcade), discInfo.sha1, discInfo.size, progress, log));
+  const bytesOf = (f) => { const b = f(), u = b.toJs(); b.destroy(); return u; };
+  const jobs = banks.map(([name, env]) => ({ kind: "msnd", name, env, data: () => bytesOf(() => vweb.sound_src(name)) }));
+  const cores = (self.navigator && navigator.hardwareConcurrency) || 2, nPy = Math.max(1, Math.min(5, cores - 1));
+  const tS = Date.now();
+  progress("sound", 0, "");
+  await pyParallel(jobs, (j, r) => { for (const [name, u8] of Object.entries(r.files)) vweb.sound_put(name, u8); },
+                   (d) => progress("sound", d / jobs.length, "bank " + d + " of " + jobs.length), nPy);
+  log("sound: " + jobs.length + " banks in " + nPy + " sub-workers in " + ((Date.now() - tS) / 1000).toFixed(1) + " s");
+  return { w: vweb, info: JSON.parse(vweb.build(discPath, JSON.stringify(arcade), "", discInfo.sha1, discInfo.size, progress, log)) };
+}
+
 async function build(flags, ram8) {
   if (!discInfo) throw new Error("no verified disc image");
   const t0 = Date.now();
-  const { w, info } = game === "mshvsf" ? await buildMsh(flags, ram8) : await buildXvsf(flags);
+  const { w, info } = game === "mvc" ? await buildMvc() : game === "mshvsf" ? await buildMsh(flags, ram8) : await buildXvsf(flags);
   if (!info.ok) { post({ type: "failed", code: info.code, message: info.message }); return; }
   const progress = makeProgress();
   // checksum of the result, streamed
@@ -326,6 +363,7 @@ async function handle(m) {
     else if (m.type === "spr_job") sprJob(m);
     else if (m.type === "arc_job") arcJob(m);
     else if (m.type === "snd_char") sndJob(m);
+    else if (m.type === "msnd") mvSndJob(m);
   } catch (e) {
     post({ type: "error", message: String((e && e.message) || e), during: m.type });
   }

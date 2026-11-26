@@ -1,0 +1,17 @@
+#define DX_AT 0x801fe000u
+#define DX_MSF 0x00342740u
+#define DX_SIZE 0x000005b0u
+#define DX_AT2 0x8000a100u
+#define DX_MSF2 0x00332740u
+#define DX_SIZE2 0x00000798u
+#define DX_ST 0x8000f840u
+#define DX_NST 0x000001a8u
+#define DX_H1 0x80022a18u
+#define DX_H1W 0x0c002840u
+#define DX_H1W0 0x0c004619u
+#define DX_H2 0x8008c434u
+#define DX_H2W 0x0c002844u
+#define DX_H2W0 0x0c006f52u
+#define DX_H3 0x80022a20u
+#define DX_H3W 0x0c002842u
+#define DX_H3W0 0x0c004216u

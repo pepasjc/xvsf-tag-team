@@ -1,0 +1,9 @@
+#define UP_AT 0x8000f040u
+#define UP_MSF 0x00352740u
+#define UP_SIZE 584
+#define UP_TAB 0x8000a040u
+#define UP_NTAB 524
+#define UP_H1 0x800118ccu
+#define UP_H1W 0x08003c10u
+#define UP_H2 0x8008c5ccu
+#define UP_H2W 0x0c003c60u

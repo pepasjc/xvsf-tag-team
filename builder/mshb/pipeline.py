@@ -62,9 +62,13 @@ ROOT_SPEC = [
     ("games/mshvsf/tools/tagload", lambda f: _py(f) and f in ("mktag.py", "tiercost.py"), False),
     ("games/mshvsf/tools/ap8", lambda f: f == "mkap8.py", False),
     ("games/mshvsf/tools/ap", lambda f: f == "build8.py", False),
-    ("games/mshvsf/tools/gameplay", lambda f: f in ("allpatches.py", "tagmode.py", "menuversion.py", "pad.py", "menus.py", "cyber.py", "training.py"), False),
+    ("games/mshvsf/tools/gameplay", lambda f: f in ("allpatches.py", "tagmode.py", "menuversion.py", "pad.py", "menus.py", "cyber.py", "training.py",
+                                                    "cyswap.py", "exopt.py", "arcbal.py", "norimaro.py"), False),   # 1.1: Cyber-Akuma fix, EX OPTIONS, ARCADE BALANCE, Norimaro
+    ("games/mshvsf/tools/l2", lambda f: f in ("l2.py", "g2get.py", "g2pack.py"), False),                   # 1.1: packed frame groups (--l2g)
+    ("games/mshvsf/tools/mtap", lambda f: f == "mtap4.py", False),                                         # 1.1: VERSUS CPU row (--vsmenu)
+    ("common/mtap", lambda f: f in ("mtpatch.py", "mtbuild.py"), False),                                    # (shared VERSUS CPU core: its patch list)
     ("games/mshvsf/tools/logo", lambda f: f in ("mshcards.py", "mshcard2.bin"), False),
-    ("games/mshvsf/tools/snd", lambda f: f in ("sndbank.py", "sndbuild.py"), False),
+    ("games/mshvsf/tools/snd", lambda f: f in ("sndbank.py", "sndbuild.py", "sn8build.py", "arcvox.json"), False),   # 1.1 8 MB: voice streaming (+ arcade voices)
     ("games/mshvsf/tools/speed", lambda f: f in ("a0mem.py", "parse.py", "ahead.py", "meter.py", "slib.py"), False),
     ("games/mshvsf/tools/ach", lambda f: f in ("mshach.py", "set.py"), False),          # --ach (built-in achievements)
     ("games/mshvsf/tools/skip", lambda f: f == "mshskip.py", False),                    # START skips the end of a match
@@ -73,6 +77,7 @@ ROOT_SPEC = [
 # record mode (developers): the tools compile our code, so their sources come along (everything but caches/objects)
 RECORD_SPEC = [("games/mshvsf/tools", lambda f: not f.endswith((".pyc", ".o", ".elf")), True),
                ("common/dsp", lambda f: not f.endswith(".pyc"), True),
+               ("common/mtap", lambda f: not f.endswith((".pyc", ".o", ".elf")), True),
                ("tools", lambda f: not f.endswith(".pyc"), True)]
 SKIP_DIRS = ("__pycache__", "obj", "mister", "test")
 
@@ -81,7 +86,7 @@ SKIP_DIRS = ("__pycache__", "obj", "mister", "test")
 # by work/mshvsf_release/record.py from the sources it baked: development in games/mshvsf/tools goes on without
 # touching the release builder (and the blobs always match the tools that use them).
 SNAP = os.path.join(DATA, "tools")
-SNAP_PREFIXES = ("games/mshvsf/", "common/dsp/")
+SNAP_PREFIXES = ("games/mshvsf/", "common/dsp/", "common/mtap/")
 
 
 def root_files(spec=ROOT_SPEC, repo=REPO, snapshot=True):
@@ -321,6 +326,7 @@ PREBAKED = [
     ("mktag", "build_blob"),        # loader blob + resident glue + GPU pool cap (tools/tagload: tagload.c, glue.S, snd.c)
     ("mkap8", "build_blob8"),       # the 8 MB loader blob (tools/ap8: ap8.c, entry8.S + the 2 MB loader)
     ("mkap8", "menu_part"),         # 8 MB menu code (ap8menu.S)
+    ("mkap8", "build_s8"),          # 1.1 8 MB voice streaming engine (tools/ap8/s8: s8.c, snd8e.c), a disc file
     ("sndbuild", "hook"),           # sound unload hook (unlhook.S)
     ("meter", "parts"),             # speed meter (meter.S)
     ("allpatches", "patches"), ("allpatches", "overlay_patches"),       # gameplay layer (tagmode, pad, menus, cyber, version line)
@@ -329,9 +335,22 @@ PREBAKED = [
     ("mshcards", "card1"), ("mshcards", "card2_stub"),                 # boot card stubs (the card 2 picture is composed at build time)
     ("mshach", "code"),             # built-in achievements (--ach; tools/ach runtime + games/mshvsf/tools/ach)
     ("mshskip", "code"),            # START skips the end of a match (games/mshvsf/tools/skip; default on, --noskip)
+    ("cyswap", "build"),            # 1.1 --cyswap: post-boss scene with the partner on point (gameplay/cyswap.S)
+    ("exopt", "exe_build"), ("exopt", "screen"),     # 1.1 --exopt: EX OPTIONS / pause rows / FRAME SKIP / STAGE ANIM / ARCADE BALANCE
+    ("l2", "image"), ("l2", "gate"), ("l2", "_asm"),  # 1.1 --l2g: packed frame groups (g2get image, gate, reader sites)
+    ("mtpatch", "code"),            # 1.1 --vsmenu: the VERSUS CPU core (common/mtap + games/mshvsf/tools/mtap)
 ]
+KEY_ARGS = {                        # call-key arguments that would carry a machine path: made relative to the tool root
+    "mtpatch.code": lambda T, args, kw: (({"cfg_sha1": hashlib.sha1(json.dumps(_enc(dict(args[0], dir=os.path.relpath(args[0]["dir"], T.root).replace(os.sep, "/"))),
+                                                                                sort_keys=True).encode()).hexdigest()},) + tuple(args[1:]), kw),   # (the cfg holds stock words: only its SHA-1 goes into the manifest)
+}
 ARGS_IGNORED = {"sndbuild.hook"}                       # its arguments are the compiler prefix and an object directory
-CONTEXT_FLAGS = ("--nospeed", "--noahead", "--meter", "--meteron", "--stockmeter", "--nodsh", "--nologo")
+CONTEXT_FLAGS = ("--nospeed", "--noahead", "--meter", "--meteron", "--stockmeter", "--nodsh", "--nologo",
+                 "--mcfix", "--exopt", "--frameskip", "--stageanim", "--achpop", "--fpsmeter", "--l2g", "--cyswap", "--arcbal", "--vsmenu",
+                 "--sndverify", "--pstall",      # 1.1 (absent before: the 1.0 keys are unchanged)
+                 "--nori", "--infmeter", "--nosmrow", "--sn8full",    # 1.1 final (m11_f6 / mshvsf_ap8_f5)
+                 "--excard",                                          # 1.1 final 2026-11-24: EX OPTIONS rows in the card save
+                 "--galfix")                                          # 2026-11-25 m11_gf1: a0mem.py GALFIX (read at import)
 FILE_BLOBS = {"dshdec.bin": ("work", "dsp", "dsh", "dshdec.bin")}     # the DSH1 decoder (common/dsp/dsh.py build mshvsf)
 
 
@@ -371,8 +390,8 @@ class Tools:
         self.overlays = {}; self.cache_events = []; self.man = manifest()
         self._corpus = None; self._files = {}
         self.purge()
-        for p in [os.path.join(self.G, "tools", d) for d in ("tagload", "ap8", "ap", "gameplay", "speed", "snd", "logo", "ach", "skip")] + \
-                 [self.G + "/tools", os.path.join(self.root, "tools"), os.path.join(self.root, "common", "dsp")]:
+        for p in [os.path.join(self.G, "tools", d) for d in ("tagload", "ap8", "ap", "gameplay", "speed", "snd", "logo", "ach", "skip", "l2", "mtap")] + \
+                 [self.G + "/tools", os.path.join(self.root, "tools"), os.path.join(self.root, "common", "dsp"), os.path.join(self.root, "common", "mtap")]:
             if p not in sys.path: sys.path.insert(0, p)
         self.mods = {}
 
@@ -479,12 +498,14 @@ class Tools:
         def after(res):                                   # side effects of the original that the tools rely on
             if fn == "mkap8.build_blob8":
                 sym = res[2]
-                sys.modules["menus"].AP8 = (sym["tl_dbg"] + 13, sym["tl_dbg"] + 15)
+                if "--exopt" not in sys.argv:            # (as mkap8.build_blob8: the 1.1 EX OPTIONS build has no OPTION line)
+                    sys.modules["menus"].AP8 = (sym["tl_dbg"] + 13, sym["tl_dbg"] + 15)
                 wrapped.sym = sym
             return res
 
         def wrapped(*args, **kw):
             ka = () if fn in ARGS_IGNORED else args; kk = {} if fn in ARGS_IGNORED else kw
+            if fn in KEY_ARGS: ka, kk = KEY_ARGS[fn](self, ka, kk)
             ctx = self.context()
             key = hashlib.sha1(json.dumps([fn, _enc(tuple(ka)), _enc(dict(kk)), ctx], sort_keys=True).encode()).hexdigest()
             if self.record:
@@ -496,6 +517,8 @@ class Tools:
                 return res
             e = self.man["calls"].get(key)
             if e is None:
+                if os.environ.get("MSHB_DUMP_MISSING"):
+                    json.dump([fn, _enc(tuple(ka)), _enc(dict(kk)), ctx], open(os.environ["MSHB_DUMP_MISSING"], "w"))
                 raise BuildError("This combination of options needs our code %s(%s), which is not prebaked in builder/data/mshvsf/blobs "
                                  "(the builder never compiles; work/mshvsf_release/record.py bakes it)." % (fn, ", ".join(repr(x)[:40] for x in ka)), code="toolchain")
             self.cache_events.append((fn, "prebaked")); self.log("%s: prebaked %s" % (fn, e["blob"][:12]))
@@ -504,6 +527,8 @@ class Tools:
         setattr(m, fname, wrapped)
 
     def prebake_all(self, ap8=False):
+        """(called with the build's argv in sys.argv: mktag.py reads --l2g / --nodsh at import)"""
+        if "--l2g" in sys.argv: self.prebake(self.mod("l2"), "image")      # mktag.py runs l2.image() at import
         mods = ["mktag"] + (["mkap8"] if ap8 else [])
         for n in mods: self.mod(n)
         for mn, fn in PREBAKED:
@@ -555,37 +580,49 @@ class _Subprocess:
 INTERNAL = {"2mb": "mshvsf_tag", "8mb": "mshvsf_ap8"}
 
 
-def stage_disc(T, flags, content=None, ap8=False):
+def stage_disc(T, flags, content=None, ap8=False, arcade=()):
     """tools/tagload/mktag.py NAME [flags]  or  tools/ap8/mkap8.py NAME [--content DIR] [flags]  -> Overlay.
     ap8 without content: the 8 MB loader without restored frames (all four characters full from upper RAM)"""
     ap8 = ap8 or content is not None
-    T.prebake_all(ap8)
     name = INTERNAL["8mb" if ap8 else "2mb"]
     if ap8:
-        argv = ["mkap8.py", name] + (["--content", content] if content else []) + list(flags)
-        with _argv(*argv): T.mod("mkap8").main(argv)
+        argv = ["mkap8.py", name] + (["--content", content] if content else []) + list(flags) + (
+            ["--sn8arc"] + list(arcade) if content and arcade else [])          # 1.1: the arcade voices from the same set
+        with _argv(*argv): T.prebake_all(ap8); T.mod("mkap8").main(argv)
     else:
         argv = ["mktag.py", name] + list(flags)
-        with _argv(*argv): T.mod("mktag").main(argv)
+        with _argv(*argv): T.prebake_all(ap8); T.mod("mktag").main(argv)
     return T.finish(name)
 
 
 # ---------------------------------------------------------------- configurations
-RELEASE_FLAGS = ["--meter"]                            # v10 release: speed meter built in, off until switched on in OPTION
+RELEASE = "1.1"
+RELEASE_TITLE = "TAG HACK 1.1"                          # 2 MB = games/mshvsf/build/m11_f6, 8 MB = mshvsf_ap8_f5
+RELEASE_FLAGS = ["--meter"]                            # the meter is built (its flag word holds the EX option bytes); 1.1 has no row for it
+RELEASE_11 = ["--mcfix", "--exopt", "--stageanim", "--l2g", "--cyswap", "--arcbal", "--vsmenu", "--nori", "--infmeter", "--nosmrow",
+              "--excard", "--galfix"]   # (2026-11-25 --galfix: m11_gf1 / mshvsf_ap8_gf1) 1.1, 2 MB (--excard: EX OPTIONS rows saved with the game's memory card save, 2026-11-24)
+RELEASE8_TITLE = RELEASE_TITLE                          # 8 MB loader (--ram8 / --arcade): the 1.1 set without --l2g (2 MB only)
+RELEASE8 = [f for f in RELEASE_11 if f != "--l2g"] + ["--sn8full"]   # + voice streaming (arcade voices with an arcade set)
 
 
-def tool_flags(logo=True, meter="off", extra=(), achievements=True):
+def tool_flags(logo=True, meter="off", extra=(), achievements=True, ap8=False):
     """the builder's options -> flags of tools/tagload/mktag.py (and tools/ap8/mkap8.py, which hands them on).
-    meter: "off" (in the OPTION menu, off at boot; the release), "on" (on at boot), "none" (no meter code)"""
+    meter: "off" (in the OPTION menu, off at boot; the release), "on" (on at boot), "none" (no meter code).
+    2 MB = the 1.1 release (its EX OPTIONS menu needs the meter: "none" is refused); ap8 (8 MB loader) = 1.0.1."""
     f = []
     if meter in ("off", "on"): f.append("--meter")
     if meter == "on": f.append("--meteron")
     if not logo: f.append("--nologo")
-    if achievements: f.append("--ach")                    # built-in achievements: part of the 1.0 release (CLI opt-out --no-achievements)
+    if achievements: f.append("--ach")                    # built-in achievements (CLI opt-out --no-achievements)
+    if meter == "none": raise BuildError("--meter none: the 1.1 image keeps its EX option bytes in the meter's flag word; use --meter off.", code="option")
+    if meter == "on": raise BuildError("--meter on: the 1.1 release has no speed meter (development builds only).", code="option")
+    f += (RELEASE8 if ap8 else RELEASE_11) + (["--achpop"] if achievements else []) + ["--title=" + (RELEASE8_TITLE if ap8 else RELEASE_TITLE)]
     return f + list(extra)
 
 
-def version_text(root=None):
+def version_text(root=None, flags=()):
+    t = next((a.split("=", 1)[1] for a in flags if a.startswith("--title=")), None)
+    if t: return t
     try:
         return importlib.import_module("menuversion").DEFAULT
     except Exception:
@@ -653,10 +690,27 @@ def run(disc, work, root=None, arcade=(), flags=(), name=None, jobs=1, progress=
                 stage_arcade(root, list(arcade), disc, content, log)
     T = Tools(root, disc, record, log)
     with stage("disc"), contextlib.redirect_stdout(buf):
-        ov = stage_disc(T, list(flags), content, ap8)
-        ver = version_text()
+        ov = stage_disc(T, list(flags), content, ap8, list(arcade))
+        ver = version_text(flags=flags)
     buf.flush()
     T.save_manifest()
+    if (arcade or ap8) and os.environ.get("MSHB_NODUAL") != "1":
+        # (2026-11-24, 1.1 final mshvsf_ap8_f11) DUAL image: the 2 MB build with the same options (= the 2 MB release disc)
+        # + this 8 MB build appended, switched over only by a boot-time 8 MB test (mshb/dual.py): in 2 MB mode the
+        # 8 MB disc runs exactly the 2 MB disc's code and data
+        from mshb import dual
+        fl = list(flags); k = next(i for i in range(len(fl)) if fl[i:i + len(RELEASE8)] == RELEASE8)
+        flags2 = fl[:k] + RELEASE_11 + fl[k + len(RELEASE8):]           # = tool_flags(..., ap8=False) with the same options
+        sym8 = json.load(open(gdir(root, "build", INTERNAL["8mb"] + ".patches.json")))["sym"]
+        T.seal_time = getattr(T, "seal_time", 0)
+        st0 = T.seal_time
+        T2 = Tools(root, disc, record, log)
+        with stage("disc"), contextlib.redirect_stdout(buf):
+            ov2 = stage_disc(T2, flags2)
+            ov = dual.compose(ov2, ov, sym8, log)
+        buf.flush()
+        T2.save_manifest()
+        T.seal_time = st0 + T2.seal_time; T.cache_events += T2.cache_events
     times["seal"] = T.seal_time; times["disc"] -= T.seal_time
     info.update(overlay=ov, name=name or output_name(bool(arcade), ver, ap8), blobs=T.cache_events, variant="8mb" if (arcade or ap8) else "2mb")
     info.setdefault("arcade_set", None)

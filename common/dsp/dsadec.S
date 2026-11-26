@@ -1,0 +1,177 @@
+/* DSA1 tile decoder (format: common/dsp/dsa.py), MIPS R3000 assembly.  Same results as dsadec.c / dsa.ref_decode.
+ * Linked at a fixed RAM address (MvC: after the DSH1 decoder, copied there by the battle loader) and entered from the
+ * dispatch at the game's tile decoder entry (common/dsp/dsmdec.S -DDSA=addr) with
+ *     a0 = src (tile stream: width byte, then range-coder bytes)   a1 = dst   a2 = nbytes   a3 = DSA1 pixel section
+ * Writes exactly nbytes (whole rows).  Only caller-saved registers, no stack, no $gp, no calls; every load-delay slot
+ * is respected.  multu is issued with the 8-bit probability as rs (fast multiply).
+ * Scratchpad 0x1f800300 .. 0x300 + W + 3 (W <= 248 px): ONE byte per column, low nibble = row y-1 (U), high nibble =
+ * row y-2 (UU), rewritten as the row is decoded; UL / ULL come from a register window, UR / URR from rb[x+1], rb[x+2]
+ * (still the previous row); rb[W], rb[W+1] stay 0xff.
+ * Neighbours packed in V = L | U<<4 | UL<<8 | UR<<12 | LL<<16 | UU<<20 | ULL<<24 | URR<<28.
+ * Node word: leaf 0x8000 | leaf; inner bits 0-4 s1, 5-9 s2, 10-11 type (0: (V>>s1)&1, 1: ((V>>s1)&15)==15,
+ * 2: ((V>>s1)^(V>>s2))&15==0), 16-31 right child (taken when the test is true; false = next node).
+ *
+ * a0 stream   a1 dst   a2 end of output   a3 nodes   t0 code   t1 range   t2 &rb[x]   t3 &rb[W]
+ * t4 window L | UL<<8 | LL<<16 | ULL<<24   t5 leaf probabilities   t6 rb[x] (U | UU<<4)   t7 V   t8 node / prob ptr */
+        .set    noreorder
+        .set    noat
+        .text
+        .globl  dsa_dec, dsa_end
+
+/* range-coder renormalisation: while range < 2^24: range <<= 8, code = code << 8 | *src++ */
+        .macro  NORM
+        srl     $at, $t1, 24
+        bnez    $at, 2f
+        nop
+1:      lbu     $at, 0($a0)
+        sll     $t1, $t1, 8
+        sll     $t0, $t0, 8
+        or      $t0, $t0, $at
+        srl     $at, $t1, 24
+        beqz    $at, 1b
+        addiu   $a0, $a0, 1
+2:
+        .endm
+
+dsa_dec:
+        lbu     $v0, 8($a3)             /* node count */
+        lbu     $v1, 9($a3)
+        addiu   $a3, $a3, 12            /* nodes */
+        sll     $v1, $v1, 8
+        or      $v0, $v0, $v1
+        sll     $v0, $v0, 2
+        addu    $t5, $a3, $v0           /* leaf probabilities */
+        lbu     $t3, 0($a0)             /* width in bytes */
+        lbu     $v0, 1($a0)             /* code: 4 bytes big endian */
+        lbu     $v1, 2($a0)
+        lbu     $t6, 3($a0)
+        lbu     $t7, 4($a0)
+        sll     $v0, $v0, 24
+        sll     $v1, $v1, 16
+        sll     $t6, $t6, 8
+        or      $t0, $v0, $v1
+        or      $t0, $t0, $t6
+        or      $t0, $t0, $t7
+        addiu   $a0, $a0, 5
+        addiu   $t1, $zero, -1          /* range */
+        addu    $a2, $a1, $a2           /* end of output */
+        sll     $t3, $t3, 1             /* W pixels (multiple of 4) */
+        lui     $t2, 0x1f80
+        ori     $t2, $t2, 0x0300
+        addu    $t3, $t2, $t3           /* &rb[W] (4-aligned) */
+        addiu   $v0, $zero, -1
+        move    $t8, $t2
+3:      sw      $v0, 0($t8)             /* rb[0 .. W+3] = 0xff */
+        addiu   $t8, $t8, 4
+        sltu    $v1, $t3, $t8
+        beqz    $v1, 3b
+        nop
+
+row:    lui     $t4, 0x0f0f             /* L, UL, LL, ULL = 15 */
+        ori     $t4, $t4, 0x0f0f
+        lui     $t2, 0x1f80
+        ori     $t2, $t2, 0x0300
+
+pix:    lbu     $t6, 0($t2)             /* U | UU << 4 */
+        lbu     $v0, 1($t2)             /* UR */
+        lbu     $v1, 2($t2)             /* URR */
+        andi    $t7, $t6, 15
+        sll     $t7, $t7, 4
+        or      $t7, $t7, $t4
+        srl     $at, $t6, 4
+        sll     $at, $at, 20
+        or      $t7, $t7, $at
+        andi    $v0, $v0, 15
+        sll     $v0, $v0, 12
+        or      $t7, $t7, $v0
+        sll     $v1, $v1, 28
+        or      $t7, $t7, $v1           /* V */
+        move    $t8, $a3
+
+walk:   lw      $t9, 0($t8)             /* node */
+        addiu   $t8, $t8, 4             /* next node (test false) */
+        andi    $v1, $t9, 0x8c00        /* leaf or type 1/2 */
+        srlv    $v0, $t7, $t9           /* a = V >> s1 */
+        bnez    $v1, wspec
+        andi    $at, $v0, 1             /* type 0: r = a & 1 */
+wtest:  beqz    $at, walk
+        srl     $v0, $t9, 14            /* right child * 4 (bits 12-15 of an inner node are 0) */
+        b       walk
+        addu    $t8, $a3, $v0
+wspec:  andi    $at, $t9, 0x8000
+        bnez    $at, leaf
+        andi    $at, $t9, 0x0800
+        bnez    $at, wpair
+        andi    $v0, $v0, 15
+        xori    $v0, $v0, 15            /* type 1: r = (a & 15) == 15 */
+        b       wtest
+        sltiu   $at, $v0, 1
+wpair:  srl     $v1, $t9, 5
+        srlv    $v1, $t7, $v1           /* V >> s2 */
+        xor     $v0, $v0, $v1
+        andi    $v0, $v0, 15            /* type 2: r = ((V >> s1) ^ (V >> s2)) & 15 == 0 */
+        b       wtest
+        sltiu   $at, $v0, 1
+
+leaf:   andi    $t9, $t9, 0x7fff
+        sll     $t9, $t9, 4
+        addu    $t8, $t5, $t9           /* probabilities of this leaf */
+        lbu     $v1, 0($t8)             /* p[0]: P(pixel != U) */
+        srl     $v0, $t1, 8
+        multu   $v1, $v0
+        mflo    $v0                     /* bound */
+        sltu    $at, $t0, $v0
+        bnez    $at, lit0
+        nop
+        subu    $t0, $t0, $v0           /* bit 1: pixel = U */
+        subu    $t1, $t1, $v0
+        NORM
+        b       store
+        andi    $v0, $t6, 15
+lit0:   move    $t1, $v0                /* bit 0: 4 more bits, MSB first */
+        NORM
+        ori     $v1, $zero, 1           /* idx */
+lit:    addu    $at, $t8, $v1
+        lbu     $at, 0($at)             /* p[idx] */
+        srl     $v0, $t1, 8
+        multu   $at, $v0
+        mflo    $v0
+        sll     $v1, $v1, 1
+        sltu    $at, $t0, $v0
+        bnez    $at, 4f
+        nop
+        subu    $t0, $t0, $v0
+        subu    $t1, $t1, $v0
+        b       5f
+        addiu   $v1, $v1, 1
+4:      move    $t1, $v0
+5:      NORM
+        sltiu   $at, $v1, 16
+        bnez    $at, lit
+        nop
+        addiu   $v0, $v1, -16           /* pixel */
+
+store:  andi    $v1, $t6, 15            /* U */
+        sll     $at, $v1, 4
+        or      $at, $at, $v0
+        sb      $at, 0($t2)             /* rb[x] = pixel | U << 4 (U becomes UU) */
+        andi    $at, $t2, 1
+        beqz    $at, 6f
+        sll     $v1, $v1, 8
+        andi    $at, $t4, 15            /* x odd: byte = L | pixel << 4 */
+        sll     $t9, $v0, 4
+        or      $at, $at, $t9
+        sb      $at, 0($a1)
+        addiu   $a1, $a1, 1
+6:      andi    $t9, $t4, 0x0f0f
+        sll     $t9, $t9, 16
+        or      $t4, $v0, $v1
+        or      $t4, $t4, $t9           /* L = pixel, UL = U, LL = L, ULL = UL */
+        addiu   $t2, $t2, 1
+        bne     $t2, $t3, pix
+        nop
+        bne     $a1, $a2, row
+        nop
+        jr      $ra
+        nop
+dsa_end:

@@ -6,7 +6,7 @@
 
 The game is recognised by the files on the disc (each game has its own file set), the release by the boot
 executable named in SYSTEM.CNF (= the serial), and the exact dump by the SHA-1 of the whole image (each game's
-builder checks that: builder/data/known.json, builder/data/mshvsf/known.json).
+builder checks that: builder/data/known.json, builder/data/mshvsf/known.json, builder/data/mvc/known.json).
 """
 import os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -17,8 +17,10 @@ from xvb import cdrom          # noqa: E402
 GAMES = {
     "xvsf": ("X-Men vs. Street Fighter", ("SP_PL00.NSP",), "SLUS_006.27", "xvb"),
     "mshvsf": ("Marvel Super Heroes vs. Street Fighter", ("SP_PL00.DSP", "DMY.DAT"), "SLUS_007.93", "mshb"),
-    "mvc": ("Marvel vs. Capcom: Clash of Super Heroes", ("DMY0.DAT", "DMY1.DAT"), "SLUS_010.59", None),     # port in progress
+    "mvc": ("Marvel vs. Capcom: Clash of Super Heroes", ("DMY0.DAT", "DMY1.DAT"), "SLUS_010.59", "mvcb"),
 }
+if os.environ.get("MVCB_ENABLE") == "0":       # (2026-11-25) MvC on by default since its 1.0 release; MVCB_ENABLE=0 turns it off
+    GAMES["mvc"] = GAMES["mvc"][:3] + (None,)
 ORDER = ["xvsf", "mshvsf", "mvc"]
 
 
@@ -61,7 +63,7 @@ def identify(path, sha1=None, size=None):
     if g is None:
         what = " (its boot file is %s, serial %s)" % (det["boot"], det["serial"]) if det.get("boot") else ""
         return dict(base, status="notgame", game=None, message="This disc is not one of the games this patcher supports%s: "
-                    "X-Men vs. Street Fighter (USA, SLUS-00627) or Marvel Super Heroes vs. Street Fighter (USA, SLUS-00793)." % what)
+                    "X-Men vs. Street Fighter (USA, SLUS-00627), Marvel Super Heroes vs. Street Fighter (USA, SLUS-00793) or Marvel vs. Capcom (USA, SLUS-01059)." % what)
     title, sig, exe, mod = GAMES[g]
     if mod is None:
         return dict(base, status="unsupported", game=g, serial=det["serial"], message="This is %s (%s). The tag hack for it is still in progress; "
@@ -71,6 +73,10 @@ def identify(path, sha1=None, size=None):
                     % (title, det["serial"], serial_of(exe)))
     if g == "xvsf":
         from xvb import pipeline
+        if sha1 is None: sha1, size = pipeline.sha1_file(path)
+        r = pipeline.identify(path, sha1, size)
+    elif g == "mvc":
+        from mvcb import pipeline
         if sha1 is None: sha1, size = pipeline.sha1_file(path)
         r = pipeline.identify(path, sha1, size)
     else:
@@ -85,7 +91,7 @@ def identify_web(path, progress=None):
     """the patcher page: identify first (cheap), hash only a supported release -> JSON"""
     import json
     det = detect(path)
-    if det.get("game") in ("xvsf", "mshvsf") and det.get("supported_release"):
+    if det.get("game") in ("xvsf", "mshvsf", "mvc") and det.get("supported_release"):
         from xvb import pipeline
         sha1, size = pipeline.sha1_file(path, progress)
         return json.dumps(identify(path, sha1, size))

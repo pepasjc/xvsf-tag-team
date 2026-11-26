@@ -1,6 +1,6 @@
 # X-Men vs. Street Fighter: Tag Team Hack (PlayStation)
 
-**Version 1.3**, 2026, by pepa
+**Version 1.4**, 2026, by pepa
 
 [![X-Men vs Street Fighter Tag Hack trailer](https://img.youtube.com/vi/aVJAqBGNwyk/maxresdefault.jpg)](https://youtu.be/aVJAqBGNwyk)
 
@@ -34,9 +34,19 @@ How to build the image: [README](../../README.md#how-to-patch). Other pages: [ch
 - **START after a won match** skips the win quote, the character grid and the VS screen and loads the next fight
   (Arcade), or goes back to the select screen sooner (Versus). "PRESS START BUTTON TO SHORT CUT" blinks while it
   is available. The free movement after the KO is on **SELECT** now.
-- **ARCADE BALANCE** in OPTION MODE (saved on the memory card): OFF keeps the PlayStation rules exactly as
-  before; ON plays by the arcade's rules, with half the super meter gain and no super chaining.
-  [Details](balance.md).
+- **VERSUS CPU** in the main menu, below VERSUS MODE: the player who picks it (controller 1 or 2) chooses both
+  teams and fights the CPU, at the OPTION MODE difficulty. Achievements do not count there.
+- **EX OPTIONS** in the main menu (reset at power-on, except ARCADE BALANCE):
+  - **ARCADE BALANCE** (saved with the OPTION MODE memory-card save): OFF keeps the PlayStation rules exactly as
+    before; ON plays by the arcade's rules, with half the super meter gain and no super chaining.
+    [Details](balance.md).
+  - **STAGE ANIM** FULL / OFF: OFF stops the animated stage objects.
+  - **ACHIEVEMENT POPUP** ON / OFF.
+  - **INFINITE SUPER METER** OFF / ON (default OFF): every fighter's meter stays full, both teams; achievements do
+    not unlock while it is ON.
+- **Apocalypse's pre-fight dialogue** from the Japanese arcade version, with an English text of our own.
+- **The chemical plant explodes on the first knock-out**, as in the arcade.
+- **PERFECT** needs the whole team undamaged, as in the arcade.
 - **Achievements** built in: 28 achievements written for the tag hack, an ACHIEVEMENTS page in the main menu,
   popups, progress in its own memory card file, and a notice when there is no usable card.
   [The list](achievements.md).
@@ -46,8 +56,11 @@ How to build the image: [README](../../README.md#how-to-patch). Other pages: [ch
 - **Restored:** Wolverine, Cyclops, Storm, Rogue, Gambit (partly), Sabretooth, Juggernaut, Magneto (partly),
   Dhalsim, Zangief, Cammy, three Ryu sprites, the character select screen and some common effects.
 - **Not restored:** Ken, Chun-Li, M. Bison, Akuma, Charlie, Apocalypse.
-- Used only when 8 MB is present: the main menu shows "8MB", and OPTION MODE gets **ARCADE FRAMES ON / OFF**. On
+- Used only when 8 MB is present: the main menu shows "8MB", and EX OPTIONS gets **ARCADE FRAMES ON / OFF**. On
   a 2 MB console the same image plays as the normal tag hack.
+- 1.4: Storm, Gambit and Juggernaut have their arcade standing animation again, and Juggernaut his walk forward.
+  Every restored animation is checked against the arcade data: it is restored completely or not at all (animations
+  that cannot be restored completely keep the PlayStation's frames).
 - Characters and menu files stay in memory between fights, so loading is shorter.
 - Full sound quality for almost every team, plus Wolverine's tag voice from the arcade set.
 - Supported arcade sets: `xmvsf` (Euro 961004), `xmvsfu` (USA 961023), `xmvsfu1d` (with its parent `xmvsf`).
@@ -72,15 +85,14 @@ Convert a `.chd` back first: `chdman extractcd -i game.chd -o game.cue`. Other r
 With the default options (the web patcher's result):
 
 ```
-X-Men vs. Street Fighter (USA) [Tag Hack 1.3].bin          SHA1  4cdff120196536ccaf97355628943801fcec5ba4
-X-Men vs. Street Fighter (USA) [Tag Hack 1.3 + Restored Frames].bin
-  with xmvsfu (+ xmvsf)                                    SHA1  ecbcd88c4965b2a1e10342ad1ae87bb3573dc855
-  with xmvsf or xmvsfu1d                                   SHA1  036479f887699da4f0fbfc1ef9c801bfed7a1a9f
+X-Men vs. Street Fighter (USA) [Tag Hack 1.4].bin          SHA1  f58594231c5e1b835c554cacb89fe28dea60b08b
+X-Men vs. Street Fighter (USA) [Tag Hack 1.4 + Restored Frames].bin
+  with xmvsfu (+ xmvsf)                                    SHA1  2278e1166ef0c1ec2c6c6044b082d19454052e03
+  with xmvsf or xmvsfu1d                                   SHA1  0fdbe71238b54fadfc7773102e09c7f16f91ff29
 ```
 
-Without achievements (command line, `--no-achievements`): 2 MB `67f4e321ca4d79230639dd5eadcc6a8cef26fe43`,
-with `xmvsfu` `6f4de1f0db092844e04918c0ff17e9f4e9206873`, with `xmvsf` or `xmvsfu1d`
-`73b73a7f5bc2c4851de357b5cfc9794f1841e5db`.
+Without achievements (command line, `--no-achievements`): 2 MB `12a0282645a6544eb5a21f62fb517a64f15af506`,
+with `xmvsfu` `dc78011f190646a8c2944223bcad601b2340b708`, with `xmvsf` or `xmvsfu1d` `5781e612cbd3c2a73206a624477a7a28f9f1717e`.
 
 Both the web patcher and the command line check the result. Other command-line options have their own reference
 hashes (`builder/data/known.json`).
@@ -98,3 +110,5 @@ with a PS2 BIOS (same behaviour).
 - With 8 MB, the Apocalypse fight played from controller 2 uses the 2 MB loader: that one fight has the port's
   frames, not the restored ones.
 - Turbo is off by default, as in the retail game. The arcade's USA pace is Turbo Speed 2.
+- One or two players: there is no multitap support.
+- STAGE ANIM and INFINITE SUPER METER are not saved; they are FULL / OFF at every start.

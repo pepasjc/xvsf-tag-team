@@ -1,0 +1,5 @@
+{
+ "_doc": "animations kept stock for speed (whole animations only; [PS1 group, index]); measured with work/fr8/bench8l.py lockstep vs the 8 MB final",
+ "06": [[23, 6], [23, 7]],
+ "12": [[23, 6], [23, 7]]
+}

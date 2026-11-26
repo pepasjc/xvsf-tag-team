@@ -1,0 +1,1 @@
+OUTPUT_ARCH(mips) ENTRY(_mstart) SECTIONS { . = 0x801087e4; .m : { KEEP(*(.text.entry)) *(.text*) *(.rodata*) . = ALIGN(4); _mro_end = .; *(.data*) *(.sdata*) *(.bdat) KEEP(*(.keep*)) *(.sbss*) *(.bss*) *(COMMON) . = ALIGN(4); } /DISCARD/ : { *(.comment) *(.pdr) *(.reginfo) *(.MIPS.*) *(.gnu.*) *(.note*) } }

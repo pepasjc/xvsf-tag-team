@@ -89,8 +89,7 @@ when an arcade set is given; the 8 MB loader without a set, meter on at boot and
 its own Pyodide), the sound levels (one character's bank per job) and the 8 MB arcade frames (one job), all in up to
 five Python sub-workers.  Measured in Chrome 157 (16 cores, 2026-11-16): 2 MB build 298 s, peak about 2.4 GB for all
 browser processes; 8 MB build (mshvsfu + mshvsf) 304 s, peak about 2.9 GB: have about 3 GB free.  Both images are
-bit-identical to the command-line builds (timings measured on a development build; the 1.0 release images are
-`753e7b13…` and, with an arcade set, `e40f9fc4…`).  The same page still builds X-Men vs. Street
+bit-identical to the command-line builds (`231c7849…`, `4d6c5961…`).  The same page still builds X-Men vs. Street
 Fighter exactly as before (2 MB 113 s, 8 MB xmvsfu 332 s, hashes unchanged).
 `patcher/tests/node_msh_build.cjs` runs the MSHvSF page path under Node (jobs one after the other).
 

@@ -42,6 +42,12 @@ MAXW = MAXH = 15                 # VRAM rectangle of a frame, 16-pixel cells (st
 MAXPARTS = 92                    # stock max
 MAXRAW = 18816                   # decoded bytes of one frame (largest stock frame)
 NFRAMES = 2048                   # 11-bit frame index (record byte 0 + bits 12-14 of its second word)
+INTRO_FX = {}                    # {char: {animation groups}}: effect animations whose frames use a SHARED VRAM slot (group
+                                 # header byte 2) or flag-0x80 parts are restored too (mkap8 --introfx; 2026-11-24:
+                                 # Blackheart's intro pool / bubbles / creatures = group 19); the new frame keeps the stock
+                                 # frame's slot and must fit its rectangle
+INTRO_FX_SET = {8: {(19, 13), (19, 14), (19, 67)}}   # Blackheart's pool: the three bubbling halves (4 frames each)
+SLICE_GROUPS = {0}               # animation groups whose slice records are restored (0 = movement: walk; cache arena budget)
 KEEP_STOCK = {}                  # {char: [(group, index)]} animations kept stock for speed (filled after measuring)
 GFXROMS = ["13m", "14m", "15m", "16m", "17m", "18m", "19m", "20m"]
 
@@ -223,7 +229,7 @@ def build(ctx, ps1, ch, chtab):
     gr = {off: (hdr, g) for off, hdr, g in n.groups()}
     ag = ctx.arc_groups(T); pg = pb.groups()
     keep = set(KEEP_STOCK.get(ch, ()))
-    pairs = []; anims = matched = 0
+    pairs = []; anims = matched = 0; anim_recs = []; rec_group = {}; rec_anim = {}
     for k in range(min(len(ag), len(pg))):
         for j, a in enumerate(ag[k]):
             if a is None or j >= len(pg[k]): continue
@@ -234,6 +240,8 @@ def build(ctx, ps1, ch, chtab):
             matched += 1
             if (k, j) in keep: continue
             pairs += [(x, y) for x, y in zip(ar, pr)]
+            anim_recs.append([y[0] for y in pr])
+            for y in pr: rec_group.setdefault(y[0], k); rec_anim.setdefault(y[0], (k, j))
     # a PS1 record reached from several animations must get the same arcade sprite from each, else it stays stock
     spr_of = collections.defaultdict(set)
     for x, y in pairs: spr_of[y[0]].add(x.spr)
@@ -292,7 +300,7 @@ def build(ctx, ps1, ch, chtab):
 
     nf0 = pb.nframes(); newids = []; newframe = {}; skipped = collections.Counter()
     ok_img = {}; recpatch = []; stats = collections.Counter()
-    imgcache = {}
+    imgcache = {}; shows = set()             # shows: records whose stock frame already is their arcade sprite
     # per PS1 frame: the arcade sprite closest to it keeps the stock frame (when it is close enough), the others get
     # their own frame
     byframe = collections.defaultdict(set)
@@ -308,23 +316,43 @@ def build(ctx, ps1, ch, chtab):
             d, area = img_diff(imgcache[fi], ok_img[s])
             if best is None or d < best[0]: best = (d, s, area)
         if best and best[0] <= max(SAME_PX, SAME_FRAC * best[2]): kept[fi] = best[1]
-    for x, (ra, fi, dur, end) in pairs:
+    order = pairs
+    if INTRO_FX.get(ch):                         # intro effect records first (sec1 64 KB budget: they get room first)
+        order = [p for p in pairs if rec_anim.get(p[1][0]) in INTRO_FX[ch]] + [p for p in pairs if rec_anim.get(p[1][0]) not in INTRO_FX[ch]]
+    for x, (ra, fi, dur, end) in order:
         s = x.spr
         pimg = imgcache[fi]
-        if pimg is None: stats["stock: special frame"] += 1; continue
+        # the port's slice frames (frame id high half != 0xffff: a cheap variant of a whole group, e.g. Blackheart's
+        # walk = one gliding pose) cannot be drawn statically, so they are never "kept"; they are restored like the
+        # other records of their animation (2026-11-24 ground-truth audit gt8.py: the stock walk pose is WRONG vs the
+        # arcade walk; before, the no-MIXED rule left the whole walk stock).  Other special frames (sec3 records,
+        # shared VRAM slots, flag 0x80 parts) stay stock.
+        slice_ = pb.frameid(fi) >> 16 != 0xffff and rec_group.get(ra) in SLICE_GROUPS
+        shared = None                            # (W, H, slot, b3) of a shared-slot stock frame (INTRO_FX groups)
+        if pimg is None and not slice_ and rec_anim.get(ra) in INTRO_FX.get(ch, ()) and pb.frameid(fi) >> 16 == 0xffff                 and (pb.frameid(fi) & 0xffff) in gr:
+            hd = gr[pb.frameid(fi) & 0xffff][0]
+            if not hd[3]: shared = (hd[0], hd[1], hd[2], hd[3]); stats["intro fx (shared slot)"] += 1
+        if pimg is None and not slice_ and shared is None: stats["stock: special frame"] += 1; continue
+        if slice_: stats["slice restored"] += 1
         if not ctx.valid_def(s): stats["stock: arcade sprite not readable"] += 1; continue
-        if kept.get(fi) == s: stats["stock frame kept"] += 1; continue
-        if s not in newframe:
-            newframe[s] = None
+        if kept.get(fi) == s: stats["stock frame kept"] += 1; shows.add(ra); continue
+        nk = s if shared is None else (s, shared)
+        if nk not in newframe:
+            newframe[nk] = None
             ap = ctx.arc_parts(s)
             blocks = [(nx + 1, ny + 1) for c, nx, ny, lo, xx, yy in ap]
             raw = sum(w * h * 128 for w, h in blocks)
             if len(ap) > MAXPARTS: skipped["parts"] += 1; continue
             if raw > MAXRAW: skipped["decoded size"] += 1; continue
-            if max(w for w, h in blocks) > MAXW or max(h for w, h in blocks) > MAXH: skipped["block"] += 1; continue
-            pk = pack(blocks, MAXW, MAXH)
-            if pk is None: skipped["vram rectangle"] += 1; continue
+            mw, mh = (MAXW, MAXH) if shared is None else (shared[0], shared[1])
+            if max(w for w, h in blocks) > mw or max(h for w, h in blocks) > mh: skipped["block"] += 1; continue
+            pk = pack(blocks, mw, mh)
+            if pk is None and shared is not None:   # too big for the shared slot: a frame of its own (own VRAM rectangle)
+                pk = pack(blocks, MAXW, MAXH)
+                if pk is not None: shared = (pk[0], pk[1], 0, 0); stats["intro fx own rectangle"] += 1
+            if pk is None: skipped["vram rectangle" + ("" if shared is None else " (shared slot)")] += 1; continue
             W, H, pos = pk
+            if shared is not None and shared[2]: W, H = shared[0], shared[1]      # the slot's rectangle, as the stock frame
             if nf0 + len(newids) >= NFRAMES: skipped["frame index"] += 1; continue
             try:
                 parts = [enc_part(lo & 0x7f, tile_for(ctx.block(c, nx, ny, bank)), pos[i][1] << 4 | pos[i][0], xx, yy)
@@ -332,12 +360,28 @@ def build(ctx, ps1, ch, chtab):
             except OverflowError:
                 skipped["tiles"] += 1; continue
             off = len(s1)
-            rec = struct.pack("<H", len(ap)) + bytes([W, H, 0, 0]) + b"".join(parts)
+            rec = struct.pack("<H", len(ap)) + bytes([W, H, 0 if shared is None else shared[2], 0]) + b"".join(parts)
             if off + len(rec) > 0xffff: skipped["sec1 64 KB"] += 1; continue
             s1 += rec + bytes(-len(rec) % 2)
-            newframe[s] = nf0 + len(newids); newids.append(0xffff0000 | off)
-        if newframe[s] is None: stats["stock: limits"] += 1; continue
-        recpatch.append((ra, newframe[s])); stats["restored"] += 1
+            newframe[nk] = nf0 + len(newids); newids.append(0xffff0000 | off)
+        if newframe[nk] is None: stats["stock: limits"] += 1; continue
+        recpatch.append((ra, newframe[nk])); stats["restored"] += 1
+        if shared is not None: stats["intro fx restored"] += 1
+    # no mixed animations: a paired animation either gets every record that needs an arcade sprite, or none.  (The
+    # port drew some animations as one frame + its slice variants (frame ids without 0xffff, e.g. Blackheart's walk:
+    # frame 3 + slices 4..9 of the same group); those records stay stock (no image to compare), so restoring only the
+    # others made the walk alternate between arcade poses and the stock pose - the 1.0 "Blackheart walk" bug.)
+    patched = {ra for ra, f in recpatch}
+    while True:
+        bad = set()
+        for recs in anim_recs:
+            if any(r in patched for r in recs) and any(r not in patched and r not in shows for r in recs):
+                bad |= {r for r in recs if r in patched}
+        if not bad: break
+        patched -= bad
+    stats["stock: mixed animation"] = sum(1 for ra, f in recpatch if ra not in patched)
+    stats["restored"] -= stats["stock: mixed animation"]
+    recpatch = [(ra, f) for ra, f in recpatch if ra in patched]
     s0 += bytes(-len(s0) % 4); s1 += bytes(-len(s1) % 4)
     offs = [0x14, 0x14 + len(s0), 0x14 + len(s0) + len(s1), 0x14 + len(s0) + len(s1) + len(s2)]
     dspf = struct.pack("<5I", 6, *offs) + bytes(s0) + bytes(s1) + bytes(s2) + n.sec[3]
@@ -386,7 +430,9 @@ def main(argv):
     ap.add_argument("--out", required=True)
     ap.add_argument("--chars", default="")
     ap.add_argument("--sheet", action="store_true")
+    ap.add_argument("--introfx", action="store_true")     # INTRO_FX: Blackheart's intro effect animations (group 19)
     a = ap.parse_args(argv[1:])
+    if a.introfx: INTRO_FX.update(INTRO_FX_SET)
     prg, roms, desc = read_arcade(a.arcade)
     gcache = os.path.join(GAME, "work", "ap", "gfx_%s.npy" % desc["13m"][:12])
     if os.path.exists(gcache): G = np.load(gcache)

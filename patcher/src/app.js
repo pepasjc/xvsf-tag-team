@@ -40,7 +40,7 @@ const subs = {};                          // the build's sub-workers, started he
 })();
 
 /* ------------------------------------------------------------------ the side panel (README.md, patcher/src/mshvsf.md) */
-const GAME_NAMES = { xvsf: "X-Men vs. Street Fighter", mshvsf: "Marvel Super Heroes vs. Street Fighter" };
+const GAME_NAMES = { xvsf: "X-Men vs. Street Fighter", mshvsf: "Marvel Super Heroes vs. Street Fighter", mvc: "Marvel vs. Capcom" };
 function drawAbout() {
   const g = state.game;
   let h = "";
@@ -174,7 +174,7 @@ function setGame(g) {
 }
 
 function setArcadeHint() {
-  $("arcade-hint").innerHTML = t(state.game === "mshvsf" ? "arc.hint.mshvsf" : state.game === "xvsf" ? "arc.hint.xvsf" : "arc.hint");
+  $("arcade-hint").innerHTML = t(state.game === "mvc" ? "arc.hint.mvc" : state.game === "mshvsf" ? "arc.hint.mshvsf" : state.game === "xvsf" ? "arc.hint.xvsf" : "arc.hint");
 }
 setArcadeHint();
 
@@ -226,15 +226,17 @@ function showArcade() {
 /* ------------------------------------------------------------------ what will be built */
 function flags() {
   // always the release image (builder/xvb/pipeline.py and builder/mshb/pipeline.py tool_flags() defaults): the page has no options
-  if (state.game === "mshvsf") return ["--meter", "--ach"];                 // speed meter in OPTION MODE (off at boot), achievements
-  return withArcade() ? ["--logo", "--ach"] : ["--logo", "--title", "--ach"];   // with an arcade set the 8 MB loader draws the version line
+  // (patcher/make.py puts each builder's tool_flags() defaults into CFG.release_flags: 2 MB / with an arcade set)
+  const r = (CFG.release_flags || {})[state.game] || {};
+  return (withArcade() ? r["8mb"] : r["2mb"]).slice();
 }
 const ram8 = () => false;                 // (MSHvSF: the 8 MB loader comes with an arcade set)
 const withArcade = () => state.arcadeFiles.length > 0 && state.arcade && state.arcade.status === "ok" && state.arcade.game === state.game;
 
 function expectedFor(variant, setName, fl) {
   const key = JSON.stringify(fl.slice().sort());
-  const e = ((CFG.known[state.game] || {}).expected || []).find((x) => x.variant === variant && (x.arcade_set || "") === (setName || "") && JSON.stringify(x.flags) === key);
+  const e = ((CFG.known[state.game] || {}).expected || []).find((x) => x.variant === variant && (x.arcade_set || "") === (setName || "") &&
+    (x.flags ? JSON.stringify(x.flags) === key : !fl.length));             // (MvC: one configuration per variant, no flags)
   return e ? e.sha1 : "";
 }
 
@@ -246,7 +248,7 @@ function refresh() {
   let h = "";
   if (!state.game) h = LI(t("plan.none"), true);
   else {
-    const k = state.game === "mshvsf" ? "plan.msh." : "plan.xv.";
+    const k = state.game === "mvc" ? "plan.mvc." : state.game === "mshvsf" ? "plan.msh." : "plan.xv.";
     h = LI(t(k + "tag")) + LI(t(k + "snd", with8)) + LI(t("plan.ach")) + LI(t(k + "extras"));
     h += with8 ? LI(t(k + "rf", esc(state.arcade.message))) : LI(t("plan.rf.off"), true);
     h += LI(t("plan.out") + " <code>.bin</code> + <code>.cue</code>" + '<br><span class="mono">' + (exp ? t("plan.exp") + " " + exp : t("plan.noexp")) + "</span>", !exp);
@@ -257,7 +259,7 @@ function refresh() {
   $("go").disabled = !(state.ready && discOk && arcOk && state.game) || state.building;
   $("go").textContent = t(with8 ? "build.go8" : "build.go");
   if (!state.building && !state.result) {
-    if (discOk && arcOk && state.ready) status("st-build", "busy", t(state.game === "mshvsf" ? "ready.msh" : with8 ? "ready.8" : "ready.2"));
+    if (discOk && arcOk && state.ready) status("st-build", "busy", t(state.game === "mvc" ? "ready.mvc" : state.game === "mshvsf" ? "ready.msh" : with8 ? "ready.8" : "ready.2"));
     else if (!$("st-build").classList.contains("bad")) status("st-build", null);
   }
 }
@@ -265,13 +267,14 @@ function refresh() {
 /* ------------------------------------------------------------------ building */
 const STAGES_MSH = [["extract", 2], ["prep", 85], ["disc", 6], ["digest", 4]];              // titles: t("st." + key)
 const STAGES = [["extract", 2], ["sprites", 75], ["sound", 10], ["arcade", 230], ["disc", 3], ["digest", 4]];
+const STAGES_MVC = [["extract", 2], ["derive", 40], ["sound", 40], ["disc", 15], ["digest", 3]];      // builder/mvcb/pipeline.py run()
 let run = null;                           // {stages: [{key, title, weight, frac, state, t0, t}], sub: counters}
 
 function startBuild() {
   const with8 = withArcade();
   clearResult(); $("log").textContent = "";
   state.building = true; state.t0 = performance.now();
-  run = { stages: (state.game === "mshvsf" ? STAGES_MSH : STAGES).filter((s) => s[0] !== "arcade" || with8).map(([key, weight]) => ({ key, weight: key === "disc" && with8 ? 100 : weight, frac: 0, state: "", t0: 0, t: 0 })), packed: 0, chars: 0 };
+  run = { stages: (state.game === "mvc" ? STAGES_MVC : state.game === "mshvsf" ? STAGES_MSH : STAGES).filter((s) => s[0] !== "arcade" || with8).map(([key, weight]) => ({ key, weight: key === "disc" && with8 ? 100 : weight, frac: 0, state: "", t0: 0, t: 0 })), packed: 0, chars: 0 };
   $("progress").hidden = false; $("cancel").hidden = false; status("st-build", null);
   drawProgress(); refresh();
   worker.postMessage({ type: "build", flags: flags(), ram8: ram8() });

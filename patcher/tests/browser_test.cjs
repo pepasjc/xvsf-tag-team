@@ -56,7 +56,8 @@ function memory(marker) {
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "xvsf_patcher_test_")), marker = path.basename(profile), dl = path.join(profile, "dl");
   fs.mkdirSync(dl);
   const srv = arg("file-url") ? null : await serve();
-  const url = srv ? `http://127.0.0.1:${srv.address().port}/index.html` : "file:///" + path.join(ROOT, "index.html").replace(/\\/g, "/");
+  const PAGE = arg("page", "index.html");
+  const url = srv ? `http://127.0.0.1:${srv.address().port}/${PAGE}` : "file:///" + path.join(ROOT, PAGE).replace(/\\/g, "/");
   const port = 9300 + Math.floor(Math.random() * 500);
   const chrome = spawn(CHROME, [arg("headed") ? "--start-maximized" : "--headless=new", `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "--window-size=1280,1000", "about:blank"], { stdio: "ignore" });
   let peak = { total: 0, largest: 0 };

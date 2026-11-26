@@ -1,0 +1,126 @@
+{
+ "input": {
+  "title": "Marvel vs. Capcom: Clash of Super Heroes (USA), SLUS-01059",
+  "serial": "SLUS-01059",
+  "exe": "SLUS_010.59",
+  "sha1": "b0301419874638bd86689cfbbde6a901585587d0",
+  "md5": "ce6c6a8a1015e031fae6a9af11087c0a",
+  "size": 428212176
+ },
+ "reference": {
+  "mvc_1_0zn.bin": "121dd8158da5aadb2b6df85eeaf0ae143c9d7c29",
+  "mvc_8_1_13.bin": "6423a1466e0a798ee8fa1ea4782eddcdad24a205"
+ },
+ "expected": [
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "121dd8158da5aadb2b6df85eeaf0ae143c9d7c29",
+   "size": 635938464,
+   "final": "mvc_1_0zn",
+   "release": "1.0",
+   "md5": "ebd28d22290a576395ad5897aa17af7e"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "6423a1466e0a798ee8fa1ea4782eddcdad24a205",
+   "size": 660425136,
+   "final": "mvc_8_1_13",
+   "release": "1.0",
+   "md5": "02dee4e90f1bfaef17e4f8cce0c01b5b"
+  }
+ ],
+ "previous": [
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "65e36dc14ebad094c0fe6f61db732db58831b448",
+   "size": 635938464,
+   "final": "mvc_1_0g",
+   "release": "1.0",
+   "md5": "d725b6145d56815fac49417c6b3bce02"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "8fd56aca4ad1b28b43e97db2ef1137715c6c1496",
+   "size": 660425136,
+   "final": "mvc_8_1_3",
+   "release": "1.0",
+   "md5": "0a5e14d6bf963baefd4bc21142cb456a"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "e41fa03ee0da2bd5c6ea80952e440d9cd350bdc1",
+   "size": 635938464,
+   "final": "mvc_1_0v",
+   "release": "1.0",
+   "md5": "a32a2f4f2aa5fc9fa2580cde8ce46b80"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "cb7ee58e0ccef6de446a44f681f302bba813c58c",
+   "size": 660425136,
+   "final": "mvc_8_1_5",
+   "release": "1.0",
+   "md5": "fb83114265bfca6ccee0308dba3c6480"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "617f831d5bf5a02114da17dc4e737fb420a034b8",
+   "size": 635938464,
+   "final": "mvc_1_0w",
+   "release": "1.0",
+   "md5": "b6920b3372d2e97bb4c81cc934edc148"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "466cfa7c36d1eb437b1ed11cbbfe1e3d8308e7ba",
+   "size": 660425136,
+   "final": "mvc_8_1_6",
+   "release": "1.0",
+   "md5": "bfda7473ec539993d1c695d71a7a0a0c"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "1e9a523b46ea07fa81272f6254f1324655542b22",
+   "size": 635938464,
+   "final": "mvc_1_0x",
+   "release": "1.0",
+   "md5": "97e569f387b43d95cbd2ecf498a11189"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "30b7861f878808fe55d5f764d2090b3451a2d8eb",
+   "size": 660425136,
+   "final": "mvc_8_1_7",
+   "release": "1.0",
+   "md5": "0df7b4aa456ad76bc050ebb99fe1c1e7"
+  },
+  {
+   "variant": "2mb",
+   "arcade_set": null,
+   "sha1": "c9d85f1286d42062ce7a9bd13f8d1f58eb42bddd",
+   "size": 635938464,
+   "final": "mvc_1_0z",
+   "release": "1.0",
+   "md5": "28506546fa189b1b88683ca5ebb99588"
+  },
+  {
+   "variant": "8mb",
+   "arcade_set": "mvsc",
+   "sha1": "37d39a3ec5b647f6e7ef45a6305b10ddb55ff2e5",
+   "size": 660425136,
+   "final": "mvc_8_1_9",
+   "release": "1.0",
+   "md5": "8c9d3e5cf5118bfc61602e9ac09afbe8"
+  }
+ ]
+}

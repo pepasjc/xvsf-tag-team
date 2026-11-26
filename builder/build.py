@@ -43,6 +43,9 @@ def other_game(argv):
         from mshb import cli
         return lambda: cli.main(argv)
     if det.get("game") == "mvc":
+        if os.environ.get("MVCB_ENABLE") != "0" or "--mvc" in (argv or sys.argv):     # (2026-11-25) on by default (MVCB_ENABLE=0: off)
+            from mvcb import cli
+            return lambda: cli.main([x for x in (argv if argv is not None else sys.argv[1:]) if x != "--mvc"])
         return lambda: (print("ERROR: this is Marvel vs. Capcom (%s); its tag hack is still in progress and cannot be built yet." % det.get("serial")), 2)[1]
     return None
 
@@ -54,7 +57,7 @@ def main(argv=None):
     ap.add_argument("--disc", required=True, help="your original disc image (.bin, or the .cue that names it)")
     ap.add_argument("--arcade", nargs="+", default=[], help="your arcade ROM set (zip; a clone zip followed by its parent zip): adds the restored animation frames")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.3]", with "+ Restored Frames" for an arcade build)')
+    ap.add_argument("--name", help='base name of the output files (default "X-Men vs. Street Fighter (USA) [Tag Hack 1.4]", with "+ Restored Frames" for an arcade build)')
     ap.add_argument("--work", help="work directory to keep (re-used on the next run: encoded sprites are cached); default: a temporary one")
     ap.add_argument("--jobs", type=int, default=min(6, os.cpu_count() or 1), help="processes for the sprite encoders (default %(default)s)")
     ap.add_argument("--buttons", choices=["modern", "stock"], default="modern", help="default button layout: modern = HP R1, HK R2, 3P L1, 3K L2 (default); stock = the game's own")

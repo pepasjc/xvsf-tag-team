@@ -3,3 +3,5 @@ numpy==1.26.4
 numba==0.61.0
 # only for the restored frames (--arcade): the packer the reference images were made with
 zopfli==0.4.3
+# MSHvSF 1.1 8 MB arcade voices (games/mshvsf/tools/snd/sn8build.py: peak limiter)
+scipy==1.12.0

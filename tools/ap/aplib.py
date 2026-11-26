@@ -291,7 +291,22 @@ def merge_parts(ap):
     return out
 
 
-def build(ctx, ch, merge=False, extra=None, extra_first=False):
+WHOLE = False   # build8 --whole (1.4 8 MB final): an animation is restored completely or not at all (build_whole); off = frozen content
+
+
+def build_whole(ctx, ch, **kw):
+    """build() repeated with every script that would MIX restored frames and stock frames that do not show the arcade sprite
+    (the 1.0 Blackheart bug class; tools/ap/audit8x.py) kept stock as a whole, until no script mixes -> r (r['whole_kept']
+    = record addresses kept that way)"""
+    extra = set()
+    while True:
+        r = build(ctx, ch, keep_addrs=extra, **kw)
+        mx = [a for s in r["mixed_scripts"] for a in s]
+        if not mx: r["whole_kept"] = sorted(extra); return r
+        extra |= set(mx)
+
+
+def build(ctx, ch, merge=False, extra=None, extra_first=False, keep_addrs=None):
     """extra(ctx, ch, env): optional hook called after the body pass with the working sections (dirbuild.add); its result is returned as r['direct'];
     extra_first: call it before the body pass, so that its sprites get the file's tile / section budget first"""
     pb, al, unpaired = pairs_all(ctx, ch)
@@ -372,7 +387,7 @@ def build(ctx, ch, merge=False, extra=None, extra_first=False):
         if hi + 6 > len(stock3): return True
         A = struct.unpack_from("<H", stock3, hi)[0]
         return A + 4 > len(stock3) or stock3[A + 3] != 0xff or stock3[A:A + 2] == bytes([255, 255])
-    keep = set()                                     # records of the animations listed in KEEP_STOCK (speed policy)
+    keep = set(keep_addrs or ())                     # records of the animations listed in KEEP_STOCK (speed policy) (+ build_whole's)
     if KEEP_STOCK.get(ch):
         ag = ctx.arc_groups(ctx.be32(ctx.chtab + 4 * ch)); pg = pb.groups()
         for (k, j) in KEEP_STOCK[ch]:
@@ -421,12 +436,22 @@ def build(ctx, ch, merge=False, extra=None, extra_first=False):
         nf = newid.get(ctx.be32(nx_ + 4)) if 0 < nx_ < len(ctx.D) - 8 else None
         if nf is not None and nf != fid: done.add(fid); struct.pack_into("<H", s3, (fid >> 16) + 4, nf & 0xffff)
     if extra and not extra_first: direct = extra(ctx, ch, dict(n=n, pb=pb, s0=s0, s1=s1, s2=s2, s3=s3, stock3=stock3, tilemap=tilemap, bank=bank))
+    # scripts (paired records up to the end mark) that mix restored records with ordinary stock records whose frame does not
+    # show the arcade sprite (sprite not in kept): build_whole keeps them stock
+    pat = {pb.B + rel for rel, idx in recpatch}; mixed_scripts = []; cur = []; hasR = hasS = False
+    for x, y in al:
+        cur.append(y.addr)
+        if y.addr in pat: hasR = True
+        elif not special(pb.frameid(y.frame)) and x.spr not in kept: hasS = True
+        if y.end:
+            if hasR and hasS: mixed_scripts.append(cur)
+            cur = []; hasR = hasS = False
     s0.extend(bytes(-len(s0) % 4)); s2.extend(bytes(-len(s2) % 4)); s3.extend(bytes(-len(s3) % 4))      # sections 4-byte aligned in the file, as stock
     over = [k for k, v in dict(sec0=len(s0) >= 0x10000, sec3=len(s3) >= 0x10000, tiles=len(s1) // 4 > 4096, frames=len(sub2) > 4096).items() if v]
     hdr = struct.pack("<4I", 16, 16 + len(s0), 16 + len(s0) + len(s1), 16 + len(s0) + len(s1) + len(s2))
     return dict(ch=ch, merged=merge, bank=bank, nsp=hdr + bytes(s0) + bytes(s1) + bytes(s2) + bytes(s3), sec=[len(s0), len(s1), len(s2), len(s3)], stock=n.sizes, sub2=sub2,
                 recpatch=sorted(set(recpatch)), blob_file_off=pb.B, old_nframes=pb.nframes(), maxrect=maxrect, maxraw=maxraw, over=over, ntiles=len(s1) // 4,
-                stats=dict(stats), budget=budget, shared_new={k: v for k, v in shid.items() if v is not None}, slots=nextslot[0], shared=shared, shared_ids=sorted(shared_ids), records=len(al) + unpaired, unpaired=unpaired, unchanged=unchanged, newid=newid, skipped=skipped,
+                stats=dict(stats), budget=budget, mixed_scripts=mixed_scripts, shared_new={k: v for k, v in shid.items() if v is not None}, slots=nextslot[0], shared=shared, shared_ids=sorted(shared_ids), records=len(al) + unpaired, unpaired=unpaired, unchanged=unchanged, newid=newid, skipped=skipped,
                 arc_sprites=len({x.spr for x, y in al}), stock_sprites=len({pb.frameid(y.frame) & 0xffff for x, y in al}),
                 overlay_sha1=hashlib.sha1(pb.P).hexdigest(), blob_head=pb.P[pb.B:pb.B + 16], direct=direct)
 

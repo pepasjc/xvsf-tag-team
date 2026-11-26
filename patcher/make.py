@@ -12,17 +12,10 @@ The bundle contains code and measurement tables only; no game data.
                     and pass e.g. --pyodide ./pyodide/   (see README.md)
     --bundle-only   write patcher/xvsf_bundle.zip and stop (the Node test harness uses it)
 """
-import argparse, base64, hashlib, io, json, os, re, zipfile
+import argparse, base64, hashlib, io, json, os, zipfile
 HERE = os.path.dirname(os.path.abspath(__file__)); REPO = os.path.abspath(os.path.join(HERE, ".."))
 PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"       # Python 3.11.3, numpy 1.26.4
-SHOW = ("What the hack does", "Restored animation frames (optional, 8 MB)", "Known issues", "How it fits in 2 MB", "Legal")      # the side panel's keys (src/app.js)
-# public repository: the X-Men vs. Street Fighter texts come from docs/xvsf/README.md (section -> the page's key), the
-# legal line from the README's License section
-XVSF_DOC = "docs/xvsf/README.md"
-XVSF_MAP = {"What it does": "What the hack does", "Restored frames (8 MB)": "Restored animation frames (optional, 8 MB)",
-            "Known issues": "Known issues"}
-LEGAL = ("A free fan project, not affiliated with or endorsed by Capcom or Marvel. X-Men vs. Street Fighter and Marvel Super "
-         "Heroes vs. Street Fighter are © Capcom; Marvel characters © Marvel. Use it only with a disc and an arcade ROM set you own.")
+SHOW = ("What the hack does", "Restored animation frames (optional, 8 MB)", "Known issues", "How it fits in 2 MB", "Legal")      # README.md sections shown on the page
 
 
 def bundle_files():
@@ -45,7 +38,9 @@ def bundle_files():
     add("tools/snd", py)                         # 1.2 sound banks: VAB editing, resampler, ADPCM encoder (hot loops: src/kernels.js)
     add("tools/ach", lambda f: f in ("xvach.py", "achbuild.py", "setc.py"))   # 1.3: built-in achievements (xvach.code comes from the blobs)
     add("tools/ach/xvsf", lambda f: f == "set.py")   # (xvach reads the set at import)
-    add("tools/ap8", lambda f: f == "hot8.json")  # data: the 8 MB pre-decode order (read by tools/mkap8disc.py)
+    add("tools/ap8", lambda f: f in ("hot8.json", "hot8_idle5.json"))  # data: the 8 MB pre-decode order (tools/mkap8disc.py; 1.4: hot8_idle5)
+    add("tools/mtap", lambda f: f == "xvmtap.py")    # 1.4 VERSUS CPU row (its code comes from the blobs: mtpatch.code)
+    add("common/mtap", lambda f: f in ("mtpatch.py", "mtbuild.py"))
     add("tools/logo", lambda f: f.endswith(".bin"))   # card2.bin: the second card's own layer (composed with the user's portraits)
     out.append(("builder/games.py", os.path.join(REPO, "builder", "games.py")))     # which game is this disc
     # MSHvSF: the builder and the tools it runs (the same file list as the command line's tool root, builder/mshb/pipeline.py)
@@ -55,6 +50,17 @@ def bundle_files():
     have = {n for n, p in out}
     out += [(n, p) for n, p in msh.root_files() if n not in have]
     out += [("builder/data/mshvsf/blobs/" + f, os.path.join(msh.BLOBS, f)) for f in sorted(os.listdir(msh.BLOBS)) if f.endswith(".json")]
+    if os.environ.get("PATCHER_MVC") != "0":              # (2026-11-25: on by default; PATCHER_MVC=0 leaves MvC out) MvC: builder/mvcb + its data
+        from mvcb import pipeline as mvp
+        have = {n for n, p in out}
+        add("builder/mvcb", py)
+        for rel in ("common/dsp/dsh.py", "common/dsp/dsm.py", "common/dsp/dsa.py", "common/dsp/dsp.py", "tools/nsp.py", "tools/nsp_codec.py",
+                    "tools/nsp_huff.py", "tools/nsp_mid.py", "games/mvc/tools/codec2/dsr.py"):        # mvcb/kern.py's codec modules (imported from the repo)
+            if rel not in have: out.append((rel, os.path.join(REPO, *rel.split("/")))); have.add(rel)
+        out += [(n, p) for n, p in mvp.root_files() if n not in have]
+        for sub in ("", "files", "tc"):
+            d = os.path.join(mvp.DATA, sub)
+            out += [("builder/data/mvc/" + (sub + "/" if sub else "") + f, os.path.join(d, f)) for f in sorted(os.listdir(d)) if os.path.isfile(os.path.join(d, f))]
     return sorted(set(out))
 
 
@@ -78,17 +84,6 @@ def readme_sections(md):
         elif line.startswith("- "): out[cur].append(line[2:].strip()); new = False
         elif new: out[cur].append(line.strip()); new = False
         else: out[cur][-1] += " " + line.strip()                   # continuation of a wrapped line
-    return out
-
-
-def page_readme():
-    """the side panel's X-Men vs. Street Fighter sections, under the keys src/app.js reads"""
-    sec = readme_sections(open(os.path.join(REPO, *XVSF_DOC.split("/")), encoding="utf-8").read())
-    link = lambda t: re.sub(r"\[([^\]]+)\]\([^)]+\)", lambda mo: mo.group(1), re.sub(r"\s*\[(Details|The list)\]\([^)]+\)\.?", "", t))        # the page shows no links: [text](url) -> text
-    out = {XVSF_MAP[k]: [link(t) for t in v] for k, v in sec.items() if k in XVSF_MAP}
-    rf = "Restored animation frames (optional, 8 MB)"
-    if rf in out: out[rf] = [""] + out[rf]          # app.js skips the section's first paragraph (the intro in the private README)
-    out["Legal"] = [LEGAL]
     return {k: out[k] for k in SHOW if k in out}
 
 
@@ -110,15 +105,24 @@ def main():
     bundle = make_bundle()
     print("bundle: %d files, %d bytes, sha1 %s" % (len(bundle_files()), len(bundle), hashlib.sha1(bundle).hexdigest()))
     if a.bundle_only:
-        open(os.path.join(HERE, "xvsf_bundle.zip"), "wb").write(bundle); return
+        open(os.path.join(HERE, "xvsf_bundle_nomvc.zip" if os.environ.get("PATCHER_MVC") == "0" else "xvsf_bundle.zip"), "wb").write(bundle); return
     src = lambda n: open(os.path.join(HERE, "src", n), encoding="utf-8").read()
     known = dict(xvsf=json.load(open(os.path.join(REPO, "builder", "data", "known.json"))),
                  mshvsf=json.load(open(os.path.join(REPO, "builder", "data", "mshvsf", "known.json"))))
-    cfg = dict(pyodide=a.pyodide if a.pyodide.endswith("/") else a.pyodide + "/", known=known,
-               readme=page_readme(),
+    import sys
+    sys.path.insert(0, os.path.join(REPO, "builder"))
+    from xvb import pipeline as xvp
+    from mshb import pipeline as msp
+    release_flags = dict(xvsf={"2mb": xvp.tool_flags(False), "8mb": xvp.tool_flags(True)},          # the release images (no options)
+                         mshvsf={"2mb": msp.tool_flags(), "8mb": msp.tool_flags(ap8=True)})
+    if os.environ.get("PATCHER_MVC") != "0":                 # MvC: one configuration per variant (no options)
+        known["mvc"] = json.load(open(os.path.join(REPO, "builder", "data", "mvc", "known.json")))
+        release_flags["mvc"] = {"2mb": [], "8mb": []}
+    cfg = dict(pyodide=a.pyodide if a.pyodide.endswith("/") else a.pyodide + "/", known=known, release_flags=release_flags,
+               readme=readme_sections(open(os.path.join(REPO, "README.md"), encoding="utf-8").read()),
                bundle_sha1=hashlib.sha1(bundle).hexdigest(), about=about_sections(open(os.path.join(HERE, "src", "mshvsf.md"), encoding="utf-8").read()),
                about_pt=about_sections(open(os.path.join(HERE, "src", "about_pt.md"), encoding="utf-8").read()))      # PT-BR side panel (src/i18n.js: the other texts)
-    worker = src("kernels.js") + "\n" + src("kernels_msh.js") + "\n" + src("zopfli.js") + "\n" + src("worker.js")
+    worker = src("kernels.js") + "\n" + src("kernels_msh.js") + "\n" + src("kernels_mvc.js") + "\n" + src("zopfli.js") + "\n" + src("worker.js")
     vz = os.path.join(HERE, "vendor", "zopfli")                # zopfli compiled to WebAssembly (Apache-2.0), for the 8 MB build
     zopfli = dict(glue=open(os.path.join(vz, "libzopfli.js"), encoding="utf-8").read(), wasm=json.load(open(os.path.join(vz, "libzopfli-wasm.json"))))
     page = src("page.html")
@@ -128,7 +132,7 @@ def main():
     for k, v in rep.items():
         assert page.count(k) == 1, k
         page = page.replace(k, v)
-    out = os.path.join(HERE, "index.html")
+    out = os.path.join(HERE, "index_nomvc.html" if os.environ.get("PATCHER_MVC") == "0" else "index.html")   # (PATCHER_MVC=0: a page without MvC)
     open(out, "w", encoding="utf-8", newline="\n").write(page)
     print("wrote %s (%d bytes); Pyodide from %s" % (out, len(page.encode()), cfg["pyodide"]))
 

@@ -270,6 +270,14 @@ static void popup_tick(void) {
 		if (PORT_POPUP_OK()) PORT_POPUP(pop_head, pop_line, pop_frames == POP_FRAMES - 1);
 		return;
 	}
+#ifdef PORT_POPUP_DROP                   /* XvSF 1.4: popups switched off: unlocks recorded as usual, their popups dropped */
+	if (nqueue && !page_open && !PORT_POPUP_OK()) {
+		uint32_t k;
+		for (k = 1; k < nqueue; k++) queue[k - 1] = queue[k];
+		nqueue--;
+		return;
+	}
+#endif
 	if (!nqueue || page_open || !PORT_POPUP_OK()) return;
 #ifdef PORT_NOTICE_OK
 	if (queue[0] == 0xfe && !PORT_NOTICE_OK()) return;      /* the card notice: where the port can show it */

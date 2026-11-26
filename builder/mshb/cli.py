@@ -17,14 +17,14 @@ def main(argv=None):
     ap.add_argument("--disc", required=True, help="your original disc image (.bin, or the .cue that names it)")
     ap.add_argument("--arcade", nargs="+", default=[], help="your arcade ROM set (mshvsf zip, or a clone zip followed by the mshvsf parent zip): adds the restored animation frames")
     ap.add_argument("--out", required=True, help="output directory")
-    ap.add_argument("--name", help='base name of the output files (default "%s [Tag Hack 1.0]", with "+ Restored Frames" for an arcade build)' % pipeline.TITLE)
+    ap.add_argument("--name", help='base name of the output files (default "%s [Tag Hack 1.1]"; "[Tag Hack 1.0.1 8 MB]" with --ram8, "[Tag Hack 1.0.1 + Restored Frames]" with an arcade set)' % pipeline.TITLE)
     ap.add_argument("--work", help="work directory to keep (re-used on the next run: sprite tiers and sound levels are cached); default: a temporary one")
     ap.add_argument("--jobs", type=int, default=min(6, os.cpu_count() or 1), help="processes for the sound encoder and the sprite encoders (default %(default)s)")
     ap.add_argument("--ram8", action="store_true", help="the 8 MB loader without an arcade set (all four characters full from upper RAM on 8 MB machines; "
                     "the image still runs on 2 MB); an arcade set implies it")
     ap.add_argument("--no-logo", action="store_true", help="leave out the two boot cards")
-    ap.add_argument("--meter", choices=["off", "on", "none"], default="off",
-                    help="speed meter: off = in OPTION MODE, off at boot (default, the release); on = on at boot; none = not built in")
+    ap.add_argument("--meter", choices=["off"], default="off",
+                    help="(1.1: the meter is built but has no row; kept for compatibility)")
     ap.add_argument("--tool-flag", action="append", metavar="FLAG", help="hand FLAG to tools/tagload/mktag.py / tools/ap8/mkap8.py as it is (developers)")
     ap.add_argument("--no-achievements", action="store_true", help="leave out the built-in achievements (popup, ACHIEVEMENTS page, memory card file; games/mshvsf/docs/ACHIEVEMENTS.md), "
                     "which are part of the release image (they switch themselves off on the PS2 / PS3)")
@@ -48,8 +48,9 @@ def main(argv=None):
     def progress(stage, frac, text=""):
         if stage != state["stage"]:
             state["stage"] = stage; print("* %s ..." % titles.get(stage, stage), flush=True)
-    flags = pipeline.tool_flags(logo=not a.no_logo, meter=a.meter, extra=a.tool_flag or [], achievements=not a.no_achievements)
     try:
+        flags = pipeline.tool_flags(logo=not a.no_logo, meter=a.meter, extra=a.tool_flag or [], achievements=not a.no_achievements,
+                                    ap8=bool(a.ram8 or a.arcade))      # 2 MB = 1.1; the 8 MB loader = 1.0.1 (pipeline.RELEASE8)
         from xvb.pipeline import resolve_image
         disc = resolve_image(a.disc)
         info = pipeline.run(disc, work, arcade=a.arcade, flags=flags, name=a.name, jobs=a.jobs, progress=progress, log=log,

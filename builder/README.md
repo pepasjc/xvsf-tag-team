@@ -10,7 +10,7 @@ arcade set; `--name` changes it), `build.log`, and a `.chd` with `--chd` when `c
 PATH, `--chdman PATH`).
 
 The default is the **release configuration**: boot card + version line on the main menu + the built-in achievements
-([docs/xvsf/achievements.md](../docs/xvsf/achievements.md); they switch themselves off on the PS2 / PS3).
+(docs/ACHIEVEMENTS.md; they switch themselves off on the PS2 / PS3).
 
 | options | 2 MB | with `--arcade` |
 |---|---|---|
@@ -135,13 +135,17 @@ The same command takes the MSHvSF disc (USA, SLUS-00793); `build.py` recognises 
     python builder/build.py --disc original.bin --arcade mshvsf.zip --out OUTDIR                 # 8 MB loader + restored frames
     python builder/build.py --disc original.bin --arcade mshvsfu.zip mshvsf.zip --out OUTDIR     # a clone + its parent
 
-Output: `Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.0].bin` + `.cue` (`… + Restored Frames]` with an
+Output: `Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.1].bin` + `.cue` (`… + Restored Frames]` with an
 arcade set, `… 8 MB]` with `--ram8`), `build.log`, `.chd` with `--chd`.  `--ram8`: the 8 MB loader without an
 arcade set (`tools/ap8/mkap8.py` without content: all four characters full from upper RAM on 8 MB machines, the 2 MB
-tag hack otherwise).  Options: `--no-logo` (no boot cards), `--meter off|on|none` (speed meter
-in OPTION MODE, off at boot = the release default; on at boot; not built in), `--work DIR` (keeps the sprite tiers and
-sound levels for the next run), `--jobs N`.  The default is the 1.0 release configuration (`mktag.py --meter`).
-Requirements: Python 3.11, numpy, numba (the encoders run without numba too, much slower).  No compiler.
+tag hack otherwise).  Options: `--no-logo` (no boot cards), `--no-achievements`, `--work DIR` (keeps the sprite
+tiers and sound levels for the next run), `--jobs N`.  The default is the 1.1 release configuration
+(`pipeline.RELEASE_11`: `mktag.py --meter --ach --mcfix --exopt --stageanim --l2g --cyswap --arcbal --vsmenu --nori
+--infmeter --nosmrow --achpop --title=TAG HACK 1.1` = games/mshvsf/build/m11_f8; 8 MB `pipeline.RELEASE8`: the same without
+`--l2g`, plus `--sn8full` and, with an arcade set, the arcade voices `--sn8arc` = build/mshvsf_ap8_f11).  `--meter on` /
+`none` are refused (1.1 has no speed meter row; its option bytes live in the meter's flag word).
+Requirements: Python 3.11, numpy, numba (the encoders run without numba too, much slower), scipy (8 MB arcade voices:
+tools/snd/sn8build.py).  No compiler.
 
 | stage | what | |
 |---|---|---|
@@ -173,11 +177,76 @@ directory): 2 MB 193 s, 8 MB 223 s.
 
 Re-baking (development machine, MIPS compiler; holds `games/mshvsf/work/mktag.lock`):
 
-    python work/mshvsf_release/record.py            # bake data/mshvsf/blobs, check record == replay (no compiler) == the rc references (known.json "reference"), record known.json
+    python work/release14/record_msh.py             # 1.1: bake data/mshvsf/blobs, record == replay (no compiler) == the finals (known.json "reference"), known.json
 
-The 1.0 release images (achievements on): 2 MB `753e7b13…`, `--ram8` `50190284…`, with an arcade set (mshvsf or
-mshvsfu: the same frames) `e40f9fc4…`; without achievements `fb9ca317…` / `6d976978…` / `2e8d5984…`.  Development and
-release-candidate hashes are kept in known.json "previous" (refused as patched).  What the MSHvSF patch does:
-[docs/mshvsf/technical.md](../docs/mshvsf/technical.md).
+The 1.1 configurations reproduce games/mshvsf/build/m11_gf1.bin (sha1 `0c782cd7…`) and, with mshvsf or mshvsfu,
+mshvsf_ap8_gf1.bin (`ae2f5166…`); `--ram8` `0d28aa39…` (work/release14/rec_msh_gf1.log: 11 configurations).  Every 8 MB
+image is a DUAL image (builder/mshb/dual.py): the 2 MB build with the same options + the 8 MB build appended, switched over
+only by a boot-time 8 MB test, so on a 2 MB console it runs exactly the 2 MB disc.
+The 1.0 release configurations reproduced `games/mshvsf/build/mshvsf_rc1.bin` (`mktag.py --meter`: `fed1e957…`) and
+`mshvsf_ap8_rc1.bin` (`mkap8.py --meter`, no content = `--ram8`: `48682176…`); with an arcade set (mshvsf or
+mshvsfu: the same frames) `85931314…`.  The v10 hashes are kept in known.json "previous" (refused as patched).
 Checks: `python builder/tests/check_msh_sprites.py` (the encoders against `games/mshvsf/work/dsp`), the Option A scan
 (`python work/release12/optA_scan.py --disc games/mshvsf/disc/mshvsf.bin --blobs builder/data/mshvsf/blobs`).
+
+## Marvel vs. Capcom (builder/mvcb)
+
+The same command takes the MvC disc (USA, SLUS-01059); `build.py` recognises it (`builder/games.py`) and hands it to
+`builder/mvcb/cli.py`:
+
+    python builder/build.py --disc "Marvel vs. Capcom - Clash of Super Heroes (USA).bin" --out OUTDIR             # 2 MB
+    python builder/build.py --disc original.bin --arcade mvsc.zip --out OUTDIR                                   # 8 MB + arcade voices
+
+Output `Marvel vs. Capcom (USA) [Tag Hack 1.0].bin` + `.cue` (`… [Tag Hack 1.0 8MB]` with an arcade set), `build.log`,
+`.chd` with `--chd`.  No other options: the images are the finals (data/mvc/configs.json: the tools' own argument list and
+environment of each final, recorded by the bake).  Requirements: Python 3.11, numpy, numba (much slower without),
+scipy (8 MB arcade voices).  No compiler.
+
+| stage | what | |
+|---|---|---|
+| verify | SHA-1 against `data/mvc/known.json` | other releases, patched images, altered dumps refused with the reason |
+| root | the frozen tool files (`data/mvc/tools`, repository layout; list `data/mvc/rootfiles.json`) -> `<work>/root` | |
+| extract | every file of the disc -> `<root>/games/mvc/work/disc_files`, lba map | |
+| derive | every non-stock file the tools read, rebuilt from the user's disc (`data/mvc/derived.json`, in order) | `mvcb/fxhalf.py`, `pairs.py`, `tiers.py`, `codecs.py` |
+| sound | every level of every sound bank (`games/mvc/tools/snd/sndbank.py`, parallel processes) | the cache mktag.py reads |
+| disc | `games/mvc/tools/tagload/mktag.py` (2 MB) or `games/mvc/tools/ap8/mkap8.py --arcade ZIP` (8 MB), run unmodified in the root | |
+| seal | EDC/ECC of the rewritten sectors | |
+
+What `derived.json` holds per file (kinds): `disc` (a stock file of the disc, by name), `fx` (the half-resolution
+effects A0 of a character: the stock A0 with the listed tiles point-sampled, `mvcb/fxhalf.py` = tools/fxhalf build),
+`pair` (store-once pair union A0 + its json: tools/speed5/pairs.py build, `mvcb/pairs.py`), `tier` (a sprite tier file:
+DSH1 / DSM1 / DSR1 / RLE, see below), `diff` (copy runs from other derived / stock files at any offset + our literal
+bytes: the assists' .pix / .tab / variants), `data` (our own data file, `data/mvc/files/<sha1>`: plans, tables,
+decoders).  Every entry carries the SHA-1 it must come out with.
+
+Sprite tiers (`mvcb/tiers.py`): the recipe of a tier file is OUR part only - the codec model read back from the file
+(code tables, context maps, probabilities: the encoder's choices), the frame-group rewrites of our cut tiers as
+"group g shows the parts of group k" (+ coordinate modes), the tile table bytes we changed, the padding - and for each
+coded tile where its content comes from: the same tile of the base DSP (the stock file, the half-res effects A0, the
+pair union), zeros (tiles our cuts freed), or another base tile.  The builder re-emits every tile stream with the
+encoder's own emission step (`mvcb/codecs.py`: dsh.encode / dsm.encode / codec2/dsr.py with the model given, parse
+and entropy coding unchanged), so the file comes out byte for byte; no model search runs (the 2 MB tree took about
+2 hours of encoder search to make).
+
+Our MIPS code (`mvcb/toolbake.py`): the toolchain is prebaked per COMMAND.  Record runs every gcc / as / ld / objcopy /
+nm / objdump command for real and keys it by the tool + its arguments with every input file replaced by the SHA-1 of
+its content (text normalised: machine paths, and runs of `.set` / `#define` lines sorted - generated sources list
+them in hash-randomised set order) plus the content of every file a source #includes; outputs the Python tools read
+(.bin, nm / objdump text, ld's stderr) are stored (`data/mvc/tc`, game words as references, xvb/gameref.py), the
+others (.o, .elf) as tokens.  The builder replaces `subprocess.run / check_call / check_output / call` while the tools
+run; a command with no record is an error.  The harness also redirects `games/mvc/disc/mvc.bin` to the user's image,
+makes the output image an Overlay and defers EDC/ECC (`mkdisc.fix_sector`).
+
+Re-baking for a new final (development machine, MIPS compiler, the user's arcade set; holds games/mvc/work/mktag.lock;
+about an hour, run it detached through tools/heavyslot.py):
+
+    python work/mvcb/record_mvc.py --flags games/mvc/work/stfx/rc3/flags_mvc_1_0c.txt --ref2 mvc_1_0c --ref8 mvc_8_1_2
+
+1. trace: a real build of each configuration in the repository under an audit hook (`work/mvcb/trace.py`: every file
+   opened, every toolchain command, every module); the image must equal the final;
+2. classify: every input -> derived.json / rootfiles.json / data/mvc/files (each recipe is checked to rebuild the file);
+3. record: a build in a FRESH tool root filled only from those recipes, with the compiler (toolchain recorded); then
+   the tool files are frozen into data/mvc/tools;
+4. replay: the builder's own path in another fresh root with no compiler reachable; both images must equal the final;
+   known.json gets the hashes.
+Check: `python work/release12/optA_scan.py --disc games/mvc/disc/mvc.bin --blobs "" --bundle "" --page "" --tree builder/data/mvc`.
