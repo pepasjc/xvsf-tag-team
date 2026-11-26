@@ -36960,7 +36960,7 @@
   "games/mshvsf/tools/gameplay/menus.S": "3d7ddf3e345f7ac9d8391e8c94dd20d92dffdc88",
   "games/mshvsf/tools/gameplay/menus.py": "f0ea694a7c4e68974b440f08617887b92a0e0d3b",
   "games/mshvsf/tools/gameplay/menuversion.py": "41bf723167e5d965acfc67d0877d99bb693ee92d",
-  "games/mshvsf/tools/gameplay/norimaro.py": "2c2252811166d02e0d0e083ddc99cde7b989a4cf",
+  "games/mshvsf/tools/gameplay/norimaro.py": "94be9c266d81c0a9367830d352cc33ed4aba668f",
   "games/mshvsf/tools/gameplay/opts.S": "7373e981fa5264c43d84d27356a965d5e75605a8",
   "games/mshvsf/tools/gameplay/pad.py": "f732b5cdc3b2cd766a6626154e484c947232f57d",
   "games/mshvsf/tools/gameplay/tagmode.py": "f31a9f4d1540f23521d0c36b9240a860871fbaae",
