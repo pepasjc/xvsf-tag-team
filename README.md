@@ -8,6 +8,8 @@ Saturn got a really good port, and even the N64 got a nice fan port, so I though
 These patches restore the full 2-on-2 tag team to the PlayStation ports, on a stock console: four complete
 characters in every match, tag at any time, the arcade rules.
 
+How it was made (memory layout, speed work and the hardest bugs): **[Making of the Tag Team Hacks](https://youtu.be/MMOk-eOUVok)**.
+
 ## X-Men vs. Street Fighter Tag Team Hack 1.4
 
 [![X-Men vs Street Fighter Tag Hack trailer](https://img.youtube.com/vi/aVJAqBGNwyk/maxresdefault.jpg)](https://youtu.be/aVJAqBGNwyk)
@@ -43,6 +45,8 @@ Features, hashes and known issues: **[docs/mshvsf](docs/mshvsf/README.md)** ·
 [how it works](docs/mshvsf/technical.md)
 
 ## Marvel vs. Capcom Tag Team Hack 1.0
+
+[![Marvel vs. Capcom Tag Hack trailer](https://img.youtube.com/vi/Rak99vGtD7g/maxresdefault.jpg)](https://youtu.be/Rak99vGtD7g)
 
 - Every Arcade and Versus match becomes a 2-on-2 tag battle with four different, full characters plus a special
   partner (assist): ROULETTE (the arcade's roulette), NORMAL or OFF.

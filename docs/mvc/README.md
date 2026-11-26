@@ -2,6 +2,8 @@
 
 **Version 1.0**, 2026, by pepa
 
+[![Marvel vs. Capcom Tag Hack trailer](https://img.youtube.com/vi/Rak99vGtD7g/maxresdefault.jpg)](https://youtu.be/Rak99vGtD7g)
+
 The PlayStation port of Marvel vs. Capcom: Clash of Super Heroes only keeps the arcade's tag battles in CROSS OVER
 mode; in Arcade and Versus the partner is a special partner (assist) only. This hack makes every Arcade and Versus
 match a real 2-on-2 tag battle with four different, complete characters plus a special partner, on a stock 2 MB
