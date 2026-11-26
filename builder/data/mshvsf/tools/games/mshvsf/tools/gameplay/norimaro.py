@@ -24,7 +24,7 @@ so nothing changes there.
     patches()               [(addr, bytes)] EXE
     ram_overlay_patches(read) [(addr, bytes)] while the select overlay is resident (tests)
 """
-import os, struct, sys
+import hashlib, os, struct, sys
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 GAME = os.path.abspath(os.path.join(HERE, "..", ".."))
@@ -131,9 +131,7 @@ END_BASE = 0x80094800
 END_TEXT_TAB, END_SCRIPT_TAB, DAN = 0x800b4da4, 0x800b2adc, 0x12
 NORI_TEXT, NORI_CELLS = 0x800b469c, 250
 NORI_LIST, NORI_SCENE0 = 0x800b2a70, 0x800b2a38        # 7 scene pointers; scene data 0x800b2a38..0x800b2a6f
-NORI_SCRIPT_STOCK = bytes.fromhex("78000200ffff000078000200ffff000478000200ffff000578000200ffff260778000200ffff0008"
-                                  "78000200ffff000a2c010200ffff000c382a0b80402a0b80482a0b80502a0b80582a0b80602a0b80"
-                                  "682a0b80")
+NORI_SCRIPT_STOCK_LEN, NORI_SCRIPT_STOCK_SHA1 = 84, "f8a72798267f18124821aea267aa31d4c4d21d3f"   # the stock script there (checked by hash: no disc bytes here)
 ENDING_PAGES = [                 # (speaker, line 1, line 2); each line <= 25, centred
     (NORI, "I beat Apocalypse and", "Cyber-Akuma! Woof!"),
     (NORI, "I'm the strongest! The", "whole world is mine now!"),
@@ -193,7 +191,7 @@ def ending_patches(read):
     dan = u32(END_TEXT_TAB + 4 * DAN)
     assert end[o(NORI_TEXT):o(NORI_TEXT) + 2 * NORI_CELLS] == end[o(dan):o(dan) + 2 * NORI_CELLS], "Norimaro ending text not the stock Dan copy"
     assert u32(END_SCRIPT_TAB + 4 * NORI) == NORI_LIST
-    assert end[o(NORI_SCENE0):o(NORI_SCENE0) + len(NORI_SCRIPT_STOCK)] == NORI_SCRIPT_STOCK, "Norimaro ending script not stock"
+    assert hashlib.sha1(end[o(NORI_SCENE0):o(NORI_SCENE0) + NORI_SCRIPT_STOCK_LEN]).hexdigest() == NORI_SCRIPT_STOCK_SHA1, "Norimaro ending script not stock"
     data, ptrs = ending_script()
     for f, base in END_FILES:
         out += [(f, base + o(NORI_TEXT), ending_text()), (f, base + o(NORI_SCENE0), data), (f, base + o(NORI_LIST), ptrs)]
