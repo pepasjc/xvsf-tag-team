@@ -10,8 +10,9 @@ match a real 2-on-2 tag battle with four different, complete characters plus a s
 PlayStation.
 
 How to build the image: the web patcher at <https://pepasjc.github.io/xvsf-tag-team/> or the command line, see the
-[README](../../README.md#how-to-patch). Other pages: [changelog](CHANGELOG.md). How it was made:
-[Making of the Tag Team Hacks](https://youtu.be/MMOk-eOUVok).
+[README](../../README.md#how-to-patch). Other pages: [changelog](CHANGELOG.md),
+[achievements](achievements.md), [ARCADE BALANCE](balance.md), [how the patch works](architecture.md),
+[engine reference](engine.md). How it was made: [Making of the Tag Team Hacks](https://youtu.be/MMOk-eOUVok).
 
 ## What it does
 
@@ -32,7 +33,8 @@ How to build the image: the web patcher at <https://pepasjc.github.io/xvsf-tag-t
   - **INTRO** SIMPLE / STOCK (SIMPLE skips the slow character intro animations; default on 2 MB);
   - **ACHIEVEMENT POPUP** ON / OFF;
   - **ASSISTS** ROULETTE / NORMAL / OFF;
-  - **ARCADE BALANCE** OFF / ON, default OFF: ON = the arcade's meter gain when blocking and its red-life minimum;
+  - **ARCADE BALANCE** OFF / ON, default OFF: ON = the arcade's meter gain when blocking and its red-life minimum
+    ([details](balance.md));
   - **INFINITE SUPER METER** OFF / ON, default OFF (achievements do not unlock while it is ON).
 - **Achievements** built in: 75 achievements adapted from the RetroAchievements set by SherryBirkin, an
   ACHIEVEMENTS page in the main menu, popups, progress in its own memory card file.

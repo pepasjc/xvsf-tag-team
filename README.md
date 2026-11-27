@@ -56,7 +56,9 @@ Features and hashes: **[docs/mshvsf](docs/mshvsf/README.md)** ·
   BALANCE, INFINITE SUPER METER), saved with the game's memory card save.
 - With 8 MB of RAM and your own arcade ROM set: arcade animation frames, full-resolution effects and arcade voices.
 
-Features and hashes: **[docs/mvc](docs/mvc/README.md)** · [changelog](docs/mvc/CHANGELOG.md)
+Features and hashes: **[docs/mvc](docs/mvc/README.md)** ·
+[changelog](docs/mvc/CHANGELOG.md) · [achievements](docs/mvc/achievements.md) ·
+[how it works](docs/mvc/architecture.md)
 
 ## How to patch
 
