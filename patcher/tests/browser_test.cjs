@@ -4,6 +4,7 @@
  *   node patcher/tests/browser_test.cjs --disc DISC.bin [--arcade SET.zip[,PARENT.zip]] [--file-url] [--shots DIR]
  *        [--chrome PATH] [--headed] [--skip-errors] [--only-shots] [--tag NAME] [--set "CSS=0|1,..."] [--also-reject FILE,...]
  *        [--lang en|pt]   (page language for the run; the result is also shot in the other language)
+ *        [--page-file PATH]  (test this page file, served from its own folder; the release gate uses it)
  *
  *   default: serves patcher/ on http://127.0.0.1:<port>/ (as a static host would); --file-url opens
  *   patcher/index.html straight from disk instead.
@@ -14,6 +15,8 @@ const fs = require("fs"), path = require("path"), http = require("http"), os = r
 const { spawn, execFileSync } = require("child_process");
 const arg = (n, d) => { const i = process.argv.indexOf("--" + n); return i < 0 ? d : (process.argv[i + 1] && !process.argv[i + 1].startsWith("--") ? process.argv[i + 1] : true); };
 const ROOT = path.join(__dirname, "..");
+const PAGEFILE = arg("page-file") ? path.resolve(String(arg("page-file"))) : null;   // (release gate) the page under test
+const SROOT = PAGEFILE ? path.dirname(PAGEFILE) : ROOT;
 const SHOTS = path.resolve(arg("shots", path.join(ROOT, "..", "work", "patcher_shots")));
 const TAG = arg("tag", arg("arcade") ? "8mb" : "2mb");
 const CHROME = arg("chrome", ["C:/Program Files/Google/Chrome/Application/chrome.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "/usr/bin/google-chrome"].find((p) => fs.existsSync(p)));
@@ -23,8 +26,8 @@ function serve() {
   const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".wasm": "application/wasm", ".json": "application/json", ".zip": "application/zip" };
   return new Promise((res) => {
     const srv = http.createServer((q, s) => {
-      const f = path.join(ROOT, decodeURIComponent(q.url.split("?")[0]).replace(/^\/+/, "") || "index.html");
-      if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { s.writeHead(404); return s.end(); }
+      const f = path.join(SROOT, decodeURIComponent(q.url.split("?")[0]).replace(/^\/+/, "") || "index.html");
+      if (!f.startsWith(SROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { s.writeHead(404); return s.end(); }
       s.writeHead(200, { "content-type": types[path.extname(f)] || "application/octet-stream" }); fs.createReadStream(f).pipe(s);
     }).listen(0, "127.0.0.1", () => res(srv));
   });
@@ -56,8 +59,8 @@ function memory(marker) {
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "xvsf_patcher_test_")), marker = path.basename(profile), dl = path.join(profile, "dl");
   fs.mkdirSync(dl);
   const srv = arg("file-url") ? null : await serve();
-  const PAGE = arg("page", "index.html");
-  const url = srv ? `http://127.0.0.1:${srv.address().port}/${PAGE}` : "file:///" + path.join(ROOT, PAGE).replace(/\\/g, "/");
+  const PAGE = PAGEFILE ? path.basename(PAGEFILE) : arg("page", "index.html");
+  const url = srv ? `http://127.0.0.1:${srv.address().port}/${PAGE}` : "file:///" + path.join(SROOT, PAGE).replace(/\\/g, "/");
   const port = 9300 + Math.floor(Math.random() * 500);
   const chrome = spawn(CHROME, [arg("headed") ? "--start-maximized" : "--headless=new", `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "--window-size=1280,1000", "about:blank"], { stdio: "ignore" });
   let peak = { total: 0, largest: 0 };
@@ -143,13 +146,14 @@ function memory(marker) {
       if (s.bad) throw new Error("build failed: " + s.text + "\n" + (await c.eval("document.getElementById('log').textContent.slice(-3000)")));
       if (!shotMid && (Date.now() - t) > 25000) { shotMid = true; await c.shot(TAG + "_10_building"); await c.send("Emulation.setDeviceMetricsOverride", { width: 420, height: 900, deviceScaleFactor: 1, mobile: false }); await sleep(300); await c.shot(TAG + "_11_building_narrow"); await c.send("Emulation.clearDeviceMetricsOverride"); }
       if (s.done) break;
-      if (Date.now() - t > 3600e3) throw new Error("build timeout");
+      if (Date.now() - t > (+process.env.BUILD_TIMEOUT_S || 3600) * 1e3) throw new Error("build timeout");
     }
     const buildSecs = (Date.now() - t) / 1000;
     console.log("BUILD TIME (click to result): %ss", buildSecs.toFixed(1));
     console.log("page says:", (await c.eval("document.getElementById('facts').innerText")).replace(/\n+/g, " | "));
     console.log("stage times:", await c.eval("JSON.stringify(state.result.times)"), "| WebAssembly memory of the worker:", await c.eval("state.result.heapMB"), "MB");
     console.log("memory when the build finished (before any download): all processes %s MB, largest %s MB", peak.total.toFixed(0), peak.largest.toFixed(0));
+    if (process.env.PAGE_LOG) for (const l of String(await c.eval("document.getElementById('log').textContent")).split(String.fromCharCode(10))) if (l.trim()) console.log("  log| " + l);
     await c.shot(TAG + "_12_done");
     await theme("dark"); await sleep(300); await c.shot(TAG + "_13_done_dark"); await theme("light");
     await c.send("Emulation.setDeviceMetricsOverride", { width: 420, height: 900, deviceScaleFactor: 1, mobile: false }); await sleep(300); await c.shot(TAG + "_14_done_narrow"); await c.send("Emulation.clearDeviceMetricsOverride");

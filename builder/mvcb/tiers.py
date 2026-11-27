@@ -142,8 +142,21 @@ def sec1_build(b1, ops):
 
 
 # ------------------------------------------------------------------------------------------------ tile contents
+_CC = {}
+_EC = {}
+
+
 def contents(codec, x):
-    """{tile idx: content} of the base DSP x (DSPX): DSH1 = written bytes (with the stock decoder's overrun), else raw"""
+    """{tile idx: content} of the base DSP x (DSPX): DSH1 = written bytes (with the stock decoder's overrun), else raw.
+    (2026-11-26) memoised per (codec, base bytes): many tiers share a base; callers get a copy of the dict"""
+    k = (codec, hashlib.sha1(bytes(x.d)).digest(), len(x.tiles))
+    if k not in _CC:
+        if len(_CC) >= 48: _CC.pop(next(iter(_CC)))
+        _CC[k] = _contents(codec, x)
+    return dict(_CC[k])
+
+
+def _contents(codec, x):
     s0x = x.d[0x14:]
     if codec == "DSH1":
         return {t.idx: C.rle_written(s0x, t.off, t.n)[0] for t in x.tiles}
@@ -226,8 +239,19 @@ def _emit(cod, M, tiles, cont, model):
         c = cont[t.idx]; k = _key(cod, t, c)
         if k not in seen: seen[k] = len(order); order.append((t.wb, t.n, c))
         offs[t.idx] = seen[k]
-    if cod == "DSM1": streams = C.BATCH[cod](M, order, M.get("pen", 0))
-    else: streams = C.BATCH[cod](M, order)
+    # (2026-11-26) a tile's stream depends only on (codec, model, pen, wb, n, content): tiers of one character share
+    # most tiles, so the streams are memoised across build() calls and only the new ones are encoded
+    pen = M.get("pen", 0) if cod == "DSM1" else None
+    ck = (cod, bytes(model), pen)
+    if ck not in _EC:
+        if len(_EC) >= 64: _EC.pop(next(iter(_EC)))
+        _EC[ck] = {}
+    memo = _EC[ck]
+    need = [o for o in order if o not in memo]
+    if need:
+        got = C.BATCH[cod](M, need, pen) if cod == "DSM1" else C.BATCH[cod](M, need)
+        for o, st in zip(need, got): memo[o] = st
+    streams = [memo[o] for o in order]
     sec0 = bytearray(model); at = []
     for st in streams: at.append(len(sec0)); sec0 += st
     M["_off"] = {i: at[j] for i, j in offs.items()}

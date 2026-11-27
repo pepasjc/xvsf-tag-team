@@ -34,11 +34,13 @@ def bundle_files():
     add("builder/data/blobs", lambda f: f.endswith((".json", ".bin")))      # ALL of our MIPS code, prebaked (the page compiles nothing)
     add("tools", lambda f: py(f) and not f.startswith("cold"))
     add("tools/speed", py)                       # speedpatch.py + frame.py are imported (their results come from the blobs)
-    add("tools/ap", py)
+    add("tools/ap", lambda f: py(f) and not f.startswith("gt8"))     # (gt8*.py: sprite audit harnesses with game addresses; not builder code)
     add("tools/snd", py)                         # 1.2 sound banks: VAB editing, resampler, ADPCM encoder (hot loops: src/kernels.js)
     add("tools/ach", lambda f: f in ("xvach.py", "achbuild.py", "setc.py"))   # 1.3: built-in achievements (xvach.code comes from the blobs)
     add("tools/ach/xvsf", lambda f: f == "set.py")   # (xvach reads the set at import)
-    add("tools/ap8", lambda f: f in ("hot8.json", "hot8_idle5.json"))  # data: the 8 MB pre-decode order (tools/mkap8disc.py; 1.4: hot8_idle5)
+    import re as _re                             # data: the 8 MB pre-decode order (tools/mkap8disc.py), the file builder/xvb/pipeline.py names
+    _hot = _re.search(r'^ARCADE_HOT8 = "([^"]+)"', open(os.path.join(REPO, "builder", "xvb", "pipeline.py"), encoding="utf-8").read(), _re.M).group(1)
+    add("tools/ap8", lambda f: f in ("hot8.json", _hot))
     add("tools/mtap", lambda f: f == "xvmtap.py")    # 1.4 VERSUS CPU row (its code comes from the blobs: mtpatch.code)
     add("common/mtap", lambda f: f in ("mtpatch.py", "mtbuild.py"))
     add("tools/logo", lambda f: f.endswith(".bin"))   # card2.bin: the second card's own layer (composed with the user's portraits)
@@ -61,7 +63,8 @@ def bundle_files():
         for sub in ("", "files", "tc"):
             d = os.path.join(mvp.DATA, sub)
             out += [("builder/data/mvc/" + (sub + "/" if sub else "") + f, os.path.join(d, f)) for f in sorted(os.listdir(d)) if os.path.isfile(os.path.join(d, f))]
-    return sorted(set(out))
+    # (2026-11-27) sprite audit harnesses with game addresses in them (tools/ap/gt8*.py): no builder imports them
+    return sorted({(n, p) for n, p in out if not (n.startswith("tools/ap/gt8") and n.endswith(".py"))})
 
 
 def make_bundle():
@@ -122,7 +125,9 @@ def main():
                readme=readme_sections(open(os.path.join(REPO, "README.md"), encoding="utf-8").read()),
                bundle_sha1=hashlib.sha1(bundle).hexdigest(), about=about_sections(open(os.path.join(HERE, "src", "mshvsf.md"), encoding="utf-8").read()),
                about_pt=about_sections(open(os.path.join(HERE, "src", "about_pt.md"), encoding="utf-8").read()))      # PT-BR side panel (src/i18n.js: the other texts)
-    worker = src("kernels.js") + "\n" + src("kernels_msh.js") + "\n" + src("kernels_mvc.js") + "\n" + src("zopfli.js") + "\n" + src("worker.js")
+    adpcm = base64.b64encode(open(os.path.join(HERE, "wasm", "adpcm.wasm"), "rb").read()).decode()   # (patcher/wasm/build.sh)
+    worker = (src("kernels.js") + "\n" + src("kernels_msh.js") + "\n" + src("kernels_mvc.js") + "\n" + src("zopfli.js") + "\n" +
+              'const ADPCM_WASM_B64 = "%s";\n' % adpcm + src("worker.js"))
     vz = os.path.join(HERE, "vendor", "zopfli")                # zopfli compiled to WebAssembly (Apache-2.0), for the 8 MB build
     zopfli = dict(glue=open(os.path.join(vz, "libzopfli.js"), encoding="utf-8").read(), wasm=json.load(open(os.path.join(vz, "libzopfli-wasm.json"))))
     page = src("page.html")
@@ -133,6 +138,7 @@ def main():
         assert page.count(k) == 1, k
         page = page.replace(k, v)
     out = os.path.join(HERE, "index_nomvc.html" if os.environ.get("PATCHER_MVC") == "0" else "index.html")   # (PATCHER_MVC=0: a page without MvC)
+    if os.environ.get("PATCHER_OUT"): out = os.path.join(HERE, os.environ["PATCHER_OUT"])                  # (developer: a test page next to it)
     open(out, "w", encoding="utf-8", newline="\n").write(page)
     print("wrote %s (%d bytes); Pyodide from %s" % (out, len(page.encode()), cfg["pyodide"]))
 

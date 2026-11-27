@@ -15316,7 +15316,7 @@
   "aipatch.py": "ac8ec41c8d550ca28ca8f7f2c6815aea00eefd22",
   "ap/aplib.py": "e9479b7b7e2d9618debde0b63bd4215c8612d595",
   "ap/audit8x.py": "d6d88d48e046bef5a0fda93ac27b1c9b32feb4d9",
-  "ap/build8.py": "9d612f7cc8ae0dd5dc8943afdf736e3b64025837",
+  "ap/build8.py": "9fead748a8c53a5f47969201a7141ce65a15004d",
   "ap/build8k.py": "bbcbeb1dff63dcb5fdedb512e23570875508c1f5",
   "ap/dirbuild.py": "119557a03db26fd42387168189b0dff49f239b22",
   "ap/eff2build.py": "73872077c5a190a83b6c03654f35030a6cf347e9",

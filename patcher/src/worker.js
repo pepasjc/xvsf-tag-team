@@ -48,6 +48,9 @@ function spawnSub() {
   return sp;
 }
 
+// (2026-11-27) an arcade zip keeps its own name after "setN_" (a MERGED zip: the set named like the zip comes first;
+// the builders strip the prefix)
+const arcName = (f, i) => "set" + i + "_" + String(f.name || "set.zip").replace(/[^A-Za-z0-9._-]/g, "_").replace(/(\.zip)?$/i, ".zip");
 function mount(dir, items) {
   // items: [{name, data: File}]; WORKERFS reads them with FileReaderSync, slice by slice
   try { py.FS.unmount(dir); } catch (e) { /* not mounted yet */ }
@@ -108,8 +111,8 @@ function verifyArcade(files) {
   arcade = []; arcadeFiles = [];
   if (!files.length) { post({ type: "arcade", result: { status: "none" } }); return; }
   const dir = "/arc" + (++mountSeq);
-  mount(dir, files.map((f, i) => ({ name: "set" + i + ".zip", data: f })));
-  const paths = files.map((f, i) => dir + "/set" + i + ".zip");
+  mount(dir, files.map((f, i) => ({ name: arcName(f, i), data: f })));
+  const paths = files.map((f, i) => dir + "/" + arcName(f, i));
   // the set belongs to the game of the disc; before a disc is recognised, the first game that accepts it
   let r = null;
   for (const g of game ? [game] : (vweb ? ["xvsf", "mshvsf", "mvc"] : ["xvsf", "mshvsf"])) {
@@ -123,6 +126,20 @@ function verifyArcade(files) {
 }
 
 /* ---------------------------------------------------------------- sub-worker pools */
+// (2026-11-27) pool sizes from the machine: a Python sub-worker holds its own Pyodide (400-700 MB), an encoder
+// sub-worker a few MB.  navigator.deviceMemory: GB, rounded (some browsers cap it at 8; absent = 8).  The page may force
+// sizes (?pyw=N&jsw=N, for tests).  The bytes do not depend on them (only the speed does).
+function poolSizes() {
+  const cores = (self.navigator && navigator.hardwareConcurrency) || 2;
+  const mem = (self.navigator && navigator.deviceMemory) || 8;
+  let py = Math.max(1, Math.min(5, Math.floor(mem / 4), cores - 1));      // 8 GB: 2 (measured peak 3.7 GB with 2 + 4)
+  let js = Math.max(1, Math.min(mem >= 8 ? 15 : mem >= 4 ? 6 : 2, cores - 1));
+  const f = (cfg && cfg.pool) || {};
+  if (f.py > 0) py = f.py | 0;
+  if (f.js > 0) js = f.js | 0;
+  return { py, js, cores, mem };
+}
+
 const nSubs = (reserve) => Math.max(1, Math.min(4, (self.navigator && navigator.hardwareConcurrency || 2) - reserve));
 
 function soundParallel(meta, inputs, onDone, n) {
@@ -187,9 +204,31 @@ function pyParallel(jobs, onResult, onDone, n) {
   });
 }
 
+// (2026-11-27) the ADPCM encoder compiled to WebAssembly (patcher/wasm/adpcm: the same search, byte for byte, about 2x
+// the JavaScript loop); JavaScript when WebAssembly is not there or a job does not fit it
+let adpcmWasm;
+function adpcmEncoder() {
+  if (adpcmWasm === undefined) {
+    adpcmWasm = null;
+    try {
+      if (typeof ADPCM_WASM_B64 === "string" && typeof WebAssembly === "object") {
+        const bin = Uint8Array.from(atob(ADPCM_WASM_B64), (c) => c.charCodeAt(0));
+        adpcmWasm = new WebAssembly.Instance(new WebAssembly.Module(bin), {}).exports;
+      }
+    } catch (e) { adpcmWasm = null; }
+  }
+  return adpcmWasm;
+}
 function sndEncode(m) {
   const [nblk, s1, s2, K, M, B, R] = m.prm, out = new Uint8Array(16 * nblk);
-  XVK.snd_encode(m.x, nblk, s1, s2, K, M, B, R, out);
+  const E = adpcmEncoder();
+  if (E && m.x.length <= E.max_samples()) {
+    new Int32Array(E.memory.buffer, E.x_ptr(), m.x.length).set(m.x);
+    const rc = E.encode(m.x.length, nblk, s1, s2, K, M, B, R);
+    if (rc === -2) throw new Error("snd_encode: error sum beyond 2**53");
+    if (rc === 0) out.set(new Uint8Array(E.memory.buffer, E.out_ptr(), 16 * nblk));
+    else XVK.snd_encode(m.x, nblk, s1, s2, K, M, B, R, out);
+  } else XVK.snd_encode(m.x, nblk, s1, s2, K, M, B, R, out);
   post({ type: "snd_done", i: m.i, out }, [out.buffer]);
 }
 
@@ -216,16 +255,38 @@ function sndJob(m) {
   for (const name of names) { const b = sub.sound_file(name), u8 = b.toJs(); b.destroy(); files[name] = u8; bufs.push(u8.buffer); }
   post({ type: "snd_char_done", i: m.i, files }, bufs);
 }
+let fr8Paths = null;
+function mvFr8Job(m) {
+  py = subPy;
+  if (!fr8Paths) {                                   // the user's files, mounted once per sub-worker (read in slices)
+    mount("/in", [{ name: "disc.bin", data: m.disc }]);
+    mount("/arc", m.arcade.map((f, i) => ({ name: arcName(f, i), data: f })));
+    fr8Paths = m.arcade.map((f, i) => "/arc/" + arcName(f, i));
+  }
+  const r = sub.fr8_job(m.kind, m.x, JSON.stringify(fr8Paths), "/in/disc.bin"), meta = r.get(0), b = r.get(1), data = b.toJs();
+  b.destroy(); r.destroy();
+  post({ type: "mfr8_done", i: m.i, meta, data }, [data.buffer]);
+}
+function mvTierJob(m) {
+  const b = sub.tier_job(m.entry, m.names, m.srcs), out = b.toJs(); b.destroy && b.destroy();
+  post({ type: "mtier_done", i: m.i, out }, [out.buffer]);
+}
+function mvSndPlan(m) {
+  const plan = sub.sound_bank_plan(m.name, m.data, JSON.stringify(m.env));
+  const meta = plan.get(0), arr = plan.get(1), buf = arr.getBuffer("i32"), inputs = buf.data.slice();
+  buf.release(); arr.destroy(); plan.destroy();
+  post({ type: "msnd_plan_done", i: m.i, meta, inputs }, [inputs.buffer]);
+}
 function mvSndJob(m) {
-  const names = JSON.parse(sub.sound_bank(m.name, m.data, JSON.stringify(m.env))), files = {}, bufs = [];
+  const names = JSON.parse(m.meta ? sub.sound_bank(m.name, m.data, JSON.stringify(m.env), m.meta, m.res) : sub.sound_bank(m.name, m.data, JSON.stringify(m.env))), files = {}, bufs = [];
   for (const name of names) { const b = sub.sound_file(name), u8 = b.toJs(); b.destroy(); files[name] = u8; bufs.push(u8.buffer); }
   post({ type: "snd_char_done", i: m.i, files }, bufs);
 }
 function arcJob(m) {
   py = subPy;
   mount("/in", [{ name: "disc.bin", data: m.disc }]);
-  mount("/arc", m.arcade.map((f, i) => ({ name: "set" + i + ".zip", data: f })));
-  const paths = m.arcade.map((f, i) => "/arc/set" + i + ".zip");
+  mount("/arc", m.arcade.map((f, i) => ({ name: arcName(f, i), data: f })));
+  const paths = m.arcade.map((f, i) => "/arc/" + arcName(f, i));
   const r = JSON.parse(sub.arcade_sub(JSON.stringify(paths), "/in/disc.bin", (line) => post({ type: "log", line: String(line) })));
   const files = {}, bufs = [];
   if (r.ok) for (const name of r.files) { const b = sub.arcade_file(name), u8 = b.toJs(); b.destroy(); files[name] = u8; bufs.push(u8.buffer); }
@@ -286,7 +347,7 @@ async function buildMsh(flags, ram8) {
   const dataOf = (ch) => () => { if (!stock[ch]) stock[ch] = bytesOf(() => mweb.stock_dsp(ch)); return stock[ch].slice(); };
   for (const [tier, ch] of JSON.parse(mweb.sprite_jobs())) jobs.push({ kind: "spr", tier, char: ch, data: dataOf(ch) });
   // sub-workers: each holds its own Pyodide (about 400 MB); up to 5
-  const cores = (self.navigator && navigator.hardwareConcurrency) || 2, nPy = Math.max(1, Math.min(5, cores - 1));
+  const nPy = poolSizes().py;
   const count = { spr: 0, snd: 0, arcade: 0 }, total = { spr: 0, snd: 0, arcade: 0 };
   jobs.forEach((j) => total[j.kind]++);
   const report = (d) => progress("prep", d / jobs.length, "graphics " + count.spr + " of " + total.spr + ", sound " + count.snd + " of " + total.snd +
@@ -309,21 +370,140 @@ async function buildMsh(flags, ram8) {
 }
 
 async function buildMvc() {
-  // MvC (builder/mvcb): this worker verifies, extracts and rebuilds the graphics files; the sound banks (one per job) go to
-  // sub-workers with their own Pyodide; then the build here (its sound stage finds every bank made).  With the arcade
-  // set: arcade frames (in process) + arcade voices (tools/snd/sn8build.py: scipy)
+  // MvC (builder/mvcb): this worker verifies + extracts; (2026-11-27) then, all at once: the sound banks (three phases,
+  // mvcSound) and the sprite tiers of the derive step on a pool of Python sub-workers, the ADPCM encoder jobs on
+  // JavaScript sub-workers, the rest of the derive step here; then the build here (it finds every file made).
+  // With the arcade set: arcade frames (in process) + arcade voices (tools/snd/sn8build.py: scipy)
   const progress = makeProgress();
   if (arcade.length) { post({ type: "status", text: "Loading scipy" }); await py.loadPackage("scipy", { messageCallback: () => {} }); }
   const banks = JSON.parse(vweb.prepare(discPath, JSON.stringify(arcade), discInfo.sha1, discInfo.size, progress, log));
-  const bytesOf = (f) => { const b = f(), u = b.toJs(); b.destroy(); return u; };
-  const jobs = banks.map(([name, env]) => ({ kind: "msnd", name, env, data: () => bytesOf(() => vweb.sound_src(name)) }));
-  const cores = (self.navigator && navigator.hardwareConcurrency) || 2, nPy = Math.max(1, Math.min(5, cores - 1));
-  const tS = Date.now();
-  progress("sound", 0, "");
-  await pyParallel(jobs, (j, r) => { for (const [name, u8] of Object.entries(r.files)) vweb.sound_put(name, u8); },
-                   (d) => progress("sound", d / jobs.length, "bank " + d + " of " + jobs.length), nPy);
-  log("sound: " + jobs.length + " banks in " + nPy + " sub-workers in " + ((Date.now() - tS) / 1000).toFixed(1) + " s");
+  const ps = poolSizes(), nPy = ps.py, cores = ps.cores;
+  log("sub-workers: " + nPy + " Python, " + ps.js + " encoder (" + ps.cores + " cores, deviceMemory " + ps.mem + ")");
+  const pool = pyPool(nPy, "mvc");
+  try {
+    let err = null;
+    // (2026-11-27) 8 MB: the arcade frames, one character / assist per job, first in the queue (the longest jobs)
+    const fjobs = JSON.parse(vweb.frames_plan(discPath, JSON.stringify(arcade)));
+    let fdone = 0;
+    const tF = Date.now();
+    const frames = Promise.all(fjobs.map(([kind, x]) => pool.submit({ type: "mfr8", kind, x, disc, arcade: arcadeFiles }).then((r) => {
+      const [name, ent, desc, chtab] = JSON.parse(r.meta);
+      vweb.frames_put(kind, x, name, r.data, JSON.stringify(ent), JSON.stringify(desc), chtab);
+      fdone++; progress("prep", fdone / fjobs.length, "arcade frames " + fdone + " of " + fjobs.length);
+    }))).then(() => { if (fjobs.length) { vweb.frames_done(); log("arcade frames: " + fjobs.length + " jobs in sub-workers, done after " + ((Date.now() - tF) / 1000).toFixed(1) + " s"); } })
+      .catch((e) => { err = err || e; });
+    progress("sound", 0, "");
+    const snd = mvcSound(pool, banks, progress, cores).catch((e) => { err = err || e; });
+    const tD = Date.now(); let tiers = 0, back = 0;
+    const pend = [];
+    for (;;) {
+      if (err) throw err;
+      const r = JSON.parse(vweb.derive_step(0.2, true));
+      for (const i of r.jobs) {
+        const j = vweb.derive_job(i), ej = j.get(0), nj = j.get(1), bl = j.get(2);
+        const srcs = []; for (let k = 0; k < bl.length; k++) { const x = bl.get(k), u = x.toJs(); x.destroy(); srcs.push(u); }
+        bl.destroy(); j.destroy(); tiers++;
+        pend.push(pool.submit({ type: "mtier", entry: ej, names: nj, srcs }, srcs.map((u) => u.buffer))
+          .then((res) => { vweb.derive_result(i, res.out); back++; }).catch((e) => { err = err || e; }));
+      }
+      progress("derive", r.frac, "");
+      if (r.frac >= 1) break;
+      await new Promise((res) => setTimeout(res, r.wait ? 20 : 0));
+    }
+    log("derive done after " + ((Date.now() - tD) / 1000).toFixed(1) + " s (" + tiers + " tiers in sub-workers; sound meanwhile)");
+    await Promise.all(pend);
+    await snd;
+    await frames;
+    if (err) throw err;
+  } finally { pool.close(); }
   return { w: vweb, info: JSON.parse(vweb.build(discPath, JSON.stringify(arcade), "", discInfo.sha1, discInfo.size, progress, log)) };
+}
+
+function pyPool(n, game_) {
+  // n sub-workers with their own Pyodide; submit(message, transfer) -> Promise of the reply, first come first served
+  // (jobs of several kinds share the pool); close() ends them
+  const subs = [], queue = [], idle = [];
+  let seq = 0; const waiting = {};
+  const pump = () => {
+    while (idle.length && queue.length) {
+      const w = idle.shift(), [m, t] = queue.shift();
+      w.busy = m.i; w.postMessage(m, t || []);
+    }
+  };
+  for (let k = 0; k < n; k++) {
+    const w = spawnSub(); subs.push(w);
+    w.onmessage = (ev) => {
+      const r = ev.data;
+      if (r.type === "spr_ready") { idle.push(w); pump(); return; }
+      if (r.type === "log") { post(r); return; }
+      const cb = waiting[w.busy]; delete waiting[w.busy]; w.busy = null; idle.push(w);
+      if (cb) { if (r.type === "error" || typeof r.i !== "number") cb.rej(new Error("sub-worker: " + (r.message || r.type))); else cb.res(r); }
+      pump();
+    };
+    w.onerror = (ev) => { const cb = waiting[w.busy]; if (cb) cb.rej(new Error("sub-worker: " + (ev.message || "error"))); };
+    w.postMessage({ type: "spr_init", pyodide: cfg.pyodide, bundle: cfg.bundle.slice(0), game: game_ });
+  }
+  const submit = (m, t) => new Promise((res, rej) => { m.i = ++seq; waiting[m.i] = { res, rej }; queue.push([m, t]); pump(); });
+  return { submit, close: () => subs.forEach((s) => s.terminate()) };
+}
+
+function jsPool(n) {
+  // n JavaScript-only sub-workers (ADPCM encoder): submit(x Int32Array, prm) -> Promise of the blocks; close()
+  const subs = [], queue = [], idle = [], waiting = {};
+  let seq = 0;
+  const pump = () => {
+    while (idle.length && queue.length) {
+      const w = idle.shift(), j = queue.shift();
+      w.busy = j.i; w.postMessage({ type: "snd_encode", i: j.i, x: j.x, prm: j.prm }, [j.x.buffer]);
+    }
+  };
+  for (let k = 0; k < n; k++) {
+    const w = spawnSub(); subs.push(w); idle.push(w);
+    w.onmessage = (ev) => {
+      const r = ev.data, cb = waiting[w.busy]; delete waiting[w.busy]; w.busy = null; idle.push(w);
+      if (cb) { if (r.type !== "snd_done") cb.rej(new Error("sound sub-worker: " + (r.message || r.type))); else cb.res(r.out); }
+      pump();
+    };
+    w.onerror = (ev) => { const cb = waiting[w.busy]; if (cb) cb.rej(new Error("sound sub-worker: " + (ev.message || "error"))); };
+  }
+  const submit = (x, prm) => new Promise((res, rej) => { const i = ++seq; waiting[i] = { res, rej }; queue.push({ i, x, prm }); pump(); });
+  return { submit, close: () => subs.forEach((s) => s.terminate()) };
+}
+
+async function mvcSound(pool, banks, progress, cores) {
+  // (2026-11-26/27) MvC sound, every bank in three steps, the banks overlapping: (1) the bank once in a Python
+  // sub-worker with the ADPCM encoder only noting its jobs; (2) its encoder jobs on the JavaScript-only pool (one
+  // sub-worker per core; most of the sound work), longest first; (3) the bank again in a Python sub-worker, the encoder
+  // taking the results.  Same kernel, same bytes as one pass.
+  const bytesOf = (f) => { const b = f(), u = b.toJs(); b.destroy(); return u; };
+  const nJs = poolSizes().js, enc = jsPool(nJs);
+  const tS = Date.now(); let nJobs = 0, jobsDone = 0, banksDone = 0, tPlan = 0, nDup = 0;
+  const seen = new Map();
+  const report = () => progress("sound", (banksDone + (nJobs ? jobsDone / nJobs : 0)) / (banks.length + 1),
+                                "bank " + banksDone + " of " + banks.length + (nJobs ? ", encoder job " + jobsDone + " of " + nJobs : ""));
+  try {
+    await Promise.all(banks.map(async ([name, env]) => {
+      let data = bytesOf(() => vweb.sound_src(name));
+      const r = await pool.submit({ type: "msnd_plan", name, env, data }, [data.buffer]);
+      tPlan = Math.max(tPlan, Date.now() - tS);
+      const meta = JSON.parse(r.meta), inputs = r.inputs; nJobs += meta.length; report();
+      const offs = [0]; for (const m of meta) offs.push(offs[offs.length - 1] + 16 * m[3]);
+      const res = new Uint8Array(offs[offs.length - 1]);
+      const order = meta.map((m, i) => i).sort((a, b) => meta[b][2] - meta[a][2] || a - b);
+      await Promise.all(order.map((i) => {
+        const m = meta[i];                              // (the same job in another bank: encoded once; key = SHA-1 of input + settings)
+        if (!seen.has(m[0])) seen.set(m[0], enc.submit(inputs.slice(m[1], m[1] + m[2]), m.slice(3)));
+        else nDup++;
+        return seen.get(m[0]).then((out) => { res.set(out, offs[i]); jobsDone++; report(); });
+      }));
+      data = bytesOf(() => vweb.sound_src(name));
+      const f = await pool.submit({ type: "msnd", name, env, data, meta: r.meta, res }, [data.buffer, res.buffer]);
+      for (const [n, u8] of Object.entries(f.files)) vweb.sound_put(n, u8);
+      banksDone++; report();
+    }));
+  } finally { enc.close(); }
+  log("sound: " + banks.length + " banks, " + nJs + " encoder sub-workers, " + nJobs + " encoder jobs (" + nDup + " the same as another bank's): last plan after " + (tPlan / 1000).toFixed(1) +
+      " s, all done after " + ((Date.now() - tS) / 1000).toFixed(1) + " s");
 }
 
 async function build(flags, ram8) {
@@ -364,6 +544,9 @@ async function handle(m) {
     else if (m.type === "arc_job") arcJob(m);
     else if (m.type === "snd_char") sndJob(m);
     else if (m.type === "msnd") mvSndJob(m);
+    else if (m.type === "msnd_plan") mvSndPlan(m);
+    else if (m.type === "mtier") mvTierJob(m);
+    else if (m.type === "mfr8") mvFr8Job(m);
   } catch (e) {
     post({ type: "error", message: String((e && e.message) || e), during: m.type });
   }

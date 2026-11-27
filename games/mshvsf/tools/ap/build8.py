@@ -30,7 +30,7 @@ PLxx_10.A0, u32 new frame index).  The loader copies the stock table + the new i
 points the blob's table offset (blob + 8, read by the game at run time) at the copy and rewrites the records' frame
 index (byte 0 and bits 12-14 of the second half-word).
 """
-import os, sys, json, zipfile, hashlib, struct, argparse, collections
+import re, os, sys, json, zipfile, hashlib, struct, argparse, collections
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 GAME = os.path.abspath(os.path.join(HERE, "..", ".."))
@@ -57,24 +57,70 @@ class Fail(Exception):
 
 
 # ------------------------------------------------------------------------------------------------ inputs
+# (2026-11-27) program ROMs .03-.10 (SHA-1, in that order) of the MAME / FBNeo sets of this game: in a MERGED zip (the
+# parent with every clone inside) the files of one set are chosen together, never a mix of revisions
+PRG_SETS = {
+    "mshvsf": ("61bd581ea4b969298f8a39fe03023b5456cac750", "2d45dbf7bc277b84c6bcd9615ab3b80c42af7781", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfa": ("6a129274711765bbf5acbb225e3fce6d93d7f421", "758fc9c453a864e32588c7fb33166c93e798a39c", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfa1": ("34e6a074734032af74afa52bfebbc213a9c886d7", "f340dda7d5339645fd1ea523e72783fb7bb7aba1", "1b368ebe7680796dc068b511b72359eec546cd9f", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfb": ("0664fad64996118df86e9887bd6e301d04d84978", "a16f262fd14e726c7837980d0556a9c3bdc7fb11", "b813082a480d42d663c713062892245faabe9101", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfb1": ("85d0026a691682c195d6e617bf28def50029cb03", "c6fa2b8b727a1192fd21131496067447053b5547", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfcph": ("6c13774ef6d9e295ef8fc38b51220143e29b6373", "2d45dbf7bc277b84c6bcd9615ab3b80c42af7781", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfem": ("7dc683ed8cf5bc205851375deab0438a1105d581", "36db3a3aeaf29369977593c051bf5665cffefb2d", "924a7c82456bb44d7b0be65af11dbe1a2420a3f0", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfh": ("dd926a9cac4bff05845615d0b61948e2dc4b1ed8", "594e4383eb776c09075577cd1f4e42ef11748f0f", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfj": ("16820cf3bc7285477e61bd598a3ed4ea5e0e770d", "36db3a3aeaf29369977593c051bf5665cffefb2d", "924a7c82456bb44d7b0be65af11dbe1a2420a3f0", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfj1": ("b2d8a62e394c2eb4070cac742b0f403252e46a25", "ecac71b032b431c63a4cf73a1d1d1be1faebc12b", "eafa877fd4a4e58e7c98336658e986a4a27d6b91", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfj2": ("e9fb93249e48e1bb7c769c3ce674dd4be404574f", "471e44268cebba631b81f131bf31e27b8a28c548", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfu": ("939fb1e3c06c33fc212b26ecfceac3180e108e9d", "787924e04508c83ecd4c3a872882d2be9e57eb50", "b813082a480d42d663c713062892245faabe9101", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfu1": ("1fa7e6534d02ec8059153705b1161a55b9cfe803", "e95f7a3fb281e1bafdbe7a1b22532c4fab5ec89d", "738a27f83704c208d36d73bf766d861ef2d51a89", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+    "mshvsfu1d": ("53ab6df85a900b221cabd62948e68d91cf6146e4", "51ebede487f955e3f838b7906b619830e67fea52", "777bf7c74110c029c44a363ce79e50c1863950c2", "fbbaa915324815246738f3426232e623f039ce26", "683da09c5ba55e31b59aa95a8e13c45dc574ab3c", "49e5d4bc48f90c8146cb6aafb9240aff0119f1a7", "9ab132a3cac55fcccebe6c99b6fb0ba1305f8f6e", "f4c1f8a6e7a79ecc6241d5268b3039f8a09ea516"),
+}
+PRG_EXTS = ['03', '04', '05', '06', '07', '08', '09', '10']
+
+
+def _pick_prg(cand, zname):
+    """cand {ext: [(zip index, bytes)]} -> {ext: bytes} of the known set to use, or None.  Rank: the zip its .03 comes
+    from (SET.zip before PARENT.zip), then the set named like that zip, then the order of PRG_SETS (parent first)"""
+    import hashlib as _h
+    hs = {e: [(z, _h.sha1(d).hexdigest(), d) for z, d in v] for e, v in cand.items()}
+    best = None
+    for k, (name, want) in enumerate(PRG_SETS.items()):
+        got = {}
+        for e, w in zip(PRG_EXTS, want):
+            m = [(z, d) for z, h, d in hs.get(e, []) if h == w]
+            if not m: break
+            got[e] = min(m, key=lambda x: x[0])
+        else:
+            z = got["03"][0]; rank = (z, name != zname.get(z), k)
+            if best is None or rank < best[0]: best = (rank, {e: d for e, (z_, d) in got.items()})
+    return best[1] if best else None
+
+
 def read_arcade(paths):
     """-> (program image, {rom: bytes}, description).  Program = .03 .04 .05 .06 .07 .08 .09 .10 (16-bit swapped)."""
-    files = {}
-    for p in paths:
+    files = {}; zipno = {}; zname = {}
+    for i, p in enumerate(paths):
+        zname[i] = re.sub(r"^set\d+_", "", os.path.splitext(os.path.basename(p))[0].lower())    # (the web page: setN_<name>.zip)
         if os.path.isdir(p):
-            for n in sorted(os.listdir(p)): files.setdefault(n.lower(), open(os.path.join(p, n), "rb").read())
+            for n in sorted(os.listdir(p)):
+                if n.lower() not in files: files[n.lower()] = open(os.path.join(p, n), "rb").read(); zipno[n.lower()] = i
         else:
             try: z = zipfile.ZipFile(p)
             except (zipfile.BadZipFile, OSError): raise Fail("arcade set: %s is not a zip file or a folder of ROM files" % p)
-            for n in z.namelist(): files.setdefault(os.path.basename(n).lower(), z.read(n))
-    roms = {}
+            for n in z.namelist():
+                k = os.path.basename(n).lower()
+                if k and k not in files: files[k] = z.read(n); zipno[k] = i
+    roms = {}; cand = {}
     for n, d in files.items():
         ext = n.rsplit(".", 1)[-1]
         if ext in GFXROMS and len(d) == 0x400000: roms.setdefault(ext, d)
-        elif ext[:2] in ("03", "04", "05", "06", "07", "08", "09", "10") and len(d) == 0x80000: roms.setdefault(ext[:2], d)
+        elif ext[:2] in PRG_EXTS and len(d) == 0x80000: roms.setdefault(ext[:2], d); cand.setdefault(ext[:2], []).append((zipno.get(n, 0), d))
+    pick = _pick_prg(cand, zname)                          # a known set, complete: its files (else the first per extension)
+    if pick: roms.update(pick)
     miss = [k for k in GFXROMS + ["03", "04", "05", "06", "07", "08", "09", "10"] if k not in roms]
     if miss: raise Fail("arcade set incomplete: no ROM with extension " + ", ".join("." + m for m in miss) +
-                        " (a clone zip needs its parent zip too)")
+                        " (a clone zip needs its parent zip too).  Supported: mshvsf or any of its clones (mshvsfu, mshvsfj ...), merged or "
+                        "non-merged zip, or a split clone zip together with mshvsf.zip")
     def sw(d):
         a = np.frombuffer(d, dtype=np.uint8); b = a.copy(); b[0::2] = a[1::2]; b[1::2] = a[0::2]; return b.tobytes()
     prg = b"".join(sw(roms[k]) for k in ("03", "04", "05", "06", "07", "08", "09", "10"))

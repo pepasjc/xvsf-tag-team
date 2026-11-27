@@ -86,7 +86,10 @@ def build(syms, version):
 _HOT = None
 def _hot():
     global _HOT
-    if _HOT is None: _HOT = json.load(open(HOT8)) if os.path.exists(HOT8) else {}
+    if _HOT is None:
+        if not os.path.exists(HOT8):                             # no silent fallback: another order = another image
+            raise SystemExit("mkap8disc: pre-decode order %s is missing" % HOT8)
+        _HOT = json.load(open(HOT8))
     return _HOT
 
 

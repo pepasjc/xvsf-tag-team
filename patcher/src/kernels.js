@@ -554,13 +554,16 @@ const XVK = (() => {
   }
 
   function beam_block(x, o, s1, s2, f0, f1, sh, B, R, keep, W) {
+    // (2026-11-27) the same beam, faster: each candidate goes straight into the kept list (sorted by cost, ties in
+    // generation order, one entry per distinct (s1, s2)); a candidate no better than the B-th is dropped at once.
+    // Gives exactly the list the sort + dedupe of all candidates gave.
     const qs = 12 - sh, step = 1 << qs, half = step >> 1;
-    const { cs1, cs2, cerr, ns1, ns2, nerr, ccost, cs, cpar, cnib, order, bpar, bnib, fin_s1, fin_s2, fin_err, fin_nib } = W;
+    const { cs1, cs2, cerr, ns1, ns2, nerr, cpar, cnib, order: ord, bpar, bnib, fin_s1, fin_s2, fin_err, fin_nib } = W;
     let nb = 1;
     cs1[0] = s1; cs2[0] = s2; cerr[0] = 0;
     for (let i = 0; i < 28; i++) {
       const xi = x[o + i];
-      let nc = 0;
+      let k = 0;
       for (let b = 0; b < nb; b++) {
         const p1 = cs1[b];
         const pred = (p1 * f0 + cs2[b] * f1 + 32) >> 6;
@@ -573,29 +576,25 @@ const XVK = (() => {
         for (let n = lo; n <= hi; n++) {
           let s = n * step + pred;
           if (s > 32767) s = 32767; else if (s < -32768) s = -32768;
-          const e = xi - s;
-          ccost[nc] = base + e * e; cs[nc] = s; cpar[nc] = b; cnib[nc] = n;
-          nc++;
+          const e = xi - s, c = base + e * e;
+          if (k === B && c >= nerr[ord[B - 1]]) continue;
+          let d = -1;                                  // slots 0..k-1 hold the kept entries; ord = their cost order
+          for (let q = 0; q < k; q++) if (ns1[q] === s && ns2[q] === p1) { d = q; break; }
+          let sl, j;
+          if (d >= 0) {
+            if (nerr[d] <= c) continue;                // the kept one comes first (cheaper, or as cheap and earlier)
+            j = 0; while (ord[j] !== d) j++;
+            for (; j < k - 1; j++) ord[j] = ord[j + 1];
+            k--; sl = d;
+          } else if (k === B) { sl = ord[B - 1]; k--; }    // the last one drops out
+          else sl = k;
+          j = k;
+          while (j > 0 && nerr[ord[j - 1]] > c) { ord[j] = ord[j - 1]; j--; }
+          ord[j] = sl; ns1[sl] = s; ns2[sl] = p1; nerr[sl] = c; cpar[sl] = b; cnib[sl] = n;
+          k++;
         }
       }
-      for (let a = 0; a < nc; a++) {                    // stable insertion sort of candidate indices by cost
-        const v = ccost[a];
-        let j = a - 1;
-        while (j >= 0 && ccost[order[j]] > v) { order[j + 1] = order[j]; j--; }
-        order[j + 1] = a;
-      }
-      let k = 0;
-      for (let a = 0; a < nc; a++) {                    // the best B with distinct (s1, s2)
-        const c = order[a], s = cs[c], p = cs1[cpar[c]];
-        let dup = false;
-        for (let q = 0; q < k; q++) if (ns1[q] === s && ns2[q] === p) { dup = true; break; }
-        if (dup) continue;
-        ns1[k] = s; ns2[k] = p; nerr[k] = ccost[c];
-        bpar[i * B + k] = cpar[c]; bnib[i * B + k] = cnib[c];
-        k++;
-        if (k === B) break;
-      }
-      for (let q = 0; q < k; q++) { cs1[q] = ns1[q]; cs2[q] = ns2[q]; cerr[q] = nerr[q]; }
+      for (let q = 0; q < k; q++) { const sl = ord[q]; bpar[i * B + q] = cpar[sl]; bnib[i * B + q] = cnib[sl]; cs1[q] = ns1[sl]; cs2[q] = ns2[sl]; cerr[q] = nerr[sl]; }
       nb = k;
     }
     const nf = nb < keep ? nb : keep;
@@ -649,24 +648,28 @@ const XVK = (() => {
           }
         }
       }
-      for (let a = 0; a < npool; a++) {                 // stable sort of the pool by cost, the best K distinct states
-        const v = pcost[a];
-        let j = a - 1;
-        while (j >= 0 && pcost[porder[j]] > v) { porder[j + 1] = porder[j]; j--; }
-        porder[j + 1] = a;
+      let k = 0;                                        // the best K distinct states of the pool (cost order, ties in pool order)
+      for (let c = 0; c < npool; c++) {
+        const v = pcost[c], a1 = ps1_[c], a2 = ps2_[c];
+        if (k === K && v >= pcost[porder[K - 1]]) continue;
+        let d = -1;
+        for (let q = 0; q < k; q++) { const u = porder[q]; if (ps1_[u] === a1 && ps2_[u] === a2) { d = q; break; } }
+        if (d >= 0) {
+          if (pcost[porder[d]] <= v) continue;
+          for (let q = d; q < k - 1; q++) porder[q] = porder[q + 1];
+          k--;
+        }
+        if (k === K) k--;
+        let j = k;
+        while (j > 0 && pcost[porder[j - 1]] > v) { porder[j] = porder[j - 1]; j--; }
+        porder[j] = c; k++;
       }
-      let k = 0;
-      for (let a = 0; a < npool; a++) {
-        const c = porder[a];
-        let dup = false;
-        for (let q = 0; q < k; q++) if (ks1[q] === ps1_[c] && ks2[q] === ps2_[c]) { dup = true; break; }
-        if (dup) continue;
-        bt_par[blk * K + k] = ppar[c]; bt_combo[blk * K + k] = pcombo[c];
-        for (let i = 0; i < 28; i++) bt_nib[(blk * K + k) * 28 + i] = pnib[c * 28 + i];
-        ks1[k] = ps1_[c]; ks2[k] = ps2_[c]; kerr[k] = pcost[c];
+      for (let q = 0; q < k; q++) {
+        const c = porder[q];
+        bt_par[blk * K + q] = ppar[c]; bt_combo[blk * K + q] = pcombo[c];
+        for (let i = 0; i < 28; i++) bt_nib[(blk * K + q) * 28 + i] = pnib[c * 28 + i];
+        ks1[q] = ps1_[c]; ks2[q] = ps2_[c]; kerr[q] = pcost[c];
         if (pcost[c] > LIMIT53) throw new Error("snd_encode: error sum beyond 2**53");
-        k++;
-        if (k === K) break;
       }
       nk = k;
     }

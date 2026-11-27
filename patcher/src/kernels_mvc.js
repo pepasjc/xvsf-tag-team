@@ -210,6 +210,61 @@ const MVK = (() => {
   }
 
   const K = { dsr_tile_decisions, dsr_rc_encode, dsr_ref_decode, dsh_ref_decode_mvc };
+  /* games/mvc/tools/snd/sndhq.py limit(): the gain envelope's per-sample loop (instant attack, release a), float64 like
+   * CPython: cur = gm[i] < cur ? gm[i] : a * cur + (1 - a) * gm[i]; then min(cur, gm[i]).  gm, env: Float64Array */
+  // (2026-11-27) l1b.pack's pairwise overlap (builder/mvcb/web.py _ov): largest k < min(|x|, |y|) with x ending in
+  // y[:k]: prefix function over y + sentinel + x
+  let ovPi = new Int32Array(0);
+  K.overlap = (x, y) => {
+    const ny = y.length, n = ny + 1 + x.length;
+    if (ovPi.length < n) ovPi = new Int32Array(n * 2);
+    const pi = ovPi, at = (i) => (i < ny ? y[i] : i === ny ? -1 : x[i - ny - 1]);
+    pi[0] = 0;
+    for (let i = 1; i < n; i++) {
+      const c = at(i);
+      let k = pi[i - 1];
+      while (k && c !== at(k)) k = pi[k - 1];
+      if (c === at(k)) k++;
+      pi[i] = k;
+    }
+    let k = pi[n - 1];
+    const m = Math.min(x.length, ny);
+    while (k >= m) k = k ? pi[k - 1] : 0;
+    return k;
+  };
+
+  // (2026-11-27) common/dsp/dsp.py rle_decode for every tile of a section at once: out[oo[t]..+ns[t]] = the tile's
+  // bytes, res[2t] = source bytes used, res[2t+1] = run overrun past n (as the Python model)
+  K.rle_batch = (mem, offs, ns, oo, out, res) => {
+    for (let t = 0; t < offs.length; t++) {
+      let p = offs[t], k = 0; const n = ns[t], o = oo[t];
+      while (k < n) {
+        const b = mem[p++];
+        if (b & 0xF0) {
+          const v = (b & 15) * 0x11, c = (b >> 4) + 1;
+          for (let j = 0; j < c; j++) { if (k < n) out[o + k] = v; k++; }
+        } else {
+          const c = (b & 15) + 1;
+          for (let j = 0; j < c; j++) { if (k < n) out[o + k] = mem[p + j]; k++; }
+          p += c;
+        }
+      }
+      res[2 * t] = p - offs[t]; res[2 * t + 1] = k - n;
+    }
+    return 0;
+  };
+
+  K.limiter_env = (gm, a, env) => {
+    let cur = 1.0; const b = 1 - a;
+    for (let i = 0; i < gm.length; i++) {
+      const g = gm[i];
+      cur = g < cur ? g : a * cur + b * g;
+      if (cur > g) cur = g;
+      env[i] = cur;
+    }
+    return gm.length;
+  };
+
   /* as Pyodide calls them (MSK.forPyodide): numpy arguments arrive as PyProxy -> typed-array views */
   K.forPyodide = () => {
     const out = {};

@@ -4,15 +4,6 @@
 "outs": {
 "6": "b1d2a27498241213dda8fb5c9e8314e4319ba74e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_fill",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -49,15 +40,6 @@
 "outs": {
 "6": "cafe0d8cff3baee2d3db92b29db7db98ce4f474a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:976edf349b927c5581cc9370748ade54c0cda787",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -81,17 +63,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@c2fcfd80025625144722751fe3f0d16bdac49f34",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -99,17 +70,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@1ca6cd10e0fe23f8471fe869cf9795914e18ab40",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -127,17 +87,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@028b900287a25e64c45d36f2a071f3be427c1498",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -172,18 +121,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"--gc-sections",
-"-T",
-"@c8a48427c383d1412ad113009668d2c951850af4",
-"-o",
-"@OUT",
-"@tok:2da3adb571d46170c4d3d71ac38e8b30149ad027",
-"@tok:c383e421e9a6eff0e58514734496f6aa8033fd3c",
-"@tok:df3717d068ec3151a6fdcb267ba4f486750b797b",
-"@tok:3568108c739dc8d9f4e1cc81a38bb4ba9fa75ddc"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -223,10 +160,6 @@
 },
 "05c2e54c351832f2a2c902f744052752d285a8e0": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:97daa181685493b7042c39f9e74bf6256ed6f6e4"
-],
 "stdout": "ffffffff800c2f10 R __bss_start\r\nffffffff800c2f10 R _edata\r\nffffffff800c2f10 R _end\r\nffffffff800c2f10 R _fbss\r\nffffffff800c2f10 N _fdata\r\nffffffff800c1ee4 T _ftext\r\nffffffff800caf00 r _gp\r\nffffffff800858cb a B\r\n1500438f a BNEZ\r\n00000000 a SLOT\r\n",
 "tool": "nm"
 },
@@ -234,24 +167,11 @@
 "outs": {
 "6": "723f164594ba5c772f4618f954304393940a3f0e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".blob",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "06ce2fa8cb8bd45e90421118e96da104fa6a3c47": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:b0cae03e744272bd851c3ff3b5e16ed2a45fcf76"
-],
 "stdout": "ffffffff8000108c R __bss_start\r\nffffffff8000108c R _edata\r\nffffffff8000108c R _end\r\nffffffff8000108c R _fbss\r\nffffffff8000108c N _fdata\r\nffffffff80000000 T _ftext\r\nffffffff80009080 r _gp\r\n4d523353 a MAGIC\r\nffffffff80000000 t remap\r\n",
 "tool": "nm"
 },
@@ -259,16 +179,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000b100",
-"-e",
-"0x8000b100",
-"-o",
-"@OUT",
-"@tok:513897c43e4a3237c4b2c1926f182d5f5aa5f777"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -276,16 +186,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003ca3c",
-"-e",
-"0x8003ca3c",
-"-o",
-"@OUT",
-"@tok:5d0270c4ace6e61cc1bed993bd191c71342f0317"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -293,29 +193,6 @@
 "outs": {
 "20": null
 },
-"parts": [
-"ld",
-"-T",
-"@96b97f2973deb5b9221a0ae5d5f09308d11841f8",
-"--defsym",
-"dsaptr=0x8001b4f4",
-"--defsym",
-"dshptr=0x8001b4f0",
-"--defsym",
-"flushcache=0x8001b454",
-"--defsym",
-"post=0x801fd700",
-"--defsym",
-"post_list=0x801fd764",
-"--defsym",
-"tl_dbg=0x8001b4e0",
-"@tok:dccb0da0332872d65464c61d9e46a6a44141291c",
-"@tok:78a68c43ee2d17b5bc1309fdd407275553ce5640",
-"@tok:5e7da3c03d3e980afea37c7a71cb4c51d9d3d89e",
-"@tok:3c0515718da6fd75bb9991ef30823e6340be87d6",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -323,27 +200,11 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@5f5e0b360f0ea3a3d5ebc06d0c47ef9c260f322b",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
 "083c8999b178886f0482b1144bcb1a5da3694af0": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:4ca24c0a0d879eb34139b6ad58a0efad13b55329"
-],
 "stdout": "ffffffff8000a4f0 R __bss_start\r\nffffffff8000a4f0 R _edata\r\nffffffff8000a4f0 R _end\r\nffffffff8000a4f0 R _fbss\r\nffffffff8000a4f0 N _fdata\r\nffffffff80009410 T _ftext\r\nffffffff800124e0 r _gp\r\nffffffff80009410 t CHK\r\nffffffff800094e8 t plain\r\n",
 "tool": "nm"
 },
@@ -351,15 +212,6 @@
 "outs": {
 "6": "5b773c4a15c9e86fc33fa42b90e323e730c822a3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:1b905fe66dbacf149a8ac9b1e8290ffa1c4d67d3",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -367,15 +219,6 @@
 "outs": {
 "6": "6bfe089927d87bf2b9889724b1ab3e139eb74d8c"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:2d0fc3d14a769cd3b6b31d2d33044851db889282",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -428,25 +271,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80014128",
-"-e",
-"0x80014128",
-"-o",
-"@OUT",
-"@tok:ad8713ed50396f8b7438b9b3f01421294c08de6f"
-],
 "stdout": "",
 "tool": "ld"
 },
 "0aa876968d8c1307657ddbca7f403c2d2e355c18": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:b9a49f1c857b5ff120cfff7f556ea355d062428b"
-],
 "stdout": "ffffffff80010834 R __bss_start\r\nffffffff80010834 R _edata\r\nffffffff80010834 R _end\r\nffffffff80010834 R _fbss\r\nffffffff80010834 N _fdata\r\nffffffff8000f628 T _ftext\r\nffffffff80018830 r _gp\r\n00000080 a A_X\r\n000001e0 a A_Y\r\nffffffff8003c5a8 a APRET\r\n000003c0 a B_X\r\n000001b0 a B_Y\r\nffffffff80092c40 a BUFHC\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8002633c a FTAB_SPARE\r\nffffffff80000000 a HEAPCAP\r\nffffffff80011b10 a LOADIMAGE\r\nffffffff80011bd0 a MOVEIMAGE\r\nffffffff8003b5c8 a ORIGPAL\r\nffffffff8000f628 t P8\r\nffffffff8000f7bc t P8AP\r\nffffffff8000f834 t P8END\r\nffffffff8000f6d4 t P8HC\r\n38414c50 a P8MAGIC\r\nffffffff8000f71c t P8MV\r\nffffffff8000f804 t P8TAB\r\nffffffff8000f62c t P8UP\r\nffffffff80024800 a RDF\r\n000001ab a SPARE\r\nffffffff8007bdd9 a STAGEB\r\n",
 "tool": "nm"
 },
@@ -470,16 +299,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8002f780",
-"-e",
-"0x8002f780",
-"-o",
-"@OUT",
-"@tok:29a45980564de16ae6aa84a825a6089a317128fd"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -497,17 +316,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@d614bb97d3112034d8d73b42193d8a69d125d49d",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -531,15 +339,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-T",
-"@1421cbc02670fc49529cec49c3317f6bf3b4876a",
-"@tok:a2226cdc9dd6ee80e1006342961d7b1976c594ee",
-"@tok:af8d7626b6a00facaabaf908bb1f1c5d85099cf3",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -547,16 +346,6 @@
 "outs": {
 "4": null
 },
-"parts": [
-"ld",
-"-T",
-"@63edb907755567520fa916a888c5508ca5bfb491",
-"-o",
-"@OUT",
-"@tok:94c4692f12f858e9f8c918b77085bd7a9febce16",
-"@tok:8f7beb91a78e2a1c3f85f975fdc8f5b250d4204b",
-"@tok:abd211e0d585eab79acf6910ce75a73e0df66f68"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -564,15 +353,6 @@
 "outs": {
 "6": "8f60ea4121e5b50eae3646754a7cf58d470a36b3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g1",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -580,59 +360,6 @@
 "outs": {
 "32": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\tools\\ach",
-"-I<R>\\games\\mvc\\tools\\ach",
-"-include",
-"@8add6814ffd44ea714939fd0ed9b869ace3fa23b",
-"-DC_DONE=0x8000c768",
-"-DC_DIRTY=0x8000c77c",
-"-DC_PAGE=0x8000c783",
-"-DMOD_AT=0x801087e4",
-"-DNACH_CORE=75",
-"-DACH_BASE=0",
-"-DVSMENU=1",
-"-c",
-"@7e7888e9c3ff716c8de21f92c8c49f7539350795",
-"-o",
-"@OUT",
-[
-[
-"ach.c",
-"46cbd1c095cacc1bcd9a5ddd059166b24ecea5c4"
-],
-[
-"eval.h",
-"1ba28c87d040b1021e784ec6a534ec9c9fae77ab"
-],
-[
-"meta.h",
-"8dac7ca264bd63c3ce9d6edd5f40b767209f693f"
-],
-[
-"port.h",
-"8add6814ffd44ea714939fd0ed9b869ace3fa23b"
-]
-]
-],
 "stderr": "In file included from <R>\\games\\mvc\\tools\\ach\\core\\module.c:8:\n<R>\\tools\\ach/ach.c: In function 'ach_idle':\n<R>\\tools\\ach/ach.c:314:18: warning: unused variable 't' [-Wunused-variable]\n  314 |         uint16_t t = *(volatile uint16_t*)0x1F801110u;\n      |                  ^\n<R>\\tools\\ach/ach.c: In function 'ach_frame':\n<R>\\tools\\ach/ach.c:351:18: warning: variable 't' set but not used [-Wunused-but-set-variable]\n  351 |         uint16_t t;\n      |                  ^\n",
 "stdout": "",
 "tool": "gcc"
@@ -751,10 +478,6 @@
 },
 "10ae926539bc2ad164d3e7ebffdcad36f944dbd1": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:fa1f8ae9d2c7baa542a7ea3fabb9df386de49e60"
-],
 "stdout": "ffffffff8003ce40 R __bss_start\r\nffffffff8003ce40 R _edata\r\nffffffff8003ce40 R _end\r\nffffffff8003ce40 R _fbss\r\nffffffff8003ce40 N _fdata\r\nffffffff8003bde8 T _ftext\r\nffffffff80044e30 r _gp\r\nffffffff80099464 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdef2 a mdig\r\nffffffff801fdd44 a mdraw\r\nffffffff801fdc04 a meter\r\nffffffff8003be3c t mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 a mram_end\r\nffffffff801fded6 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc a mst\r\nffffffff8003bde8 t mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -762,26 +485,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003c310",
-"-e",
-"0x8003c310",
-"-o",
-"@OUT",
-"@tok:887563de903a1d77ce6294d50831d8f94327fcef"
-],
 "stdout": "",
 "tool": "ld"
 },
 "12bff73fe1d04f918688b7e873b9fa7632e194b8": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:45693face7d2efa254a3bc8a7aa956bc755524c1"
-],
 "stdout": "ffffffff80010000 T mt_select\r\nffffffff800101bc t route_v\r\nffffffff800102e0 t vs_body\r\nffffffff800103f4 t MT_POINT_SECOND\r\nffffffff80010460 t vs_fight\r\nffffffff800104b0 T mt_mask_v\r\nffffffff800104fc T mt_vsconf\r\nffffffff80010544 T V\r\nffffffff80010578 T mt_tick\r\nffffffff8001059c T mt_mask_stock\r\nffffffff800105a8 T vs_magic\r\nffffffff800105ac T mt_vsmode\r\nffffffff800105ad T mt_ssec\r\n",
 "tool": "nm"
 },
@@ -805,15 +513,6 @@
 "outs": {
 "6": "91a1df5075e831d9803cb04fd1e1076cb1f7121f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:0e39ba021efe9e06d16005dd76afca0ec845d5da",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -924,14 +623,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@10f4462e073635d72a4dcf3e27f2c7eb43685b33",
-"@tok:b82909a17646d4e200d84906a3129d1eabdbd721",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -939,25 +630,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fe000",
-"-e",
-"0x801fe000",
-"-o",
-"@OUT",
-"@tok:b33ac6164ae71c594358f065290f319b0819b778"
-],
 "stdout": "",
 "tool": "ld"
 },
 "172c10d4f7918a5da904909e2f2cef36e4c9e290": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:e62df205041123e24fff03c74275e0c3e49cb985"
-],
 "stdout": "ffffffff8003d340 R __bss_start\r\nffffffff8003d340 R _edata\r\nffffffff8003d340 R _end\r\nffffffff8003d340 R _fbss\r\nffffffff8003d340 N _fdata\r\nffffffff8003c310 T _ftext\r\nffffffff80045330 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 a go\r\nffffffff801fdff0 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 t od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
@@ -965,16 +642,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fdc00",
-"-e",
-"0x801fdc00",
-"-o",
-"@OUT",
-"@tok:d682a415f254a80ef73380352294c73136b1af93"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -982,15 +649,6 @@
 "outs": {
 "6": "f3e291644c7e5efef9dcf2de3c6030ff5b27160c"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:168f976b2e66cc831695973555660d6246c9b212",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1013,10 +671,6 @@
 },
 "1901adb79f682c49c468b2ca1ebe77f085f5d6ea": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:3a5b68c41fec523ae62e27be78b449ab8608bac0"
-],
 "stdout": "ffffffff800c3188 R __bss_start\r\nffffffff800c3188 R _edata\r\nffffffff800c3188 R _end\r\nffffffff800c3188 R _fbss\r\nffffffff800c3188 N _fdata\r\nffffffff800c215c T _ftext\r\nffffffff800cb180 r _gp\r\nffffffff800858cb a B\r\n1500496e a BNEZ\r\n00000000 a SLOT\r\n",
 "tool": "nm"
 },
@@ -1024,26 +678,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000f628",
-"-e",
-"0x8000f628",
-"-o",
-"@OUT",
-"@tok:82a4c81b7fd9670c1ddc8ff8293d84a9ccb64e5e"
-],
 "stdout": "",
 "tool": "ld"
 },
 "1968072c9c26882f0829c794db56a4a9c486f4cc": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:2e7c405f3fddfa7a79dff1d578daecd1849c3724"
-],
 "stdout": "ffffffff801087e4 T _mstart\r\nffffffff8010881c T memset\r\nffffffff80108840 T memcpy\r\nffffffff8010886c t bit\r\nffffffff80108890 t fmt_num\r\nffffffff80108900 t cat\r\nffffffff80108928 t nth\r\nffffffff8010895c t unpack\r\nffffffff80108a2c t unlocked\r\nffffffff80108aa4 t block_sum\r\nffffffff80108adc t make_block\r\nffffffff80108b44 t block_ok\r\nffffffff80108bb0 t locate\r\nffffffff80108cb8 t create\r\nffffffff80108dac t card_status\r\nffffffff80108ec0 t card_text\r\nffffffff80108f24 t card_load\r\nffffffff8010907c t card_tick\r\nffffffff80109230 t queue_card\r\nffffffff80109268 T ach_page\r\nffffffff801096d8 t sync\r\nffffffff80109740 T mod_page\r\nffffffff80109778 T mod_card\r\nffffffff8010979c T mod_patch\r\nffffffff801097f4 T port_text\r\nffffffff8010981c T port_pad_new\r\nffffffff80109898 T port_card_safe\r\nffffffff801098e8 T port_card_idle\r\nffffffff80109934 T mod_menu\r\nffffffff8010997c T bios_open\r\nffffffff80109988 T bios_lseek\r\nffffffff80109994 T bios_read\r\nffffffff801099a0 T bios_write\r\nffffffff801099ac T bios_close\r\nffffffff801099b8 T bios_firstfile\r\nffffffff801099c4 T bios_card_write\r\nffffffff801099d0 T bios_flushcache\r\nffffffff80109a30 t path\r\nffffffff80109a58 t card_word\r\nffffffff80109aa0 T ach_file_title\r\nffffffff80109ae0 t m.0\r\nffffffff80109aec T ra_nach\r\nffffffff80109aee T ra_total_points\r\nffffffff80109af0 T ra_points\r\nffffffff80109b3c T ra_text\r\nffffffff8010a318 T ra_dict\r\nffffffff8010a630 T ach_icon\r\nffffffff8010a6d0 T m_ovl_n\r\nffffffff8010a6d4 T m_ovl_at\r\nffffffff8010a704 T m_ovl_w\r\nffffffff8010a764 T _mro_end\r\nffffffff8010a764 T ach_dbg\r\nffffffff8010a77c t card_saved\r\nffffffff8010a794 T m_menutab\r\nffffffff8010a7fc T ach_bits\r\nffffffff8010a80c t sec\r\nffffffff8010a88c t rt_sector\r\nffffffff8010a890 t rt_wait\r\nffffffff8010a894 t card_state\r\nffffffff8010a895 t card_told\r\nffffffff8010a898 t idle_seen\r\nffffffff8010a89c t recheck\r\nffffffff8010a8a0 t queue\r\nffffffff8010a8a8 t nqueue\r\nffffffff8010a8ac t page_open\r\nffffffff8010a8b0 t sel\r\nffffffff8010a8b4 t top\r\nffffffff8010a8b8 T ra_st\r\n",
 "tool": "nm"
 },
@@ -1051,15 +690,6 @@
 "outs": {
 "6": "35f561c37d6235a3e87ea9b4af754864bf5f6f5d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:03de223908c61e5c766b59730290519b8a2be7ee",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1067,23 +697,11 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@24a96fc3f76c50b74609999c9c5cd6a6fed79340",
-"@tok:2da5a3a0b3d0e29a8ba0e8178a8c54b1565df467",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
 "1b4c8d5f66856e65791fe6cfc8ecd64fae1fa30c": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:0a2b286c6350b555bc34ee225a6fb3dc055bfc5a"
-],
 "stdout": "ffffffff80010834 R __bss_start\r\nffffffff80010834 R _edata\r\nffffffff80010834 R _end\r\nffffffff80010834 R _fbss\r\nffffffff80010834 N _fdata\r\nffffffff8000f628 T _ftext\r\nffffffff80018830 r _gp\r\n00000080 a A_X\r\n000001e0 a A_Y\r\nffffffff8003c5a8 a APRET\r\n000003c0 a B_X\r\n000001b0 a B_Y\r\nffffffff80092c40 a BUFHC\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8002633c a FTAB_SPARE\r\nffffffff8001b488 a HEAPCAP\r\nffffffff80011b10 a LOADIMAGE\r\nffffffff80011bd0 a MOVEIMAGE\r\nffffffff8003b5c8 a ORIGPAL\r\nffffffff8000f628 t P8\r\nffffffff8000f7bc t P8AP\r\nffffffff8000f834 t P8END\r\nffffffff8000f6d4 t P8HC\r\n38414c50 a P8MAGIC\r\nffffffff8000f71c t P8MV\r\nffffffff8000f804 t P8TAB\r\nffffffff8000f62c t P8UP\r\nffffffff80024800 a RDF\r\n000001ab a SPARE\r\nffffffff8007bdd9 a STAGEB\r\n",
 "tool": "nm"
 },
@@ -1091,17 +709,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@808b48ce4b4c2581f2f9f29ec1e100102e5b0472",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -1159,10 +766,6 @@
 },
 "1c52408cf9ce03fb366feb530a6ba75d9f02cac9": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:9868d1596f99c4521d1449afdb9eecbadd92fed8"
-],
 "stdout": "ffffffff8010000c T fe_dsa\r\nffffffff80100000 T fe_dsh\r\nffffffff80100190 T fe_end\r\nffffffff80100018 t fe0\r\nffffffff801000c0 t go\r\nffffffff801000c8 t miss\r\n",
 "tool": "nm"
 },
@@ -1170,24 +773,11 @@
 "outs": {
 "6": "8f60ea4121e5b50eae3646754a7cf58d470a36b3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g1",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "1cea048f376b12f646739bc588b90ed6c617b273": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:a9c04535dc1014b5db55cc5b355b942a443ef718"
-],
 "stdout": "ffffffff800c109c R __bss_start\r\nffffffff800c109c R _edata\r\nffffffff800c109c R _end\r\nffffffff800c109c R _fbss\r\nffffffff800c109c N _fdata\r\nffffffff800c0000 T _ftext\r\nffffffff800c9090 r _gp\r\nffffffff800c0088 t end_\r\nffffffff800c0034 t run_\r\nffffffff800c006c t sk_\r\n",
 "tool": "nm"
 },
@@ -1308,29 +898,6 @@
 "outs": {
 "19": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-DSND_NL=36",
-"-DSPUSTORE",
-"-DSNDX",
-"-DSNDVFY",
-"-DASSIST",
-"-DSPSRDDLY",
-"-DSPSN=\"2048\"",
-"-c",
-"@8688077e1b0ec14ee837b1d5999c256517c3346d",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -1380,26 +947,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@75187fa42f6e704a167d4ed269114954ca54e21c",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "1f610adf875fd0113a08669006877127a31b03da": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:70e61d7e4516b0521f670ae675f82628526c737e"
-],
 "stdout": "ffffffff800307ac R __bss_start\r\nffffffff800307ac R _edata\r\nffffffff800307ac R _end\r\nffffffff800307ac R _fbss\r\nffffffff800307ac N _fdata\r\nffffffff8002f780 T _ftext\r\nffffffff800387a0 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdf28 a go\r\nffffffff801fdf28 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 t od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 t RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 t VSTR\r\n",
 "tool": "nm"
 },
@@ -1543,11 +1095,6 @@
 },
 "20bc3358282565dec63c0124191ca3cc951471cc": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:45693face7d2efa254a3bc8a7aa956bc755524c1"
-],
 "stdout": "\r\nmt.elf:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .s0           000005b0  80010000  80010000  00001000  2**2\r\n                  CONTENTS, ALLOC, LOAD, CODE\r\n",
 "tool": "objdump"
 },
@@ -1569,10 +1116,6 @@
 },
 "214ad933fa2808604d3237010ff4142117b938f1": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:2d0fc3d14a769cd3b6b31d2d33044851db889282"
-],
 "stdout": "ffffffff8001ba1c R __bss_start\r\nffffffff8001ba1c R _edata\r\nffffffff8001ba1c R _end\r\nffffffff8001ba1c R _fbss\r\nffffffff8001ba1c N _fdata\r\nffffffff8001a9e4 T _ftext\r\nffffffff80023a10 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 t svhook\r\n",
 "tool": "nm"
 },
@@ -1594,10 +1137,6 @@
 },
 "21d846811e87bc24d7e53983f5bf1413617e10dd": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:ae794d16dfc062f2621b10db3daeaf3a0ab2e5a2"
-],
 "stdout": "ffffffff8003da70 R __bss_start\r\nffffffff8003da70 R _edata\r\nffffffff8003da70 R _end\r\nffffffff8003da70 R _fbss\r\nffffffff8003da70 N _fdata\r\nffffffff8003ca3c T _ftext\r\nffffffff80045a60 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c t sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -1655,17 +1194,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@89500bae73a67f5d945e7baf2593bf3d4d0d2135",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -1683,15 +1211,6 @@
 "outs": {
 "6": "522555f06d7f1f0d6ac729440a8b551bffc74f24"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_loop",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1699,14 +1218,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@4a4a170b49853b519f3793a0316e70e0dc6534a4",
-"@tok:a38a28307f627fd51240dbc3f6d14f003ff01991",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -1714,15 +1225,6 @@
 "outs": {
 "6": "7ccee62ff638f619e29ec0e253be353f7f34d933"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g2",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1730,15 +1232,6 @@
 "outs": {
 "6": "63b1e0a0fff81a5e293948e43fa832ee42373f81"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:a9c04535dc1014b5db55cc5b355b942a443ef718",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1762,17 +1255,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@698dd6bb7c83c210f37784bf6a05b5409b77960b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -1780,16 +1262,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80014128",
-"-e",
-"0x80014128",
-"-o",
-"@OUT",
-"@tok:827ba2961ade6abab303af11b8d858bdb82bf3be"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -1797,15 +1269,6 @@
 "outs": {
 "6": "ccd10b4b37d326d4c768d59b56c4da596b33ae39"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".rh",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1813,15 +1276,6 @@
 "outs": {
 "6": "f4469ef2567a5814307647b4d376b00d27e49533"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:97daa181685493b7042c39f9e74bf6256ed6f6e4",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1829,17 +1283,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@56cf591f9fa89ec1ac326e3ca21344444b163d84",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -1863,16 +1306,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c215c",
-"-e",
-"0x800c215c",
-"-o",
-"@OUT",
-"@tok:79d3b9830c9edd1d85a85cfbbec0c8e758bb92d7"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -1880,15 +1313,6 @@
 "outs": {
 "6": "cc222839c53560ee5f211727ad66403e81bbdb33"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k0",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1929,26 +1353,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@9bc9aa99f8f6ba26af0733cf362a3d59b652a4d5",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "2ac0506b680c1eca1be07c6bcd23953a97a63ee0": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:d89fb1affc5ff6ab7f6b535743b70d8328f16eed"
-],
 "stdout": "ffffffff801fef20 R __bss_start\r\nffffffff801fef20 R _edata\r\nffffffff801fef20 R _end\r\nffffffff801fef20 R _fbss\r\nffffffff801fef20 N _fdata\r\nffffffff801fdc00 T _ftext\r\nffffffff80206f10 r _gp\r\nffffffff80099438 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdef2 t mdig\r\nffffffff801fdd44 t mdraw\r\nffffffff801fdc04 t meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 t mfont\r\nffffffff801fdc00 t mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 t mram_end\r\nffffffff801fded6 t mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc t mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -1972,13 +1381,6 @@
 "outs": {
 "4": "d79a39c269f73c0f102ff7acfdb3de1dcb6a5b9b"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:9ba3239c0fa02bf1acf20851fa45868789cbe8ee",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -1996,17 +1398,6 @@
 "outs": {
 "8": "36707a091f04b86a2a391fe50c2f405f17e7248d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"--set-section-flags",
-".s0=alloc,load,contents",
-"-j",
-".s0",
-"@tok:45693face7d2efa254a3bc8a7aa956bc755524c1",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -2024,15 +1415,6 @@
 "outs": {
 "6": "9ac182534db52747260e617bd4071fc9a4577e2f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:74fc5cc692d3b448a801bf4b5299cec99b1fcd34",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -2040,22 +1422,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-DTAB=0x80092b30",
-"-DNSLOT=16",
-"-DDSHPTR=0x8001b4f0",
-"-DDSAPTR=0x8001b4f4",
-"-c",
-"@3faa1f013f3dc9fb01a9005396e60e07b60a763d",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -2079,16 +1445,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"--gc-sections",
-"--print-gc-sections",
-"-T",
-"@eaffff405a9171f9bac45191386b8b43ca607f46",
-"-o",
-"@OUT",
-"@tok:1bf0527629ebf3ed4d9e2f525628e9e278bc4e43"
-],
 "stderr": "C:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.pdr' in file 'mtcore.o'\r\nC:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.bss.kz.mtrx' in file 'mtcore.o'\r\nC:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.rodata.mtreq' in file 'mtcore.o'\r\nC:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.text.mt_read' in file 'mtcore.o'\r\nC:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.text.route' in file 'mtcore.o'\r\nC:/ps1dev/gcc/bin/mipsel-none-elf-ld: removing unused section '.text.mt_old' in file 'mtcore.o'\r\n",
 "stdout": "",
 "tool": "ld"
@@ -2113,24 +1469,11 @@
 "outs": {
 "6": "fa637998fb96bcaa4ff9d6140da79196190b1236"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".mod",
-"@tok:350acc71ffd7827f1537017c083d4e642ca8b10f",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "2ded283e25d2b59e42fb196262018001c2dcbc93": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:5c4035ffeb3de3b9d6c5dca5ae178584515de27b"
-],
 "stdout": "ffffffff80102400 R __bss_start\r\nffffffff80102400 R _edata\r\nffffffff80102400 R _end\r\nffffffff80102400 R _fbss\r\nffffffff80102400 N _fdata\r\nffffffff80101230 T _ftext\r\nffffffff8010a3f0 r _gp\r\nffffffff8000ff40 a DATA\r\nffffffff80101400 t end\r\nffffffff80101284 t err\r\nffffffff8020ff40 a FAKE\r\nffffffff80101230 t fe\r\nffffffff80101378 t pw1\r\nffffffff801013ec t real\r\nffffffff8001be08 a RLE\r\nffffffff80210000 a WB\r\n",
 "tool": "nm"
 },
@@ -2323,16 +1666,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80030d14",
-"-e",
-"0x80030d14",
-"-o",
-"@OUT",
-"@tok:81b9c645fec9e2fa4bf6005c5f3c643f50aecff0"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -2340,25 +1673,11 @@
 "outs": {
 "6": "ef619ba341b9daa22897590399ebcd1384b74488"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:c057a73ea855f16f41a00df8c50613c7ee192444",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "328926a462582c4ffdd2e2ce8cb669c485fb56dd": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8"
-],
 "stdout": "00000000 a V_SIDE\r\n00000001 a V_MAIN\r\n00000002 a V_ACT\r\n00000003 a DELTA_VAR\r\n00000003 a V_COMBO\r\n00000004 a V_FULL\r\n00000005 a V_CLEAR\r\n00000006 a V_CLEAR8\r\n00000007 a V_GATE\r\n00000008 a V_FIN\r\n00000009 a V_GROUP\r\n0000000a a V_MGROUP\r\n0000000b a V_SGATE\r\n0000000c a V_CGATE\r\n0000000d a V_RYU\r\n0000000e a V_NODOWN\r\n0000000f a V_MVL\r\n00000010 a D_DONE\r\n0000001a a D_WAIT\r\n00000024 a D_DIRTY\r\n00000025 a D_DPREV\r\n00000026 a D_DVAL\r\n00000027 a D_ANY\r\n00000028 a D_HIT\r\n00000029 a D_HH\r\n0000002a a D_PREVB\r\n0000002b a D_PAGE\r\n0000002c a D_POP\r\n0000002d a D_NQ\r\n0000002e a D_OLIFE\r\n00000032 a D_QUEUE\r\n0000003a a D_LINE\r\n00000049 a SPECIAL_IDX\r\n0000004b a NACH\r\n00000078 a D_END\r\n000000d2 a POP_FRAMES\r\nffffffff80007600 T _ro1_s\r\nffffffff80007600 t derive\r\nffffffff800079b0 t group\r\nffffffff800079f4 T c_ptab\r\nffffffff800079fc T _ro1_e\r\nffffffff80009bc0 T _ro3_s\r\nffffffff80009bc0 T ach_frame\r\nffffffff80009c84 t modok\r\nffffffff80009cec T _ro3_e\r\nffffffff8000a040 R _ro4_s\r\nffffffff8000a040 R c_tpl\r\nffffffff8000a0c0 R c_hnode\r\nffffffff8000a100 R _ro4_e\r\nffffffff8000a900 T _start\r\nffffffff8000a920 T _ro0_s\r\nffffffff8000a920 T c_hdat\r\nffffffff8000ac48 t popup\r\nffffffff8000ac94 t Pret\r\nffffffff8000ac9c t Pclr\r\nffffffff8000aca4 t Pstart\r\nffffffff8000acd4 t Tnext\r\nffffffff8000acd8 t Tbit\r\nffffffff8000ad28 t Tsym\r\nffffffff8000ad38 t Tph\r\nffffffff8000ad54 t Tch\r\nffffffff8000ad64 t Tend\r\nffffffff8000ae38 t text\r\nffffffff8000ae88 t menu\r\nffffffff8000afb4 t Mret\r\nffffffff8000afbc t Mcard\r\nffffffff8000affc T _ro0_e\r\nffffffff8000b100 T _ro2_s\r\nffffffff8000b100 t eval\r\nffffffff8000b124 t Eloop\r\nffffffff8000b16c t Ploop\r\nffffffff8000b1b0 t Pconst\r\nffffffff8000b1b8 t Pci\r\nffffffff8000b1c8 t Pval\r\nffffffff8000b200 t Pgame\r\nffffffff8000b218 t Pa\r\nffffffff8000b254 t Ptrue\r\nffffffff8000b268 t Etrig\r\nffffffff8000b29c t Enext\r\nffffffff8000b2b4 t Espec\r\nffffffff8000b33c t Ehh\r\nffffffff8000b3e0 t Eact\r\nffffffff8000b3f4 T c_rec\r\nffffffff8000b4d8 T c_const\r\nffffffff8000b500 T _ro2_e\r\nffffffff8000c6d0 T _ro6_s\r\nffffffff8000c6d0 t mreload\r\nffffffff8000c748 T c_toff\r\nffffffff8000c758 T _ro6_e\r\nffffffff8000c758 T c_vars\r\nffffffff8000c758 T cdat\r\nffffffff8000c768 T c_done\r\nffffffff8000c772 T c_wait\r\nffffffff8000c77c T c_dirty\r\nffffffff8000c783 T c_page\r\nffffffff8000c784 T c_pop\r\nffffffff8000c785 T c_nq\r\nffffffff8000c78a T c_queue\r\nffffffff8000c792 T c_line\r\nffffffff8000fee0 R _ro5_s\r\nffffffff8000fee0 R c_ref\r\nffffffff8000ff0c r str_unl\r\nffffffff8000ff24 R c_phrase\r\nffffffff8000ff38 R _ro5_e\r\nffffffff8001175d a POPUP_OFF\r\nffffffff80020f10 a PRINT_FN\r\nffffffff8007b6e8 a MENU\r\nffffffff80085a7c a SFX_FN\r\nffffffff800b5c0c a STATE5\r\n",
 "tool": "nm"
 },
@@ -2452,110 +1771,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-c",
-"@762bcb8d6941aee7900938e8d00f820d32b342f7",
-"-o",
-"@OUT",
-"-DKOCACHE",
-"-DPAL8",
-"-DXPLAN",
-"-DL2G",
-"-DL2PC",
-"-DHOOKGATE",
-"-DL1B",
-"-DCUTIN",
-"-DCHK",
-"-DSTAGEANIM",
-"-DSTAGEANIM_SA=0x801fdf28u",
-"-DDIRX",
-"-DASSIST",
-"-DSTRONGX",
-"-DASHUD",
-"-DONSLP1",
-"-DSXFIX",
-"-DONSL",
-"-DONSL_TO=88u",
-"-DLDBUF",
-"-DASARC",
-"-DASRLE",
-"-DSPS_ITEM",
-"-DKOFIX",
-"-DASSIDE",
-"-DAS_LVF=35",
-"-DSPUSTORE",
-"-DSPS_FIX",
-"-DSHARE",
-"-DDXAHEAD",
-"-DVCACHE",
-[
-[
-"bgfast.h",
-"389602be9abfbb0e78c34ca23be62c79153aa68f"
-],
-[
-"chkrt.h",
-"64ed3b2c4a3fff61b27b4c6708852d36f09cd025"
-],
-[
-"cutguard.h",
-"0d2ac6e7fe76c357d1f2d62fc1f82b6a61d9ae74"
-],
-[
-"cutin.h",
-"8d66b3404bcd81ff9f12498e20334328a1658ee4"
-],
-[
-"dxahead.h",
-"7b675fe967524c54e1bb56dabeaaabad63debd97"
-],
-[
-"fecache.h",
-"b24ef054339388516f4005ad069e1bee176ed409"
-],
-[
-"hookgate.h",
-"f4ac85c8df75a46a659f1188e24441326f5066f4"
-],
-[
-"kocache.h",
-"774136b7984ca0e887dc5674a584344b5862c9a4"
-],
-[
-"krl.h",
-"430a065bb0a5632442db323c940157f23491481f"
-],
-[
-"l1b.h",
-"ce1ce1834c3bb4a44565c59b48e0343868d6617b"
-],
-[
-"l2g.h",
-"93fca810c345786577e4e0b373eff613c0042dbb"
-],
-[
-"spsfe.h",
-"eaa598712a7a62278e5c4a3fb5fccaca8d23a8ec"
-],
-[
-"upskip.h",
-"819721048a24b7ec30519dc41b8d63ef9146b398"
-],
-[
-"vcache.h",
-"cb011d2256a40bd93b52ff9c2ad6f809b0f6998b"
-]
-]
-],
 "stderr": "tagload.c: In function 'tl_main':\ntagload.c:1674:13: warning: variable 't0' set but not used [-Wunused-but-set-variable]\n 1674 |         int t0[4], ok;                                       /* DSA1 tier it did not have without it */\n      |             ^~\ntagload.c:2107:33: warning: unused variable 'n' [-Wunused-variable]\n 2107 |         u32 *d = (u32 *)STRONG, n = (TOP == TOP0 ? tl_dir.strong_size : tl_dir.dec_size) >> 2;\n      |                                 ^\ntagload.c: At top level:\ntagload.c:210:12: warning: 'npair_dbg' defined but not used [-Wunused-function]\n  210 | static int npair_dbg(void) { return npair; }\n      |            ^~~~~~~~~\n",
 "stdout": "",
 "tool": "gcc"
@@ -2564,30 +1779,6 @@
 "outs": {
 "20": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-DSND8",
-"-I",
-"<R>\\games\\mvc\\tools\\ap8\\s8",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-DSND_NL=36",
-"-DSPUSTORE",
-"-DSNDX",
-"-DSNDVFY",
-"-DASSIST",
-"-c",
-"@8688077e1b0ec14ee837b1d5999c256517c3346d",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -2595,24 +1786,11 @@
 "outs": {
 "6": "acf7d984b2579f7f374323f0edee960e9094144d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:9975eeed9e5d0e8964f5676cff38d9511804cb54",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "347cebfd29fa683486c158c225a5ccd76b03c7fb": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:0e39ba021efe9e06d16005dd76afca0ec845d5da"
-],
 "stdout": "ffffffff80015184 R __bss_start\r\nffffffff80015184 R _edata\r\nffffffff80015184 R _end\r\nffffffff80015184 R _fbss\r\nffffffff80015184 N _fdata\r\nffffffff80014128 T _ftext\r\nffffffff8001d180 r _gp\r\nffffffff80099464 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 t mcopy\r\nffffffff801fdc00 a mdig\r\nffffffff801fdc00 a mdraw\r\nffffffff801fdc00 a meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdc00 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdc00 a mram_end\r\nffffffff801fdc00 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdc00 a mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -2620,24 +1798,11 @@
 "outs": {
 "6": "b0d35fda113004590bce4c9a66126c0a4a8d5eb8"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k5",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "35507725417abb66104b5dbde2e5b38b270bbf46": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:f67f04ae746f41db9246f74ff7b8dae2d7fcc1ed"
-],
 "stdout": "ffffffff80001880 R __bss_start\r\nffffffff80001880 R _edata\r\nffffffff80001880 R _end\r\nffffffff80001880 R _fbss\r\nffffffff80001880 N _fdata\r\nffffffff80000000 T _ftext\r\nffffffff80009870 r _gp\r\nffffffff80000548 t bba\r\nffffffff80000550 t bbb\r\nffffffff80000310 t G1\r\nffffffff800005e8 t G10\r\nffffffff80000630 t G11\r\nffffffff80000694 t G12\r\nffffffff800006e4 t G13\r\nffffffff8000072c t G14\r\nffffffff8000036c t G2\r\nffffffff8000075c t g2done\r\nffffffff80000148 t g2found\r\nffffffff80000000 t g2get\r\nffffffff80000174 t g2miss\r\nffffffff800007b0 t g2out\r\nffffffff800002e0 t g2part\r\nffffffff80000034 t g2pc\r\nffffffff80000880 t G2RAM\r\nffffffff800007f4 t g2rec\r\nffffffff800000ac t g2scan\r\nffffffff800007e4 t g2stock\r\nffffffff800003ac t G3\r\nffffffff800003ec t G4\r\nffffffff80000438 t G5\r\nffffffff80000490 t G6\r\nffffffff800004ec t G7\r\nffffffff80000534 t G8\r\nffffffff80000598 t G9\r\nffffffff80000654 t xxd\r\nffffffff800005b8 t xxn\r\nffffffff80000644 t xxva\r\nffffffff8000064c t xxvb\r\nffffffff80000750 t yyd\r\nffffffff800006b4 t yyn\r\nffffffff80000740 t yyva\r\nffffffff80000748 t yyvb\r\n",
 "tool": "nm"
 },
@@ -2654,24 +1819,11 @@
 "outs": {
 "6": "4d7823b15a46287036fdf1c4776cbd6275c9cfd9"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_long",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "3785cfe7c5d5408363fab82a8496733fa65d4b97": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:f53d7a64d777a9d65ed907878069ff5804da4db1"
-],
 "stdout": "ffffffff800c10a0 R __bss_start\r\nffffffff800c10a0 R _edata\r\nffffffff800c10a0 R _end\r\nffffffff800c10a0 R _fbss\r\nffffffff800c10a0 N _fdata\r\nffffffff800c0000 T _ftext\r\nffffffff800c9090 r _gp\r\nffffffff800c0088 t end_\r\nffffffff800c0034 t run_\r\nffffffff800c006c t sk_\r\n",
 "tool": "nm"
 },
@@ -2679,15 +1831,6 @@
 "outs": {
 "6": "d92caa801bc0e7342e0d315acceb557c0de05c87"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k4",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -2798,17 +1941,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@831299710c16454cdb8aa31cfa2e71c4fac3cad1",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -2816,15 +1948,6 @@
 "outs": {
 "6": "ccd10b4b37d326d4c768d59b56c4da596b33ae39"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".rh",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -2891,17 +2014,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@7776e33c6b6eb79ec597bb8c9b01f92791c05d57",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -2909,17 +2021,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@498ff9642f33156428a9d7b5087a7d1b4456ff6c",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -2944,56 +2045,11 @@
 "outs": {
 "37": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@3493bbf2ee1073040dbb9b7b49ae2239d171d915",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
 "3aa2595fb7a070e6e01681dc940fc5cd8a4243e5": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:0a54f159beb62ea1d4b6fa6ed5e87ef870087cfe"
-],
 "stdout": "ffffffff80033998 R __bss_start\r\nffffffff80033998 R _edata\r\nffffffff80033998 R _end\r\nffffffff80033998 R _fbss\r\nffffffff80033998 N _fdata\r\nffffffff80032964 T _ftext\r\nffffffff8003b990 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdf28 a go\r\nffffffff801fdf28 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 t optdraw\r\nffffffff8002f780 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f780 a VSTR\r\n",
 "tool": "nm"
 },
@@ -3045,15 +2101,6 @@
 "outs": {
 "6": "85156f6d39439624bb9d79c03d50a2fe90a7d377"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:2031250ae4af6b88c649fabfa908f0ccc7b7157c",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3061,13 +2108,6 @@
 "outs": {
 "4": "02100c19cfc7f17b5a937e02647cbb7cd38fa81d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:fa9450cce05b00265e11492180b72f1fa1900ee1",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3075,16 +2115,6 @@
 "outs": {
 "7": null
 },
-"parts": [
-"ld",
-"-T",
-"@b4ad786533f18134891925ee9e44d36e247cfab8",
-"@tok:695016650d47d5a991587683459a2971fc7aa4e5",
-"@tok:1f96eb7d2ae51a7ba9e2f6ee114939a600d776bb",
-"@tok:55671041bfbfea508b74230c1df4d85cfe4c9727",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -3092,27 +2122,6 @@
 "outs": {
 "17": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-DSND_NL=36",
-"-DSPUSTORE",
-"-DSNDX",
-"-DSNDVFY",
-"-DASSIST",
-"-c",
-"@8688077e1b0ec14ee837b1d5999c256517c3346d",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -3204,16 +2213,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80014128",
-"-e",
-"0x80014128",
-"-o",
-"@OUT",
-"@tok:cebea1583c96a2f097029841b6829bd767737c19"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -3236,10 +2235,6 @@
 },
 "3fbb2f3d5c6e64cbed4d789a2f9d5ccf8b276aff": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:806ef53e6380810be3d0fa48446970bfd8221bae"
-],
 "stdout": "ffffffff8000abbc R __bss_start\r\nffffffff8000abbc R _edata\r\nffffffff8000abbc R _end\r\nffffffff8000abbc R _fbss\r\nffffffff8000abbc N _fdata\r\nffffffff80009a10 T _ftext\r\nffffffff80012bb0 r _gp\r\nffffffff80009a74 t C3OFF\r\nffffffff80009a10 t E0\r\nffffffff80009a20 t E1\r\nffffffff80009a30 t E2\r\nffffffff80009a40 t E3\r\nffffffff80009bbc t END\r\nffffffff80009a88 t G\r\nffffffff80009b14 t Gcall\r\nffffffff80009b10 t Goff\r\nffffffff80009b28 t Gret\r\nffffffff800858ac a LFULL\r\nffffffff8007bdcc a SCENE\r\nffffffff80009b3c t T\r\n",
 "tool": "nm"
 },
@@ -3261,20 +2256,11 @@
 },
 "401e2d0d7e1adee7d7e668cfa05fe78c47b3a252": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:2e7c405f3fddfa7a79dff1d578daecd1849c3724"
-],
 "stdout": "\r\nmod.elf:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .m            00002120  801087e4  801087e4  000007e4  2**2\r\n                  CONTENTS, ALLOC, LOAD, CODE\r\n",
 "tool": "objdump"
 },
 "403381cee057b0d4d79d6dc17682e6e64ac7389b": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:9975eeed9e5d0e8964f5676cff38d9511804cb54"
-],
 "stdout": "ffffffff8003ce40 R __bss_start\r\nffffffff8003ce40 R _edata\r\nffffffff8003ce40 R _end\r\nffffffff8003ce40 R _fbss\r\nffffffff8003ce40 N _fdata\r\nffffffff8003bde8 T _ftext\r\nffffffff80044e30 r _gp\r\nffffffff80099438 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdc00 a mdig\r\nffffffff801fdc00 a mdraw\r\nffffffff801fdc00 a meter\r\nffffffff8003be3c t mflag\r\n00000001 a MFLAG0\r\nffffffff801fdc00 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdc00 a mram_end\r\nffffffff801fdc00 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdc00 a mst\r\nffffffff8003bde8 t mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -3282,27 +2268,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"--gc-sections",
-"--print-gc-sections",
-"-T",
-"@6f90c160b9563aa5e59d97b993f0583faabd1f5e",
-"-o",
-"@OUT",
-"@tok:94c4692f12f858e9f8c918b77085bd7a9febce16",
-"@tok:8f7beb91a78e2a1c3f85f975fdc8f5b250d4204b",
-"@tok:abd211e0d585eab79acf6910ce75a73e0df66f68"
-],
 "stdout": "",
 "tool": "ld"
 },
 "40bf63074a61fd1a8df10b22851ab9c186843600": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:0eb814791fba081029b71faeb8304b7027f77816"
-],
 "stdout": "ffffffff8000b818 R __bss_start\r\nffffffff8000b818 R _edata\r\nffffffff8000b818 R _end\r\nffffffff8000b818 R _fbss\r\nffffffff8000b818 N _fdata\r\nffffffff8000a100 T _ftext\r\nffffffff80013810 r _gp\r\nffffffff8000a80c t Bdone\r\nffffffff8000a42c t bit\r\nffffffff8000a6c8 t Bpart\r\nffffffff8000a810 t Bret\r\nffffffff8000a804 t Bskip\r\nffffffff8000a560 t BUILD\r\nffffffff8000fc40 a DBG\r\nffffffff8001bd48 a DEC\r\nffffffff8000a544 t done\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8000a560 t dssr_end\r\nffffffff8000a16c T dssr_run\r\nffffffff8000a54c t exit\r\nffffffff8000a2fc t full\r\n00000000 a KOAHEAD\r\nffffffff8000a3ac t leaf\r\nffffffff8000a404 t lit\r\nffffffff8000a3d4 t lit_k\r\nffffffff8000a400 t lit4\r\nffffffff8000a400 t lit4b\r\nffffffff8000a3d8 t litL\r\nffffffff801fe000 a M_DXD\r\nffffffff801fe000 a M_DXI\r\nffffffff801fe000 a M_DXV\r\nffffffff8000fc70 a MBX\r\n00000028 a NE\r\nffffffff8000a460 t norm3\r\n00001100 a PF_SCR\r\nffffffff8000a23c t pix\r\nffffffff8000a240 t pix2\r\nffffffff8000a818 t POOLT\r\n00000384 a R_DSA\r\n0000008c a R_DSH\r\n00000030 a R_DSM\r\n000001cc a R_DSR\r\n0000006e a R_DSX\r\n00000010 a R_RLE\r\nffffffff8000a2ec t rcont\r\nffffffff8000a1ec t resume\r\nffffffff8000a22c t row\r\nffffffff8000fc80 a SL\r\nffffffff8000f840 a ST\r\nffffffff8000a484 t store\r\nffffffff8000a110 t TDXD\r\nffffffff8000a100 t TDXI\r\nffffffff8000a108 t TDXV\r\nffffffff8000a114 t tgate\r\nffffffff8001b4e0 a TLDBG\r\nffffffff8000a154 t TTAB\r\nffffffff80010858 a VSYNC\r\nffffffff8000a34c t walk\r\nffffffff8000a394 t wpair\r\nffffffff8000a374 t wspec\r\nffffffff8000a364 t wtest\r\n",
 "tool": "nm"
 },
@@ -3327,42 +2297,6 @@
 "outs": {
 "32": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\tools\\ach",
-"-I<R>\\games\\mvc\\tools\\ach",
-"-include",
-"@8add6814ffd44ea714939fd0ed9b869ace3fa23b",
-"-DC_DONE=0x8000c768",
-"-DC_DIRTY=0x8000c77c",
-"-DC_PAGE=0x8000c783",
-"-DMOD_AT=0x801087e4",
-"-DNACH_CORE=75",
-"-DACH_BASE=0",
-"-DVSMENU=1",
-"-c",
-"@9a4069ddb06d675c3e2d957df4bf4211991df6ba",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -3422,17 +2356,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@cc9f7e40d2a819ab76242d899b3ce59968e8a19b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3440,15 +2363,6 @@
 "outs": {
 "6": "acf7d984b2579f7f374323f0edee960e9094144d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:cb51257f120ad7aff0a47804748f921cfde7ab0c",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3464,10 +2378,6 @@
 },
 "43a72d4c916ca7b19660a7ce99b5555a827dad93": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:4cc4246015e1fe4231a11f2e3426db8d4011eeae"
-],
 "stdout": "ffffffff800c357c R __bss_start\r\nffffffff800c357c R _edata\r\nffffffff800c357c R _end\r\nffffffff800c357c R _fbss\r\nffffffff800c357c N _fdata\r\nffffffff800c2550 T _ftext\r\nffffffff800cb570 r _gp\r\nffffffff800858cb a B\r\n15004b01 a BNEZ\r\n00000000 a SLOT\r\n",
 "tool": "nm"
 },
@@ -3475,34 +2385,16 @@
 "outs": {
 "6": "2e240215b0c2e030bec9464246b0f612982ceb13"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:4264f886402aa5364a7b97cd5d62e49c37f1802d",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "4477505dabf360e7025ea3765ac8e0f3d0c8d884": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:7513f75b2eb6b6a6e8845681be679aec6343a5e5"
-],
 "stdout": "ffffffff801087e4 T _mstart\r\nffffffff8010881c T memset\r\nffffffff80108840 T memcpy\r\nffffffff8010886c t bit\r\nffffffff80108890 t fmt_num\r\nffffffff80108900 t cat\r\nffffffff80108928 t nth\r\nffffffff8010895c t unpack\r\nffffffff80108a2c t unlocked\r\nffffffff80108aa4 t block_sum\r\nffffffff80108adc t make_block\r\nffffffff80108b44 t block_ok\r\nffffffff80108bb0 t locate\r\nffffffff80108cb8 t create\r\nffffffff80108dac t card_status\r\nffffffff80108ec0 t card_text\r\nffffffff80108f24 t card_load\r\nffffffff8010907c t card_tick\r\nffffffff80109230 t queue_card\r\nffffffff80109268 T ach_page\r\nffffffff801096d8 t sync\r\nffffffff80109740 T mod_page\r\nffffffff80109778 T mod_card\r\nffffffff8010979c T mod_patch\r\nffffffff801097f4 T port_text\r\nffffffff8010981c T port_pad_new\r\nffffffff80109898 T port_card_safe\r\nffffffff801098e8 T port_card_idle\r\nffffffff80109934 T mod_menu\r\nffffffff8010997c T bios_open\r\nffffffff80109988 T bios_lseek\r\nffffffff80109994 T bios_read\r\nffffffff801099a0 T bios_write\r\nffffffff801099ac T bios_close\r\nffffffff801099b8 T bios_firstfile\r\nffffffff801099c4 T bios_card_write\r\nffffffff801099d0 T bios_flushcache\r\nffffffff80109a30 t path\r\nffffffff80109a58 t card_word\r\nffffffff80109aa0 T ach_file_title\r\nffffffff80109ae0 t m.0\r\nffffffff80109aec T ra_nach\r\nffffffff80109aee T ra_total_points\r\nffffffff80109af0 T ra_points\r\nffffffff80109b3c T ra_text\r\nffffffff8010a318 T ra_dict\r\nffffffff8010a630 T ach_icon\r\nffffffff8010a6d0 T m_ovl_n\r\nffffffff8010a6d4 T m_ovl_at\r\nffffffff8010a704 T m_ovl_w\r\nffffffff8010a764 T _mro_end\r\nffffffff8010a764 T ach_dbg\r\nffffffff8010a77c t card_saved\r\nffffffff8010a794 T m_menutab\r\nffffffff8010a7fc T ach_bits\r\nffffffff8010a80c t sec\r\nffffffff8010a88c t rt_sector\r\nffffffff8010a890 t rt_wait\r\nffffffff8010a894 t card_state\r\nffffffff8010a895 t card_told\r\nffffffff8010a898 t idle_seen\r\nffffffff8010a89c t recheck\r\nffffffff8010a8a0 t queue\r\nffffffff8010a8a8 t nqueue\r\nffffffff8010a8ac t page_open\r\nffffffff8010a8b0 t sel\r\nffffffff8010a8b4 t top\r\nffffffff8010a8b8 T ra_st\r\n",
 "tool": "nm"
 },
 "46dadd997dbb35f442f8b93dfb0f7c74b16df461": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:103f0aeab94902d2c4927d057f78263ff90d131b"
-],
 "stdout": "ffffffff80033864 R __bss_start\r\nffffffff80033864 R _edata\r\nffffffff80033864 R _end\r\nffffffff80033864 R _fbss\r\nffffffff80033864 N _fdata\r\nffffffff80032830 T _ftext\r\nffffffff8003b860 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 a go\r\nffffffff801fdff0 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 t od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
@@ -3526,51 +2418,6 @@
 "outs": {
 "32": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\tools\\ach",
-"-I<R>\\games\\mvc\\tools\\ach",
-"-include",
-"@8add6814ffd44ea714939fd0ed9b869ace3fa23b",
-"-DC_DONE=0x8000c768",
-"-DC_DIRTY=0x8000c77c",
-"-DC_PAGE=0x8000c783",
-"-DMOD_AT=0x801087e4",
-"-DNACH_CORE=75",
-"-DACH_BASE=0",
-"-DVSMENU=1",
-"-c",
-"@75b866bb6267363d4170394b86245acb9a659bd5",
-"-o",
-"@OUT",
-[
-[
-"eval.h",
-"1ba28c87d040b1021e784ec6a534ec9c9fae77ab"
-],
-[
-"meta.h",
-"8dac7ca264bd63c3ce9d6edd5f40b767209f693f"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -3578,17 +2425,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@f007219daeb4ee3a113fffdf29b94f1dceb93fd3",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3610,11 +2446,6 @@
 },
 "4a54cee8a3986e0cec8b005f6c249adb6b18526b": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5"
-],
 "stdout": "ffffffff80014774 T rhook\r\nffffffff800147d8 t rh_end\r\nffffffff8001780c t gl_sum\r\nffffffff80017854 t gl_nob\r\nffffffff80017858 t gl_fail\r\nffffffff80017874 t gl_dec\r\nffffffff80017878 t gl_ret\r\nffffffff800178a8 t g2_end\r\nffffffff8001b454 T flushcache\r\nffffffff8001b488 T heapcap\r\nffffffff8001b4d4 T blobent\r\nffffffff8001b4dc T tl_entry\r\nffffffff8001b4e0 T tl_dbg\r\nffffffff8001b4f0 T dshptr\r\nffffffff8001b4f4 T dsaptr\r\nffffffff8001b4f8 T tl_pend\r\nffffffff8001b4fc t res_end\r\nffffffff8002547c T glue\r\nffffffff80025490 t gl_try\r\nffffffff80025524 t g1_end\r\nffffffff800858b0 T hcguard\r\nffffffff800858c8 T hg_end\r\nffffffff80092c50 t tl_wrap\r\nffffffff80092c9c t rd_item\r\nffffffff80092cbc t main_se\r\nffffffff80092d0c t main_vc\r\nffffffff80092d3c t place\r\nffffffff80092dc0 t secsz\r\nffffffff80092e00 t copy\r\nffffffff80092e34 t reloc\r\nffffffff80092f48 t xkey\r\nffffffff80092fc8 t l2sw\r\nffffffff800930c4 t l2cost\r\nffffffff80093144 t ndsa\r\nffffffff800931bc t wcost\r\nffffffff8009323c t plan_spu\r\nffffffff80093534 t vcsz\r\nffffffff8009358c t plan_frag.constprop.0\r\nffffffff800935d8 t part_a0\r\nffffffff80093630 t total_s\r\nffffffff80093d08 t total\r\nffffffff80093d84 t xplan\r\nffffffff8009454c t upgrade\r\nffffffff80094748 t plan_tiers\r\nffffffff80094cb0 t as_probe\r\nffffffff80094d14 t as_plan\r\nffffffff80095150 T tl_main\r\nffffffff8009807c T tl_restore\r\nffffffff80098084 t dsz\r\nffffffff800980c4 t fsz\r\nffffffff80098124 t same64\r\nffffffff800981a4 t spuw\r\nffffffff80098280 t voices_idle\r\nffffffff800982c4 t rdfile.isra.0\r\nffffffff8009831c t mmax\r\nffffffff800983a4 T snd_table\r\nffffffff80098408 T snd_reset\r\nffffffff80098470 T snd_need_min\r\nffffffff800984fc T snd_end_plan\r\nffffffff800985b0 T snd_end_lv\r\nffffffff80098644 T snd_assist\r\nffffffff80098758 T snd_plan\r\nffffffff80098b24 T snd_load\r\nffffffff80098ed8 T snd_finish\r\nffffffff80099058 T ap8_ent\r\nffffffff800990f8 t team_of.0\r\nffffffff80099100 t pr.2\r\nffffffff80099110 t dxf2.3\r\nffffffff80099118 t dxf.4\r\nffffffff80099120 t kos.5\r\nffffffff80099128 t p8s.6\r\nffffffff80099130 t perm.1\r\nffffffff80099130 t xperm\r\nffffffff80099190 T ldbuf_at\r\nffffffff80099194 t cutin_img\r\nffffffff800992ac t l1b_img\r\nffffffff80099338 t hg_img\r\nffffffff80099464 T tl_nometer\r\nffffffff80099468 t SPS_BLK\r\nffffffff80099470 T snd_nlv\r\nffffffff80099474 t K0\r\nffffffff8009947c t BANK\r\nffffffff80099480 t ord\r\nffffffff80099484 t spu0\r\nffffffff80099488 t l2res\r\nffffffff8009948c t lvl\r\nffffffff80099490 T snd_spu_end\r\nffffffff80099494 T tl_postarg\r\nffffffff80099498 T tl_postfn\r\nffffffff8009949c t as_own\r\nffffffff800994bc t vcon\r\nffffffff800994c0 t vcpend\r\nffffffff800994c4 t postvc\r\nffffffff800994c8 t vcat\r\nffffffff800994d0 t tabat\r\nffffffff80099500 t spuat\r\nffffffff80099510 t ramset\r\nffffffff80099520 t askey\r\nffffffff8009952c t aslv\r\nffffffff80099530 t astier\r\nffffffff80099534 t as_cap\r\nffffffff80099538 t as_spu\r\nffffffff8009953c t as_quick\r\nffffffff80099540 t as_pat\r\nffffffff80099544 t as_tq\r\nffffffff80099548 t as_same\r\nffffffff8009954c t as_a\r\nffffffff80099554 t as_on\r\nffffffff80099558 t asd\r\nffffffff8009955c t as_e\r\nffffffff800996a4 t sps_own\r\nffffffff800996e4 t sps_stg\r\nffffffff800996e8 t sps_at\r\nffffffff800996f8 t sps_mv\r\nffffffff80099708 t sps_hi\r\nffffffff80099714 t sps_lo\r\nffffffff80099720 t sps_ok\r\nffffffff80099724 t pnum\r\nffffffff80099728 t pdir\r\nffffffff8009972c t pent\r\nffffffff80099734 t psu\r\nffffffff8009973c t psb\r\nffffffff80099744 t npair\r\nffffffff80099748 t l2xp\r\nffffffff8009974c t dir0\r\nffffffff80099750 t dirp\r\nffffffff800997ac t CACHE\r\nffffffff800997b0 t STRONG\r\nffffffff800997b4 t TOP\r\nffffffff800997b8 T snd_dbg\r\nffffffff800997c0 t vbuf\r\nffffffff80099800 t bl\r\nffffffff800998e0 t TB\r\nffffffff800998e4 t lsl\r\nffffffff800998e8 t own\r\nffffffff800998ec t lbase\r\nffffffff800998f0 t at\r\nffffffff80099900 T tl8_dir\r\nffffffff8009990c T snd_dir\r\nffffffff80099ee8 T tl_spx\r\nffffffff80099ef0 T tl_vcx\r\nffffffff80099ef8 T tl_l2x\r\nffffffff80099f00 T tl_sx\r\nffffffff80099f08 T tl_asx\r\nffffffff80099f10 T tl_dir\r\nffffffff8009a874 T blob_end\r\nffffffff8009a874 A tl_strong\r\nffffffff801fd700 T post\r\nffffffff801fd764 T post_list\r\nffffffff801fd780 T post_end\r\n",
 "tool": "nm"
 },
@@ -3648,14 +2479,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@b6ad4e14b2074daa8195e4c61e8910264981e8e4",
-"@tok:a38a28307f627fd51240dbc3f6d14f003ff01991",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -3663,15 +2486,6 @@
 "outs": {
 "6": "24d90dbe35202708062438f1ed13599fe2033c74"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:0eb814791fba081029b71faeb8304b7027f77816",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3679,17 +2493,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@e20183ed6fc44f7e75e72b43bda354c9049b78bd",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3713,17 +2516,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@30cfd08946015ccfc64ab66a154baba92c0c4cc6",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3740,15 +2532,6 @@
 "outs": {
 "6": "acf7d984b2579f7f374323f0edee960e9094144d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:a1da02a6dae55b08b14e5ac652577fe5bc0945cf",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3756,17 +2539,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@17bb0a100558d488a0edc2ce46252916032e810b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3792,17 +2564,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@42c990d8cfefe09e1a6e71308f495d2dfd047e04",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3810,17 +2571,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@eec5774114d0ce63cf56135b981d975eee543570",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3874,16 +2624,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80032964",
-"-e",
-"0x80032964",
-"-o",
-"@OUT",
-"@tok:397c7aa890a3e590b9ad8fcbfd33e84bf12e1a09"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -3891,16 +2631,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8005f808",
-"-e",
-"0x8005f808",
-"-o",
-"@OUT",
-"@tok:033f369d548ea69e452d787973a7a92bd8738496"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -3908,17 +2638,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@ac411504a2c4531c89d9ef9e8b72e5446d0749fb",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -3926,15 +2645,6 @@
 "outs": {
 "6": "acf7d984b2579f7f374323f0edee960e9094144d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:fa1f8ae9d2c7baa542a7ea3fabb9df386de49e60",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -3958,24 +2668,11 @@
 "outs": {
 "6": "e48411b6871c2fa2de7d18d1406a112f09eb6e0e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".res",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "535200a7ba7d9bef39c4cbfd227e72523e3c5930": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:290b5157d669285f39b00961de65180da3e1ee4b"
-],
 "stdout": "ffffffff801fdbb8 R __bss_start\r\nffffffff801fdbb8 R _edata\r\nffffffff801fdbb8 R _end\r\nffffffff801fdbb8 R _fbss\r\nffffffff801fdbb8 N _fdata\r\nffffffff801fc7b0 T _ftext\r\nffffffff80205bb0 r _gp\r\nffffffff801fc930 t ahit\r\nffffffff801fc8fc t an\r\nffffffff80092c40 a ARENA\r\nffffffff801fc8dc t aw\r\nffffffff801fc918 t ax\r\n00000024 a CNT\r\n00000000 a CUR\r\nffffffff8008c318 a DEC\r\n00000034 a DIRTY\r\nffffffff80011864 a DRAWSYNC\r\n0000001c a ENT\r\nffffffff801fc7f4 t fight\r\n0000002c a FULL\r\n00000030 a GEN\r\n00000010 a HITS\r\nffffffff801fcbb8 a IDX\r\n00000018 a KEY\r\nffffffff80011b10 a LOADIMAGE\r\n00000080 a MAXH\r\n00000100 a MAXSH\r\n00000fff a MAXT\r\nffffffff801fcb60 t mdone\r\nffffffff801fc9d4 t miss\r\n00000014 a MISS\r\nffffffff80011bd0 a MOVEIMAGE\r\n00000048 a NEED\r\n0000006c a NEXT\r\n00000100 a NIDX\r\n00000028 a NS\r\n00000007 a NSH\r\nffffffff8000f628 a P8AT\r\n00000010 a PH\r\n00000004 a PHS\r\n00000008 a R\r\n00000004 a RA\r\n00000038 a S2\r\n0000003c a S3\r\n00000040 a S4\r\n00000044 a S5\r\nffffffff801fc758 a SHELF\r\n00000070 a SHP\r\n504b4356 a SKIPMAGIC\r\nffffffff801fcb74 t slot\r\nffffffff801fc6c0 a ST\r\nffffffff801fc738 a STAB\r\nffffffff80011b70 a STOREIMAGE\r\n00000008 a THR\r\n00000074 a TT\r\nffffffff801fc748 a TTAB\r\n00000050 a VBAD\r\n00000064 a VBUF\r\nffffffff801fc7b0 T vc\r\nffffffff801fcbb8 t vc_end\r\n00000000 a VERIFY\r\n00000054 a VOK\r\n00000058 a VRA\r\n0000005c a VSKIP\r\n00000060 a VSZ\r\n00000004 a WAYS\r\n00000002 a WAYSH\r\n00000020 a WIN\r\n",
 "tool": "nm"
 },
@@ -4013,11 +2710,6 @@
 },
 "53d40f5f652c18a94571bcdb57d691e2b9ef23b4": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:1a024f70772dbe4c38cc23a80c46a29c9bd4163c"
-],
 "stdout": "\r\ntables.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .mdebug.abi32 00000000  00000000  00000000  00000068  2**0\r\n                  CONTENTS, READONLY\r\n  7 .rodata.c_ref 0000002a  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  8 .rodata.c_const 00000028  00000000  00000000  00000094  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  9 .rodata.c_tpl 00000080  00000000  00000000  000000bc  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 10 .rodata.c_toff 0000000e  00000000  00000000  0000013c  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 11 .rodata.c_ptab 00000007  00000000  00000000  0000014c  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 12 .rodata.c_rec 000000e1  00000000  00000000  00000154  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 13 .rodata.c_hnode 0000003e  00000000  00000000  00000238  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 14 .rodata.c_hdat 00000327  00000000  00000000  00000278  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 15 .rodata.c_phrase 00000011  00000000  00000000  000005a0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 16 .comment      00000013  00000000  00000000  000005b1  2**0\r\n                  CONTENTS, READONLY\r\n 17 .gnu.attributes 00000010  00000000  00000000  000005c4  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
@@ -4025,15 +2717,6 @@
 "outs": {
 "6": "10982e68230ddb98b2fda4819e2de44901266991"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:4ca24c0a0d879eb34139b6ad58a0efad13b55329",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4041,15 +2724,6 @@
 "outs": {
 "6": "f73498498d351be0183151b28b3bec9d7ec544fe"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k1",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4057,15 +2731,6 @@
 "outs": {
 "6": "9bd9fecfcfcdb75e796944d0a98da5898500aaf0"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".m",
-"@tok:7513f75b2eb6b6a6e8845681be679aec6343a5e5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4099,16 +2764,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80000000",
-"-e",
-"0x80000000",
-"-o",
-"@OUT",
-"@tok:533eaf9376e932e2d82fc640fc78fb34225997c9"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -4116,16 +2771,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003bde8",
-"-e",
-"0x8003bde8",
-"-o",
-"@OUT",
-"@tok:a1197e74fc198cf27799252a814f9e1bf8278215"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -4133,15 +2778,6 @@
 "outs": {
 "6": "f7a6d920d2cacfb56e7f2ca2221c9abdf744e38a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".hg",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4165,25 +2801,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000a100",
-"-e",
-"0x8000a100",
-"-o",
-"@OUT",
-"@tok:1a74423679ad5afcb53aacd7cb584baa66c58878"
-],
 "stdout": "",
 "tool": "ld"
 },
 "5a1bc074bc8661198c04c84bcbcb4b2bbe0ff5ed": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:fa9450cce05b00265e11492180b72f1fa1900ee1"
-],
 "stdout": "ffffffff8020000c T fe_dsa\r\nffffffff80200000 T fe_dsh\r\nffffffff80200190 T fe_end\r\nffffffff80200018 t fe0\r\nffffffff802000c0 t go\r\nffffffff802000c8 t miss\r\n",
 "tool": "nm"
 },
@@ -4207,15 +2829,6 @@
 "outs": {
 "6": "e48411b6871c2fa2de7d18d1406a112f09eb6e0e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".res",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4249,17 +2862,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@fdbc8a6f42054d8fa44c290a41d1cb556f73b7bb",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -4267,15 +2869,6 @@
 "outs": {
 "6": "8f96054bf90748e8977c8064f7ac9ce10a56c360"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:bb772cc3bd526bd49b67f2dd2e7d1b8795cf8379",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4283,15 +2876,6 @@
 "outs": {
 "6": "f50bd286328043319bef94ca41dda4718d66c710"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".logo",
-"@tok:e9068ff2ba8cc9f6c4f3dc167e05f96a0312bde7",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4307,11 +2891,6 @@
 },
 "5d858f5404c19d8a53db13897afb1a9e4367e91d": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:350acc71ffd7827f1537017c083d4e642ca8b10f"
-],
 "stdout": "ffffffff8001b454 A flushcache\r\nffffffff8001b4e0 A tl_dbg\r\nffffffff8001b4f0 A dshptr\r\nffffffff8001b4f4 A dsaptr\r\nffffffff801fd700 A post\r\nffffffff801fd764 A post_list\r\nffffffff8020004c t r8f_of\r\nffffffff802000ac t r8fits\r\nffffffff80200158 t r8hdr\r\nffffffff8020019c t r8fill\r\nffffffff80200658 t r8find\r\nffffffff802009ac t r8_apply\r\nffffffff80200c18 T ap8_uncut\r\nffffffff80200c80 T ap8_aspatch\r\nffffffff80200c8c T ap8_a0\r\nffffffff80200d28 T ap8_modmain\r\nffffffff80200d6c t rd_item\r\nffffffff80200d8c t main_se\r\nffffffff80200ddc t main_vc\r\nffffffff80200e0c t place\r\nffffffff80200e90 t copy\r\nffffffff80200ec4 t reloc\r\nffffffff80200fd8 t xkey\r\nffffffff80201058 t l2sw\r\nffffffff80201154 t l2cost\r\nffffffff802011d4 t ndsa\r\nffffffff8020124c t wcost\r\nffffffff802012cc t plan_spu\r\nffffffff80201544 t vcsz\r\nffffffff8020159c t plan_frag.constprop.0\r\nffffffff802015e8 t part_a0\r\nffffffff80201640 t total_s.constprop.0\r\nffffffff802019f8 t upgrade\r\nffffffff80201bf0 t xplan.constprop.0\r\nffffffff802021d8 t plan_tiers.constprop.0\r\nffffffff80202638 t as_probe.constprop.0\r\nffffffff8020268c t as_plan.constprop.0\r\nffffffff80202aac T tl_main\r\nffffffff80204f5c T tl_restore\r\nffffffff80204f64 t dsz\r\nffffffff80204fa4 t fsz\r\nffffffff80205004 t same64\r\nffffffff80205084 t spuw\r\nffffffff80205160 t voices_idle\r\nffffffff802051a4 t s8wsum\r\nffffffff802051d8 t mmax\r\nffffffff80205260 t rdfile.isra.0\r\nffffffff802052b8 t s8samp\r\nffffffff80205350 t s8_need\r\nffffffff802053d0 T snd_table\r\nffffffff80205434 T snd_reset\r\nffffffff802054cc T snd_need_min\r\nffffffff8020556c T snd_end_plan\r\nffffffff80205648 T snd_end_lv\r\nffffffff802056f0 T snd_assist\r\nffffffff80205804 T snd_plan\r\nffffffff80206034 T snd_load\r\nffffffff802065cc T snd_finish\r\nffffffff80206a78 T s8_wrstub\r\nffffffff80206aac t upload\r\nffffffff80206b54 t busy.part.0\r\nffffffff80206bd0 t wcp.constprop.0\r\nffffffff80206bf8 t get\r\nffffffff80207098 T s8_play\r\nffffffff80207238 T s8_tick\r\nffffffff802073f4 T s8_fetch\r\nffffffff80207420 T s8_flush\r\nffffffff802074d4 T s8_region\r\nffffffff802075fc T s8_wr\r\nffffffff80207714 t uncut_tab\r\nffffffff80207a00 t team_of.0\r\nffffffff80207a08 t pr.2\r\nffffffff80207a18 t p8s.3\r\nffffffff80207a20 t perm.1\r\nffffffff80207a20 t xperm\r\nffffffff80207a80 T ldbuf_at\r\nffffffff80207a84 t cutin_img\r\nffffffff80207b9c t l1b_img\r\nffffffff80207c28 t hg_img\r\nffffffff80207d54 T tl_nometer\r\nffffffff80207d58 t SPS_BLK\r\nffffffff80207d60 t ord.0\r\nffffffff80207d68 t blk.1\r\nffffffff80207da8 T snd_nlv\r\nffffffff80207dac t K0\r\nffffffff80207db4 t BANK\r\nffffffff80207db8 t ord\r\nffffffff80207dbc t spu0\r\nffffffff80207dc0 t l2res\r\nffffffff80207dc4 t lvl\r\nffffffff80207dc8 T snd_spu_end\r\nffffffff80207dcc t r8list\r\nffffffff80207dd0 t r8chk\r\nffffffff80207dd4 t r8busy\r\nffffffff80207dd8 T tl_postarg\r\nffffffff80207ddc T tl_postfn\r\nffffffff80207de0 t vcon\r\nffffffff80207de4 t vcpend\r\nffffffff80207de8 t postvc\r\nffffffff80207dec t vcat\r\nffffffff80207df4 t tabat\r\nffffffff80207e24 t spuat\r\nffffffff80207e34 t ramset\r\nffffffff80207e44 t askey\r\nffffffff80207e50 t aslv\r\nffffffff80207e54 t astier\r\nffffffff80207e58 t as_cap\r\nffffffff80207e5c t as_spu\r\nffffffff80207e60 t as_quick\r\nffffffff80207e64 t as_pat\r\nffffffff80207e68 t as_tq\r\nffffffff80207e6c t as_same\r\nffffffff80207e70 t as_a\r\nffffffff80207e78 t as_on\r\nffffffff80207e7c t asd\r\nffffffff80207e80 t as_e\r\nffffffff80207fc8 t sps_ok\r\nffffffff80207fcc t pnum\r\nffffffff80207fd0 t pdir\r\nffffffff80207fd4 t pent\r\nffffffff80207fdc t psu\r\nffffffff80207fe4 t psb\r\nffffffff80207fec t npair\r\nffffffff80207ff0 t l2xp\r\nffffffff80207ff4 t dir0\r\nffffffff80207ff8 t dirp\r\nffffffff80208054 t CACHE\r\nffffffff80208058 t STRONG\r\nffffffff8020805c t TOP\r\nffffffff80208060 T snd_dbg\r\nffffffff80208068 t s8stg\r\nffffffff8020806c t s8f\r\nffffffff8020807c t s8on\r\nffffffff80208080 t vbuf\r\nffffffff802080c0 t bl\r\nffffffff802081a0 t TB\r\nffffffff802081a4 t lsl\r\nffffffff802081a8 t own\r\nffffffff802081ac t lbase\r\nffffffff802081b0 t at\r\nffffffff802081c0 T r8d\r\nffffffff80208330 T s8d\r\nffffffff80208488 T m_sdir\r\nffffffff80208488 T snd_dir\r\nffffffff80208a64 T tl_spx\r\nffffffff80208a6c T tl_vcx\r\nffffffff80208a74 T tl_l2x\r\nffffffff80208a7c T tl_sx\r\nffffffff80208a84 T tl_asx\r\nffffffff80208a8c T tl_dir\r\nffffffff802093f0 T m_end\r\n",
 "tool": "nm"
 },
@@ -4319,42 +2898,6 @@
 "outs": {
 "32": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\tools\\ach",
-"-I<R>\\games\\mvc\\tools\\ach",
-"-include",
-"@8add6814ffd44ea714939fd0ed9b869ace3fa23b",
-"-DC_DONE=0x8000c768",
-"-DC_DIRTY=0x8000c77c",
-"-DC_PAGE=0x8000c783",
-"-DMOD_AT=0x801087e4",
-"-DNACH_CORE=75",
-"-DACH_BASE=0",
-"-DVSMENU=1",
-"-c",
-"@7bb10dff9e2966cf8868ff42999fb5f129e7d485",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -4413,13 +2956,6 @@
 "outs": {
 "4": "d79a39c269f73c0f102ff7acfdb3de1dcb6a5b9b"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:a22f0153f3464c0e9b466723729c765310ff1776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4443,17 +2979,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@ade67c53fb485d2485766794cdef438f28f32c9e",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -4461,38 +2986,6 @@
 "outs": {
 "19": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-I",
-"<R>\\games\\mvc\\tools\\ap8\\obj",
-"-DAP8_BSDIR=0x8009990cu",
-"-DAP8FR",
-"-DAP8FR_LAZY",
-"-DAP8_A0C=0x80220000u",
-"-DAP8_A0SZ=0x8a800u",
-"-c",
-"@12a45bfd430c256cfc5b198e40374277d664e2e3",
-"-o",
-"@OUT",
-[
-[
-"ap8r.c",
-"9e4cbc47ddec5fec2a8a4ed65f12ab630ad687a3"
-],
-[
-"uncut.h",
-"0414d3bd5341c6f81a539fdf216c32375f362026"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -4500,48 +2993,6 @@
 "outs": {
 "21": null
 },
-"parts": [
-"gcc",
-"-Os",
-"-G0",
-"-mips1",
-"-mno-abicalls",
-"-fno-pic",
-"-ffreestanding",
-"-nostdlib",
-"-msoft-float",
-"-fno-builtin",
-"-ffunction-sections",
-"-fdata-sections",
-"-fno-merge-constants",
-"-fno-toplevel-reorder",
-"-I<R>\\games\\mvc\\tools\\mtap",
-"-DMT_VSCPU=1",
-"-DMT_VSMENU=1",
-"-DMT_OWN_SELECT=1",
-"-c",
-"@d3c919f87f6ecb48c087ad30616ae39a0f81d426",
-"-o",
-"@OUT",
-[
-[
-"mtgame.h",
-"ea5d33b777f305c035b781bb9439841db936f30c"
-],
-[
-"mtmenu.h",
-"c99a184dffdeda90e2dc81d5115ee9409ec671e3"
-],
-[
-"mtsio.inc",
-"72b92af7b93f2a568e94a2416772a8eb960220f9"
-],
-[
-"mtvsui.c",
-"1de79b6cf2f9ff00f8c01e7ebbd5c3d31d63f930"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -4558,17 +3009,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@c953dd4bf7fcf4d6e073795aab4fdf2d4a7bd2f6",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -4722,15 +3162,6 @@
 "outs": {
 "6": "7ccee62ff638f619e29ec0e253be353f7f34d933"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g2",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4738,15 +3169,6 @@
 "outs": {
 "6": "dd7af672f8b600af5821024fb76dfeca9c5d1e9a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:c8ae47b68cd6f102ba8b98363be7b2aa848df595",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4754,15 +3176,6 @@
 "outs": {
 "6": "d79edc90d7fcfa834f088d562ef9e2bdfdf16d2d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:3a5b68c41fec523ae62e27be78b449ab8608bac0",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4803,17 +3216,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@a6d581ea7d4c591c2a6956350b66b34af50db17a",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -4821,15 +3223,6 @@
 "outs": {
 "6": "5c6c186afac0a4cf4976ec3a09279a8048318272"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:396dfa46dfa039c064464e07e6cd295d5ffefb57",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4886,15 +3279,6 @@
 "outs": {
 "6": "91dee661963b2e043664f2d33adff11047703983"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:ae794d16dfc062f2621b10db3daeaf3a0ab2e5a2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -4916,10 +3300,6 @@
 },
 "663ab5cb5c357f673cd5af1b6cdba1e178d00e44": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:f817958fd10f5a91f608c7bff0c8b395cc328776"
-],
 "stdout": "ffffffff8003dfa0 R __bss_start\r\nffffffff8003dfa0 R _edata\r\nffffffff8003dfa0 R _end\r\nffffffff8003dfa0 R _fbss\r\nffffffff8003dfa0 N _fdata\r\nffffffff8003cf60 T _ftext\r\nffffffff80045f90 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 t ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -4927,17 +3307,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@8d93f38cc5ccb2d8fc8172daffef986e9ef37d5b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -4945,24 +3314,6 @@
 "outs": {
 "14": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-DENTRY=0x80140000",
-"-DIMG_AT=0x80110000",
-"-DIMG_WORDS=38400",
-"-DHOLD_FRAMES=270",
-"-DSKIP_AFTER=60",
-"-DLINES=263",
-"-c",
-"@9c81679dfc289a78117bf8be77974529689613eb",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -4970,16 +3321,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000b100",
-"-e",
-"0x8000b100",
-"-o",
-"@OUT",
-"@tok:1a74423679ad5afcb53aacd7cb584baa66c58878"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -4987,15 +3328,6 @@
 "outs": {
 "6": "0425d44b11f60dd42941fb8a7a40c587be071564"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_rlit",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -5003,112 +3335,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-c",
-"@762bcb8d6941aee7900938e8d00f820d32b342f7",
-"-o",
-"@OUT",
-"-DKOCACHE",
-"-DPAL8",
-"-DXPLAN",
-"-DL2G",
-"-DL2PC",
-"-DHOOKGATE",
-"-DL1B",
-"-DCUTIN",
-"-DCHK",
-"-DSTAGEANIM",
-"-DSTAGEANIM_SA=0x801fdf28u",
-"-DDIRX",
-"-DASSIST",
-"-DSTRONGX",
-"-DASHUD",
-"-DONSLP1",
-"-DSXFIX",
-"-DONSL",
-"-DONSL_TO=88u",
-"-DLDBUF",
-"-DASARC",
-"-DASRLE",
-"-DSPS_ITEM",
-"-DKOFIX",
-"-DASSIDE",
-"-DAS_LVF=35",
-"-DSPUSTORE",
-"-DSPS_FIX",
-"-DSHARE",
-"-DDXAHEAD",
-"-DVCACHE",
-"-DAP8MOD",
-"-DAP8FR",
-[
-[
-"bgfast.h",
-"389602be9abfbb0e78c34ca23be62c79153aa68f"
-],
-[
-"chkrt.h",
-"64ed3b2c4a3fff61b27b4c6708852d36f09cd025"
-],
-[
-"cutguard.h",
-"0d2ac6e7fe76c357d1f2d62fc1f82b6a61d9ae74"
-],
-[
-"cutin.h",
-"8d66b3404bcd81ff9f12498e20334328a1658ee4"
-],
-[
-"dxahead.h",
-"7b675fe967524c54e1bb56dabeaaabad63debd97"
-],
-[
-"fecache.h",
-"b24ef054339388516f4005ad069e1bee176ed409"
-],
-[
-"hookgate.h",
-"f4ac85c8df75a46a659f1188e24441326f5066f4"
-],
-[
-"kocache.h",
-"774136b7984ca0e887dc5674a584344b5862c9a4"
-],
-[
-"krl.h",
-"430a065bb0a5632442db323c940157f23491481f"
-],
-[
-"l1b.h",
-"ce1ce1834c3bb4a44565c59b48e0343868d6617b"
-],
-[
-"l2g.h",
-"93fca810c345786577e4e0b373eff613c0042dbb"
-],
-[
-"spsfe.h",
-"eaa598712a7a62278e5c4a3fb5fccaca8d23a8ec"
-],
-[
-"upskip.h",
-"819721048a24b7ec30519dc41b8d63ef9146b398"
-],
-[
-"vcache.h",
-"cb011d2256a40bd93b52ff9c2ad6f809b0f6998b"
-]
-]
-],
 "stderr": "tagload.c: In function 'tl_main':\ntagload.c:1674:13: warning: variable 't0' set but not used [-Wunused-but-set-variable]\n 1674 |         int t0[4], ok;                                       /* DSA1 tier it did not have without it */\n      |             ^~\ntagload.c:2107:33: warning: unused variable 'n' [-Wunused-variable]\n 2107 |         u32 *d = (u32 *)STRONG, n = (TOP == TOP0 ? tl_dir.strong_size : tl_dir.dec_size) >> 2;\n      |                                 ^\ntagload.c: At top level:\ntagload.c:210:12: warning: 'npair_dbg' defined but not used [-Wunused-function]\n  210 | static int npair_dbg(void) { return npair; }\n      |            ^~~~~~~~~\n",
 "stdout": "",
 "tool": "gcc"
@@ -5117,16 +3343,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000f040",
-"-e",
-"0x8000f040",
-"-o",
-"@OUT",
-"@tok:6350ad009ed88c0623882ac133351689ac07a84d"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5134,17 +3350,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@83b2861da7fd894daed92d80d788ba97c517eb81",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -5162,24 +3367,6 @@
 "outs": {
 "14": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-Wall",
-"-DSNDVFY",
-"-DSPSRDDLY",
-"-DSPSN=\"2048\"",
-"-c",
-"@fcd7a3aa9432e6c99a15c176cb94e8a60f3efd79",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -5196,16 +3383,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8001a9e4",
-"-e",
-"0x8001a9e4",
-"-o",
-"@OUT",
-"@tok:b9f268fb2ce49b44a5a910e0d09ec91173313ee0"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5229,15 +3406,6 @@
 "outs": {
 "6": "0001aa14f23f4ebf4959c8e8baa5cfce52b283bf"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:103f0aeab94902d2c4927d057f78263ff90d131b",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -5245,26 +3413,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@b83a47643c547dc16107501f4acf817e79b0ee52",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "6bbe936f1a2087355f06652a7264c5544ae28189": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:c8ae47b68cd6f102ba8b98363be7b2aa848df595"
-],
 "stdout": "ffffffff801ff5b0 R __bss_start\r\nffffffff801ff5b0 R _edata\r\nffffffff801ff5b0 R _end\r\nffffffff801ff5b0 R _fbss\r\nffffffff801ff5b0 N _fdata\r\nffffffff801fe000 T _ftext\r\nffffffff802075a0 r _gp\r\n00000001 a AFTER\r\nffffffff801fe378 t BUD\r\nffffffff8000a560 a BUILD\r\nffffffff8000fc40 a DBG\r\nffffffff8001bd48 a DEC\r\nffffffff801fe524 t Dhit\r\nffffffff801fe4e4 t Dl\r\nffffffff801fe504 t Dn\r\nffffffff801fe510 t Dns\r\nffffffff801fe51c t Dplain\r\nffffffff80011864 a DRAWSYNC\r\nffffffff801fe4d0 t Dside\r\nffffffff8000a16c a DSS\r\nffffffff801fe4ac t DXD\r\nffffffff801fe000 t DXI\r\nffffffff801fe348 t DXV\r\nffffffff801fe2f0 t Ibreak\r\nffffffff801fe32c t Idone\r\nffffffff801fe128 t Inext\r\nffffffff801fe08c t Iside\r\nffffffff801fe244 t Islice\r\nffffffff801fe138 t Iwork\r\n00000000 a KOAHEAD\r\nffffffff801fe5b0 t MAINEND\r\n00000018 a MARGIN\r\nffffffff8000fc70 a MBX\r\n00000028 a NE\r\nffffffff801fe5a0 t OBJT\r\nffffffff8000fee0 a PF\r\nffffffff801fe4a0 t Pfail\r\n00000000 a PINP\r\nffffffff801fe410 t Ploop\r\nffffffff801fe470 t Pnext\r\nffffffff801fe4a4 t Pok\r\nffffffff801fe3c4 t PRED\r\n00000000 a PREFILL\r\n00000384 a R_DSA\r\n0000008c a R_DSH\r\n00000030 a R_DSM\r\n000001cc a R_DSR\r\n0000006e a R_DSX\r\n00000010 a R_RLE\r\nffffffff8000fc80 a SL\r\n00000001 a SLICE\r\n00000200 a SSZ\r\nffffffff8000f840 a ST\r\nffffffff8001b4e0 a TLDBG\r\nffffffff80010858 a VSYNC\r\n",
 "tool": "nm"
 },
@@ -5313,10 +3466,6 @@
 },
 "6c71b8405ec2bd851d9eb7cd660658496c8a9b6a": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:dccb0da0332872d65464c61d9e46a6a44141291c"
-],
 "stdout": "00000c40 T ap8_a0\r\n00000c34 T ap8_aspatch\r\n00000cdc T ap8_modmain\r\n00000bcc T ap8_uncut\r\n         U m_end\r\n         U m_sdir\r\n00000960 t r8_apply\r\n00000008 b r8busy\r\n00000004 b r8chk\r\n00000000 D r8d\r\n00000000 t r8f_of\r\n00000150 t r8fill\r\n0000060c t r8find\r\n00000060 t r8fits\r\n0000010c t r8hdr\r\n00000000 b r8list\r\n         U tl_main\r\n         U tl_postarg\r\n         U tl_postfn\r\n00000000 r uncut_tab\r\n",
 "tool": "nm"
 },
@@ -5324,15 +3473,6 @@
 "outs": {
 "6": "af32bff146a75ccf11716c54151276954e682bd4"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:26046879d0c156750b0cb77d96a0fa9002056ed9",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -5340,16 +3480,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80032964",
-"-e",
-"0x80032964",
-"-o",
-"@OUT",
-"@tok:59430913fb102e9402b1cd0067aae07f9a4a26e4"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5364,10 +3494,6 @@
 },
 "6d7c29350a87410ee0a2b5c3b2d22be2e0c7d364": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:cf54f2b13fc909d13b6440fb484077198a1b79b1"
-],
 "stdout": "ffffffff801fe000 R __bss_start\r\nffffffff801fe000 R _edata\r\nffffffff801fe000 R _end\r\nffffffff801fe000 R _fbss\r\nffffffff801fe000 N _fdata\r\nffffffff801fdf28 T _ftext\r\nffffffff80205ff0 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 t go\r\nffffffff801fdff0 t HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 t SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
@@ -5375,18 +3501,6 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@4f8b9218ae8c5ba5661788bcf03d327d9b98af39",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -5403,15 +3517,6 @@
 "outs": {
 "6": "4605e2cf684c23de9604218e8e65b73597ad16a3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:7237c0d661832c9dfb0873fa565f1df9d222e0fa",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -5453,16 +3558,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80024d5c",
-"-e",
-"0x80024d5c",
-"-o",
-"@OUT",
-"@tok:0e37f2e7f3393796144a7d586db9c02b4b3b7e66"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5470,16 +3565,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80032830",
-"-e",
-"0x80032830",
-"-o",
-"@OUT",
-"@tok:c6db2552ebfab69f2ef64cda929e09285eda6a1b"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5487,16 +3572,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000ffac",
-"-e",
-"0x8000ffac",
-"-o",
-"@OUT",
-"@tok:6e5c0f77341aa90cdc545fbb69dcd5afc86f6b32"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5537,13 +3612,6 @@
 "outs": {
 "4": "130a3c7428192ee30bb3133a1de7bd74a889d9e1"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:72f731a04defa040111a081ad4cc73090d6c6287",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -5551,27 +3619,11 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@b60c2eb5dce289f78b96a8e57a8548366b731319",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
 "755866335b770e17ec63701db4d5de37788e9d17": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:396dfa46dfa039c064464e07e6cd295d5ffefb57"
-],
 "stdout": "ffffffff8003d340 R __bss_start\r\nffffffff8003d340 R _edata\r\nffffffff8003d340 R _end\r\nffffffff8003d340 R _fbss\r\nffffffff8003d340 N _fdata\r\nffffffff8003c310 T _ftext\r\nffffffff80045330 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdf28 a go\r\nffffffff801fdf28 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 t od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f780 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f780 a VSTR\r\n",
 "tool": "nm"
 },
@@ -5603,10 +3655,6 @@
 },
 "76e629161bdb52a6b5ffa12e2e7136964b955d08": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:74068a9f49164e4cf4a28fafe3c9691941271c25"
-],
 "stdout": "ffffffff8000b818 R __bss_start\r\nffffffff8000b818 R _edata\r\nffffffff8000b818 R _end\r\nffffffff8000b818 R _fbss\r\nffffffff8000b818 N _fdata\r\nffffffff8000a100 T _ftext\r\nffffffff80013810 r _gp\r\nffffffff8000a80c t Bdone\r\nffffffff8000a42c t bit\r\nffffffff8000a6c8 t Bpart\r\nffffffff8000a810 t Bret\r\nffffffff8000a804 t Bskip\r\nffffffff8000a560 t BUILD\r\nffffffff8000fc40 a DBG\r\nffffffff8001bd48 a DEC\r\nffffffff8000a544 t done\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8000a560 t dssr_end\r\nffffffff8000a16c T dssr_run\r\nffffffff8000a54c t exit\r\nffffffff8000a2fc t full\r\n00000000 a KOAHEAD\r\nffffffff8000a3ac t leaf\r\nffffffff8000a404 t lit\r\nffffffff8000a3d4 t lit_k\r\nffffffff8000a400 t lit4\r\nffffffff8000a400 t lit4b\r\nffffffff8000a3d8 t litL\r\nffffffff801fe4ac a M_DXD\r\nffffffff801fe000 a M_DXI\r\nffffffff801fe348 a M_DXV\r\nffffffff8000fc70 a MBX\r\n00000028 a NE\r\nffffffff8000a460 t norm3\r\n00001100 a PF_SCR\r\nffffffff8000a23c t pix\r\nffffffff8000a240 t pix2\r\nffffffff8000a818 t POOLT\r\n00000384 a R_DSA\r\n0000008c a R_DSH\r\n00000030 a R_DSM\r\n000001cc a R_DSR\r\n0000006e a R_DSX\r\n00000010 a R_RLE\r\nffffffff8000a2ec t rcont\r\nffffffff8000a1ec t resume\r\nffffffff8000a22c t row\r\nffffffff8000fc80 a SL\r\nffffffff8000f840 a ST\r\nffffffff8000a484 t store\r\nffffffff8000a110 t TDXD\r\nffffffff8000a100 t TDXI\r\nffffffff8000a108 t TDXV\r\nffffffff8000a114 t tgate\r\nffffffff8001b4e0 a TLDBG\r\nffffffff8000a154 t TTAB\r\nffffffff80010858 a VSYNC\r\nffffffff8000a34c t walk\r\nffffffff8000a394 t wpair\r\nffffffff8000a374 t wspec\r\nffffffff8000a364 t wtest\r\n",
 "tool": "nm"
 },
@@ -5614,17 +3662,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@9dd3134d384d0179cef7cda6e1b6d16ea09da051",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -5661,17 +3698,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@3d3ac5aa137dc2838a9562d075ae77c03ee42745",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -5693,10 +3719,6 @@
 },
 "79eb8e3e26ff2efe0cf994d74fe9616e823d7ab6": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:7237c0d661832c9dfb0873fa565f1df9d222e0fa"
-],
 "stdout": "ffffffff8004aca0 R __bss_start\r\nffffffff8004aca0 R _edata\r\nffffffff8004aca0 R _end\r\nffffffff8004aca0 R _fbss\r\nffffffff8004aca0 N _fdata\r\nffffffff80049c70 T _ftext\r\nffffffff80052c90 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 t ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -5747,14 +3769,6 @@
 "outs": {
 "4": null
 },
-"parts": [
-"ld",
-"-T",
-"@5fe939dec270093f9a42b907fe1eba59821c8bd2",
-"-o",
-"@OUT",
-"@tok:1bf0527629ebf3ed4d9e2f525628e9e278bc4e43"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5778,17 +3792,6 @@
 "outs": {
 "8": null
 },
-"parts": [
-"ld",
-"-T",
-"@beb38329e68d76c8f987e4e08b1cea0505e063c1",
-"@tok:695016650d47d5a991587683459a2971fc7aa4e5",
-"@tok:46b9bce1d4cac216da62afb4e602e82df880ae9c",
-"@tok:9540463452ed1d177ff436ec9c12964196c05031",
-"@tok:9376087f5b898d7c7ac1b2dd845eef5f17e3eb10",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5841,19 +3844,11 @@
 },
 "7b5716d8ce9993d70d389c77d1c1f1e950e29d0f": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:a1a701be9aac8f421b9b23f1f0b097dffe2fc3f4"
-],
 "stdout": "ffffffff800184e4 R __bss_start\r\nffffffff800184e4 R _edata\r\nffffffff800184e4 R _end\r\nffffffff800184e4 R _fbss\r\nffffffff800184e4 N _fdata\r\nffffffff800174bc T _ftext\r\nffffffff800204e0 r _gp\r\nffffffff800174bc t bzero\r\n",
 "tool": "nm"
 },
 "7bc06766ac02adb54ae143b406857b02a759a21d": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:571203b1557965674702cba93316d2207539aa6e"
-],
 "stdout": "ffffffff80025d94 R __bss_start\r\nffffffff80025d94 R _edata\r\nffffffff80025d94 R _end\r\nffffffff80025d94 R _fbss\r\nffffffff80025d94 N _fdata\r\nffffffff80024d5c T _ftext\r\nffffffff8002dd90 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdf28 a go\r\nffffffff801fdf28 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c t sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
@@ -5877,16 +3872,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80049d84",
-"-e",
-"0x80049d84",
-"-o",
-"@OUT",
-"@tok:3742f1a62cc714a033e2cba68eae505d94e56d2f"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -5894,17 +3879,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@96949beac062200124d0604c8c34e261c9cdef06",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -5928,61 +3902,11 @@
 "outs": {
 "37": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@2ff7a6625020fb7009c56beb03766fbd4b102d87",
-"-o",
-"@OUT",
-[
-[
-"core_set.h",
-"5953f1de4bf3a97312960ea937b79996293675e6"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
 "7dace3211a7207e08525c2e7f7e13fc21b674e24": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:a1da02a6dae55b08b14e5ac652577fe5bc0945cf"
-],
 "stdout": "ffffffff8003ce40 R __bss_start\r\nffffffff8003ce40 R _edata\r\nffffffff8003ce40 R _end\r\nffffffff8003ce40 R _fbss\r\nffffffff8003ce40 N _fdata\r\nffffffff8003bde8 T _ftext\r\nffffffff80044e30 r _gp\r\nffffffff80099438 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdef2 a mdig\r\nffffffff801fdd44 a mdraw\r\nffffffff801fdc04 a meter\r\nffffffff8003be3c t mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 a mram_end\r\nffffffff801fded6 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc a mst\r\nffffffff8003bde8 t mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -5990,17 +3914,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@7477e4322752de12fe2cabac308b37bbb5d60c45",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -6050,15 +3963,6 @@
 "outs": {
 "6": "f7a6d920d2cacfb56e7f2ca2221c9abdf744e38a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".hg",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6080,11 +3984,6 @@
 },
 "808c2901f896ff768b0134ccd0310d14404b976b": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:94d9f9adcec509232b7a044624371ee33e11e730"
-],
 "stdout": "ffffffff801fe800 T sw\r\nffffffff801fe868 T swentry\r\nffffffff801fe8a8 t rdd\r\nffffffff801fe8e4 t unreg\r\nffffffff801fe940 t reg\r\nffffffff801fe994 T snd_swapchk\r\n",
 "tool": "nm"
 },
@@ -6092,16 +3991,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003c310",
-"-e",
-"0x8003c310",
-"-o",
-"@OUT",
-"@tok:7007c4211ce5ab34c9e9b984f845b31b924892ca"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -6167,17 +4056,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@7bfc1bf99a78b9c7845257946346760234bfd1df",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -6232,10 +4110,6 @@
 },
 "843c8ecef8db483ded8e7325fbe99730169d5880": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:ec8f1ace670ac9e724cf69d2ff9fbda0784202e2"
-],
 "stdout": "ffffffff80010624 R __bss_start\r\nffffffff80010624 R _edata\r\nffffffff80010624 R _end\r\nffffffff80010624 R _fbss\r\nffffffff80010624 N _fdata\r\nffffffff8000f040 T _ftext\r\nffffffff80018620 r _gp\r\nffffffff8000f270 t done1\r\nffffffff8001b4f4 a DSAPTR\r\nffffffff8001b4f0 a DSHPTR\r\nffffffff8000f43c t FE_DSA\r\nffffffff8000f42c t FE_DSH\r\nffffffff8000f448 t fe0\r\nffffffff8001b454 a FLUSH\r\nffffffff8002633c a FTAB_SPARE\r\nffffffff8000f4f0 t go\r\n00000096 a HOLD\r\nffffffff8002b528 a HSITE\r\n00000020 a IDX\r\n00004020 a IDXEND\r\nffffffff8000f0e4 t jloop\r\nffffffff8000f12c t jnext\r\nffffffff8000f414 t kbyp\r\nffffffff8000f5d0 t KD\r\nffffffff8000f624 t KEND\r\nffffffff8000f5ec t KF\r\nffffffff8000f60c t KH\r\n0c003ca6 a KHOOK\r\nffffffff8000f040 t KO\r\nffffffff8000f298 t KOR\r\nffffffff8000f044 t KOW\r\nffffffff8000f290 t kret\r\nffffffff8000f610 t KS\r\nffffffff8000f3ec t kskip\r\nffffffff8000f618 t KT\r\n314f434b a MAGIC\r\nffffffff8000fc70 a MBX\r\nffffffff8000f4f8 t miss\r\nffffffff8000f5c0 t OBJT\r\nffffffff8000f06c t oloop\r\nffffffff8000f280 t onext\r\nffffffff8007b828 a PHASE\r\nffffffff80024800 a RDF\r\n27bdffe0 a RDW0\r\nffffffffafb00010 a RDW1\r\nffffffff8000f27c t reset\r\nffffffff80092b30 a SLOTS\r\n000001ab a SPARE\r\nffffffff80092c40 a TARENA\r\nffffffff8001b4e0 a TLDBG\r\n",
 "tool": "nm"
 },
@@ -6243,15 +4117,6 @@
 "outs": {
 "6": "0001aa14f23f4ebf4959c8e8baa5cfce52b283bf"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:134313da9ef95ba5c222cbb6093218104cd88b93",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6259,18 +4124,6 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@d3cc5f0f3edf7cd99b36af4a4be825048cd21783",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -6278,33 +4131,16 @@
 "outs": {
 "6": "ccd10b4b37d326d4c768d59b56c4da596b33ae39"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".rh",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "85162ec69b840ff39a3fc302d6c5a2b647879616": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:9298aee4ff18dd85e9831d2f4bd54139ff4e7b2a"
-],
 "stdout": "ffffffff80033998 R __bss_start\r\nffffffff80033998 R _edata\r\nffffffff80033998 R _end\r\nffffffff80033998 R _fbss\r\nffffffff80033998 N _fdata\r\nffffffff80032964 T _ftext\r\nffffffff8003b990 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 a go\r\nffffffff801fdff0 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 t optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
 "85a0fd7cfa09cb84e5afe3d12528a1213569f42b": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:9ba3239c0fa02bf1acf20851fa45868789cbe8ee"
-],
 "stdout": "ffffffff800fd808 T dsa_dec\r\nffffffff800fdac0 T dsa_end\r\nffffffff800fd950 t leaf\r\nffffffff800fd958 t leafc\r\nffffffff800fd9e8 t lit\r\nffffffff800fd9b8 t lit0\r\nffffffff800fd8a8 t pix\r\nffffffff800fd898 t row\r\nffffffff800fda58 t store\r\nffffffff800fd8f0 t walk\r\nffffffff800fd938 t wpair\r\nffffffff800fd918 t wspec\r\nffffffff800fd908 t wtest\r\n",
 "tool": "nm"
 },
@@ -6312,33 +4148,16 @@
 "outs": {
 "6": "c48fae7f52bcf38f9b246c2bfc863947cc59c915"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:d5312781dd71bd9efd36ac4835532d65a487c5aa",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "86f10d42b52a565b5c0505d3069689a3ed9e309e": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:5e7da3c03d3e980afea37c7a71cb4c51d9d3d89e"
-],
 "stdout": "00000150 b at\r\n00000054 r BANK\r\n00000060 b bl\r\n00000008 r blk.1\r\n00000000 t dsz\r\n         U flushcache\r\n00000040 t fsz\r\n0000004c r K0\r\n0000014c b lbase\r\n00000144 b lsl\r\n00000000 d lvl\r\n00000274 t mmax\r\n00000000 r ord.0\r\n00000148 b own\r\n000002fc t rdfile.isra.0\r\n         U s8_fetch\r\n         U s8_flush\r\n000003ec t s8_need\r\n         U s8_play\r\n         U s8_region\r\n         U s8_tick\r\n         U s8_wrstub\r\n         U s8d\r\n0000000c b s8f\r\n0000001c b s8on\r\n00000354 t s8samp\r\n00000008 b s8stg\r\n00000240 t s8wsum\r\n000000a0 t same64\r\n0000078c T snd_assist\r\n00000000 B snd_dbg\r\n00000000 D snd_dir\r\n000006e4 T snd_end_lv\r\n00000608 T snd_end_plan\r\n00001668 T snd_finish\r\n000010d0 T snd_load\r\n00000568 T snd_need_min\r\n00000048 R snd_nlv\r\n000008a0 T snd_plan\r\n000004d0 T snd_reset\r\n00000004 D snd_spu_end\r\n0000046c T snd_table\r\n00000120 t spuw\r\n00000140 b TB\r\n         U tl_dbg\r\n00000020 b vbuf\r\n000001fc t voices_idle\r\n",
 "tool": "nm"
 },
 "870d6f848c3610dc1421602ec12e9e4c516a944e": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:168f976b2e66cc831695973555660d6246c9b212"
-],
 "stdout": "ffffffff801fdbb8 R __bss_start\r\nffffffff801fdbb8 R _edata\r\nffffffff801fdbb8 R _end\r\nffffffff801fdbb8 R _fbss\r\nffffffff801fdbb8 N _fdata\r\nffffffff801fc7b0 T _ftext\r\nffffffff80205bb0 r _gp\r\nffffffff801fc930 t ahit\r\nffffffff801fc8fc t an\r\nffffffff80092c40 a ARENA\r\nffffffff801fc8dc t aw\r\nffffffff801fc918 t ax\r\n00000024 a CNT\r\n00000000 a CUR\r\nffffffff8008c318 a DEC\r\n00000034 a DIRTY\r\nffffffff80011864 a DRAWSYNC\r\n0000001c a ENT\r\nffffffff801fc7f4 t fight\r\n0000002c a FULL\r\n00000030 a GEN\r\n00000010 a HITS\r\n00000000 a IDX\r\n00000018 a KEY\r\nffffffff80011b10 a LOADIMAGE\r\n00000080 a MAXH\r\n00000100 a MAXSH\r\n00000fff a MAXT\r\nffffffff801fcb60 t mdone\r\nffffffff801fc9d4 t miss\r\n00000014 a MISS\r\nffffffff80011bd0 a MOVEIMAGE\r\n00000048 a NEED\r\n0000006c a NEXT\r\n00000100 a NIDX\r\n00000028 a NS\r\n00000007 a NSH\r\nffffffff8000f628 a P8AT\r\n00000010 a PH\r\n00000004 a PHS\r\n00000008 a R\r\n00000004 a RA\r\n00000038 a S2\r\n0000003c a S3\r\n00000040 a S4\r\n00000044 a S5\r\nffffffff801fc758 a SHELF\r\n00000070 a SHP\r\n504b4356 a SKIPMAGIC\r\nffffffff801fcb74 t slot\r\nffffffff801fc6c0 a ST\r\nffffffff801fc738 a STAB\r\nffffffff80011b70 a STOREIMAGE\r\n00000008 a THR\r\n00000074 a TT\r\nffffffff801fc748 a TTAB\r\n00000050 a VBAD\r\n00000064 a VBUF\r\nffffffff801fc7b0 T vc\r\nffffffff801fcbb8 t vc_end\r\n00000000 a VERIFY\r\n00000054 a VOK\r\n00000058 a VRA\r\n0000005c a VSKIP\r\n00000060 a VSZ\r\n00000004 a WAYS\r\n00000002 a WAYSH\r\n00000020 a WIN\r\n",
 "tool": "nm"
 },
@@ -6346,16 +4165,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80000000",
-"-e",
-"0x80000000",
-"-o",
-"@OUT",
-"@tok:d640a2368b98b41190def7cf780116e16a174973"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -6363,15 +4172,6 @@
 "outs": {
 "6": "351f0fc3b6ca143891cbb4be223d991989b2129d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k6",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6429,24 +4229,11 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@38b13a1b92e742d9c4d81850ac957de479f50b58",
-"@tok:2da5a3a0b3d0e29a8ba0e8178a8c54b1565df467",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
 "8968a5ded109ab44b9d3c2e79539d8e5c04df245": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:a9d3f53a0250a31f830107d5003e67a90825c4de"
-],
 "stdout": "\r\ncore.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .data.cdat    00000078  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  7 .rodata.c_unl 00000015  00000000  00000000  000000e0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  8 .text.ach_frame 000000c4  00000000  00000000  000000f8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  9 .text.derive  000003f4  00000000  00000000  000001bc  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 10 .text.eval    000002f4  00000000  00000000  000005b0  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 11 .text.popup   00000240  00000000  00000000  000008a4  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 12 .text.menu    000001dc  00000000  00000000  00000ae4  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 13 .text.mreload 00000078  00000000  00000000  00000cc0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n 14 .gnu.attributes 00000010  00000000  00000000  00000d38  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
@@ -6454,15 +4241,6 @@
 "outs": {
 "6": "d97fa0ce992a12d54037c7f4fe603fbb518ed533"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:6da4b237db125057e0ad8a31b945628e44e1a2de",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6470,16 +4248,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8001722c",
-"-e",
-"0x8001722c",
-"-o",
-"@OUT",
-"@tok:68c0b8adbf623fdfeeae5551e449e2bcc872622a"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -6503,15 +4271,6 @@
 "outs": {
 "6": "73336d147e50cd44c8d54a1120f6500e232e40cc"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:0a54f159beb62ea1d4b6fa6ed5e87ef870087cfe",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6519,15 +4278,6 @@
 "outs": {
 "6": "8eb5e56bc1566f48845883981ad83983845935cc"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:a1a701be9aac8f421b9b23f1f0b097dffe2fc3f4",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6535,15 +4285,6 @@
 "outs": {
 "6": "165ca4678ff159057b167a1b08f0c5cef4b6f048"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:70e61d7e4516b0521f670ae675f82628526c737e",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6567,24 +4308,11 @@
 "outs": {
 "6": "f57a688e46a39ba0cab9e67765a6e7a79ceb3fa3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".blob",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "8f886b141c36d7e9ab954bc984da70de1497fdf9": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:74fc5cc692d3b448a801bf4b5299cec99b1fcd34"
-],
 "stdout": "ffffffff80015184 R __bss_start\r\nffffffff80015184 R _edata\r\nffffffff80015184 R _end\r\nffffffff80015184 R _fbss\r\nffffffff80015184 N _fdata\r\nffffffff80014128 T _ftext\r\nffffffff8001d180 r _gp\r\nffffffff80099438 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 t mcopy\r\nffffffff801fdc00 a mdig\r\nffffffff801fdc00 a mdraw\r\nffffffff801fdc00 a meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdc00 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdc00 a mram_end\r\nffffffff801fdc00 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdc00 a mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -6592,15 +4320,6 @@
 "outs": {
 "6": "50e0e3e058251610c0412bdbfce38caad271c322"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:b5d06dfa0fda6d9c80ec24189cada8141cc3edae",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6626,17 +4345,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@361a7a4db504ef81e5f9ffdb2e7ef6a044d0db68",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -6644,25 +4352,11 @@
 "outs": {
 "6": "a58eb46be4235abe2a5dd1507fcb279edaae09a7"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:ec8f1ace670ac9e724cf69d2ff9fbda0784202e2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "91d3222b42e5e27543502f7635b6eeda6638028f": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8"
-],
 "stdout": "\r\ncore.elf:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .k0           000006fc  8000a900  8000a900  00001900  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .k1           000003fc  80007600  80007600  00000600  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  2 .k2           00000400  8000b100  8000b100  00002100  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  3 .k3           0000012c  80009bc0  80009bc0  00000bc0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  4 .k4           000000c0  8000a040  8000a040  00001040  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  5 .k5           00000058  8000fee0  8000fee0  00002ee0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  6 .k6           00000100  8000c6d0  8000c6d0  000026d0  2**2\r\n                  CONTENTS, ALLOC, LOAD, CODE\r\n",
 "tool": "objdump"
 },
@@ -6670,15 +4364,6 @@
 "outs": {
 "6": "a6236b621526985fea9da75a69f824afbbdfba5e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:cf54f2b13fc909d13b6440fb484077198a1b79b1",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6686,13 +4371,6 @@
 "outs": {
 "4": "02100c19cfc7f17b5a937e02647cbb7cd38fa81d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:9868d1596f99c4521d1449afdb9eecbadd92fed8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -6867,16 +4545,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80100000",
-"-e",
-"0x80100000",
-"-o",
-"@OUT",
-"@tok:860ccf675c69879e483644675fabff65869ad131"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -6898,19 +4566,11 @@
 },
 "9529e3a9c2ccb00ba7214287ae7105133c7ea960": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:6e6e43fd62b24e3f2814821d8a30bb90ace2a51b"
-],
 "stdout": "ffffffff8001b7c0 R __bss_start\r\nffffffff8001b7c0 R _edata\r\nffffffff8001b7c0 R _end\r\nffffffff8001b7c0 R _fbss\r\nffffffff8001b7c0 N _fdata\r\nffffffff8001a79c T _ftext\r\nffffffff800237b0 r _gp\r\n",
 "tool": "nm"
 },
 "95718fcd733e175cb3220726372e98acf6965aa8": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:08c9dbd25ccadc8e7a8312c8b2339fb37edfb154"
-],
 "stdout": "ffffffff801fda5c t bit\r\nffffffff801fd808 T dsr_dec\r\nffffffff801fdb1c T dsr_end\r\nffffffff801fd92c t full\r\nffffffff801fd9dc t leaf\r\nffffffff801fda34 t lit\r\nffffffff801fda04 t lit_k\r\nffffffff801fda30 t lit4\r\nffffffff801fda30 t lit4b\r\nffffffff801fda08 t litL\r\nffffffff801fda90 t norm3\r\nffffffff801fd86c t pix\r\nffffffff801fd870 t pix2\r\nffffffff801fd91c t rcont\r\nffffffff801fd85c t row\r\nffffffff801fdab4 t store\r\nffffffff801fd97c t walk\r\nffffffff801fd9c4 t wpair\r\nffffffff801fd9a4 t wspec\r\nffffffff801fd994 t wtest\r\n",
 "tool": "nm"
 },
@@ -6936,17 +4596,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@e5f6cdebe5e27b04aaf4eeb5b86767f998a6c7ab",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -6963,53 +4612,6 @@
 "outs": {
 "38": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DCORE_SPLIT=1",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@2ff7a6625020fb7009c56beb03766fbd4b102d87",
-"-o",
-"@OUT",
-[
-[
-"core_set.h",
-"5953f1de4bf3a97312960ea937b79996293675e6"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7017,17 +4619,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@d3ca0d4d827170bb2143da5cdc9fdf748ec7d9aa",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -7035,22 +4626,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-Wall",
-"-DSNDVFY",
-"-c",
-"@fcd7a3aa9432e6c99a15c176cb94e8a60f3efd79",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7058,14 +4633,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@b6ad4e14b2074daa8195e4c61e8910264981e8e4",
-"@tok:59570c949c24b05396aef596dd2b5787f1d02ef4",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7073,15 +4640,6 @@
 "outs": {
 "6": "89715b5b17ba39682f5b170a1af001f183c468bc"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:f817958fd10f5a91f608c7bff0c8b395cc328776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7099,16 +4657,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003bde8",
-"-e",
-"0x8003bde8",
-"-o",
-"@OUT",
-"@tok:91f40237c126d6dc58c6fb0c79a482ce0d068690"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7116,18 +4664,6 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@1f4ff9907847fe04dfff502446463fcb25b01e14",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7149,10 +4685,6 @@
 },
 "99e650c71b49fc8fd6067d2739a0e20b0ea37888": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:b5d06dfa0fda6d9c80ec24189cada8141cc3edae"
-],
 "stdout": "ffffffff80001118 R __bss_start\r\nffffffff80001118 R _edata\r\nffffffff80001118 R _end\r\nffffffff80001118 R _fbss\r\nffffffff80001118 N _fdata\r\nffffffff80000000 T _ftext\r\nffffffff80009110 r _gp\r\nffffffff80092c40 a ARENA\r\n00000064 a BAND\r\nffffffff8001bd48 a CODEC\r\nffffffff80000000 t cutin\r\nffffffff80011864 a DRAWSYNC\r\nffffffff80011b10 a LOADIMAGE\r\n00000078 a ROWB\r\n000000f0 a ROWS\r\n0000003c a WH\r\n00000282 a X\r\n00000102 a Y\r\n",
 "tool": "nm"
 },
@@ -7176,27 +4708,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-c",
-"@8e892632e38fbe3a132da9d67b340cf92e7a943e",
-"-o",
-"@OUT",
-[
-[
-"s8.h",
-"1dfc750f8ab136d41d9e4d13556ed82c8d962f46"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7204,17 +4715,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@cc78597f40aa1d2524dd4c63210d80c90aa20f0f",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -7271,10 +4771,6 @@
 },
 "9d1f486e3c26d63c083c82e79419daf645e41d1d": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:d5312781dd71bd9efd36ac4835532d65a487c5aa"
-],
 "stdout": "ffffffff8010976c R __bss_start\r\nffffffff8010976c R _edata\r\nffffffff8010976c R _end\r\nffffffff8010976c R _fbss\r\nffffffff8010976c N _fdata\r\nffffffff801082d8 T _ftext\r\nffffffff80111760 r _gp\r\n00000001 a ASROW1\r\n00000010 a DY\r\nffffffff80108498 t exdraw\r\nffffffff801082e8 t exopt\r\nffffffff801082d8 t exst\r\nffffffff80020f10 a FONT\r\nffffffff800a9d24 a FOOTER\r\nffffffff80020bd4 a ICON\r\nffffffff801086d4 t L0\r\nffffffff801086f0 t L1\r\nffffffff80108703 t L2\r\nffffffff80108718 t L3\r\nffffffff80108730 t L4\r\nffffffff8010873f t L5\r\n00000058 a LX\r\n00000006 a NROWS\r\nffffffff8002518c a PAD\r\nffffffff80108478 t rowrec\r\nffffffff80108644 t ROWS\r\nffffffff80085828 a SND_EXIT\r\nffffffff80085a7c a SND_MOVE\r\nffffffff80085ae4 a SND_VAL\r\nffffffff800145a8 a STRLEN\r\nffffffff80108754 t TITLE\r\n000000b4 a TITLEX\r\nffffffff801086df t V0_0\r\nffffffff801086e4 t V0_1\r\nffffffff801086ec t V0_2\r\nffffffff801086f6 t V1_0\r\nffffffff801086fc t V1_1\r\nffffffff80108715 t V2_0\r\nffffffff80108720 t V3_0\r\nffffffff80108729 t V3_1\r\nffffffff8010875f t VER\r\n000000d0 a VERX\r\n000000c8 a VERY\r\n00000108 a VX\r\n00000058 a Y0\r\n",
 "tool": "nm"
 },
@@ -7292,15 +4788,6 @@
 "outs": {
 "6": "8f60ea4121e5b50eae3646754a7cf58d470a36b3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g1",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7308,53 +4795,6 @@
 "outs": {
 "38": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DCORE_SPLIT=1",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@319fc9b5bbab9786e744d8d69ce44cb908737839",
-"-o",
-"@OUT",
-[
-[
-"core_set.inc",
-"021b704362ee7c066880f2c7102a314937dd1a46"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7379,29 +4819,16 @@
 },
 "9e24e159ec7efe6a047570c82bfac2c7d9d21062": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:1b905fe66dbacf149a8ac9b1e8290ffa1c4d67d3"
-],
 "stdout": "ffffffff800c109c R __bss_start\r\nffffffff800c109c R _edata\r\nffffffff800c109c R _end\r\nffffffff800c109c R _fbss\r\nffffffff800c109c N _fdata\r\nffffffff800c0000 T _ftext\r\nffffffff800c9090 r _gp\r\nffffffff800c0088 t end_\r\nffffffff800c0034 t run_\r\nffffffff800c006c t sk_\r\n",
 "tool": "nm"
 },
 "9e319d2277beeba8830b587b0a623882ab4ff055": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:8f7beb91a78e2a1c3f85f975fdc8f5b250d4204b"
-],
 "stdout": "\r\ncore.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .data.cdat    00000078  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  7 .rodata.c_unl 00000015  00000000  00000000  000000e0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  8 .text.ach_frame 000000c4  00000000  00000000  000000f8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  9 .text.derive  000003f4  00000000  00000000  000001bc  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 10 .text.eval    000002f4  00000000  00000000  000005b0  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 11 .text.popup   00000240  00000000  00000000  000008a4  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 12 .text.menu    00000174  00000000  00000000  00000ae4  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 13 .text.mreload 00000078  00000000  00000000  00000c58  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n 14 .text.modok   00000068  00000000  00000000  00000cd0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n 15 .gnu.attributes 00000010  00000000  00000000  00000d38  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
 "9ea97784fe648343b7e909834c03dc431f05a87a": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:d5bab0278fa5f990aa9bfd5f6c42e4c72a96c407"
-],
 "stdout": "ffffffff80015184 R __bss_start\r\nffffffff80015184 R _edata\r\nffffffff80015184 R _end\r\nffffffff80015184 R _fbss\r\nffffffff80015184 N _fdata\r\nffffffff80014128 T _ftext\r\nffffffff8001d180 r _gp\r\nffffffff80099464 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 t mcopy\r\nffffffff801fdef2 a mdig\r\nffffffff801fdd44 a mdraw\r\nffffffff801fdc04 a meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 a mram_end\r\nffffffff801fded6 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc a mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -7418,14 +4845,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@4a4a170b49853b519f3793a0316e70e0dc6534a4",
-"@tok:59570c949c24b05396aef596dd2b5787f1d02ef4",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7433,16 +4852,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000a100",
-"-e",
-"0x8000a100",
-"-o",
-"@OUT",
-"@tok:513897c43e4a3237c4b2c1926f182d5f5aa5f777"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7450,16 +4859,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80000000",
-"-e",
-"0x80000000",
-"-o",
-"@OUT",
-"@tok:5e1d366857ce0660fd9a6f6eead839781a642e12"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7467,15 +4866,6 @@
 "outs": {
 "6": "9ff3cf40387611d8c1f8fbfb57b10b75512c6989"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:f67f04ae746f41db9246f74ff7b8dae2d7fcc1ed",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7483,18 +4873,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"--gc-sections",
-"--print-gc-sections",
-"-T",
-"@6f90c160b9563aa5e59d97b993f0583faabd1f5e",
-"-o",
-"@OUT",
-"@tok:ec5e8e85ad4b223e658b5f4c2da12c284fa10cce",
-"@tok:a9d3f53a0250a31f830107d5003e67a90825c4de",
-"@tok:1a024f70772dbe4c38cc23a80c46a29c9bd4163c"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7502,16 +4880,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8001a79c",
-"-e",
-"0x8001a79c",
-"-o",
-"@OUT",
-"@tok:39a9330124899a0a2ac00510ee44e5d6a1a408b7"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7519,17 +4887,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@2ef0559ea60190162b00868f30fce81430d7e4a5",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -7547,33 +4904,16 @@
 "outs": {
 "6": "832abdc33affe11e1ebee1b3cc044f18e3846240"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:623fb98db752491aeca05468ff7c018908035081",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "a251c3ebd728acfba8d6857bc80c204070f4d06f": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:764c25ae06ec0f2eef3ab83a99d68e6ee08ca55d"
-],
 "stdout": "ffffffff800925bc R __bss_start\r\nffffffff800925bc R _edata\r\nffffffff800925bc R _end\r\nffffffff800925bc R _fbss\r\nffffffff800925bc N _fdata\r\nffffffff8009154c T _ftext\r\nffffffff8009a5b0 r _gp\r\nffffffff8009154c t cmdfp\r\n",
 "tool": "nm"
 },
 "a2a0916b18beb4b077db8d05cd783a105cdd61aa": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:26046879d0c156750b0cb77d96a0fa9002056ed9"
-],
 "stdout": "ffffffff8004ada4 R __bss_start\r\nffffffff8004ada4 R _edata\r\nffffffff8004ada4 R _end\r\nffffffff8004ada4 R _fbss\r\nffffffff8004ada4 N _fdata\r\nffffffff80049d84 T _ftext\r\nffffffff80052da0 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 t ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -7581,15 +4921,6 @@
 "outs": {
 "6": "31a56f213efaf8bd5b28827cdb5052b67940c39f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".post",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7611,20 +4942,11 @@
 },
 "a3d2c2a52c2143ced8e68ad08a73a74732be5a5d": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:e02d50e569b1431cfba1b425bba7b30ef6a0e474"
-],
 "stdout": "ffffffff80015184 R __bss_start\r\nffffffff80015184 R _edata\r\nffffffff80015184 R _end\r\nffffffff80015184 R _fbss\r\nffffffff80015184 N _fdata\r\nffffffff80014128 T _ftext\r\nffffffff8001d180 r _gp\r\nffffffff80099438 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 t mcopy\r\nffffffff801fdef2 a mdig\r\nffffffff801fdd44 a mdraw\r\nffffffff801fdc04 a meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 a mram_end\r\nffffffff801fded6 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc a mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
 "a47ea8ddc204e2b8253349f8dc6dbf7b847ec521": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:1d25e68a5aace070a321daf15f5fec257e252cf4"
-],
 "stdout": "ffffffff801fe800 T sw\r\nffffffff801fe868 T swentry\r\nffffffff801fe8a8 t get\r\nffffffff801fe960 t unreg\r\nffffffff801fe9bc t reg\r\nffffffff801fea10 T snd_swapchk\r\n",
 "tool": "nm"
 },
@@ -7642,16 +4964,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000f628",
-"-e",
-"0x8000f628",
-"-o",
-"@OUT",
-"@tok:1ebbb7b3bd9df723114408002ffb65c9857f6ff5"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7659,15 +4971,6 @@
 "outs": {
 "6": "0b67b235be86d8c46f4ce0112fe162946537216f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".card2",
-"@tok:14168fbaaea69b7dadbf190652ae00741c65e8c5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7675,16 +4978,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c1ee4",
-"-e",
-"0x800c1ee4",
-"-o",
-"@OUT",
-"@tok:d3790ecf2291d3a2791b5c4517816baccdf353a8"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7692,15 +4985,6 @@
 "outs": {
 "6": "9d8df00b0bce1753cda6e5d2875371757f8b6472"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:e62df205041123e24fff03c74275e0c3e49cb985",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7708,15 +4992,6 @@
 "outs": {
 "6": "c8c9f79f1bffa24ac94e18341f4fcd700e7ca3cd"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".stub",
-"@tok:f54dab4cf2ffed4f2050d4e8dd41b5be91c5b475",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7724,15 +4999,6 @@
 "outs": {
 "6": "ec4778887a5b5c352216689a7f4fb289e74e9649"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:6e6e43fd62b24e3f2814821d8a30bb90ace2a51b",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -7740,17 +5006,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@82f813d794816dd900e66cffe8347586931307a6",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -7758,52 +5013,6 @@
 "outs": {
 "37": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@319fc9b5bbab9786e744d8d69ce44cb908737839",
-"-o",
-"@OUT",
-[
-[
-"core_set.inc",
-"021b704362ee7c066880f2c7102a314937dd1a46"
-]
-]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -7811,25 +5020,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800174bc",
-"-e",
-"0x800174bc",
-"-o",
-"@OUT",
-"@tok:7bedc48260335304e24f1d91f17518d3ac3c1012"
-],
 "stdout": "",
 "tool": "ld"
 },
 "a9048fbd7191d8b5529a68881587cdedbd623bc8": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:976edf349b927c5581cc9370748ade54c0cda787"
-],
 "stdout": "ffffffff800608bc R __bss_start\r\nffffffff800608bc R _edata\r\nffffffff800608bc R _end\r\nffffffff800608bc R _fbss\r\nffffffff800608bc N _fdata\r\nffffffff8005f87c T _ftext\r\nffffffff800688b0 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c t lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -7904,11 +5099,6 @@
 },
 "abe2f61f1827c22869cc9b587436a309ea134c05": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:abd211e0d585eab79acf6910ce75a73e0df66f68"
-],
 "stdout": "\r\ntables.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .mdebug.abi32 00000000  00000000  00000000  00000068  2**0\r\n                  CONTENTS, READONLY\r\n  7 .rodata.c_ref 0000002a  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  8 .rodata.c_const 00000028  00000000  00000000  00000094  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n  9 .rodata.c_tpl 00000080  00000000  00000000  000000bc  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 10 .rodata.c_toff 0000000e  00000000  00000000  0000013c  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 11 .rodata.c_ptab 00000007  00000000  00000000  0000014c  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 12 .rodata.c_rec 000000e1  00000000  00000000  00000154  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 13 .rodata.c_hnode 0000003e  00000000  00000000  00000238  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 14 .rodata.c_hdat 00000327  00000000  00000000  00000278  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 15 .rodata.c_phrase 00000011  00000000  00000000  000005a0  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 16 .comment      00000013  00000000  00000000  000005b1  2**0\r\n                  CONTENTS, READONLY\r\n 17 .gnu.attributes 00000010  00000000  00000000  000005c4  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
@@ -7916,16 +5106,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c0000",
-"-e",
-"0x800c0000",
-"-o",
-"@OUT",
-"@tok:8f99b6ee8a9c639a68c412374dc0f985d3425156"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -7933,24 +5113,11 @@
 "outs": {
 "6": "005f86934159dcea16439417a5d96ccd6d21549f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:764c25ae06ec0f2eef3ab83a99d68e6ee08ca55d",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "ac2a29e8bf570f6a4a5356a1f34b6fe1fa701562": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:4264f886402aa5364a7b97cd5d62e49c37f1802d"
-],
 "stdout": "ffffffff8001825c R __bss_start\r\nffffffff8001825c R _edata\r\nffffffff8001825c R _end\r\nffffffff8001825c R _fbss\r\nffffffff8001825c N _fdata\r\nffffffff8001722c T _ftext\r\nffffffff80020250 r _gp\r\nffffffff8001722c t memcpy\r\n",
 "tool": "nm"
 },
@@ -8108,17 +5275,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@f2761d40b61538ee9bbb41ce2d91c377e027183e",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -8214,16 +5370,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003bde8",
-"-e",
-"0x8003bde8",
-"-o",
-"@OUT",
-"@tok:3c59200ed507d21775e39d0000579019249f9d3e"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -8231,16 +5377,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c0000",
-"-e",
-"0x800c0000",
-"-o",
-"@OUT",
-"@tok:2ee1fec651661af185705fac1e222924acd42be7"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -8265,15 +5401,6 @@
 "outs": {
 "6": "2c8bc06b3a4e56cb9ad392b8f18263e01eb3ff55"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:09bafe6ff48795104cfd9aeaf9a72556af9a2a37",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8295,10 +5422,6 @@
 },
 "b2a86cb63e8c162cf6d578c55a36a76caf6ddf6e": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:09bafe6ff48795104cfd9aeaf9a72556af9a2a37"
-],
 "stdout": "ffffffff8000c818 R __bss_start\r\nffffffff8000c818 R _edata\r\nffffffff8000c818 R _end\r\nffffffff8000c818 R _fbss\r\nffffffff8000c818 N _fdata\r\nffffffff8000b100 T _ftext\r\nffffffff80014810 r _gp\r\nffffffff8000b80c t Bdone\r\nffffffff8000b42c t bit\r\nffffffff8000b6c8 t Bpart\r\nffffffff8000b810 t Bret\r\nffffffff8000b804 t Bskip\r\nffffffff8000b560 t BUILD\r\nffffffff8000fc40 a DBG\r\nffffffff8001bd48 a DEC\r\nffffffff8000b544 t done\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8000b560 t dssr_end\r\nffffffff8000b16c T dssr_run\r\nffffffff8000b54c t exit\r\nffffffff8000b2fc t full\r\n00000000 a KOAHEAD\r\nffffffff8000b3ac t leaf\r\nffffffff8000b404 t lit\r\nffffffff8000b3d4 t lit_k\r\nffffffff8000b400 t lit4\r\nffffffff8000b400 t lit4b\r\nffffffff8000b3d8 t litL\r\nffffffff801fe4ac a M_DXD\r\nffffffff801fe000 a M_DXI\r\nffffffff801fe348 a M_DXV\r\nffffffff8000fc70 a MBX\r\n00000028 a NE\r\nffffffff8000b460 t norm3\r\n00001100 a PF_SCR\r\nffffffff8000b23c t pix\r\nffffffff8000b240 t pix2\r\nffffffff8000b818 t POOLT\r\n00000384 a R_DSA\r\n0000008c a R_DSH\r\n00000030 a R_DSM\r\n000001cc a R_DSR\r\n0000006e a R_DSX\r\n00000010 a R_RLE\r\nffffffff8000b2ec t rcont\r\nffffffff8000b1ec t resume\r\nffffffff8000b22c t row\r\nffffffff8000fc80 a SL\r\nffffffff8000f840 a ST\r\nffffffff8000b484 t store\r\nffffffff8000b110 t TDXD\r\nffffffff8000b100 t TDXI\r\nffffffff8000b108 t TDXV\r\nffffffff8000b114 t tgate\r\nffffffff8001b4e0 a TLDBG\r\nffffffff8000b154 t TTAB\r\nffffffff80010858 a VSYNC\r\nffffffff8000b34c t walk\r\nffffffff8000b394 t wpair\r\nffffffff8000b374 t wspec\r\nffffffff8000b364 t wtest\r\n",
 "tool": "nm"
 },
@@ -8368,10 +5491,6 @@
 },
 "b48971c3f142907e0f33091eacb5edd539489d89": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:3c0515718da6fd75bb9991ef30823e6340be87d6"
-],
 "stdout": "000000dc t busy.part.0\r\n00000180 t get\r\n0000097c T s8_fetch\r\n000009a8 T s8_flush\r\n00000620 T s8_play\r\n00000a5c T s8_region\r\n000007c0 T s8_tick\r\n00000b84 T s8_wr\r\n00000000 T s8_wrstub\r\n00000000 D s8d\r\n00000034 t upload\r\n00000158 t wcp.constprop.0\r\n",
 "tool": "nm"
 },
@@ -8379,14 +5498,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@e72ad8d0ce0feba92288ada737d7d12692a93257",
-"@tok:e20162a0f733502701f19784d756aabfae43b08d",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -8408,10 +5519,6 @@
 },
 "b560027fe51c69a3cf6a0858974e71bc4b0c1932": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:c057a73ea855f16f41a00df8c50613c7ee192444"
-],
 "stdout": "ffffffff80025d94 R __bss_start\r\nffffffff80025d94 R _edata\r\nffffffff80025d94 R _end\r\nffffffff80025d94 R _fbss\r\nffffffff80025d94 N _fdata\r\nffffffff80024d5c T _ftext\r\nffffffff8002dd90 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 a go\r\nffffffff801fdff0 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c t sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 a VSTR\r\n",
 "tool": "nm"
 },
@@ -8419,18 +5526,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"--gc-sections",
-"-T",
-"@c8a48427c383d1412ad113009668d2c951850af4",
-"-o",
-"@OUT",
-"@tok:2da3adb571d46170c4d3d71ac38e8b30149ad027",
-"@tok:c383e421e9a6eff0e58514734496f6aa8033fd3c",
-"@tok:df3717d068ec3151a6fdcb267ba4f486750b797b",
-"@tok:518e0da1a81ccea376d3dd5df11c3af0ecbecfe0"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -8497,10 +5592,6 @@
 },
 "b5b4077282cc2b968804b78d163ee99b52bd0a63": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:134313da9ef95ba5c222cbb6093218104cd88b93"
-],
 "stdout": "ffffffff80033864 R __bss_start\r\nffffffff80033864 R _edata\r\nffffffff80033864 R _end\r\nffffffff80033864 R _fbss\r\nffffffff80033864 N _fdata\r\nffffffff80032830 T _ftext\r\nffffffff8003b860 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdf28 a go\r\nffffffff801fdf28 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 t od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 a od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f780 a RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f780 a VSTR\r\n",
 "tool": "nm"
 },
@@ -8539,15 +5630,6 @@
 "outs": {
 "6": "504b42df5b96b2857434bdd54561377c04ad8383"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k2",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8564,16 +5646,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003bde8",
-"-e",
-"0x8003bde8",
-"-o",
-"@OUT",
-"@tok:b225a61de39cbda44cb68f8173d64947cdd5a512"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -8590,15 +5662,6 @@
 "outs": {
 "6": "df96f3475ccda525db55023c9db72c5f5649ab1f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:0a2b286c6350b555bc34ee225a6fb3dc055bfc5a",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8606,17 +5669,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@9248ad33a43360ecbbe8bd8a513b607d661f1ccb",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -8624,15 +5676,6 @@
 "outs": {
 "6": "db47de7ec89cd00059e7157abc140495243126f9"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_entry",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8659,15 +5702,6 @@
 "outs": {
 "6": "91a1df5075e831d9803cb04fd1e1076cb1f7121f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:d5bab0278fa5f990aa9bfd5f6c42e4c72a96c407",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8675,15 +5709,6 @@
 "outs": {
 "6": "f38314e6fb66af3b21150f4bb7be8506480770b3"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:b9a49f1c857b5ff120cfff7f556ea355d062428b",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8773,19 +5798,11 @@
 },
 "baef267be71e5e73dc52a508929e0523c49e554a": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:960f5369436b7577bc977877258b464a3a451b89"
-],
 "stdout": "ffffffff800307ac R __bss_start\r\nffffffff800307ac R _edata\r\nffffffff800307ac R _end\r\nffffffff800307ac R _fbss\r\nffffffff800307ac N _fdata\r\nffffffff8002f780 T _ftext\r\nffffffff800387a0 r _gp\r\nffffffff80020f10 a FONT\r\n00000001 a FS05\r\nffffffff801fdfe8 a go\r\nffffffff801fdff0 a HOLDS\r\nffffffff800b5b82 a LBL\r\nffffffff80032830 a od2\r\nffffffff8003c310 a od3\r\nffffffff8002f780 t od4\r\nffffffff80032964 a optdraw\r\nffffffff8002f7a4 t RED\r\nffffffff801fdf28 a SA\r\nffffffff80024d5c a sa_stub\r\n4d494e41 a SAMAGIC\r\nffffffff8006edf0 a SPAWN\r\nffffffff800b5b8d a STR_FULL\r\nffffffff8009e174 a STR_OFF\r\nffffffff8002f798 t VSTR\r\n",
 "tool": "nm"
 },
 "bb3307c25221c001c05c49ee5170f20a9c329b80": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776"
-],
 "stdout": "ffffffff8001bd48 T dec_entry\r\nffffffff8001be9c T dret\r\nffffffff8001409c T dsm_dec\r\nffffffff8001a8c8 t mchk\r\nffffffff80014110 t mesc\r\nffffffff80019160 t mfill\r\nffffffff8001a8a0 t mgot\r\nffffffff80019224 t mlf\r\nffffffff800191d4 t mlong\r\nffffffff8001a8e4 t mrefill\r\nffffffff8001a8d0 t mrow\r\nffffffff800125f0 t mseg\r\nffffffff8001a914 t mspecial\r\nffffffff8001a874 t msym\r\nffffffff8001a878 t msym1\r\nffffffff800191a0 t mwrap\r\nffffffff8001be1c t rl\r\nffffffff8001be08 T rle\r\nffffffff8002fa78 t rlit\r\nffffffff8002fab8 t rlitb\r\nffffffff8002fad4 t rlitd\r\nffffffff8001be90 t rnext\r\nffffffff8001be84 t sb0\r\n",
 "tool": "nm"
 },
@@ -8809,17 +5826,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@bc62d8fcba6d409bf6707b88aaadd8ce673680c7",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -8931,10 +5937,6 @@
 },
 "bff61f84e2bdd3e44fccaf323ed468e47ec42430": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:f6f6408954f14206b8a326d9d2753f55e9ec1380"
-],
 "stdout": "ffffffff801eeb78 R __bss_start\r\nffffffff801eeb78 R _edata\r\nffffffff801eeb78 R _end\r\nffffffff801eeb78 R _fbss\r\nffffffff801eeb78 N _fdata\r\nffffffff801ed98c T _ftext\r\nffffffff801f6b70 r _gp\r\nffffffff801ed98c t abhook\r\nffffffff801eda10 t GTAB\r\nffffffff80085ab0 a READ\r\n",
 "tool": "nm"
 },
@@ -8960,15 +5962,6 @@
 "outs": {
 "6": "174acefa5d98ffd18e247062e0d24d16c0b86d28"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:f53d7a64d777a9d65ed907878069ff5804da4db1",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -8992,17 +5985,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@4de3650739bcfff8b7ae75a1bbff65a5c3960de8",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -9122,13 +6104,6 @@
 "outs": {
 "4": "130a3c7428192ee30bb3133a1de7bd74a889d9e1"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"@tok:08c9dbd25ccadc8e7a8312c8b2339fb37edfb154",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -9136,16 +6111,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80014128",
-"-e",
-"0x80014128",
-"-o",
-"@OUT",
-"@tok:07a519a63f576e034bc8ff40273c3288dda7498e"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9153,37 +6118,16 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@1df7e8de5ecdbdda369f3fc0fb4e96166f281407",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "c3a8bb68c006bfed735dd6184462936c0e97a6e5": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:ec5e8e85ad4b223e658b5f4c2da12c284fa10cce"
-],
 "stdout": "\r\nentry.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .text.entry   00000020  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  7 .gnu.attributes 00000010  00000000  00000000  00000088  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
 "c3f688b8c65ee76cb943abddc84042f2d638c5c7": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:7513f75b2eb6b6a6e8845681be679aec6343a5e5"
-],
 "stdout": "\r\nmod.elf:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .m            00002120  801087e4  801087e4  000007e4  2**2\r\n                  CONTENTS, ALLOC, LOAD, CODE\r\n",
 "tool": "objdump"
 },
@@ -9321,17 +6265,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@a3638338066d37e60579d19063dfcf6fe8bf381e",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -9415,10 +6348,6 @@
 },
 "c677d44984366c64e68b656f5c52f008076de66b": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:cb51257f120ad7aff0a47804748f921cfde7ab0c"
-],
 "stdout": "ffffffff8003ce40 R __bss_start\r\nffffffff8003ce40 R _edata\r\nffffffff8003ce40 R _end\r\nffffffff8003ce40 R _fbss\r\nffffffff8003ce40 N _fdata\r\nffffffff8003bde8 T _ftext\r\nffffffff80044e30 r _gp\r\nffffffff80099464 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdc00 a mdig\r\nffffffff801fdc00 a mdraw\r\nffffffff801fdc00 a meter\r\nffffffff8003be3c t mflag\r\n00000001 a MFLAG0\r\nffffffff801fdc00 a mfont\r\nffffffff801fdc00 a mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdc00 a mram_end\r\nffffffff801fdc00 a mseg\r\n00000328 a MSIZE\r\nffffffff801fdc00 a mst\r\nffffffff8003bde8 t mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -9426,16 +6355,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801082d8",
-"-e",
-"0x801082d8",
-"-o",
-"@OUT",
-"@tok:47ed31051eecfa8561926585517691f7d3698a58"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9443,15 +6362,6 @@
 "outs": {
 "6": "e6133982380a645fb0ca7881e7d7a7b091ee743c"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".sw",
-"@tok:94d9f9adcec509232b7a044624371ee33e11e730",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -9459,16 +6369,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c2550",
-"-e",
-"0x800c2550",
-"-o",
-"@OUT",
-"@tok:fd07b3c8ef041fa2db0c891e4e13ac65852f9bc6"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9476,16 +6376,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80032830",
-"-e",
-"0x80032830",
-"-o",
-"@OUT",
-"@tok:9984f81af07c94d9180d0287ed63c6131db8dbfc"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9493,17 +6383,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@4994226f354d979074402dbfd21ae02ffb970fec",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -9511,15 +6390,6 @@
 "outs": {
 "6": "8757acc4c50999cce22c33ee042804b171043485"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".sw",
-"@tok:1d25e68a5aace070a321daf15f5fec257e252cf4",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -9579,10 +6449,6 @@
 },
 "ca8c36c77da36be797cb982aab45be858e543e06": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:a22f0153f3464c0e9b466723729c765310ff1776"
-],
 "stdout": "ffffffff801fd808 T dsa_dec\r\nffffffff801fdac0 T dsa_end\r\nffffffff801fd950 t leaf\r\nffffffff801fd958 t leafc\r\nffffffff801fd9e8 t lit\r\nffffffff801fd9b8 t lit0\r\nffffffff801fd8a8 t pix\r\nffffffff801fd898 t row\r\nffffffff801fda58 t store\r\nffffffff801fd8f0 t walk\r\nffffffff801fd938 t wpair\r\nffffffff801fd918 t wspec\r\nffffffff801fd908 t wtest\r\n",
 "tool": "nm"
 },
@@ -9638,16 +6504,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8005f87c",
-"-e",
-"0x8005f87c",
-"-o",
-"@OUT",
-"@tok:adde55b37138dbc9f4c2c9e71e35bac2343f085c"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9655,14 +6511,6 @@
 "outs": {
 "5": null
 },
-"parts": [
-"ld",
-"-T",
-"@920f7cd8e28f6d9411d6f387107d5a446bd963bf",
-"@tok:9991bf12d15ea5d2c4eff0b2040a4a1b1d850da2",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -9745,25 +6593,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fdf28",
-"-e",
-"0x801fdf28",
-"-o",
-"@OUT",
-"@tok:80624de109a0677af20e7f138689a2283345d62e"
-],
 "stdout": "",
 "tool": "ld"
 },
 "ccd0867a989f586e4850abcfa9282c42c0e003a7": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:6da4b237db125057e0ad8a31b945628e44e1a2de"
-],
 "stdout": "ffffffff80010624 R __bss_start\r\nffffffff80010624 R _edata\r\nffffffff80010624 R _end\r\nffffffff80010624 R _fbss\r\nffffffff80010624 N _fdata\r\nffffffff8000f040 T _ftext\r\nffffffff80018620 r _gp\r\nffffffff8000f270 t done1\r\nffffffff8001b4f4 a DSAPTR\r\nffffffff8001b4f0 a DSHPTR\r\nffffffff8000f43c t FE_DSA\r\nffffffff8000f42c t FE_DSH\r\nffffffff8000f448 t fe0\r\nffffffff8001b454 a FLUSH\r\nffffffff8002633c a FTAB_SPARE\r\nffffffff8000f4f0 t go\r\n00000096 a HOLD\r\nffffffff8002b528 a HSITE\r\n00000020 a IDX\r\n00004020 a IDXEND\r\nffffffff8000f0e4 t jloop\r\nffffffff8000f12c t jnext\r\nffffffff8000f414 t kbyp\r\nffffffff8000f5d0 t KD\r\nffffffff8000f624 t KEND\r\nffffffff8000f5ec t KF\r\nffffffff8000f60c t KH\r\nffffffff8000f040 t KO\r\nffffffff8000f298 t KOR\r\nffffffff8000f044 t KOW\r\nffffffff8000f290 t kret\r\nffffffff8000f610 t KS\r\nffffffff8000f3ec t kskip\r\nffffffff8000f618 t KT\r\n314f434b a MAGIC\r\nffffffff8000fc70 a MBX\r\nffffffff8000f4f8 t miss\r\nffffffff8000f5c0 t OBJT\r\nffffffff8000f06c t oloop\r\nffffffff8000f280 t onext\r\nffffffff8007b828 a PHASE\r\nffffffff80024800 a RDF\r\n27bdffe0 a RDW0\r\nffffffffafb00010 a RDW1\r\nffffffff8000f27c t reset\r\nffffffff80092b30 a SLOTS\r\n000001ab a SPARE\r\nffffffff80092c40 a TARENA\r\nffffffff8001b4e0 a TLDBG\r\n",
 "tool": "nm"
 },
@@ -9778,10 +6612,6 @@
 },
 "cec0873056269c3360689d62fca88a25ea95631d": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:f674ad18adcbf1762beca7f239ab5de8f9fa4076"
-],
 "stdout": "ffffffff801fef20 R __bss_start\r\nffffffff801fef20 R _edata\r\nffffffff801fef20 R _end\r\nffffffff801fef20 R _fbss\r\nffffffff801fef20 N _fdata\r\nffffffff801fdc00 T _ftext\r\nffffffff80206f10 r _gp\r\nffffffff80099464 a BLOBMETER\r\nffffffff8001b454 a FLUSHCACHE\r\nffffffff8001175c a FSB\r\n00000000 a FSMASK\r\nffffffff8000f040 a KOAT\r\n314f434b a KOMAGIC\r\n5254454d a MAGIC\r\nffffffff80014128 a mcopy\r\nffffffff801fdef2 t mdig\r\nffffffff801fdd44 t mdraw\r\nffffffff801fdc04 t meter\r\nffffffff8003be3c a mflag\r\n00000001 a MFLAG0\r\nffffffff801fdec4 t mfont\r\nffffffff801fdc00 t mram\r\nffffffff801fdc00 a MRAM\r\nffffffff801fdf20 t mram_end\r\nffffffff801fded6 t mseg\r\n00000328 a MSIZE\r\nffffffff801fdefc t mst\r\nffffffff8003bde8 a mstub\r\nffffffff8001175c a OPTB\r\nffffffff8001b4e0 a TLDBG\r\n00000008 a X0\r\n000000c6 a Y0\r\n",
 "tool": "nm"
 },
@@ -9789,15 +6619,6 @@
 "outs": {
 "6": "63e2db97e44b658e22bd285f9fdfed0db773a935"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:5c4035ffeb3de3b9d6c5dca5ae178584515de27b",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -9853,42 +6674,6 @@
 "outs": {
 "32": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\tools\\ach",
-"-I<R>\\games\\mvc\\tools\\ach",
-"-include",
-"@8add6814ffd44ea714939fd0ed9b869ace3fa23b",
-"-DC_DONE=0x8000c768",
-"-DC_DIRTY=0x8000c77c",
-"-DC_PAGE=0x8000c783",
-"-DMOD_AT=0x801087e4",
-"-DNACH_CORE=75",
-"-DACH_BASE=0",
-"-DVSMENU=1",
-"-c",
-"@c75391c43e27f59e0be390fd63e7083d51aa2ac3",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -9942,15 +6727,6 @@
 "outs": {
 "6": "9a78d8cd0b5dfc689e938f95cf268d63066a0968"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".k3",
-"@tok:17972f847629fa3a204a182ea4ac3eed5703a1d8",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -9975,17 +6751,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@d469ad64d7f84581bd3cebf4c6e7b18b54de4451",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -9993,17 +6758,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@c80c00c576eb371220027f64d9327ed14c86174b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -10011,17 +6765,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@6a27775db32e217cab843ed32658716d00ddfee9",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -10029,26 +6772,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@6d63a34006f59cfc5687a441fd88f41e1ae1264b",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "d7169f7fdbf6147614608374a8c46aa36a7717b0": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:2031250ae4af6b88c649fabfa908f0ccc7b7157c"
-],
 "stdout": "ffffffff80031d50 R __bss_start\r\nffffffff80031d50 R _edata\r\nffffffff80031d50 R _end\r\nffffffff80031d50 R _fbss\r\nffffffff80031d50 N _fdata\r\nffffffff80030d14 T _ftext\r\nffffffff80039d40 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 t ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 a sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -10056,15 +6784,6 @@
 "outs": {
 "6": "00c3dee789d23012b959a80a2fa7d1bdb4625349"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:806ef53e6380810be3d0fa48446970bfd8221bae",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10088,16 +6807,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80101230",
-"-e",
-"0x80101230",
-"-o",
-"@OUT",
-"@tok:860ccf675c69879e483644675fabff65869ad131"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10105,18 +6814,6 @@
 "outs": {
 "9": null
 },
-"parts": [
-"ld",
-"-T",
-"@a70a8fa239b1e7cc13048334c03fbc12e9dc523f",
-"--defsym",
-"MAGIC=0x4d444e53",
-"--defsym",
-"SWENTRY=0x801fe868",
-"@tok:2cb1a19d6d3d0caec2b2203c2df1aff8a1815129",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10124,25 +6821,11 @@
 "outs": {
 "6": "e48411b6871c2fa2de7d18d1406a112f09eb6e0e"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".res",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "d90b59f94df1261d19c9f68e0de479f69ae452be": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:1bf0527629ebf3ed4d9e2f525628e9e278bc4e43"
-],
 "stdout": "\r\nmtcore.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000140  00000000  00000000  00000068  2**2\r\n                  CONTENTS, RELOC, READONLY\r\n  6 .mdebug.abi32 00000000  00000000  00000000  000001a8  2**0\r\n                  CONTENTS, READONLY\r\n  7 .text.kc.point 0000006c  00000000  00000000  000001a8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  8 .bss.kz.mtv   00000032  00000000  00000000  00000214  2**2\r\n                  ALLOC\r\n  9 .bss.kz.mtrx  00000024  00000000  00000000  00000214  2**2\r\n                  ALLOC\r\n 10 .bss.vsmbyte  00000001  00000000  00000000  00000214  2**0\r\n                  ALLOC\r\n 11 .bss.kz.ssec  00000001  00000000  00000000  00000214  2**0\r\n                  ALLOC\r\n 12 .rodata.mtreq 00000026  00000000  00000000  00000214  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA\r\n 13 .text.mt_read 00000158  00000000  00000000  0000023a  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 14 .text.route_v 00000124  00000000  00000000  00000394  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 15 .text.route   000000d0  00000000  00000000  000004b8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 16 .text.kc.fight 00000050  00000000  00000000  00000588  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 17 .text.vs_body 00000114  00000000  00000000  000005d8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 18 .text.mt_mask_stock 0000000c  00000000  00000000  000006ec  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n 19 .text.mt_mask_v 0000004c  00000000  00000000  000006f8  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 20 .text.mt_vsconf 00000048  00000000  00000000  00000744  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 21 .text.vs_magic 00000004  00000000  00000000  0000078c  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n 22 .text.mt_select 000001bc  00000000  00000000  00000790  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 23 .text.mt_tick 00000024  00000000  00000000  0000094c  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 24 .text.mt_old  0000028c  00000000  00000000  00000970  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 25 .comment      00000013  00000000  00000000  00000bfc  2**0\r\n                  CONTENTS, READONLY\r\n 26 .gnu.attributes 00000010  00000000  00000000  00000c0f  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
@@ -10166,17 +6849,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@33319d505fc16e7cfac79a86dcdc9ae8c2ee7e6e",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -10219,15 +6891,6 @@
 "outs": {
 "6": "7e6b4811cc0fe1b530160f58cbcd67ee29903aae"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:4cc4246015e1fe4231a11f2e3426db8d4011eeae",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10235,15 +6898,6 @@
 "outs": {
 "6": "08aaaf1ee42809a6226e57d8330dffe7908445a2"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_setup",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10251,16 +6905,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fc7b0",
-"-e",
-"0x801fc7b0",
-"-o",
-"@OUT",
-"@tok:88fa5044e29f7a930e37c0eab423c2c867c00997"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10268,15 +6912,6 @@
 "outs": {
 "6": "9ac182534db52747260e617bd4071fc9a4577e2f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:e02d50e569b1431cfba1b425bba7b30ef6a0e474",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10307,10 +6942,6 @@
 },
 "db0b7fa3b71d712e3dfcaceb4d2093131cd3ada5": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:72f731a04defa040111a081ad4cc73090d6c6287"
-],
 "stdout": "ffffffff800fda5c t bit\r\nffffffff800fd808 T dsr_dec\r\nffffffff800fdb1c T dsr_end\r\nffffffff800fd92c t full\r\nffffffff800fd9dc t leaf\r\nffffffff800fda34 t lit\r\nffffffff800fda04 t lit_k\r\nffffffff800fda30 t lit4\r\nffffffff800fda30 t lit4b\r\nffffffff800fda08 t litL\r\nffffffff800fda90 t norm3\r\nffffffff800fd86c t pix\r\nffffffff800fd870 t pix2\r\nffffffff800fd91c t rcont\r\nffffffff800fd85c t row\r\nffffffff800fdab4 t store\r\nffffffff800fd97c t walk\r\nffffffff800fd9c4 t wpair\r\nffffffff800fd9a4 t wspec\r\nffffffff800fd994 t wtest\r\n",
 "tool": "nm"
 },
@@ -10334,26 +6965,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8002f780",
-"-e",
-"0x8002f780",
-"-o",
-"@OUT",
-"@tok:3529cbcb5c87e0e9457e3227fb66006b57ecccef"
-],
 "stdout": "",
 "tool": "ld"
 },
 "db9c10ffd0304f0bb810a566afd38a6ef9b01f1d": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac"
-],
 "stdout": "ffffffff80014774 T rhook\r\nffffffff800147d8 t rh_end\r\nffffffff8001780c t gl_sum\r\nffffffff80017854 t gl_nob\r\nffffffff80017858 t gl_fail\r\nffffffff80017874 t gl_dec\r\nffffffff80017878 t gl_ret\r\nffffffff800178a8 t g2_end\r\nffffffff8001b454 T flushcache\r\nffffffff8001b488 T heapcap\r\nffffffff8001b4d4 T blobent\r\nffffffff8001b4dc T tl_entry\r\nffffffff8001b4e0 T tl_dbg\r\nffffffff8001b4f0 T dshptr\r\nffffffff8001b4f4 T dsaptr\r\nffffffff8001b4f8 T tl_pend\r\nffffffff8001b4fc t res_end\r\nffffffff8002547c T glue\r\nffffffff80025490 t gl_try\r\nffffffff80025524 t g1_end\r\nffffffff800858b0 T hcguard\r\nffffffff800858c8 T hg_end\r\nffffffff80092c50 t tl_wrap\r\nffffffff80092c9c t rd_item\r\nffffffff80092cbc t main_se\r\nffffffff80092d0c t main_vc\r\nffffffff80092d3c t place\r\nffffffff80092dc0 t secsz\r\nffffffff80092e00 t copy\r\nffffffff80092e34 t reloc\r\nffffffff80092f48 t xkey\r\nffffffff80092fc8 t l2sw\r\nffffffff800930c4 t l2cost\r\nffffffff80093144 t ndsa\r\nffffffff800931bc t wcost\r\nffffffff8009323c t plan_spu\r\nffffffff80093534 t vcsz\r\nffffffff8009358c t plan_frag.constprop.0\r\nffffffff800935d8 t part_a0\r\nffffffff80093630 t total_s\r\nffffffff80093d08 t total\r\nffffffff80093d84 t xplan\r\nffffffff8009454c t upgrade\r\nffffffff80094748 t plan_tiers\r\nffffffff80094cb0 t as_probe\r\nffffffff80094d14 t as_plan\r\nffffffff80095150 T tl_main\r\nffffffff800980c8 T tl_restore\r\nffffffff800980d0 t rdd\r\nffffffff8009810c t dsz\r\nffffffff8009814c t fsz\r\nffffffff800981ac t same64\r\nffffffff80098220 t spuw\r\nffffffff800982fc t voices_idle\r\nffffffff80098340 t rdfile.isra.0\r\nffffffff80098398 t mmax\r\nffffffff80098420 T snd_table\r\nffffffff80098484 T snd_reset\r\nffffffff800984ec T snd_need_min\r\nffffffff80098578 T snd_end_plan\r\nffffffff8009862c T snd_end_lv\r\nffffffff800986c0 T snd_assist\r\nffffffff800987d4 T snd_plan\r\nffffffff80098ba0 T snd_load\r\nffffffff80098f4c T snd_finish\r\nffffffff800990cc t team_of.0\r\nffffffff800990d4 t pr.2\r\nffffffff800990e4 t dxf2.3\r\nffffffff800990ec t dxf.4\r\nffffffff800990f4 t kos.5\r\nffffffff800990fc t p8s.6\r\nffffffff80099104 t perm.1\r\nffffffff80099104 t xperm\r\nffffffff80099164 T ldbuf_at\r\nffffffff80099168 t cutin_img\r\nffffffff80099280 t l1b_img\r\nffffffff8009930c t hg_img\r\nffffffff80099438 T tl_nometer\r\nffffffff8009943c t SPS_BLK\r\nffffffff80099444 T snd_nlv\r\nffffffff80099448 t K0\r\nffffffff80099450 t BANK\r\nffffffff80099454 t ord\r\nffffffff80099458 t spu0\r\nffffffff8009945c t l2res\r\nffffffff80099460 t lvl\r\nffffffff80099464 T snd_spu_end\r\nffffffff80099468 T tl_postarg\r\nffffffff8009946c T tl_postfn\r\nffffffff80099470 t as_own\r\nffffffff80099490 t vcon\r\nffffffff80099494 t vcpend\r\nffffffff80099498 t postvc\r\nffffffff8009949c t vcat\r\nffffffff800994a4 t tabat\r\nffffffff800994d4 t spuat\r\nffffffff800994e4 t ramset\r\nffffffff800994f4 t askey\r\nffffffff80099500 t aslv\r\nffffffff80099504 t astier\r\nffffffff80099508 t as_cap\r\nffffffff8009950c t as_spu\r\nffffffff80099510 t as_quick\r\nffffffff80099514 t as_pat\r\nffffffff80099518 t as_tq\r\nffffffff8009951c t as_same\r\nffffffff80099520 t as_a\r\nffffffff80099528 t as_on\r\nffffffff8009952c t asd\r\nffffffff80099530 t as_e\r\nffffffff80099678 t sps_own\r\nffffffff800996b8 t sps_stg\r\nffffffff800996bc t sps_at\r\nffffffff800996cc t sps_mv\r\nffffffff800996dc t sps_hi\r\nffffffff800996e8 t sps_lo\r\nffffffff800996f4 t sps_ok\r\nffffffff800996f8 t pnum\r\nffffffff800996fc t pdir\r\nffffffff80099700 t pent\r\nffffffff80099708 t psu\r\nffffffff80099710 t psb\r\nffffffff80099718 t npair\r\nffffffff8009971c t l2xp\r\nffffffff80099720 t dir0\r\nffffffff80099724 t dirp\r\nffffffff80099780 t CACHE\r\nffffffff80099784 t STRONG\r\nffffffff80099788 t TOP\r\nffffffff8009978c T snd_dbg\r\nffffffff80099794 t vbuf\r\nffffffff800997d4 t bl\r\nffffffff800998b4 t TB\r\nffffffff800998b8 t lsl\r\nffffffff800998bc t own\r\nffffffff800998c0 t lbase\r\nffffffff800998c4 t at\r\nffffffff800998d4 T snd_dir\r\nffffffff80099eb0 T tl_spx\r\nffffffff80099eb8 T tl_vcx\r\nffffffff80099ec0 T tl_l2x\r\nffffffff80099ec8 T tl_sx\r\nffffffff80099ed0 T tl_asx\r\nffffffff80099ed8 T tl_dir\r\nffffffff8009a83c T blob_end\r\nffffffff8009a83c A tl_strong\r\nffffffff801fd700 T post\r\nffffffff801fd764 T post_list\r\nffffffff801fd780 T post_end\r\n",
 "tool": "nm"
 },
@@ -10361,28 +6977,11 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@e09583af2a4563f7826374cd7a7863a3a95377b3",
-"-o",
-"@OUT",
-"-DDRAIN8",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
 "dc6d48f561f3ae0af96e406f9abe58d27f22c16f": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:78a68c43ee2d17b5bc1309fdd407275553ce5640"
-],
 "stdout": "         U ap8_a0\r\n         U ap8_aspatch\r\n         U ap8_uncut\r\n00000098 b as_a\r\n00000080 b as_cap\r\n000000a8 b as_e\r\n000000a0 b as_on\r\n0000008c b as_pat\r\n00001920 t as_plan.constprop.0\r\n000018cc t as_probe.constprop.0\r\n00000088 b as_quick\r\n00000094 b as_same\r\n00000084 b as_spu\r\n00000090 b as_tq\r\n000000a4 b asd\r\n0000006c b askey\r\n00000078 b aslv\r\n0000007c b astier\r\n0000027c b CACHE\r\n00000124 t copy\r\n00000084 r cutin_img\r\n0000021c b dir0\r\n00000220 b dirp\r\n         U dsaptr\r\n         U dshptr\r\n         U flushcache\r\n00000228 r hg_img\r\n0000019c r l1b_img\r\n000003e8 t l2cost\r\n00000008 d l2res\r\n000002ec t l2sw\r\n00000218 b l2xp\r\n00000080 R ldbuf_at\r\n00000020 t main_se\r\n00000070 t main_vc\r\n00000468 t ndsa\r\n00000214 b npair\r\n00000000 d ord\r\n00000018 r p8s.3\r\n0000087c t part_a0\r\n000001f8 b pdir\r\n000001fc b pent\r\n00000020 r perm.1\r\n000000a0 t place\r\n00000830 t plan_frag.constprop.0\r\n00000560 t plan_spu\r\n0000146c t plan_tiers.constprop.0\r\n000001f4 b pnum\r\n         U post\r\n         U post_list\r\n00000010 b postvc\r\n00000008 r pr.2\r\n0000020c b psb\r\n00000204 b psu\r\n0000005c b ramset\r\n00000000 t rd_item\r\n00000158 t reloc\r\n         U snd_assist\r\n         U snd_end_lv\r\n         U snd_end_plan\r\n         U snd_finish\r\n         U snd_load\r\n         U snd_need_min\r\n         U snd_nlv\r\n         U snd_plan\r\n         U snd_reset\r\n         U snd_spu_end\r\n         U snd_table\r\n00000358 r SPS_BLK\r\n000001f0 b sps_ok\r\n00000004 d spu0\r\n0000004c b spuat\r\n00000280 b STRONG\r\n0000001c b tabat\r\n00000000 r team_of.0\r\n00000020 D tl_asx\r\n         U tl_dbg\r\n00000028 D tl_dir\r\n00000010 D tl_l2x\r\n00001d40 T tl_main\r\n00000354 R tl_nometer\r\n00000000 B tl_postarg\r\n00000004 B tl_postfn\r\n000041f0 T tl_restore\r\n00000000 D tl_spx\r\n00000018 D tl_sx\r\n00000008 D tl_vcx\r\n00000284 b TOP\r\n000008d4 t total_s.constprop.0\r\n00000c8c t upgrade\r\n00000014 b vcat\r\n00000008 b vcon\r\n0000000c b vcpend\r\n000007d8 t vcsz\r\n000004e0 t wcost\r\n0000026c t xkey\r\n00000020 r xperm\r\n00000e84 t xplan.constprop.0\r\n",
 "tool": "nm"
 },
@@ -10400,16 +6999,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801ed98c",
-"-e",
-"0x801ed98c",
-"-o",
-"@OUT",
-"@tok:e263a2c86bb88f7866f0111b0af93b1bc42b33d2"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10417,35 +7006,16 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@9dc610d0b8743293a0226b7cb872166063c8898c",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "dcfc6841752fe4fcc67e0ca580b41d5065b22f3d": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:03de223908c61e5c766b59730290519b8a2be7ee"
-],
 "stdout": "ffffffff80010fdc R __bss_start\r\nffffffff80010fdc R _edata\r\nffffffff80010fdc R _end\r\nffffffff80010fdc R _fbss\r\nffffffff80010fdc N _fdata\r\nffffffff8000ffac T _ftext\r\nffffffff80018fd0 r _gp\r\nffffffff8000ff40 a DATA\r\nffffffff8020ff40 a FAKE\r\nffffffff8000ffdc t tend\r\nffffffff8000ffac t tr\r\n",
 "tool": "nm"
 },
 "dd465520badd515d7b5a3d75aaee8e2dd0e6ce74": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:623fb98db752491aeca05468ff7c018908035081"
-],
 "stdout": "ffffffff80060824 R __bss_start\r\nffffffff80060824 R _edata\r\nffffffff80060824 R _end\r\nffffffff80060824 R _fbss\r\nffffffff80060824 N _fdata\r\nffffffff8005f808 T _ftext\r\nffffffff80068820 r _gp\r\nffffffff8001d110 a HOOKA\r\n081f7f80 a HOOKW\r\n00000001 a INDEF\r\nffffffff8003cf60 a ld2\r\nffffffff80049d84 a ld3\r\nffffffff8005f87c a lddef\r\nffffffff80030d14 a ldhook\r\nffffffff80049c70 a ldput\r\nffffffff8003ca3c a sv2\r\nffffffff8005f808 t sv3\r\nffffffff8001a9e4 a svhook\r\n",
 "tool": "nm"
 },
@@ -10453,15 +7023,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-T",
-"@1421cbc02670fc49529cec49c3317f6bf3b4876a",
-"@tok:00ec7ef48cfbc238b87096a85bc96dc66f30d065",
-"@tok:af8d7626b6a00facaabaf908bb1f1c5d85099cf3",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10495,16 +7056,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80009a10",
-"-e",
-"0x80009a10",
-"-o",
-"@OUT",
-"@tok:a4d48595eea45cccc8d56d7bc9af62dafa05df09"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10512,25 +7063,11 @@
 "outs": {
 "6": "165ca4678ff159057b167a1b08f0c5cef4b6f048"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:960f5369436b7577bc977877258b464a3a451b89",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
 "df9b06ee64e8f1a0325c6ba56a418d401c1da651": {
 "outs": {},
-"parts": [
-"nm",
-"-n",
-"@tok:bc68fa67ed90e098d522d1c436eb31683b766cc2"
-],
 "stdout": "ffffffff80014774 T rhook\r\nffffffff800147d8 t rh_end\r\nffffffff8001780c t gl_sum\r\nffffffff80017854 t gl_nob\r\nffffffff80017858 t gl_fail\r\nffffffff80017874 t gl_dec\r\nffffffff80017878 t gl_ret\r\nffffffff800178a8 t g2_end\r\nffffffff8001b454 T flushcache\r\nffffffff8001b488 T heapcap\r\nffffffff8001b4d4 T blobent\r\nffffffff8001b4dc T tl_entry\r\nffffffff8001b4e0 T tl_dbg\r\nffffffff8001b4f0 T dshptr\r\nffffffff8001b4f4 T dsaptr\r\nffffffff8001b4f8 T tl_pend\r\nffffffff8001b4fc t res_end\r\nffffffff8002547c T glue\r\nffffffff80025490 t gl_try\r\nffffffff80025524 t g1_end\r\nffffffff800858b0 T hcguard\r\nffffffff800858c8 T hg_end\r\nffffffff80092c50 t tl_wrap\r\nffffffff80092c9c t rd_item\r\nffffffff80092cbc t main_se\r\nffffffff80092d0c t main_vc\r\nffffffff80092d3c t place\r\nffffffff80092dc0 t secsz\r\nffffffff80092e00 t copy\r\nffffffff80092e34 t reloc\r\nffffffff80092f48 t xkey\r\nffffffff80092fc8 t l2sw\r\nffffffff800930c4 t l2cost\r\nffffffff80093144 t ndsa\r\nffffffff800931bc t wcost\r\nffffffff8009323c t plan_spu\r\nffffffff80093534 t vcsz\r\nffffffff8009358c t plan_frag.constprop.0\r\nffffffff800935d8 t part_a0\r\nffffffff80093630 t total_s\r\nffffffff80093d08 t total\r\nffffffff80093d84 t xplan\r\nffffffff8009454c t upgrade\r\nffffffff80094748 t plan_tiers\r\nffffffff80094cb0 t as_probe\r\nffffffff80094d14 t as_plan\r\nffffffff80095150 T tl_main\r\nffffffff8009807c T tl_restore\r\nffffffff80098084 t dsz\r\nffffffff800980c4 t fsz\r\nffffffff80098124 t same64\r\nffffffff800981a4 t spuw\r\nffffffff80098280 t voices_idle\r\nffffffff800982c4 t rdfile.isra.0\r\nffffffff8009831c t mmax\r\nffffffff800983a4 T snd_table\r\nffffffff80098408 T snd_reset\r\nffffffff80098470 T snd_need_min\r\nffffffff800984fc T snd_end_plan\r\nffffffff800985b0 T snd_end_lv\r\nffffffff80098644 T snd_assist\r\nffffffff80098758 T snd_plan\r\nffffffff80098b24 T snd_load\r\nffffffff80098ed8 T snd_finish\r\nffffffff80099058 t team_of.0\r\nffffffff80099060 t pr.2\r\nffffffff80099070 t dxf2.3\r\nffffffff80099078 t dxf.4\r\nffffffff80099080 t kos.5\r\nffffffff80099088 t p8s.6\r\nffffffff80099090 t perm.1\r\nffffffff80099090 t xperm\r\nffffffff800990f0 T ldbuf_at\r\nffffffff800990f4 t cutin_img\r\nffffffff8009920c t l1b_img\r\nffffffff80099298 t hg_img\r\nffffffff800993c4 T tl_nometer\r\nffffffff800993c8 t SPS_BLK\r\nffffffff800993d0 T snd_nlv\r\nffffffff800993d4 t K0\r\nffffffff800993dc t BANK\r\nffffffff800993e0 t ord\r\nffffffff800993e4 t spu0\r\nffffffff800993e8 t l2res\r\nffffffff800993ec t lvl\r\nffffffff800993f0 T snd_spu_end\r\nffffffff800993f4 T tl_postarg\r\nffffffff800993f8 T tl_postfn\r\nffffffff800993fc t as_own\r\nffffffff8009941c t vcon\r\nffffffff80099420 t vcpend\r\nffffffff80099424 t postvc\r\nffffffff80099428 t vcat\r\nffffffff80099430 t tabat\r\nffffffff80099460 t spuat\r\nffffffff80099470 t ramset\r\nffffffff80099480 t askey\r\nffffffff8009948c t aslv\r\nffffffff80099490 t astier\r\nffffffff80099494 t as_cap\r\nffffffff80099498 t as_spu\r\nffffffff8009949c t as_quick\r\nffffffff800994a0 t as_pat\r\nffffffff800994a4 t as_tq\r\nffffffff800994a8 t as_same\r\nffffffff800994ac t as_a\r\nffffffff800994b4 t as_on\r\nffffffff800994b8 t asd\r\nffffffff800994bc t as_e\r\nffffffff80099604 t sps_own\r\nffffffff80099644 t sps_stg\r\nffffffff80099648 t sps_at\r\nffffffff80099658 t sps_mv\r\nffffffff80099668 t sps_hi\r\nffffffff80099674 t sps_lo\r\nffffffff80099680 t sps_ok\r\nffffffff80099684 t pnum\r\nffffffff80099688 t pdir\r\nffffffff8009968c t pent\r\nffffffff80099694 t psu\r\nffffffff8009969c t psb\r\nffffffff800996a4 t npair\r\nffffffff800996a8 t l2xp\r\nffffffff800996ac t dir0\r\nffffffff800996b0 t dirp\r\nffffffff8009970c t CACHE\r\nffffffff80099710 t STRONG\r\nffffffff80099714 t TOP\r\nffffffff80099718 T snd_dbg\r\nffffffff80099720 t vbuf\r\nffffffff80099760 t bl\r\nffffffff80099840 t TB\r\nffffffff80099844 t lsl\r\nffffffff80099848 t own\r\nffffffff8009984c t lbase\r\nffffffff80099850 t at\r\nffffffff80099860 T snd_dir\r\nffffffff80099e3c T tl_spx\r\nffffffff80099e44 T tl_vcx\r\nffffffff80099e4c T tl_l2x\r\nffffffff80099e54 T tl_sx\r\nffffffff80099e5c T tl_asx\r\nffffffff80099e64 T tl_dir\r\nffffffff8009a7c8 T blob_end\r\nffffffff8009a7c8 A tl_strong\r\nffffffff801fd700 T post\r\nffffffff801fd764 T post_list\r\nffffffff801fd780 T post_end\r\n",
 "tool": "nm"
 },
@@ -10538,15 +7075,6 @@
 "outs": {
 "6": "2244338d33d69002d0645f00def902a56ababdd8"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".u_run",
-"@tok:90bd330b8c53dbe803002d1c144bfec4de36c776",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10582,16 +7110,6 @@
 "outs": {
 "7": null
 },
-"parts": [
-"ld",
-"-T",
-"@b4ad786533f18134891925ee9e44d36e247cfab8",
-"@tok:695016650d47d5a991587683459a2971fc7aa4e5",
-"@tok:46b9bce1d4cac216da62afb4e602e82df880ae9c",
-"@tok:9540463452ed1d177ff436ec9c12964196c05031",
-"-o",
-"@OUT"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10660,10 +7178,6 @@
 },
 "e33297722ddf146677fbfe38495067ea7e8921e7": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:3ca4c55fd29ee854415d529f858b587e55f97611"
-],
 "stdout": "ffffffff801011d0 R __bss_start\r\nffffffff801011d0 R _edata\r\nffffffff801011d0 R _end\r\nffffffff801011d0 R _fbss\r\nffffffff801011d0 N _fdata\r\nffffffff80100000 T _ftext\r\nffffffff801091c0 r _gp\r\nffffffff8000ff40 a DATA\r\nffffffff801001d0 t end\r\nffffffff80100054 t err\r\nffffffff8020ff40 a FAKE\r\nffffffff80100000 t fe\r\nffffffff80100148 t pw1\r\nffffffff801001bc t real\r\nffffffff8001be08 a RLE\r\nffffffff80210000 a WB\r\n",
 "tool": "nm"
 },
@@ -10703,27 +7217,12 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8000f040",
-"-e",
-"0x8000f040",
-"-o",
-"@OUT",
-"@tok:c4c71cf873b9fa04e74971eaaa3ca212a37be331"
-],
 "stdout": "",
 "tool": "ld"
 },
 "e470a7d3e42772cb05fba0d35b9fa0d63bef178c": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:e20162a0f733502701f19784d756aabfae43b08d"
-],
-"stdout": "\r\nC:\\playground\\xvsf\\work\\mvcb\\root_rec\\work\\dsp_obj\\dsmdec_mvc_hp8001b4f0_ap8001b4f4_56532.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .u_entry      0000015c  00000000  00000000  00000068  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  7 .u_rlit       0000006c  00000000  00000000  000001c4  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  8 .u_setup      00000088  00000000  00000000  00000230  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  9 .u_loop       000000e8  00000000  00000000  000002b8  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 10 .u_run        00000074  00000000  00000000  000003a0  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 11 .u_fill       00000074  00000000  00000000  00000414  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 12 .u_long       00000070  00000000  00000000  00000488  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 13 .gnu.attributes 00000010  00000000  00000000  000004f8  2**0\r\n                  CONTENTS, READONLY\r\n",
+"stdout": "\r\nC:\\playground\\xvsf\\work\\mvcb\\root_rec\\work\\dsp_obj\\dsmdec_mvc_hp8001b4f0_ap8001b4f4_57804.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .u_entry      0000015c  00000000  00000000  00000068  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  7 .u_rlit       0000006c  00000000  00000000  000001c4  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  8 .u_setup      00000088  00000000  00000000  00000230  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  9 .u_loop       000000e8  00000000  00000000  000002b8  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 10 .u_run        00000074  00000000  00000000  000003a0  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 11 .u_fill       00000074  00000000  00000000  00000414  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 12 .u_long       00000070  00000000  00000000  00000488  2**0\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n 13 .gnu.attributes 00000010  00000000  00000000  000004f8  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
 "e4a8ee6f8510782aa73631a073857bff7b0ab1db": {
@@ -10746,15 +7245,6 @@
 "outs": {
 "6": "d62b83a49ed694ef5f264e2cbcca7437b4372825"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".rest",
-"@tok:f54dab4cf2ffed4f2050d4e8dd41b5be91c5b475",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10762,15 +7252,6 @@
 "outs": {
 "6": "e7975a104f9f2389124a0e6f40becbd60f535820"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".m",
-"@tok:2e7c405f3fddfa7a79dff1d578daecd1849c3724",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10778,48 +7259,6 @@
 "outs": {
 "38": null
 },
-"parts": [
-"gcc",
-"-march=r3000",
-"-mtune=r3000",
-"-mno-abicalls",
-"-fno-pic",
-"-G0",
-"-msoft-float",
-"-Os",
-"-ffreestanding",
-"-fno-builtin",
-"-nostdlib",
-"-Wall",
-"-Wno-unused-function",
-"-fno-strict-aliasing",
-"-mno-check-zero-division",
-"-fno-toplevel-reorder",
-"-ffunction-sections",
-"-fdata-sections",
-"-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-Wa,-I<R>\\games\\mvc\\tools\\ach\\core\\obj\\gen",
-"-DMENUS5=0x800a2de0u",
-"-DMENUGATE=1",
-"-DGATE_ST6=0x800b5c10",
-"-DGATE_EXST=0x801082d8",
-"-DGATE_NOOP=0x800a2df8",
-"-DGATE_ST0=0x800a2b6c",
-"-DMODRELOAD=1",
-"-DRL_INDEX=-4254",
-"-DRL_DEST=0x80107fe4",
-"-DMODRELOAD2=1",
-"-DACHFIX=1",
-"-DINFB=0x80011763",
-"-DCORE_SPLIT=1",
-"-DMOD_AT=0x801087e4",
-"-DMOD_MAX=0x4000",
-"-c",
-"@3493bbf2ee1073040dbb9b7b49ae2239d171d915",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -10827,15 +7266,6 @@
 "outs": {
 "6": "8a6166a6fec0d1bb8da843d465aa800e251e2d25"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:290b5157d669285f39b00961de65180da3e1ee4b",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10843,15 +7273,6 @@
 "outs": {
 "6": "63e2db97e44b658e22bd285f9fdfed0db773a935"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:3ca4c55fd29ee854415d529f858b587e55f97611",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -10877,16 +7298,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80049c70",
-"-e",
-"0x80049c70",
-"-o",
-"@OUT",
-"@tok:33e46705c6d54f095b376e408c8c527bc781a1a5"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10894,22 +7305,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-DENTRY=0x800106e0",
-"-DDATA_LEN=9600",
-"-DHBLANKS=20454",
-"-DROUNDS=2",
-"-c",
-"@2407d9553a45af6e7495657d4bde09399833d3e8",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -10917,16 +7312,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80009410",
-"-e",
-"0x80009410",
-"-o",
-"@OUT",
-"@tok:49b07ef4a35e2b3fbff61f376b1af598c470e1f9"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -10934,15 +7319,6 @@
 "outs": {
 "6": "7ccee62ff638f619e29ec0e253be353f7f34d933"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".g2",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11009,15 +7385,6 @@
 "outs": {
 "6": "31a56f213efaf8bd5b28827cdb5052b67940c39f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".post",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11025,16 +7392,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8003cf60",
-"-e",
-"0x8003cf60",
-"-o",
-"@OUT",
-"@tok:915315129b848c08b3373c8e15523819c92c5d39"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11042,15 +7399,6 @@
 "outs": {
 "6": "86a1fe3af97863c51139e321c1ccdd6dd9002557"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".blob",
-"@tok:5706a5cf3b892bd7c30e7eb58c243dcae04dbcac",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11074,17 +7422,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@2baf70b034175011f3322bcbfe426f62dceb96a6",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -11260,15 +7597,6 @@
 "outs": {
 "6": "73336d147e50cd44c8d54a1120f6500e232e40cc"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:9298aee4ff18dd85e9831d2f4bd54139ff4e7b2a",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11293,16 +7621,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fdc00",
-"-e",
-"0x801fdc00",
-"-o",
-"@OUT",
-"@tok:d497a71c0231da2fda6171aa6519c873e3926753"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11310,15 +7628,6 @@
 "outs": {
 "6": "31a56f213efaf8bd5b28827cdb5052b67940c39f"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".post",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11336,15 +7645,6 @@
 "outs": {
 "6": "ef619ba341b9daa22897590399ebcd1384b74488"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:571203b1557965674702cba93316d2207539aa6e",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11370,16 +7670,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x800c0000",
-"-e",
-"0x800c0000",
-"-o",
-"@OUT",
-"@tok:74c2a45ca88a752baf5709fee1c964b2a68d9fb1"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11387,18 +7677,6 @@
 "outs": {
 "8": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-c",
-"@ca4fe22420e256c68f3c2eced9623aa557d03f34",
-"-o",
-"@OUT",
-[]
-],
 "stdout": "",
 "tool": "gcc"
 },
@@ -11491,15 +7769,6 @@
 "outs": {
 "6": "751ff7f10038f949bc6b72f59d112b31a455db74"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:f6f6408954f14206b8a326d9d2753f55e9ec1380",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11557,10 +7826,6 @@
 },
 "f3d2d22472a580e7171f606f2b038b760daf2446": {
 "outs": {},
-"parts": [
-"nm",
-"@tok:bb772cc3bd526bd49b67f2dd2e7d1b8795cf8379"
-],
 "stdout": "ffffffff8000c818 R __bss_start\r\nffffffff8000c818 R _edata\r\nffffffff8000c818 R _end\r\nffffffff8000c818 R _fbss\r\nffffffff8000c818 N _fdata\r\nffffffff8000b100 T _ftext\r\nffffffff80014810 r _gp\r\nffffffff8000b80c t Bdone\r\nffffffff8000b42c t bit\r\nffffffff8000b6c8 t Bpart\r\nffffffff8000b810 t Bret\r\nffffffff8000b804 t Bskip\r\nffffffff8000b560 t BUILD\r\nffffffff8000fc40 a DBG\r\nffffffff8001bd48 a DEC\r\nffffffff8000b544 t done\r\nffffffff80011864 a DRAWSYNC\r\nffffffff8000b560 t dssr_end\r\nffffffff8000b16c T dssr_run\r\nffffffff8000b54c t exit\r\nffffffff8000b2fc t full\r\n00000000 a KOAHEAD\r\nffffffff8000b3ac t leaf\r\nffffffff8000b404 t lit\r\nffffffff8000b3d4 t lit_k\r\nffffffff8000b400 t lit4\r\nffffffff8000b400 t lit4b\r\nffffffff8000b3d8 t litL\r\nffffffff801fe000 a M_DXD\r\nffffffff801fe000 a M_DXI\r\nffffffff801fe000 a M_DXV\r\nffffffff8000fc70 a MBX\r\n00000028 a NE\r\nffffffff8000b460 t norm3\r\n00001100 a PF_SCR\r\nffffffff8000b23c t pix\r\nffffffff8000b240 t pix2\r\nffffffff8000b818 t POOLT\r\n00000384 a R_DSA\r\n0000008c a R_DSH\r\n00000030 a R_DSM\r\n000001cc a R_DSR\r\n0000006e a R_DSX\r\n00000010 a R_RLE\r\nffffffff8000b2ec t rcont\r\nffffffff8000b1ec t resume\r\nffffffff8000b22c t row\r\nffffffff8000fc80 a SL\r\nffffffff8000f840 a ST\r\nffffffff8000b484 t store\r\nffffffff8000b110 t TDXD\r\nffffffff8000b100 t TDXI\r\nffffffff8000b108 t TDXV\r\nffffffff8000b114 t tgate\r\nffffffff8001b4e0 a TLDBG\r\nffffffff8000b154 t TTAB\r\nffffffff80010858 a VSYNC\r\nffffffff8000b34c t walk\r\nffffffff8000b394 t wpair\r\nffffffff8000b374 t wspec\r\nffffffff8000b364 t wtest\r\n",
 "tool": "nm"
 },
@@ -11568,16 +7833,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x801fc7b0",
-"-e",
-"0x801fc7b0",
-"-o",
-"@OUT",
-"@tok:e39a629248a0ba83cb44ecf23f0b41fd61df06bd"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11601,17 +7856,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@719fc520704a099a59e30f48591b9d78cfe30726",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -11619,16 +7863,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x80024d5c",
-"-e",
-"0x80024d5c",
-"-o",
-"@OUT",
-"@tok:8ccf760f0bd63d6271cbf4022297e8086247f682"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11636,16 +7870,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"ld",
-"-EL",
-"-Ttext=0x8009154c",
-"-e",
-"0x8009154c",
-"-o",
-"@OUT",
-"@tok:b854792627964959de49bc4a534553c8fd1479cc"
-],
 "stdout": "",
 "tool": "ld"
 },
@@ -11669,27 +7893,11 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@2f08ca28bdd72ab7786490d94d70d4bf2049b6fe",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
 "f91998b3a6bfac97a6b007c5995f3f5eeab49d37": {
 "outs": {},
-"parts": [
-"objdump",
-"-h",
-"@tok:94c4692f12f858e9f8c918b77085bd7a9febce16"
-],
 "stdout": "\r\nentry.o:     file format elf32-littlemips\r\n\r\nSections:\r\nIdx Name          Size      VMA       LMA       File off  Algn\r\n  0 .text         00000000  00000000  00000000  00000034  2**2\r\n                  CONTENTS, ALLOC, LOAD, READONLY, CODE\r\n  1 .data         00000000  00000000  00000000  00000034  2**0\r\n                  CONTENTS, ALLOC, LOAD, DATA\r\n  2 .bss          00000000  00000000  00000000  00000034  2**0\r\n                  ALLOC\r\n  3 .reginfo      00000018  00000000  00000000  00000034  2**2\r\n                  CONTENTS, READONLY, LINK_ONCE_SAME_SIZE\r\n  4 .MIPS.abiflags 00000018  00000000  00000000  00000050  2**3\r\n                  CONTENTS, ALLOC, LOAD, READONLY, DATA, LINK_ONCE_SAME_SIZE\r\n  5 .pdr          00000000  00000000  00000000  00000068  2**2\r\n                  CONTENTS, READONLY\r\n  6 .text.entry   00000020  00000000  00000000  00000068  2**2\r\n                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE\r\n  7 .gnu.attributes 00000010  00000000  00000000  00000088  2**0\r\n                  CONTENTS, READONLY\r\n",
 "tool": "objdump"
 },
@@ -11697,111 +7905,6 @@
 "outs": {
 "12": null
 },
-"parts": [
-"gcc",
-"-mips1",
-"-G0",
-"-mno-abicalls",
-"-fno-pic",
-"-Os",
-"-ffreestanding",
-"-msoft-float",
-"-Wall",
-"-c",
-"@762bcb8d6941aee7900938e8d00f820d32b342f7",
-"-o",
-"@OUT",
-"-DKOCACHE",
-"-DPAL8",
-"-DXPLAN",
-"-DL2G",
-"-DL2PC",
-"-DHOOKGATE",
-"-DL1B",
-"-DCUTIN",
-"-DCHK",
-"-DSTAGEANIM",
-"-DSTAGEANIM_SA=0x801fdf28u",
-"-DDIRX",
-"-DASSIST",
-"-DSTRONGX",
-"-DASHUD",
-"-DONSLP1",
-"-DSXFIX",
-"-DONSL",
-"-DONSL_TO=88u",
-"-DLDBUF",
-"-DASARC",
-"-DASPS3",
-"-DASRLE",
-"-DSPS_ITEM",
-"-DKOFIX",
-"-DASSIDE",
-"-DAS_LVF=35",
-"-DSPUSTORE",
-"-DSPS_FIX",
-"-DSHARE",
-"-DDXAHEAD",
-"-DVCACHE",
-[
-[
-"bgfast.h",
-"389602be9abfbb0e78c34ca23be62c79153aa68f"
-],
-[
-"chkrt.h",
-"64ed3b2c4a3fff61b27b4c6708852d36f09cd025"
-],
-[
-"cutguard.h",
-"0d2ac6e7fe76c357d1f2d62fc1f82b6a61d9ae74"
-],
-[
-"cutin.h",
-"8d66b3404bcd81ff9f12498e20334328a1658ee4"
-],
-[
-"dxahead.h",
-"7b675fe967524c54e1bb56dabeaaabad63debd97"
-],
-[
-"fecache.h",
-"b24ef054339388516f4005ad069e1bee176ed409"
-],
-[
-"hookgate.h",
-"f4ac85c8df75a46a659f1188e24441326f5066f4"
-],
-[
-"kocache.h",
-"774136b7984ca0e887dc5674a584344b5862c9a4"
-],
-[
-"krl.h",
-"430a065bb0a5632442db323c940157f23491481f"
-],
-[
-"l1b.h",
-"ce1ce1834c3bb4a44565c59b48e0343868d6617b"
-],
-[
-"l2g.h",
-"93fca810c345786577e4e0b373eff613c0042dbb"
-],
-[
-"spsfe.h",
-"eaa598712a7a62278e5c4a3fb5fccaca8d23a8ec"
-],
-[
-"upskip.h",
-"819721048a24b7ec30519dc41b8d63ef9146b398"
-],
-[
-"vcache.h",
-"cb011d2256a40bd93b52ff9c2ad6f809b0f6998b"
-]
-]
-],
 "stderr": "tagload.c: In function 'tl_main':\ntagload.c:1674:13: warning: variable 't0' set but not used [-Wunused-but-set-variable]\n 1674 |         int t0[4], ok;                                       /* DSA1 tier it did not have without it */\n      |             ^~\ntagload.c:2107:33: warning: unused variable 'n' [-Wunused-variable]\n 2107 |         u32 *d = (u32 *)STRONG, n = (TOP == TOP0 ? tl_dir.strong_size : tl_dir.dec_size) >> 2;\n      |                                 ^\ntagload.c: At top level:\ntagload.c:210:12: warning: 'npair_dbg' defined but not used [-Wunused-function]\n  210 | static int npair_dbg(void) { return npair; }\n      |            ^~~~~~~~~\n",
 "stdout": "",
 "tool": "gcc"
@@ -11856,17 +7959,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@3a2f6b943e23e67beed07033002536180b346076",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -11874,15 +7966,6 @@
 "outs": {
 "6": "f7a6d920d2cacfb56e7f2ca2221c9abdf744e38a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".hg",
-"@tok:80e09df725cafb7a93af9b4aad9c524b4fbc6bd5",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11980,15 +8063,6 @@
 "outs": {
 "6": "b5d4c586ee833130e5cc7fefe29b1ac843b7131d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:f674ad18adcbf1762beca7f239ab5de8f9fa4076",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -11996,15 +8070,6 @@
 "outs": {
 "6": "b5d4c586ee833130e5cc7fefe29b1ac843b7131d"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:d89fb1affc5ff6ab7f6b535743b70d8328f16eed",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -12012,15 +8077,6 @@
 "outs": {
 "6": "651d64e5ae7b29b657881fd4ac361d69ff4fc9fa"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:74068a9f49164e4cf4a28fafe3c9691941271c25",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 },
@@ -12028,17 +8084,6 @@
 "outs": {
 "6": null
 },
-"parts": [
-"as",
-"-EL",
-"-march=r3000",
-"-mabi=32",
-"-no-mips16",
-"-o",
-"@OUT",
-"@05d82439fda4dde8e403b605bc486ec164d155ec",
-[]
-],
 "stdout": "",
 "tool": "as"
 },
@@ -12046,15 +8091,6 @@
 "outs": {
 "6": "79d2932beca56444b993fbece79fb1d5dfec209a"
 },
-"parts": [
-"objcopy",
-"-O",
-"binary",
-"-j",
-".text",
-"@tok:b0cae03e744272bd851c3ff3b5e16ed2a45fcf76",
-"@OUT"
-],
 "stdout": "",
 "tool": "objcopy"
 }

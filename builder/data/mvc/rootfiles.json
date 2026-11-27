@@ -60,6 +60,7 @@
 "games/mvc/tools/ap8/s8/s8.h",
 "games/mvc/tools/ap8/s8/snd8.inc",
 "games/mvc/tools/assist/ascut.py",
+"games/mvc/tools/codec2/dsr.py",
 "games/mvc/tools/codec2/dsrbuild.py",
 "games/mvc/tools/codec2/dsrdec.S",
 "games/mvc/tools/cpuprof/cpufast.py",

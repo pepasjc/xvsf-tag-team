@@ -22,7 +22,7 @@ tools/ap8/ap8r.c):
   patches: m x (u32 code-item offset of the record, u16 new frame index, u16 stock frame index)
   then the table, then (16-aligned) the sprite file: the stock DSP + appended tiles (stock RLE) + frames (sec1).
 """
-import os, sys, json, zipfile, hashlib, struct, argparse, collections
+import re, os, sys, json, zipfile, hashlib, struct, argparse, collections
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 GAME = os.path.abspath(os.path.join(HERE, "..", ".."))
@@ -51,24 +51,68 @@ class Fail(Exception):
 
 
 # ------------------------------------------------------------------------------------------------ inputs
+# (2026-11-27) program ROMs .03-.10 (SHA-1, in that order) of the MAME / FBNeo sets of this game: in a MERGED zip (the
+# parent with every clone inside) the files of one set are chosen together, never a mix of revisions
+PRG_SETS = {
+    "mvsc": ("5c79c166d988d8a75d9941f4ee6fa4d6476e55e1", "82f4586e888f2550c53bfdc93a53791a595e05bd", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvsca": ("74cc3656a265f912c72cc6e591de14791fa9a50d", "3e4c91753b19c6307abd0ad87a0184730a418efb", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscar1": ("c27b987ffb631c3433aa32a29989dbf2b3e53f1e", "363770ecd5f4e160db6448845ba6d7fd0beea291", "a0097109e9f4aba40791932269d600c0ffa099a7", "375372adf0a508bb6fc6a79326b2d4171db9ca0f", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscb": ("acd1f86bc24636a02aeef566994d38ffa6dbf72f", "c513f430e7c4f32e220a800c53ffdcea68c6cfcf", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscem": ("17db6f6afbe7866a4803bf2a20fb9b01b2b80250", "c5420e9bd580910c1f1d0264240aeef20aac30a7", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvsch": ("62d7b28cc9ddf975ccdc8992d51bd3d085e3e136", "3a79400a7ac6e7594ca7e0fbb2486ddf6c759d18", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscj": ("2b91da6e5dd792967337e873ebb08ecf5194a97b", "c5420e9bd580910c1f1d0264240aeef20aac30a7", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscjr1": ("00e3500ed334bb80d4d159eacf439860a2bfc3b7", "965fa3bdc29bd901e9efcc53b195c6be3a74c9f9", "a0097109e9f4aba40791932269d600c0ffa099a7", "375372adf0a508bb6fc6a79326b2d4171db9ca0f", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscr1": ("d2feffb5505a2f8940192ae267f49561fc580b87", "1e34fa55bb93c7573ab0205f8c5620a51765d3eb", "a0097109e9f4aba40791932269d600c0ffa099a7", "375372adf0a508bb6fc6a79326b2d4171db9ca0f", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscu": ("c027c1a204345ce611cb042d60939e4de156763f", "872bbcf5d344d634f3523318fa4763e6d6302bb5", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "d35589847e0753e869ffcd7c3abed925bfdb0fa2", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscud": ("5453056da68cdd4675cb585a9c6ae85e073193f5", "742b35a45eadea3457bfb93808cbba599e9744e3", "b07d640a734c5d336054ed05195786224c9a6cd4", "cd065c05268ab581b05676da544baf6af642acac", "b47a7057abd18d85ff9d86483ecb7ab783b3e791", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "5fa684d823b4f4eec61ed9e9b8938af5272ae1ed"),
+    "mvscur1": ("229520c5f4171abae1acdfb9544b356b568b5f2d", "8989192b575fb717c13bfb8175e83d7f1a285310", "32942c4690253c1545ce05dc084de227e46d942a", "b6543d40fb98eabec82787e0fd60fbc59069e72e", "59726e535d1fd9cc4ddfdd02c936121d70723ced", "0b6735a071a9274f7ab25c743271fc30411fe819", "6e9969246c57269d7ba0992a5cc319c8910bf8a9", "ee6bdbf14bd524f76f4f756f332315331d5e1e4b"),
+}
+PRG_EXTS = ['03', '04', '05', '06', '07', '08', '09', '10']
+
+
+def _pick_prg(cand, zname):
+    """cand {ext: [(zip index, bytes)]} -> {ext: bytes} of the known set to use, or None.  Rank: the zip its .03 comes
+    from (SET.zip before PARENT.zip), then the set named like that zip, then the order of PRG_SETS (parent first)"""
+    import hashlib as _h
+    hs = {e: [(z, _h.sha1(d).hexdigest(), d) for z, d in v] for e, v in cand.items()}
+    best = None
+    for k, (name, want) in enumerate(PRG_SETS.items()):
+        got = {}
+        for e, w in zip(PRG_EXTS, want):
+            m = [(z, d) for z, h, d in hs.get(e, []) if h == w]
+            if not m: break
+            got[e] = min(m, key=lambda x: x[0])
+        else:
+            z = got["03"][0]; rank = (z, name != zname.get(z), k)
+            if best is None or rank < best[0]: best = (rank, {e: d for e, (z_, d) in got.items()})
+    return best[1] if best else None
+
+
 def read_arcade(paths):
     """-> (program image, {rom: bytes}, description).  Program = .03 .04 .05 .06 .07 .08 .09 .10 (16-bit swapped)."""
-    files = {}
-    for p in paths:
+    files = {}; zipno = {}; zname = {}
+    for i, p in enumerate(paths):
+        zname[i] = re.sub(r"^set\d+_", "", os.path.splitext(os.path.basename(p))[0].lower())    # (the web page: setN_<name>.zip)
         if os.path.isdir(p):
-            for n in sorted(os.listdir(p)): files.setdefault(n.lower(), open(os.path.join(p, n), "rb").read())
+            for n in sorted(os.listdir(p)):
+                if n.lower() not in files: files[n.lower()] = open(os.path.join(p, n), "rb").read(); zipno[n.lower()] = i
         else:
             try: z = zipfile.ZipFile(p)
             except (zipfile.BadZipFile, OSError): raise Fail("arcade set: %s is not a zip file or a folder of ROM files" % p)
-            for n in z.namelist(): files.setdefault(os.path.basename(n).lower(), z.read(n))
-    roms = {}
+            for n in z.namelist():
+                k = os.path.basename(n).lower()
+                if k and k not in files: files[k] = z.read(n); zipno[k] = i
+    roms = {}; cand = {}
     for n, d in files.items():
         ext = n.rsplit(".", 1)[-1]
         if ext in GFXROMS and len(d) == 0x400000: roms.setdefault(ext, d)
-        elif ext[:2] in ("03", "04", "05", "06", "07", "08", "09", "10") and len(d) == 0x80000: roms.setdefault(ext[:2], d)
+        elif ext[:2] in PRG_EXTS and len(d) == 0x80000: roms.setdefault(ext[:2], d); cand.setdefault(ext[:2], []).append((zipno.get(n, 0), d))
+    pick = _pick_prg(cand, zname)                          # a known set, complete: its files (else the first per extension)
+    if pick: roms.update(pick)
     miss = [k for k in GFXROMS + ["03", "04", "05", "06", "07", "08", "09", "10"] if k not in roms]
     if miss: raise Fail("arcade set incomplete: no ROM with extension " + ", ".join("." + m for m in miss) +
-                        " (a clone zip needs its parent zip too)")
+                        " (a clone zip needs its parent zip too).  Supported: mvsc or any of its clones (mvscu, mvscj ...), merged or "
+                        "non-merged zip, or a split clone zip together with mvsc.zip")
     def sw(d):
         a = np.frombuffer(d, dtype=np.uint8); b = a.copy(); b[0::2] = a[1::2]; b[1::2] = a[0::2]; return b.tobytes()
     prg = b"".join(sw(roms[k]) for k in ("03", "04", "05", "06", "07", "08", "09", "10"))
@@ -532,6 +576,57 @@ def open_arcade(paths):
     return prg, G, desc
 
 
+def setup(paths, disc):
+    """-> (ctx, ps1, chtab, desc): what main() reads once (the web patcher's sub-workers keep it for their jobs)"""
+    prg, G, desc = open_arcade(paths)
+    ps1 = PS1Files(disc)
+    chtab = find_chtab(prg, ps1_firsts(ps1))
+    return aplib.Ctx(prg, G, None, chtab=chtab), ps1, chtab, desc
+
+
+def char_r8(ctx, ps1, ch, chtab, out, man, sheet_=False):
+    """one character: PLxx.R8 into out, its manifest entry into man["chars"]"""
+    try:
+        dspf, ap8, info = build(ctx, ps1, ch, chtab)
+        check(dspf, ap8, ps1, ch)
+        if not info["stats"].get("restored", 0):    # nothing restored: the stock sprite file exactly, no patches
+            m_, boff, nf0, nf, nr = struct.unpack_from("<4s4I", ap8)
+            dspf, ap8 = ps1.get("SP_PL%02X.DSP" % ch), b"MA81" + struct.pack("<4I", boff, nf0, nf0, 0)
+    except Fail as e:
+        print("%02X: not restored: %s" % (ch, e)); man["chars"]["%02X" % ch] = dict(error=str(e)); return
+    r8 = r8_file(ps1, ch, dspf, ap8, info["stats"].get("restored", 0))
+    c2, d2, a2, H = r8_parse(r8)
+    assert c2 == ch and d2 == dspf and a2 == ap8, "R8 round trip"
+    open(os.path.join(out, "PL%02X.R8" % ch), "wb").write(r8)
+    info["sha1"] = dict(r8=hashlib.sha1(r8).hexdigest())
+    info["r8"] = len(r8)
+    man["chars"]["%02X" % ch] = info
+    print("%02X: %d/%d anims paired, %d records: %s; new frames %d, new tiles %d, file %d -> %d, R8 %d, skipped %s" % (
+        ch, info["matched"], info["anims"], info["records"], info["stats"], info["new_frames"], info["new_tiles"],
+        info["stock_dsp"], info["dsp"], len(r8), info["skipped"]), flush=True)
+    if sheet_: sheet(ctx, dspf, ap8, os.path.join(out, "new_%02X.png" % ch))
+
+
+def assist_r8(ctx, ps1, x, chtab, out, man):
+    """one special partner: DAxx.R8 into out, its entry into man["assists"] (every assist gets a record: stock frame
+    table, undoes the 2 MB --ascut cuts on 8 MB; restored frames where any)"""
+    try:
+        dspf, ap8, info = build(ctx, ps1, x, chtab, assist=True)
+        if not info["stats"].get("restored", 0): raise Fail("nothing restored")
+    except Fail as e:                                # (no arcade match: stock sprite file + table, no patches)
+        A0, D0 = ps1.da(x); pb = Blob(A0, bytes([4, 0]))
+        dspf, ap8 = D0, b"MA81" + struct.pack("<4I", pb.B, pb.nframes(), pb.nframes(), 0)
+        info = dict(stats={}, new_frames=0, note=str(e))
+    r8 = r8_file(ps1, x, dspf, ap8, info["stats"].get("restored", 0), assist=True)
+    c2, d2, a2, H = r8_parse(r8)
+    assert c2 == ASSIST | x and d2 == dspf and a2 == ap8, "R8 round trip"
+    open(os.path.join(out, "DA%02X.R8" % x), "wb").write(r8)
+    man["assists"]["%02X" % x] = dict(restored=info["stats"].get("restored", 0), new_frames=info["new_frames"],
+                                      r8=len(r8), sha1=hashlib.sha1(r8).hexdigest(), note=info.get("note", ""))
+    print("assist %02X: restored %d records, new frames %d, R8 %d %s" % (x, info["stats"].get("restored", 0),
+          info["new_frames"], len(r8), info.get("note", "")), flush=True)
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--arcade", nargs="+", required=True)
@@ -547,43 +642,9 @@ def main(argv):
     chars = [int(c, 16) for c in a.chars.split(",")] if a.chars else list(range(1, 0x17))
     os.makedirs(a.out, exist_ok=True)
     man = dict(arcade=desc, chtab=chtab, chars={})
-    for ch in chars:
-        try:
-            dspf, ap8, info = build(ctx, ps1, ch, chtab)
-            check(dspf, ap8, ps1, ch)
-            if not info["stats"].get("restored", 0):    # nothing restored: the stock sprite file exactly, no patches
-                m_, boff, nf0, nf, nr = struct.unpack_from("<4s4I", ap8)
-                dspf, ap8 = ps1.get("SP_PL%02X.DSP" % ch), b"MA81" + struct.pack("<4I", boff, nf0, nf0, 0)
-        except Fail as e:
-            print("%02X: not restored: %s" % (ch, e)); man["chars"]["%02X" % ch] = dict(error=str(e)); continue
-        r8 = r8_file(ps1, ch, dspf, ap8, info["stats"].get("restored", 0))
-        c2, d2, a2, H = r8_parse(r8)
-        assert c2 == ch and d2 == dspf and a2 == ap8, "R8 round trip"
-        open(os.path.join(a.out, "PL%02X.R8" % ch), "wb").write(r8)
-        info["sha1"] = dict(r8=hashlib.sha1(r8).hexdigest())
-        info["r8"] = len(r8)
-        man["chars"]["%02X" % ch] = info
-        print("%02X: %d/%d anims paired, %d records: %s; new frames %d, new tiles %d, file %d -> %d, R8 %d, skipped %s" % (
-            ch, info["matched"], info["anims"], info["records"], info["stats"], info["new_frames"], info["new_tiles"],
-            info["stock_dsp"], info["dsp"], len(r8), info["skipped"]), flush=True)
-        if a.sheet: sheet(ctx, dspf, ap8, os.path.join(a.out, "new_%02X.png" % ch))
+    for ch in chars: char_r8(ctx, ps1, ch, chtab, a.out, man, a.sheet)
     man["assists"] = {}
-    for x in range(0x16):                            # special partners: every assist gets a record (stock frame table:
-        try:                                         # undoes the 2 MB --ascut cuts on 8 MB), restored frames where any
-            dspf, ap8, info = build(ctx, ps1, x, chtab, assist=True)
-            if not info["stats"].get("restored", 0): raise Fail("nothing restored")
-        except Fail as e:                            # (no arcade match: stock sprite file + table, no patches)
-            A0, D0 = ps1.da(x); pb = Blob(A0, bytes([4, 0]))
-            dspf, ap8 = D0, b"MA81" + struct.pack("<4I", pb.B, pb.nframes(), pb.nframes(), 0)
-            info = dict(stats={}, new_frames=0, note=str(e))
-        r8 = r8_file(ps1, x, dspf, ap8, info["stats"].get("restored", 0), assist=True)
-        c2, d2, a2, H = r8_parse(r8)
-        assert c2 == ASSIST | x and d2 == dspf and a2 == ap8, "R8 round trip"
-        open(os.path.join(a.out, "DA%02X.R8" % x), "wb").write(r8)
-        man["assists"]["%02X" % x] = dict(restored=info["stats"].get("restored", 0), new_frames=info["new_frames"],
-                                          r8=len(r8), sha1=hashlib.sha1(r8).hexdigest(), note=info.get("note", ""))
-        print("assist %02X: restored %d records, new frames %d, R8 %d %s" % (x, info["stats"].get("restored", 0),
-              info["new_frames"], len(r8), info.get("note", "")), flush=True)
+    for x in range(0x16): assist_r8(ctx, ps1, x, chtab, a.out, man)
     json.dump(man, open(os.path.join(a.out, "manifest.json"), "w"), indent=1)
 
 

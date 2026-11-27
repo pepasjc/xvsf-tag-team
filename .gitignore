@@ -5,6 +5,10 @@
 # our own card artwork layer (MSHvSF), and its copy in the builder's frozen tool tree
 !games/mshvsf/tools/logo/mshcard2.bin
 !builder/data/mshvsf/tools/games/mshvsf/tools/logo/mshcard2.bin
+# MvC: its card layer and the frozen tool tree's copies of our tools/logo layers (the MvC builder copies them)
+!games/mvc/tools/logo/mvccard2b.bin
+!builder/data/mvc/tools/games/mvc/tools/logo/mvccard2b.bin
+!builder/data/mvc/tools/tools/logo/*.bin
 *.cue
 *.chd
 *.iso

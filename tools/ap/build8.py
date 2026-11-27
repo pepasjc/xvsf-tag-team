@@ -7,7 +7,7 @@ writes, per character, the restored sprite file SP_PLxx.NSP and the animation pa
 plus manifest.json.  Everything in OUTDIR is derived from the two inputs and must not be redistributed.
 The tool itself contains no data from either: tables are located by structure, ROMs are recognised by SHA-1.
 """
-import sys, os, json, zipfile, hashlib, struct, argparse
+import sys, os, re, json, zipfile, hashlib, struct, argparse
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 
@@ -29,28 +29,51 @@ class Fail(Exception):
     pass
 
 
+SUPPORTED = ("xmvsf or xmvsfu (merged or non-merged zip), or xmvsfu1d + xmvsf.zip; Japan / Asia / Brazil / Hispanic sets "
+             "and older revisions are not supported")
+
+
 def read_arcade(paths):
-    files = {}
-    for p in paths:
+    """-> (set name, program bytes, roms).  (2026-11-27) every .03 / .04 program ROM of every zip is a candidate, so a
+    MERGED zip (the parent with all its clones inside) works: the supported pair is chosen by (1) the zip it comes
+    from (the first zip given wins: SET.zip before PARENT.zip), (2) a set named like that zip (command line), (3) the
+    order of SETS (xmvsf, xmvsfu, xmvsfu1d)."""
+    files = {}; zipno = {}; zname = {}
+    for i, p in enumerate(paths):
+        zname[i] = re.sub(r"^set\d+_", "", os.path.splitext(os.path.basename(p))[0].lower())    # (the web page: setN_<name>.zip)
         if os.path.isdir(p):
-            for n in os.listdir(p): files.setdefault(n.lower(), open(os.path.join(p, n), "rb").read())
+            for n in sorted(os.listdir(p)):
+                if n.lower() not in files: files[n.lower()] = open(os.path.join(p, n), "rb").read(); zipno[n.lower()] = i
         else:
             try: z = zipfile.ZipFile(p)
             except (zipfile.BadZipFile, OSError): raise Fail("arcade set: %s is not a zip file or a folder of ROM files" % p)
-            for n in z.namelist(): files.setdefault(os.path.basename(n).lower(), z.read(n))
-    roms = {}
+            for n in z.namelist():
+                k = os.path.basename(n).lower()
+                if k and k not in files: files[k] = z.read(n); zipno[k] = i
+    roms = {}; cand = {"03": [], "04": []}
     for n, d in files.items():
         ext = n.rsplit(".", 1)[-1]
         if ext in SHARED: roms[ext] = d
-        elif ext[:2] in ("03", "04") and len(d) == 0x80000: roms.setdefault(ext[:2], d)      # first zip given wins: SET.zip before PARENT.zip
-    miss = [k for k in list(SHARED) + ["03", "04"] if k not in roms]
-    if miss: raise Fail("arcade set incomplete: no ROM with extension " + ", ".join("." + m for m in miss) + " (a clone zip needs its parent zip too)")
+        elif ext[:2] in ("03", "04") and len(d) == 0x80000: cand[ext[:2]].append((zipno[n], d))
+    miss = [k for k in SHARED if k not in roms] + [k for k in ("03", "04") if not cand[k]]
+    if miss: raise Fail("arcade set incomplete: no ROM with extension " + ", ".join("." + m for m in miss) +
+                        " (a clone zip needs its parent zip too).  Supported: " + SUPPORTED)
     badh = [k for k, h in SHARED.items() if hashlib.sha1(roms[k]).hexdigest() != h]
-    if badh: raise Fail("unknown arcade set: ROM(s) %s differ from the supported revision (xvs.05a/06a, 961004 or later graphics)" % ", ".join(badh))
-    key = (hashlib.sha1(roms["03"]).hexdigest(), hashlib.sha1(roms["04"]).hexdigest())
-    if key not in SETS:
-        raise Fail("unknown arcade set: program ROMs .03/.04 are not one of the supported sets:\n  " + "\n  ".join(SETS.values()) +
-                   "\n(sha1 .03 %s, .04 %s)" % key)
+    if badh: raise Fail("unknown arcade set: ROM(s) %s differ from the supported revision.  Supported: %s" % (", ".join(badh), SUPPORTED))
+    z0 = min(z for k in ("03", "04") for z, d in cand[k])       # the set = the first zip with program ROMs (a clone zip
+    cand = {k: [c for c in v if c[0] == z0] for k, v in cand.items()}   # + its parent: the clone's, never the parent's)
+    order = list(SETS)
+    best = None
+    for z3, d3 in cand["03"]:
+        h3 = hashlib.sha1(d3).hexdigest()
+        for z4, d4 in cand["04"]:
+            key = (h3, hashlib.sha1(d4).hexdigest())
+            if key not in SETS: continue
+            z = max(z3, z4); named = SETS[key].split()[0] == zname.get(z)
+            rank = (z, not named, order.index(key))
+            if best is None or rank < best[0]: best = (rank, key, d3, d4)
+    if best is None: raise Fail("unknown arcade set: its program ROMs (.03 / .04) are not a supported set.  Supported: " + SUPPORTED)
+    key = best[1]; roms["03"], roms["04"] = best[2], best[3]
 
     def sw(d):
         a = np.frombuffer(d, dtype=np.uint8); b = a.copy(); b[0::2] = a[1::2]; b[1::2] = a[0::2]; return b.tobytes()

@@ -15,7 +15,9 @@ const { loadPyodide } = require(path.join(process.env.PYODIDE_DIR, "pyodide.js")
   const t0 = Date.now();
   const py = await loadPyodide({ indexURL: process.env.PYODIDE_DIR });
   await py.loadPackage("numpy");
-  py.unpackArchive(new Uint8Array(fs.readFileSync(path.join(__dirname, "..", "xvsf_bundle.zip"))), "zip", { extractDir: "/xvsf" });
+  const GATE = require("./gate_hooks.cjs");          // release gate: XVSF_BUNDLE (the page's own bundle), PROBE_MISSING
+  py.unpackArchive(new Uint8Array(fs.readFileSync(GATE.bundlePath(__dirname))), "zip", { extractDir: "/xvsf" });
+  GATE.install(py);
   const mounts = {};
   files.forEach((f, i) => {
     const m = "/in" + i; py.FS.mkdir(m); py.FS.mount(py.FS.filesystems.NODEFS, { root: path.dirname(f) }, m);

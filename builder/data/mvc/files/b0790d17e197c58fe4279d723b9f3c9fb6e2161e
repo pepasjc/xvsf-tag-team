@@ -1,0 +1,2136 @@
+{
+ "00": {
+  "code": 4520,
+  "words": 1130,
+  "reloc_bytes": 196,
+  "counts": {
+   "words": 1130,
+   "PTR": 24,
+   "J26": 35,
+   "HI": 12,
+   "LO": 11,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 80,
+  "dsp_off": 4540,
+  "dsp_size": 24012,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 88,
+  "uniq": 88,
+  "groups": 39,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 24012,
+    "sec0": 22752,
+    "sec1": 800,
+    "sec2": 440,
+    "sec3": 0,
+    "pix": 22772,
+    "tab": 1240
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 20804,
+    "sec0": 19544,
+    "sec1": 800,
+    "sec2": 440,
+    "sec3": 0,
+    "pix": 19564,
+    "tab": 1240
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 14720,
+    "sec0": 13460,
+    "sec1": 800,
+    "sec2": 440,
+    "sec3": 0,
+    "pix": 13480,
+    "tab": 1240
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 23832,
+    "sec0": 22572,
+    "sec1": 800,
+    "sec2": 440,
+    "sec3": 0,
+    "pix": 22592,
+    "tab": 1240
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 54.8,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 22572,
+   "model": 12807,
+   "streams": 88,
+   "max_stream": 426,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3028,
+   "empty_tables": 0
+  }
+ },
+ "01": {
+  "code": 1672,
+  "words": 418,
+  "reloc_bytes": 70,
+  "counts": {
+   "words": 418,
+   "PTR": 6,
+   "J26": 7,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 81,
+  "dsp_off": 1692,
+  "dsp_size": 33212,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 186,
+  "uniq": 185,
+  "groups": 9,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 33212,
+    "sec0": 30512,
+    "sec1": 1748,
+    "sec2": 932,
+    "sec3": 0,
+    "pix": 30532,
+    "tab": 2680
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 25992,
+    "sec0": 23292,
+    "sec1": 1748,
+    "sec2": 932,
+    "sec3": 0,
+    "pix": 23312,
+    "tab": 2680
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 17700,
+    "sec0": 15000,
+    "sec1": 1748,
+    "sec2": 932,
+    "sec3": 0,
+    "pix": 15020,
+    "tab": 2680
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 29012,
+    "sec0": 26312,
+    "sec1": 1748,
+    "sec2": 932,
+    "sec3": 0,
+    "pix": 26332,
+    "tab": 2680
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 44.3,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 26312,
+   "model": 13006,
+   "streams": 186,
+   "max_stream": 1764,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3020,
+   "empty_tables": 0
+  }
+ },
+ "02": {
+  "code": 1972,
+  "words": 493,
+  "reloc_bytes": 70,
+  "counts": {
+   "words": 493,
+   "PTR": 7,
+   "J26": 6,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 82,
+  "dsp_off": 1992,
+  "dsp_size": 40344,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 199,
+  "uniq": 198,
+  "groups": 37,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 40344,
+    "sec0": 32172,
+    "sec1": 7156,
+    "sec2": 996,
+    "sec3": 0,
+    "pix": 32192,
+    "tab": 8152
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 33360,
+    "sec0": 25188,
+    "sec1": 7156,
+    "sec2": 996,
+    "sec3": 0,
+    "pix": 25208,
+    "tab": 8152
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 25652,
+    "sec0": 17480,
+    "sec1": 7156,
+    "sec2": 996,
+    "sec3": 0,
+    "pix": 17500,
+    "tab": 8152
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 36312,
+    "sec0": 28140,
+    "sec1": 7156,
+    "sec2": 996,
+    "sec3": 0,
+    "pix": 28160,
+    "tab": 8152
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 53.4,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 28140,
+   "model": 13207,
+   "streams": 199,
+   "max_stream": 873,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 2952,
+   "empty_tables": 0
+  }
+ },
+ "03": {
+  "code": 1592,
+  "words": 398,
+  "reloc_bytes": 70,
+  "counts": {
+   "words": 398,
+   "PTR": 6,
+   "J26": 7,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 83,
+  "dsp_off": 1612,
+  "dsp_size": 15616,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 44,
+  "uniq": 44,
+  "groups": 4,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 15616,
+    "sec0": 15020,
+    "sec1": 356,
+    "sec2": 220,
+    "sec3": 0,
+    "pix": 15040,
+    "tab": 576
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 15756,
+    "sec0": 15160,
+    "sec1": 356,
+    "sec2": 220,
+    "sec3": 0,
+    "pix": 15180,
+    "tab": 576
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 8500,
+    "sec0": 7904,
+    "sec1": 356,
+    "sec2": 220,
+    "sec3": 0,
+    "pix": 7924,
+    "tab": 576
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 18936,
+    "sec0": 18340,
+    "sec1": 356,
+    "sec2": 220,
+    "sec3": 0,
+    "pix": 18360,
+    "tab": 576
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 37.6,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 18340,
+   "model": 12623,
+   "streams": 44,
+   "max_stream": 1067,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3180,
+   "empty_tables": 1
+  }
+ },
+ "04": {
+  "code": 3592,
+  "words": 898,
+  "reloc_bytes": 180,
+  "counts": {
+   "words": 898,
+   "PTR": 20,
+   "J26": 21,
+   "HI": 15,
+   "LO": 15,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 84,
+  "dsp_off": 3612,
+  "dsp_size": 13296,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 40,
+  "uniq": 40,
+  "groups": 12,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 13296,
+    "sec0": 12644,
+    "sec1": 432,
+    "sec2": 200,
+    "sec3": 0,
+    "pix": 12664,
+    "tab": 632
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 14684,
+    "sec0": 14032,
+    "sec1": 432,
+    "sec2": 200,
+    "sec3": 0,
+    "pix": 14052,
+    "tab": 632
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 7928,
+    "sec0": 7276,
+    "sec1": 432,
+    "sec2": 200,
+    "sec3": 0,
+    "pix": 7296,
+    "tab": 632
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 17860,
+    "sec0": 17208,
+    "sec1": 432,
+    "sec2": 200,
+    "sec3": 0,
+    "pix": 17228,
+    "tab": 632
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 34.7,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 17208,
+   "model": 12485,
+   "streams": 40,
+   "max_stream": 588,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3176,
+   "empty_tables": 0
+  }
+ },
+ "05": {
+  "code": 2292,
+  "words": 573,
+  "reloc_bytes": 98,
+  "counts": {
+   "words": 573,
+   "PTR": 11,
+   "J26": 10,
+   "HI": 8,
+   "LO": 8,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 85,
+  "dsp_off": 2312,
+  "dsp_size": 6720,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 12,
+  "uniq": 12,
+  "groups": 2,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 6720,
+    "sec0": 6556,
+    "sec1": 84,
+    "sec2": 60,
+    "sec3": 0,
+    "pix": 6576,
+    "tab": 144
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 11196,
+    "sec0": 11032,
+    "sec1": 84,
+    "sec2": 60,
+    "sec3": 0,
+    "pix": 11052,
+    "tab": 144
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 4500,
+    "sec0": 4336,
+    "sec1": 84,
+    "sec2": 60,
+    "sec3": 0,
+    "pix": 4356,
+    "tab": 144
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 14516,
+    "sec0": 14352,
+    "sec1": 84,
+    "sec2": 60,
+    "sec3": 0,
+    "pix": 14372,
+    "tab": 144
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 30.8,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 14352,
+   "model": 12160,
+   "streams": 12,
+   "max_stream": 781,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3320,
+   "empty_tables": 3
+  }
+ },
+ "06": {
+  "code": 4784,
+  "words": 1196,
+  "reloc_bytes": 206,
+  "counts": {
+   "words": 1196,
+   "PTR": 25,
+   "J26": 35,
+   "HI": 13,
+   "LO": 13,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 86,
+  "dsp_off": 4804,
+  "dsp_size": 14172,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 69,
+  "uniq": 69,
+  "groups": 22,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 14172,
+    "sec0": 13136,
+    "sec1": 668,
+    "sec2": 348,
+    "sec3": 0,
+    "pix": 13156,
+    "tab": 1016
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 16220,
+    "sec0": 15184,
+    "sec1": 668,
+    "sec2": 348,
+    "sec3": 0,
+    "pix": 15204,
+    "tab": 1016
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 8968,
+    "sec0": 7932,
+    "sec1": 668,
+    "sec2": 348,
+    "sec3": 0,
+    "pix": 7952,
+    "tab": 1016
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 19324,
+    "sec0": 18288,
+    "sec1": 668,
+    "sec2": 348,
+    "sec3": 0,
+    "pix": 18308,
+    "tab": 1016
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 48.7,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 18288,
+   "model": 12787,
+   "streams": 69,
+   "max_stream": 720,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3104,
+   "empty_tables": 0
+  }
+ },
+ "07": {
+  "code": 2224,
+  "words": 556,
+  "reloc_bytes": 80,
+  "counts": {
+   "words": 556,
+   "PTR": 9,
+   "J26": 9,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 87,
+  "dsp_off": 2244,
+  "dsp_size": 21000,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 128,
+  "uniq": 128,
+  "groups": 18,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 21000,
+    "sec0": 18916,
+    "sec1": 1424,
+    "sec2": 640,
+    "sec3": 0,
+    "pix": 18936,
+    "tab": 2064
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 20252,
+    "sec0": 18168,
+    "sec1": 1424,
+    "sec2": 640,
+    "sec3": 0,
+    "pix": 18188,
+    "tab": 2064
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 12996,
+    "sec0": 10912,
+    "sec1": 1424,
+    "sec2": 640,
+    "sec3": 0,
+    "pix": 10932,
+    "tab": 2064
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 23352,
+    "sec0": 21268,
+    "sec1": 1424,
+    "sec2": 640,
+    "sec3": 0,
+    "pix": 21288,
+    "tab": 2064
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 52.1,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 21268,
+   "model": 12739,
+   "streams": 128,
+   "max_stream": 264,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3100,
+   "empty_tables": 0
+  }
+ },
+ "08": {
+  "code": 3272,
+  "words": 818,
+  "reloc_bytes": 124,
+  "counts": {
+   "words": 818,
+   "PTR": 13,
+   "J26": 15,
+   "HI": 10,
+   "LO": 10,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 88,
+  "dsp_off": 3292,
+  "dsp_size": 20744,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 92,
+  "uniq": 92,
+  "groups": 22,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 20744,
+    "sec0": 19148,
+    "sec1": 1116,
+    "sec2": 460,
+    "sec3": 0,
+    "pix": 19168,
+    "tab": 1576
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 19548,
+    "sec0": 17952,
+    "sec1": 1116,
+    "sec2": 460,
+    "sec3": 0,
+    "pix": 17972,
+    "tab": 1576
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 12848,
+    "sec0": 11252,
+    "sec1": 1116,
+    "sec2": 460,
+    "sec3": 0,
+    "pix": 11272,
+    "tab": 1576
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 22660,
+    "sec0": 21064,
+    "sec1": 1116,
+    "sec2": 460,
+    "sec3": 0,
+    "pix": 21084,
+    "tab": 1576
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 53.6,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 21064,
+   "model": 12593,
+   "streams": 92,
+   "max_stream": 597,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3112,
+   "empty_tables": 1
+  }
+ },
+ "09": {
+  "code": 4012,
+  "words": 1003,
+  "reloc_bytes": 166,
+  "counts": {
+   "words": 1003,
+   "PTR": 19,
+   "J26": 27,
+   "HI": 11,
+   "LO": 11,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 89,
+  "dsp_off": 4032,
+  "dsp_size": 24948,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 135,
+  "uniq": 135,
+  "groups": 38,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 24948,
+    "sec0": 22260,
+    "sec1": 1992,
+    "sec2": 676,
+    "sec3": 0,
+    "pix": 22280,
+    "tab": 2668
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 21188,
+    "sec0": 18500,
+    "sec1": 1992,
+    "sec2": 676,
+    "sec3": 0,
+    "pix": 18520,
+    "tab": 2668
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 15280,
+    "sec0": 12592,
+    "sec1": 1992,
+    "sec2": 676,
+    "sec3": 0,
+    "pix": 12612,
+    "tab": 2668
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 24288,
+    "sec0": 21600,
+    "sec1": 1992,
+    "sec2": 676,
+    "sec3": 0,
+    "pix": 21620,
+    "tab": 2668
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 50.5,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 21600,
+   "model": 12661,
+   "streams": 135,
+   "max_stream": 340,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3100,
+   "empty_tables": 0
+  }
+ },
+ "0A": {
+  "code": 3372,
+  "words": 843,
+  "reloc_bytes": 154,
+  "counts": {
+   "words": 843,
+   "PTR": 16,
+   "J26": 21,
+   "HI": 12,
+   "LO": 12,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 90,
+  "dsp_off": 3392,
+  "dsp_size": 30796,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 151,
+  "uniq": 151,
+  "groups": 24,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 30796,
+    "sec0": 28080,
+    "sec1": 1940,
+    "sec2": 756,
+    "sec3": 0,
+    "pix": 28100,
+    "tab": 2696
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 23344,
+    "sec0": 20628,
+    "sec1": 1940,
+    "sec2": 756,
+    "sec3": 0,
+    "pix": 20648,
+    "tab": 2696
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 17292,
+    "sec0": 14576,
+    "sec1": 1940,
+    "sec2": 756,
+    "sec3": 0,
+    "pix": 14596,
+    "tab": 2696
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 26392,
+    "sec0": 23676,
+    "sec1": 1940,
+    "sec2": 756,
+    "sec3": 0,
+    "pix": 23696,
+    "tab": 2696
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 46.7,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 23676,
+   "model": 12764,
+   "streams": 151,
+   "max_stream": 532,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3048,
+   "empty_tables": 0
+  }
+ },
+ "0B": {
+  "code": 3820,
+  "words": 955,
+  "reloc_bytes": 126,
+  "counts": {
+   "words": 955,
+   "PTR": 11,
+   "J26": 18,
+   "HI": 10,
+   "LO": 10,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 91,
+  "dsp_off": 3840,
+  "dsp_size": 51012,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 239,
+  "uniq": 237,
+  "groups": 29,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 51012,
+    "sec0": 47176,
+    "sec1": 2620,
+    "sec2": 1196,
+    "sec3": 0,
+    "pix": 47196,
+    "tab": 3816
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 33580,
+    "sec0": 29744,
+    "sec1": 2620,
+    "sec2": 1196,
+    "sec3": 0,
+    "pix": 29764,
+    "tab": 3816
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 25812,
+    "sec0": 21976,
+    "sec1": 2620,
+    "sec2": 1196,
+    "sec3": 0,
+    "pix": 21996,
+    "tab": 3816
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 36544,
+    "sec0": 32708,
+    "sec1": 2620,
+    "sec2": 1196,
+    "sec3": 0,
+    "pix": 32728,
+    "tab": 3816
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 57.5,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 32708,
+   "model": 13117,
+   "streams": 238,
+   "max_stream": 866,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 2964,
+   "empty_tables": 0
+  }
+ },
+ "0C": {
+  "code": 3592,
+  "words": 898,
+  "reloc_bytes": 144,
+  "counts": {
+   "words": 898,
+   "PTR": 16,
+   "J26": 19,
+   "HI": 11,
+   "LO": 11,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 92,
+  "dsp_off": 3612,
+  "dsp_size": 30068,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 126,
+  "uniq": 125,
+  "groups": 22,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 30068,
+    "sec0": 28456,
+    "sec1": 960,
+    "sec2": 632,
+    "sec3": 0,
+    "pix": 28476,
+    "tab": 1592
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 25044,
+    "sec0": 23432,
+    "sec1": 960,
+    "sec2": 632,
+    "sec3": 0,
+    "pix": 23452,
+    "tab": 1592
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 18196,
+    "sec0": 16584,
+    "sec1": 960,
+    "sec2": 632,
+    "sec3": 0,
+    "pix": 16604,
+    "tab": 1592
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 28056,
+    "sec0": 26444,
+    "sec1": 960,
+    "sec2": 632,
+    "sec3": 0,
+    "pix": 26464,
+    "tab": 1592
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 60.4,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 26444,
+   "model": 12988,
+   "streams": 126,
+   "max_stream": 927,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3012,
+   "empty_tables": 0
+  }
+ },
+ "0D": {
+  "code": 1876,
+  "words": 469,
+  "reloc_bytes": 84,
+  "counts": {
+   "words": 469,
+   "PTR": 8,
+   "J26": 12,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 93,
+  "dsp_off": 1896,
+  "dsp_size": 13688,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 58,
+  "uniq": 58,
+  "groups": 8,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 13688,
+    "sec0": 12960,
+    "sec1": 416,
+    "sec2": 292,
+    "sec3": 0,
+    "pix": 12980,
+    "tab": 708
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 15344,
+    "sec0": 14616,
+    "sec1": 416,
+    "sec2": 292,
+    "sec3": 0,
+    "pix": 14636,
+    "tab": 708
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 8332,
+    "sec0": 7604,
+    "sec1": 416,
+    "sec2": 292,
+    "sec3": 0,
+    "pix": 7624,
+    "tab": 708
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 18532,
+    "sec0": 17804,
+    "sec1": 416,
+    "sec2": 292,
+    "sec3": 0,
+    "pix": 17824,
+    "tab": 708
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 49.5,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 17804,
+   "model": 12539,
+   "streams": 58,
+   "max_stream": 487,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3188,
+   "empty_tables": 0
+  }
+ },
+ "0E": {
+  "code": 3868,
+  "words": 967,
+  "reloc_bytes": 184,
+  "counts": {
+   "words": 967,
+   "PTR": 26,
+   "J26": 17,
+   "HI": 15,
+   "LO": 15,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 94,
+  "dsp_off": 3888,
+  "dsp_size": 26280,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 80,
+  "uniq": 80,
+  "groups": 41,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 26280,
+    "sec0": 24736,
+    "sec1": 1124,
+    "sec2": 400,
+    "sec3": 0,
+    "pix": 24756,
+    "tab": 1524
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 22424,
+    "sec0": 20880,
+    "sec1": 1124,
+    "sec2": 400,
+    "sec3": 0,
+    "pix": 20900,
+    "tab": 1524
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 16208,
+    "sec0": 14664,
+    "sec1": 1124,
+    "sec2": 400,
+    "sec3": 0,
+    "pix": 14684,
+    "tab": 1524
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 25440,
+    "sec0": 23896,
+    "sec1": 1124,
+    "sec2": 400,
+    "sec3": 0,
+    "pix": 23916,
+    "tab": 1524
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 65.6,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 23896,
+   "model": 12937,
+   "streams": 80,
+   "max_stream": 926,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3016,
+   "empty_tables": 0
+  }
+ },
+ "0F": {
+  "code": 6124,
+  "words": 1531,
+  "reloc_bytes": 258,
+  "counts": {
+   "words": 1531,
+   "PTR": 36,
+   "J26": 32,
+   "HI": 19,
+   "LO": 19,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 95,
+  "dsp_off": 6144,
+  "dsp_size": 37556,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 238,
+  "uniq": 236,
+  "groups": 78,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 37556,
+    "sec0": 32816,
+    "sec1": 3528,
+    "sec2": 1192,
+    "sec3": 0,
+    "pix": 32836,
+    "tab": 4720
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 27612,
+    "sec0": 22872,
+    "sec1": 3528,
+    "sec2": 1192,
+    "sec3": 0,
+    "pix": 22892,
+    "tab": 4720
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 22176,
+    "sec0": 17436,
+    "sec1": 3528,
+    "sec2": 1192,
+    "sec3": 0,
+    "pix": 17456,
+    "tab": 4720
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 30632,
+    "sec0": 25892,
+    "sec1": 3528,
+    "sec2": 1192,
+    "sec3": 0,
+    "pix": 25912,
+    "tab": 4720
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 68.9,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 25892,
+   "model": 12956,
+   "streams": 237,
+   "max_stream": 505,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3020,
+   "empty_tables": 0
+  }
+ },
+ "10": {
+  "code": 2556,
+  "words": 639,
+  "reloc_bytes": 80,
+  "counts": {
+   "words": 639,
+   "PTR": 9,
+   "J26": 9,
+   "HI": 6,
+   "LO": 6,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 96,
+  "dsp_off": 2576,
+  "dsp_size": 24884,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 114,
+  "uniq": 114,
+  "groups": 18,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 24884,
+    "sec0": 21568,
+    "sec1": 2724,
+    "sec2": 572,
+    "sec3": 0,
+    "pix": 21588,
+    "tab": 3296
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 22652,
+    "sec0": 19336,
+    "sec1": 2724,
+    "sec2": 572,
+    "sec3": 0,
+    "pix": 19356,
+    "tab": 3296
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 15216,
+    "sec0": 11900,
+    "sec1": 2724,
+    "sec2": 572,
+    "sec3": 0,
+    "pix": 11920,
+    "tab": 3296
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 25700,
+    "sec0": 22384,
+    "sec1": 2724,
+    "sec2": 572,
+    "sec3": 0,
+    "pix": 22404,
+    "tab": 3296
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 55.3,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 22384,
+   "model": 12975,
+   "streams": 114,
+   "max_stream": 774,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3048,
+   "empty_tables": 0
+  }
+ },
+ "11": {
+  "code": 3892,
+  "words": 973,
+  "reloc_bytes": 142,
+  "counts": {
+   "words": 973,
+   "PTR": 17,
+   "J26": 17,
+   "HI": 11,
+   "LO": 11,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 97,
+  "dsp_off": 3912,
+  "dsp_size": 35420,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 137,
+  "uniq": 133,
+  "groups": 44,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 35420,
+    "sec0": 33452,
+    "sec1": 1260,
+    "sec2": 688,
+    "sec3": 0,
+    "pix": 33472,
+    "tab": 1948
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 23388,
+    "sec0": 21420,
+    "sec1": 1260,
+    "sec2": 688,
+    "sec3": 0,
+    "pix": 21440,
+    "tab": 1948
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 17976,
+    "sec0": 16008,
+    "sec1": 1260,
+    "sec2": 688,
+    "sec3": 0,
+    "pix": 16028,
+    "tab": 1948
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 26412,
+    "sec0": 24444,
+    "sec1": 1260,
+    "sec2": 688,
+    "sec3": 0,
+    "pix": 24464,
+    "tab": 1948
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 61.6,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 24444,
+   "model": 12915,
+   "streams": 136,
+   "max_stream": 970,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3024,
+   "empty_tables": 0
+  }
+ },
+ "12": {
+  "code": 3896,
+  "words": 974,
+  "reloc_bytes": 132,
+  "counts": {
+   "words": 974,
+   "PTR": 11,
+   "J26": 18,
+   "HI": 11,
+   "LO": 11,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 98,
+  "dsp_off": 3916,
+  "dsp_size": 36528,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 144,
+  "uniq": 144,
+  "groups": 48,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 36528,
+    "sec0": 24508,
+    "sec1": 11280,
+    "sec2": 720,
+    "sec3": 0,
+    "pix": 24528,
+    "tab": 12000
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 33092,
+    "sec0": 21072,
+    "sec1": 11280,
+    "sec2": 720,
+    "sec3": 0,
+    "pix": 21092,
+    "tab": 12000
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 26956,
+    "sec0": 14936,
+    "sec1": 11280,
+    "sec2": 720,
+    "sec3": 0,
+    "pix": 14956,
+    "tab": 12000
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 36112,
+    "sec0": 24092,
+    "sec1": 11280,
+    "sec2": 720,
+    "sec3": 0,
+    "pix": 24112,
+    "tab": 12000
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 59.2,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 24092,
+   "model": 12975,
+   "streams": 144,
+   "max_stream": 583,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3020,
+   "empty_tables": 0
+  }
+ },
+ "13": {
+  "code": 5536,
+  "words": 1384,
+  "reloc_bytes": 252,
+  "counts": {
+   "words": 1384,
+   "PTR": 36,
+   "J26": 32,
+   "HI": 18,
+   "LO": 18,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 99,
+  "dsp_off": 5556,
+  "dsp_size": 23620,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 104,
+  "uniq": 104,
+  "groups": 36,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 23620,
+    "sec0": 21812,
+    "sec1": 1268,
+    "sec2": 520,
+    "sec3": 0,
+    "pix": 21832,
+    "tab": 1788
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 20180,
+    "sec0": 18372,
+    "sec1": 1268,
+    "sec2": 520,
+    "sec3": 0,
+    "pix": 18392,
+    "tab": 1788
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 13408,
+    "sec0": 11600,
+    "sec1": 1268,
+    "sec2": 520,
+    "sec3": 0,
+    "pix": 11620,
+    "tab": 1788
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 23264,
+    "sec0": 21456,
+    "sec1": 1268,
+    "sec2": 520,
+    "sec3": 0,
+    "pix": 21476,
+    "tab": 1788
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 49.9,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 21456,
+   "model": 12764,
+   "streams": 104,
+   "max_stream": 564,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 3084,
+   "empty_tables": 0
+  }
+ },
+ "14": {
+  "code": 20488,
+  "words": 5122,
+  "reloc_bytes": 248,
+  "counts": {
+   "words": 5122,
+   "PTR": 30,
+   "J26": 33,
+   "HI": 19,
+   "LO": 19,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 100,
+  "dsp_off": 20508,
+  "dsp_size": 45872,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 167,
+  "uniq": 167,
+  "groups": 28,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 45872,
+    "sec0": 43420,
+    "sec1": 1596,
+    "sec2": 836,
+    "sec3": 0,
+    "pix": 43440,
+    "tab": 2432
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 30972,
+    "sec0": 28520,
+    "sec1": 1596,
+    "sec2": 836,
+    "sec3": 0,
+    "pix": 28540,
+    "tab": 2432
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 24280,
+    "sec0": 21828,
+    "sec1": 1596,
+    "sec2": 836,
+    "sec3": 0,
+    "pix": 21848,
+    "tab": 2432
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 33864,
+    "sec0": 31412,
+    "sec1": 1596,
+    "sec2": 836,
+    "sec3": 0,
+    "pix": 31432,
+    "tab": 2432
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 64.3,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 31412,
+   "model": 13272,
+   "streams": 167,
+   "max_stream": 671,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 2892,
+   "empty_tables": 0
+  }
+ },
+ "15": {
+  "code": 9032,
+  "words": 2258,
+  "reloc_bytes": 150,
+  "counts": {
+   "words": 2258,
+   "PTR": 14,
+   "J26": 13,
+   "HI": 15,
+   "LO": 14,
+   "noise": 0,
+   "unpaired": 0,
+   "dead_lui": 0,
+   "forbidden": 0
+  },
+  "forbidden": [],
+  "init_off": 4,
+  "id_word": 101,
+  "dsp_off": 9052,
+  "dsp_size": 38212,
+  "reloc_exact_11_to_21": true,
+  "reloc_model_ok": true,
+  "ext_targets": 0,
+  "tiles": 118,
+  "uniq": 118,
+  "groups": 8,
+  "tiers": {
+   "rle": {
+    "kind": 8,
+    "file": 38212,
+    "sec0": 36212,
+    "sec1": 1388,
+    "sec2": 592,
+    "sec3": 0,
+    "pix": 36232,
+    "tab": 1980
+   },
+   "dsh": {
+    "kind": 8,
+    "file": 26392,
+    "sec0": 24392,
+    "sec1": 1388,
+    "sec2": 592,
+    "sec3": 0,
+    "pix": 24412,
+    "tab": 1980
+   },
+   "dsr": {
+    "kind": 8,
+    "file": 20120,
+    "sec0": 18120,
+    "sec1": 1388,
+    "sec2": 592,
+    "sec3": 0,
+    "pix": 18140,
+    "tab": 1980
+   },
+   "dsx": {
+    "kind": 8,
+    "file": 29364,
+    "sec0": 27364,
+    "sec1": 1388,
+    "sec2": 592,
+    "sec3": 0,
+    "pix": 27384,
+    "tab": 1980
+   }
+  },
+  "py_bad": {
+   "dsh": 0,
+   "dsr": 0
+  },
+  "mips_bad": {
+   "rle": 0,
+   "dsh": 0,
+   "dsr": 0,
+   "dsx": 0
+  },
+  "dsh_params": [
+   128,
+   192
+  ],
+  "secs": 52.4,
+  "dsx_part": {
+   "magic_ok": true,
+   "dsx_flag": true,
+   "part": 27364,
+   "model": 12977,
+   "streams": 118,
+   "max_stream": 1537,
+   "all_tiles_in_part": true,
+   "tail_after_part": 0,
+   "ok": true,
+   "delta": 2972,
+   "empty_tables": 0
+  }
+ }
+}

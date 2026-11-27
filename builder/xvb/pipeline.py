@@ -579,7 +579,9 @@ def stage_disc8(T, name, apdir, flags):
     _achfix_env(flags)
     T.mod("iso"); T.mod("mknspdisc"); M = T.mod("mktagdisc"); M8 = T.mod("mkap8disc")
     T.prebake_all()
-    snd8 = ["--snd8=" + apdir + "_snd8"] if os.path.isdir(apdir + "_snd8") else []
+    if not os.path.isdir(apdir + "_snd8"):                                           # (stage_ap8 always makes it: no silent 8 MB build without the arcade samples)
+        raise BuildError("the arcade sound samples (%s_snd8) are missing: run the arcade content stage first" % os.path.basename(apdir), code="toolchain")
+    snd8 = ["--snd8=" + apdir + "_snd8"]
     if "--ex" in flags:                                                              # 1.4 (mkap8disc --hot8=; not a flag: no path in the flags)
         M8.HOT8 = os.path.join(T.tools, "ap8", ARCADE_HOT8)
         if not os.path.exists(M8.HOT8):                                              # mkap8disc would silently use no order -> another image

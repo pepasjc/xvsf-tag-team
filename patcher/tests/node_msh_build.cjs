@@ -18,7 +18,9 @@ const { loadPyodide } = require(path.join(process.env.PYODIDE_DIR, "pyodide.js")
   const lap = (k, t) => { T[k] = ((Date.now() - t) / 1000); console.log("  %s %ss", k, T[k].toFixed(1)); };
   const py = await loadPyodide({ indexURL: process.env.PYODIDE_DIR });
   await py.loadPackage("numpy");
-  py.unpackArchive(new Uint8Array(fs.readFileSync(path.join(__dirname, "..", "xvsf_bundle.zip"))), "zip", { extractDir: "/xvsf" });
+  const GATE = require("./gate_hooks.cjs");          // release gate: XVSF_BUNDLE (the page's own bundle), PROBE_MISSING
+  py.unpackArchive(new Uint8Array(fs.readFileSync(GATE.bundlePath(__dirname))), "zip", { extractDir: "/xvsf" });
+  GATE.install(py);
   const mounts = {};
   files.forEach((f, i) => { const m = "/in" + i; py.FS.mkdir(m); py.FS.mount(py.FS.filesystems.NODEFS, { root: path.dirname(f) }, m); mounts[f] = m + "/" + path.basename(f); });
   py.runPython("import sys; sys.path.insert(0, '/xvsf/builder')");
@@ -33,6 +35,7 @@ const { loadPyodide } = require(path.join(process.env.PYODIDE_DIR, "pyodide.js")
   if (idn.status !== "ok") process.exit(1);
   if (!flags.length) flags = JSON.parse(mweb.tool_flags(true, "off"));
   if (arcade.length) { const r = JSON.parse(mweb.check_arcade(JSON.stringify(arcade))); console.log("arcade:", r.status, r.message); }
+  if (arcade.length) await py.loadPackage("scipy");      // as the page's worker (buildMsh): the arcade voices' limiter uses scipy.ndimage
   const log = (line) => { if (process.env.VERBOSE) console.log("   " + line); };
   t = Date.now(); mweb.prepare(disc); lap("prepare", t);
   t = Date.now();

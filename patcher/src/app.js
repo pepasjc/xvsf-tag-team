@@ -92,7 +92,8 @@ function startWorker() {
   worker.onmessage = (ev) => onWorker(ev.data);
   worker.onerror = (ev) => fatal(t("fatal.worker", ev.message || "unknown error"));
   const bundle = b64bytes($("bundle").textContent).buffer;
-  worker.postMessage({ type: "init", pyodide: new URL(CFG.pyodide, location.href).href, bundle, zopfli: JSON.parse($("zopfli").textContent) }, [bundle]);
+  const qp = new URLSearchParams(location.search), pool = { py: +qp.get("pyw") || 0, js: +qp.get("jsw") || 0 };   // (tests: forced pool sizes)
+  worker.postMessage({ type: "init", pyodide: new URL(CFG.pyodide, location.href).href, bundle, zopfli: JSON.parse($("zopfli").textContent), pool }, [bundle]);
 }
 
 function fatal(msg) {

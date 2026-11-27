@@ -199,7 +199,7 @@ def derive_one(e, pool):
     e = _unref(e, lambda name, off, n: pool.get("disc:" + name)[off:off + n])
     k = e["kind"]
     if k == "disc": return pool.get("disc:" + e["name"])
-    if k == "data": return _file(e["blob"])
+    if k == "data": return _file(e["blob"], pool)
     if k == "fx": return fxhalf.build(pool.get(e["src"]), e["flagged"])
     if k == "pair":
         A, j = pairs.build(pool.get(e["b_a0"]), pool.get(e["u_a0"]), e["b"], e["u"])
@@ -213,10 +213,22 @@ def derive_one(e, pool):
     raise BuildError("derive: unknown kind %s" % k, code="toolchain")
 
 
-def _file(sha):
-    b = open(os.path.join(FILES, sha), "rb").read()
+def _file(sha, pool=None):
+    p = os.path.join(FILES, sha)
+    if not os.path.exists(p) and os.path.exists(p + ".bref"):      # (2026-11-26) words of the game: references to the user's disc
+        from xvb import gameref
+        segs = json.load(open(p + ".bref"))
+        b = gameref.resolve(segs, lambda name, off, n: pool.get("disc:" + name)[off:off + n])
+        if hashlib.sha1(b).hexdigest() != sha: raise BuildError("builder/data/mvc/files/%s.bref does not resolve (disc?)" % sha, code="toolchain")
+        return b
+    b = open(p, "rb").read()
     if hashlib.sha1(b).hexdigest() != sha: raise BuildError("builder/data/mvc/files/%s is damaged" % sha, code="toolchain")
     return b
+
+
+def derive_key(root, sha1):
+    return (hashlib.sha1(sha1.encode() + open(os.path.join(DATA, "derived.json"), "rb").read()).hexdigest(),
+            gdir(root, "work", "derive.stamp"))
 
 
 def stage_derive(root, entries, progress=None, log=print, check=True):
@@ -363,12 +375,16 @@ class Harness:
         return ov
 
 
+PURGE_KEEP = set()                                   # (2026-11-27) module names _purge keeps (the browser: tools/snd with its
+                                                     # JavaScript kernels installed, mvcb/web.py)
+
+
 def _purge(root):
     """forget modules imported from an earlier tool root / the repository (the same module names)"""
     r = os.path.normcase(os.path.abspath(root))
     for n, m in list(sys.modules.items()):
         f = getattr(m, "__file__", None) or ""
-        if n.split(".")[0] in ("xvb", "mshb", "mvcb"): continue
+        if n.split(".")[0] in ("xvb", "mshb", "mvcb") or n in PURGE_KEEP: continue
         if n == "__main__" or not f: continue
         fn = os.path.normcase(os.path.abspath(f))
         if (fn.startswith(os.path.normcase(REPO) + os.sep) and not fn.startswith(os.path.normcase(BUILDER) + os.sep)) or fn.startswith(r + os.sep):
@@ -379,20 +395,30 @@ FRAMES_TOOLS = ["games/mvc/tools/ap/build8.py", "games/mvc/tools/ap/keep8.json",
                 "tools/ap/aplib.py", "tools/nsp.py", "tools/iso.py", "common/dsp/dsp.py"]   # build8.py's closure (--frames8)
 
 
-def frames_files(H, root, arcade, log=print):
-    """--frames8 (8 MB arcade frames): games/mvc/tools/ap/build8.py IN-PROCESS on the user's arcade set + disc (the tool runs it
-    as a subprocess keyed by file times); cached in <root>/work/fr8/cache_<content key>.  -> {char: PLxx.R8 bytes, 0x100 + x: DAxx.R8}
-    (same reading and checks as tools/ap8/mkap8.py r8_files)"""
-    import hashlib, runpy
+TOOL_HOOKS = []                                      # f(tool name, module) after the tool module is loaded, before main()
+
+
+def frames_dir(root, image, arcade):
+    """the arcade frames' cache directory: keyed by build8.py's closure, the arcade set, the disc (the web patcher fills
+    it from its sub-workers before the build)"""
+    import hashlib
     h = hashlib.sha1()
     for rel in FRAMES_TOOLS: h.update(open(rp(root, rel), "rb").read())
     for f in arcade:
         with open(f, "rb") as fh:
             for b in iter(lambda: fh.read(1 << 22), b""): h.update(b)
     stamp = gdir(root, "work", "extract.stamp")
-    h.update(open(stamp).read().encode() if os.path.exists(stamp) else open(H.image, "rb").read(1 << 20))
+    h.update(open(stamp).read().encode() if os.path.exists(stamp) else open(image, "rb").read(1 << 20))
     h.update(os.environ.get("FR8_STOCKCH", "").encode() + os.environ.get("FR8_KMIN", "").encode())
-    out = gdir(root, "work", "fr8", "cache_" + h.hexdigest()[:16]); man = os.path.join(out, "manifest.json")
+    return gdir(root, "work", "fr8", "cache_" + h.hexdigest()[:16])
+
+
+def frames_files(H, root, arcade, log=print):
+    """--frames8 (8 MB arcade frames): games/mvc/tools/ap/build8.py IN-PROCESS on the user's arcade set + disc (the tool runs it
+    as a subprocess keyed by file times); cached in <root>/work/fr8/cache_<content key>.  -> {char: PLxx.R8 bytes, 0x100 + x: DAxx.R8}
+    (same reading and checks as tools/ap8/mkap8.py r8_files)"""
+    import hashlib, runpy
+    out = frames_dir(root, H.image, arcade); man = os.path.join(out, "manifest.json")
     if not os.path.exists(man):
         log("arcade frames: build8 (in process) -> %s" % out)
         tmp = out + ".tmp"; shutil.rmtree(tmp, ignore_errors=True); os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -441,6 +467,7 @@ def stage_disc(H, cfg, root, arcade=()):
             m = importlib.util.module_from_spec(spec)
             sys.modules[cfg["tool"]] = m
             spec.loader.exec_module(m)
+            for hook in TOOL_HOOKS: hook(cfg["tool"], m)          # (2026-11-26) the browser's speed patches (mvcb/web.py)
             if cfg["tool"] == "mkap8" and "--frames8" in argv and hasattr(m, "r8_files"):
                 m.r8_files = lambda arc: frames_files(H, root, arc, H.log if hasattr(H, "log") else print)
             m.main(argv)
@@ -518,10 +545,10 @@ def run(disc, work, variant="2mb", arcade=(), root=None, name=None, progress=Non
         else:
             lmap = extract(disc, root); log("extracted %d files" % len(lmap)); open(stamp, "w").write(idn["sha1"])
         if not record: log("tool sources: %d filled from the disc" % fill_root(root))
+    if until == "extract": return info                    # (browser: derive in steps, the sound sub-workers meanwhile)
     with stage("derive"):
         ents = _j("derived.json")
-        key = hashlib.sha1(idn["sha1"].encode() + open(os.path.join(DATA, "derived.json"), "rb").read()).hexdigest()
-        stamp = gdir(root, "work", "derive.stamp")
+        key, stamp = derive_key(root, idn["sha1"])
         if os.path.exists(stamp) and open(stamp).read() == key: log("derive: files are current")
         else:
             stage_derive(root, ents, lambda f, t="": P_("derive", f, t), log); open(stamp, "w").write(key)
