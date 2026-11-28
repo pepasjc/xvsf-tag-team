@@ -102,6 +102,7 @@ def build_blob8():
     import re
     nt = int(re.search(r"(?m)^#define NT (\d+)", open(os.path.join(TL, "tagload.c")).read()).group(1))
     cc(["-Os", "-ffreestanding", "-msoft-float", "-Wall", "-DNT=%d" % nt] + (["-DAFOPT=0x%xu" % (OPTB + 9)] if EXOPT else []) +
+       (["-DWORK2=0x80140000u"] if "--work2" in sys.argv else []) +       # GitHub #23: code copies in the 2 MB area
        ["-c", os.path.join(HERE, "ap8.c"), "-o", "ap8.o"])
     cc(gdef + ["-c", os.path.join(TL, "glue.S"), "-o", "glue.o"])
     mktag.sndbuild.objects(GCC, CF, OBJ)                       # tools/snd/snd.c (full sound banks, v10)
@@ -292,7 +293,7 @@ def main(argv):
     # --sn8full (1.1 8 MB, user): arcade voices to the arcade sample's own end, not cut to the PS1 span
     sn8 = None if "--nosn8" in argv else sn8build.all_files(None if "--sn8stock" in argv else (arc or snarc or None),
                                                             full="--sn8full" in argv)
-    args = [a for a in args if a not in ("--nosn8", "--sn8stock", "--sn8full")]
+    args = [a for a in args if a not in ("--nosn8", "--sn8stock", "--sn8full", "--work2")]
     with lock():
         geo = geometry(content, sn8)
         mktag.build_blob = build_blob8

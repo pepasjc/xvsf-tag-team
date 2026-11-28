@@ -102,11 +102,11 @@ With the default options (the web patcher's result):
 ```
 Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.1].bin    SHA1  0c782cd7f2addad8a13334de3ab76295eaac1c45
 Marvel Super Heroes vs. Street Fighter (USA) [Tag Hack 1.1 + Restored Frames].bin
-  with mshvsf (or mshvsfu + mshvsf)                                 SHA1  ae2f516685afd86972568c15c7bdeac6daa6fbfe
+  with mshvsf (or mshvsfu + mshvsf)                                 SHA1  586bf8b5976825dc2aba2b86f6dd98378d5c790d
 ```
 
-Command line: the 8 MB loader without an arcade set (`--ram8`, "[Tag Hack 1.1 8 MB]"; stock voices, streamed) `0d28aa3902a1e65f4c80b3173bb960474a70df29`.
-Without achievements (`--no-achievements`): 2 MB `faeea6e8c08c703a20b99c3d9126377e4c9ab90f`, `--ram8` `3df681f805e1158c05b5d69aeb8e75ce1be2a61a`.
+Command line: the 8 MB loader without an arcade set (`--ram8`, "[Tag Hack 1.1 8 MB]"; stock voices, streamed) `e944cd90a6f4ec05db02b29356448770498dd478`.
+Without achievements (`--no-achievements`): 2 MB `faeea6e8c08c703a20b99c3d9126377e4c9ab90f`, `--ram8` `fd9b5565854bd094151a83aea151c0f89aa412a8`.
 
 ## Compatibility
 

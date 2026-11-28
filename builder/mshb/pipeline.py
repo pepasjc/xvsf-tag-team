@@ -350,7 +350,8 @@ CONTEXT_FLAGS = ("--nospeed", "--noahead", "--meter", "--meteron", "--stockmeter
                  "--sndverify", "--pstall",      # 1.1 (absent before: the 1.0 keys are unchanged)
                  "--nori", "--infmeter", "--nosmrow", "--sn8full",    # 1.1 final (m11_f6 / mshvsf_ap8_f5)
                  "--excard",                                          # 1.1 final 2026-11-24: EX OPTIONS rows in the card save
-                 "--galfix")                                          # 2026-11-25 m11_gf1: a0mem.py GALFIX (read at import)
+                 "--galfix",                                          # 2026-11-25 m11_gf1: a0mem.py GALFIX (read at import)
+                 "--work2")                                           # GitHub #23: ap8.c -DWORK2 (8 MB blob only; new bake keys)
 FILE_BLOBS = {"dshdec.bin": ("work", "dsp", "dsh", "dshdec.bin")}     # the DSH1 decoder (common/dsp/dsh.py build mshvsf)
 
 
@@ -602,7 +603,9 @@ RELEASE_FLAGS = ["--meter"]                            # the meter is built (its
 RELEASE_11 = ["--mcfix", "--exopt", "--stageanim", "--l2g", "--cyswap", "--arcbal", "--vsmenu", "--nori", "--infmeter", "--nosmrow",
               "--excard", "--galfix"]   # (2026-11-25 --galfix: m11_gf1 / mshvsf_ap8_gf1) 1.1, 2 MB (--excard: EX OPTIONS rows saved with the game's memory card save, 2026-11-24)
 RELEASE8_TITLE = RELEASE_TITLE                          # 8 MB loader (--ram8 / --arcade): the 1.1 set without --l2g (2 MB only)
-RELEASE8 = [f for f in RELEASE_11 if f != "--l2g"] + ["--sn8full"]   # + voice streaming (arcade voices with an arcade set)
+RELEASE8 = [f for f in RELEASE_11 if f != "--l2g"] + ["--sn8full", "--work2"]   # + voice streaming (arcade voices with an arcade set)
+# --work2 (GitHub #23, mshvsf_ap8_i23e): a code slot keeps one character per boot, others run from the 2 MB area (emulators
+# with a block cache missed the upper-RAM rewrites).  The blob grows 1120 B; dual.py takes its window from the link symbols.
 
 
 def tool_flags(logo=True, meter="off", extra=(), achievements=True, ap8=False):

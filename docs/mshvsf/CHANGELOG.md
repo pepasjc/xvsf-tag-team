@@ -33,6 +33,8 @@ on 1.0. The 8 MB images get every 1.1 feature plus enhanced voices.
     forward and back mixed arcade and PlayStation frames); ARCADE FRAMES is no longer an option (always on with
     8 MB);
   - fixed: losing to the final boss, continuing and picking a team again hung on the loading screen (8 MB only).
+- 8 MB: fixed a freeze when loading the next fight in emulators using a recompiler (SwanStation/DuckStation),
+  GitHub #23.
 
 ## 1.0 (2026)
 

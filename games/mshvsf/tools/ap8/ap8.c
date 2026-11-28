@@ -85,9 +85,26 @@ typedef void (*init_t)(int delta, u32 base0);
 /* ---- upper RAM layout.  The cache slot geometry comes from tl8_dir (mkap8.py sizes it for the files on the disc and
  * checks every file against it); the defaults are the stock-file geometry. ---- */
 #define UP        0x80200000u
-#define WORK      (UP + 0x1000u)
 #define WA        0x1c000u                      /* header + sec1 + sec2 of the biggest A0 is 0x19dc4, + frame-id table */
-#define CACHE     (WORK + 4 * WA)
+#define CACHE     (UP + 0x1000u + 4 * WA)
+#define WORK      (UP + 0x1000u)
+#ifdef WORK2
+/* (GitHub #23, mkap8 --work2) Emulators that cache recompiled blocks (SwanStation / DuckStation Recompiler and
+ * CachedInterpreter) do not see writes above 2 MB as code changes: a character copied into an upper-RAM WORK slot that
+ * ran ANOTHER character's code earlier in the boot executed the old blocks (its init registered the old character ->
+ * NULL routine in the game's table 0x80078d70 -> CPU exception at the next battle).  Real hardware flushes its I-cache.
+ * So a WORK slot keeps one character per boot: the slot's owner (UPOWN, upper RAM, wiped with the cache header at the
+ * first battle of a boot) is reused as before; any other character goes to a slot in the 2 MB character area (W2),
+ * where the emulators see the writes.  Upper slots stay first choice because the post-boss scene is loaded by the stock
+ * loader into the 2 MB character area while the human team's code still runs (ARCADE keeps the human team in upper
+ * RAM from its first battle).  The game does not write 0x800bc000-0x80200000 between a battle load and the battle's
+ * end in 8 MB mode (work/regress/msh8/map10.py); the W2 slots avoid KANJI_AT (0x800c0000-0x800e8000), SND_SCRATCH
+ * (0x80100000) and, for the human side (even slots), what Ryu's post-boss scene writes (0x80144000-0x8018e000,
+ * 0x801cd000-0x801fa000; map11.py / hang13.py). */
+#define UPOWN     ((u32 *)(UP + 0x800u))        /* char + 1 last copied to upper WORK slot s this boot (0 = never) */
+static const u32 W2[4] = { 0x8018e000u, 0x80144000u, 0x801aa000u, 0x80160000u };
+_Static_assert(0x8018e000u + 2 * WA <= 0x801cd000u && 0x80144000u + 2 * WA <= 0x8018e000u, "W2 slots overlap");
+#endif
 #define C_A0      0u                            /* cap 0x32000: A0 + table (max 202672 B) */
 #define NCSMAX    16
 #define KANJI_AT  0x800c0000u                   /* char 0's KANJI.TEX: the 2 MB character area is free in this mode */
@@ -125,6 +142,9 @@ struct chdr {
     struct cslot s[NCSMAX];
 };
 #define H ((struct chdr *)UP)
+#ifdef WORK2
+_Static_assert(sizeof(struct chdr) <= 0x800, "cache header overlaps UPOWN");
+#endif
 
 static int filechar(int c)
 {
@@ -402,6 +422,9 @@ static int load8(signed char *list)
     int first = !tl_dbg[12] || H->magic != MAGIC;
     if (!tl_dbg[12] || H->magic != MAGIC || NCS > NCSMAX) {     /* first battle of this boot, or no header: empty cache */
         for (k = 0; k < NCSMAX; k++) H->s[k].c = 0;
+#ifdef WORK2
+        for (k = 0; k < 4; k++) UPOWN[k] = 0;
+#endif
         H->tick = 0;
         H->magic = MAGIC;
         tl_dbg[12] = 1;
@@ -433,7 +456,12 @@ static int load8(signed char *list)
         if (c < 0) continue;
         h = &tl_dir.c[filechar(c)];
         C = (u8 *)H->s[slot[s]].base;
+#ifdef WORK2
+        if (!UPOWN[s] || UPOWN[s] == (u32)c + 1) { UPOWN[s] = (u32)c + 1; p = place(WORK + s * WA, h); }
+        else p = place(W2[s], h);
+#else
         p = place(WORK + s * WA, h);
+#endif
         F = (u8 *)(p - 0x1c);
         hdr = (u32 *)(C + C_A0);                                /* u32 3, (off, size) x 3 */
         wcopy((u32 *)F, (u32 *)(C + C_A0), hdr[3] + hdr[4]);

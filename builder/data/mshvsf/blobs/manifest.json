@@ -31,6 +31,39 @@
    "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
    "size": 1336
   },
+  "0044ef6b9eb9aa9955451ff4221065ace4b4b5fd": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
+  },
   "01c5d33157443284dd40d1dc7151a33f026ac342": {
    "args": {
     "__tuple__": [
@@ -1251,6 +1284,204 @@
    "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
    "size": 2652
   },
+  "08ff95071068c52d35fc9de9eb041f5527602851": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        968
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148048476
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043184
+       ],
+       [
+        "dsize",
+        2148043244
+       ],
+       [
+        "upload",
+        2148043504
+       ],
+       [
+        "snd_reset",
+        2148044128
+       ],
+       [
+        "snd_plan",
+        2148044496
+       ],
+       [
+        "snd_stash",
+        2148045596
+       ],
+       [
+        "snd_load",
+        2148045644
+       ],
+       [
+        "snd8_on",
+        2148046024
+       ],
+       [
+        "wsum",
+        2148046072
+       ],
+       [
+        "fits",
+        2148046124
+       ],
+       [
+        "fill",
+        2148046276
+       ],
+       [
+        "ap8_main",
+        2148048540
+       ],
+       [
+        "order.0",
+        2148051632
+       ],
+       [
+        "W2",
+        2148051636
+       ],
+       [
+        "pst",
+        2148051652
+       ],
+       [
+        "snd_dbg",
+        2148051656
+       ],
+       [
+        "snd_pst",
+        2148051664
+       ],
+       [
+        "stash",
+        2148051668
+       ],
+       [
+        "at",
+        2148051684
+       ],
+       [
+        "full",
+        2148051700
+       ],
+       [
+        "lvl",
+        2148051704
+       ],
+       [
+        "pw",
+        2148051708
+       ],
+       [
+        "snd_dir",
+        2148051712
+       ],
+       [
+        "tl8_dir",
+        2148062300
+       ],
+       [
+        "tl8_snd",
+        2148062696
+       ],
+       [
+        "tl_dir",
+        2148063880
+       ],
+       [
+        "blob_end",
+        2148066832
+       ],
+       [
+        "tl_strong",
+        2148066832
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "e3e8b859b7b4c13fafc5dfa369cf633aec1e68a5.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "17d64e46008a87cbe73fa8fc32373caadeba955f",
+   "size": 2074
+  },
   "093e3fad488259679de336d6a5abde3793ea97ea": {
    "args": {
     "__tuple__": [
@@ -1653,6 +1884,152 @@
    },
    "resolved": "8d1bf4b498ebb99e55f4154a64f7bd41a66aa8f0",
    "size": 2080
+  },
+  "0a52507e12906a0fb2305498669814524d9ca284": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520628
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "3249795c91a793988a3a2252a63e9e2105fa4bcd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e692ea39f143ed9878431dbee54e991ce81b0ded",
+   "size": 3063
   },
   "0aff17d7a59002c54300bb2bebe9ce5e9aae2bf2": {
    "args": {
@@ -3079,6 +3456,205 @@
    "resolved": "92e5ee79feb585b404c93512cc5be2d637e292ce",
    "size": 24
   },
+  "16bc210800f7648ac4bc31c52847757eea10c067": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        968
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148048476
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043184
+       ],
+       [
+        "dsize",
+        2148043244
+       ],
+       [
+        "upload",
+        2148043504
+       ],
+       [
+        "snd_reset",
+        2148044128
+       ],
+       [
+        "snd_plan",
+        2148044496
+       ],
+       [
+        "snd_stash",
+        2148045596
+       ],
+       [
+        "snd_load",
+        2148045644
+       ],
+       [
+        "snd8_on",
+        2148046024
+       ],
+       [
+        "wsum",
+        2148046072
+       ],
+       [
+        "fits",
+        2148046124
+       ],
+       [
+        "fill",
+        2148046276
+       ],
+       [
+        "ap8_main",
+        2148048540
+       ],
+       [
+        "order.0",
+        2148051632
+       ],
+       [
+        "W2",
+        2148051636
+       ],
+       [
+        "pst",
+        2148051652
+       ],
+       [
+        "snd_dbg",
+        2148051656
+       ],
+       [
+        "snd_pst",
+        2148051664
+       ],
+       [
+        "stash",
+        2148051668
+       ],
+       [
+        "at",
+        2148051684
+       ],
+       [
+        "full",
+        2148051700
+       ],
+       [
+        "lvl",
+        2148051704
+       ],
+       [
+        "pw",
+        2148051708
+       ],
+       [
+        "snd_dir",
+        2148051712
+       ],
+       [
+        "tl8_dir",
+        2148062300
+       ],
+       [
+        "tl8_snd",
+        2148062696
+       ],
+       [
+        "tl_dir",
+        2148063880
+       ],
+       [
+        "blob_end",
+        2148066832
+       ],
+       [
+        "tl_strong",
+        2148066832
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "e3e8b859b7b4c13fafc5dfa369cf633aec1e68a5.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "17d64e46008a87cbe73fa8fc32373caadeba955f",
+   "size": 2074
+  },
   "1726a4ce4c84e44c0064842c7f10b3f712da7968": {
    "args": {
     "__tuple__": [
@@ -3240,6 +3816,203 @@
    },
    "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
    "size": 948
+  },
+  "180da727f0a3d5455dc8828e8e1c27e7d15f7e4a": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "PAD",
+        968
+       ],
+       [
+        "heapcap",
+        2147552760
+       ],
+       [
+        "heapcap_end",
+        2147552804
+       ],
+       [
+        "glue",
+        2147562880
+       ],
+       [
+        "flushcache",
+        2147563156
+       ],
+       [
+        "blobent",
+        2147563208
+       ],
+       [
+        "tl_dbg",
+        2147563216
+       ],
+       [
+        "glue_end",
+        2147563232
+       ],
+       [
+        "place.isra.0",
+        2148048476
+       ],
+       [
+        "total",
+        2148040280
+       ],
+       [
+        "tl_main",
+        2148040604
+       ],
+       [
+        "fchar",
+        2148043184
+       ],
+       [
+        "dsize",
+        2148043244
+       ],
+       [
+        "upload",
+        2148043504
+       ],
+       [
+        "snd_reset",
+        2148044128
+       ],
+       [
+        "snd_plan",
+        2148044496
+       ],
+       [
+        "snd_stash",
+        2148045596
+       ],
+       [
+        "snd_load",
+        2148045644
+       ],
+       [
+        "snd8_on",
+        2148046024
+       ],
+       [
+        "wsum",
+        2148046072
+       ],
+       [
+        "fits",
+        2148046124
+       ],
+       [
+        "fill",
+        2148046276
+       ],
+       [
+        "ap8_main",
+        2148048540
+       ],
+       [
+        "order.0",
+        2148051632
+       ],
+       [
+        "W2",
+        2148051636
+       ],
+       [
+        "pst",
+        2148051652
+       ],
+       [
+        "snd_dbg",
+        2148051656
+       ],
+       [
+        "snd_pst",
+        2148051664
+       ],
+       [
+        "stash",
+        2148051668
+       ],
+       [
+        "at",
+        2148051684
+       ],
+       [
+        "full",
+        2148051700
+       ],
+       [
+        "lvl",
+        2148051704
+       ],
+       [
+        "pw",
+        2148051708
+       ],
+       [
+        "snd_dir",
+        2148051712
+       ],
+       [
+        "tl8_dir",
+        2148062300
+       ],
+       [
+        "tl8_snd",
+        2148062696
+       ],
+       [
+        "tl_dir",
+        2148063880
+       ],
+       [
+        "blob_end",
+        2148066832
+       ],
+       [
+        "tl_strong",
+        2148066832
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "e3e8b859b7b4c13fafc5dfa369cf633aec1e68a5.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "meter.parts",
+   "kwargs": {
+    "__dict__": [
+     [
+      "on",
+      false
+     ]
+    ]
+   },
+   "resolved": "17d64e46008a87cbe73fa8fc32373caadeba955f",
+   "size": 2074
   },
   "18984f83f71130a39d77527fbcc9db648736cabc": {
    "args": {
@@ -4965,6 +5738,39 @@
    "resolved": "92e5ee79feb585b404c93512cc5be2d637e292ce",
    "size": 24
   },
+  "1eae80b53811491eb7d59732241d6cfa1a63930f": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "60a5702ad0b630fef765459436d2a4fbc4918283.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7c0248244c112a9d641666684c9e8053523f6dae",
+   "size": 1087
+  },
   "1f1d763a19c5b8b954842cdce3c402f263aad446": {
    "args": {
     "__tuple__": []
@@ -5051,6 +5857,37 @@
    "resolved": "8e26a0eb2cff4b2221357f1ec3496b47234e9cdd",
    "size": 590
   },
+  "20250e7f0870c81be2ae38533dc256eef6f44a0f": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
   "212142e5197c10d9a7d9da6aa135996304c19d66": {
    "args": {
     "__tuple__": [
@@ -5118,6 +5955,149 @@
    },
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
+  },
+  "22128a3dce3630346111ca2db0fcc0cb09c16b76": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520628
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "006fae9cd662cd284a52302182ea14cbb1e41da8.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e69dbf83ffd8fbe5bf7a50339461db36f458e8b2",
+   "size": 2704
   },
   "22482a24b0209bb1d7b8a4d1396726bec202958c": {
    "args": {
@@ -5579,6 +6559,150 @@
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
   },
+  "23d60d71d8fa325d27ba96871d75aa63b5e7abc9": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "3249795c91a793988a3a2252a63e9e2105fa4bcd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e692ea39f143ed9878431dbee54e991ce81b0ded",
+   "size": 3063
+  },
   "23fc13cfde9de29d8338e9ad73fb5505656e23eb": {
    "args": {
     "__tuple__": [
@@ -5672,6 +6796,38 @@
    },
    "resolved": "a67043a12bcd9e0f45508f9452fc5ab864a3023e",
    "size": 88
+  },
+  "25c5041472f337cefa37b6e1c6a6e5ea60322aa6": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1a9bcf22ee88756abc9994c192219d6d26b67d4a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "cyswap.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "8e26a0eb2cff4b2221357f1ec3496b47234e9cdd",
+   "size": 590
   },
   "25c95db883d65c15a90a7a7f7bff4e01897963e1": {
    "args": {
@@ -6905,6 +8061,38 @@
    },
    "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
    "size": 2652
+  },
+  "2b261bd5b14590f00c6ab43c8d87c5635dc57164": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
   },
   "2b7371741bd6d4165c06a6e6e46b38a0ec0f146b": {
    "args": {
@@ -8311,6 +9499,38 @@
    "resolved": "825430d1081503d905974ef3c4e8a522e336b492",
    "size": 2820
   },
+  "34016cba7477a2b1365b3c3cb4e86cec4e5397b3": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
   "34523877604c2ace8886166eca5c9911ec8073d5": {
    "args": {
     "__tuple__": [
@@ -8489,6 +9709,88 @@
    },
    "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
    "size": 4028
+  },
+  "355c3398166be695e62252b931cae0a789836ef7": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
   },
   "3583cb575eae36b8de207e309d1a3231dc76f997": {
    "args": {
@@ -8731,6 +10033,59 @@
    },
    "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
    "size": 20423
+  },
+  "382ba7478bb9f7bdc23f3438f7d0747a6ce87dfb": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "cfg_sha1",
+        "9b38d355cbcc75a1b71b6a3f62b801265e8dda76"
+       ]
+      ]
+     },
+     {
+      "__dict__": [
+       [
+        "MT_VSCPU",
+        1
+       ],
+       [
+        "MT_VSMENU",
+        1
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "9afeeb4a879104a32bf035eec2a1ed88c16e65f8.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mtpatch.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
+   "size": 6273
   },
   "3830352d4fe44ccc00758014c126265f8150f0d0": {
    "args": {
@@ -9427,6 +10782,145 @@
    },
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
+  },
+  "3bde12f4615fe43cd78b132f0c9ac34fb3c703c6": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "006fae9cd662cd284a52302182ea14cbb1e41da8.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e69dbf83ffd8fbe5bf7a50339461db36f458e8b2",
+   "size": 2704
   },
   "3c12c9b51e24ddf5b50fa15ef94ebaf230bbd2eb": {
    "args": {
@@ -10430,6 +11924,39 @@
    "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
    "size": 1000
   },
+  "41bd37201e49a08dd8bf618bee210ab033f6967e": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
   "41d909a05a5ddf86deb7b8752f3bbd67124487bb": {
    "args": {
     "__tuple__": [
@@ -10516,6 +12043,39 @@
    },
    "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
    "size": 20423
+  },
+  "42d26be3c649cd1241af34de5173e99260322947": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "46d1a9054c9c2b044f89b172a65bc7fb8ed0fc2f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_s8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7e8bfff0b01d36f7b4fbb8f43187d911258ccb93",
+   "size": 13525
   },
   "42d663f4b4746dc4c84e5c2931e49b92354daf60": {
    "args": {
@@ -11050,6 +12610,87 @@
    },
    "resolved": "b0a0812f3fe522c91254585e0965b5c10b29710b",
    "size": 2074
+  },
+  "458cd9bb5c6b4ffb534568597270cd2cac0e9e8f": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
   },
   "45be0bb7cd740c1657737124eb85377544f450dd": {
    "args": {
@@ -12314,6 +13955,88 @@
    "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
    "size": 6273
   },
+  "4dcabe1fc396b76eb0183022e68934ac60489cd2": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
+  },
   "4df7cd5ccf353e4b411328e247db57b608197f7c": {
    "args": {
     "__tuple__": []
@@ -12524,6 +14247,87 @@
    },
    "resolved": "be64f20c7fda883b44671f3a00aaed0b463ed6f3",
    "size": 2704
+  },
+  "4f48ee77720cac8b4c07271337de6faa3c7075fb": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
   },
   "4f4bf3ccb596f0de0edd779ed33919a04d9536ac": {
    "args": {
@@ -12870,6 +14674,71 @@
    },
    "resolved": "c3772c4cb392ea83be8c4b4c1751d67e1a2626d5",
    "size": 590
+  },
+  "51811a471642b107343fe32fd1a49e74c999c0d1": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
+  "5191596e8994cc3569217987fac2e97f3e93b619": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "27ffa7f46948c1d253f148b73256259dfc08a62c.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "d760ffe5998799b400488bd7de73422de200999d",
+   "size": 56336
   },
   "5200deea930f4efca1cc707c77416235b8e340a6": {
    "args": {
@@ -13745,6 +15614,149 @@
    "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
    "size": 5229
   },
+  "5af8f866e25eae05ed11277fad566e376c062e11": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "07d9fddd0515d8d300c00a48732808808f5c5cb7.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "37b282813be0adc17a303372de9bd34524ed7449",
+   "size": 2901
+  },
   "5b189e1e30efc2f5b9281b6a8805a1fae86b8e60": {
    "args": {
     "__tuple__": []
@@ -14075,6 +16087,42 @@
    "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
    "size": 1372
   },
+  "5dbd7cf470f7b76d9a8b1e5a74ec5f782557e4ae": {
+   "args": {
+    "__tuple__": [
+     2147550944,
+     559640241
+    ]
+   },
+   "blob": "dad8ea4e98b23b0a667fdc25f9f8f2b6280c26ef.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "9d407ce5ecc68ef86ad7046c72474825b1382489",
+   "size": 102692
+  },
   "5dfe4009f3b454ac76047f4a68bc406e891ffbb4": {
    "args": {
     "__tuple__": [
@@ -14289,6 +16337,61 @@
    "resolved": "825430d1081503d905974ef3c4e8a522e336b492",
    "size": 2820
   },
+  "5f1e01c5eda4726ce2c564ea6053f072e270c80e": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "ef16f365fd2fddc6e84b4340d43fa525fd556eb4.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "87c0dc1b8ed323df42fd6eabc2d37ef859a7d8b2",
+   "size": 3593
+  },
   "5f2eaf3be54ac7e0ed82f99ae1c045369be3088a": {
    "args": {
     "__tuple__": []
@@ -14370,6 +16473,37 @@
    },
    "resolved": "825430d1081503d905974ef3c4e8a522e336b492",
    "size": 2820
+  },
+  "6014cb1e4c94d4cec44811cfc1cadad180321a19": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
   },
   "6052f129e8f317d4cbb13d81b244fd935ab0938c": {
    "args": {
@@ -15289,6 +17423,37 @@
    "resolved": "f760e5feee1855ab1f074333055ccc433c1037c7",
    "size": 505
   },
+  "66ea4252bdf0cd6bd4eb1487ebf682375f05d72d": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "46d1a9054c9c2b044f89b172a65bc7fb8ed0fc2f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_s8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7e8bfff0b01d36f7b4fbb8f43187d911258ccb93",
+   "size": 13525
+  },
   "672e3e021709e2292b7aa7bf92001f83ebc9ff6c": {
    "args": {
     "__tuple__": [
@@ -15765,6 +17930,37 @@
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
   },
+  "69203aeb06b1fccf7264ec7b02c2dc68eec543ca": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1326f29d3573db305b69fc3770732effd7cf4032.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "parse.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
+   "size": 1000
+  },
   "6aa08a09a479138fb7e2a387ce29cbb5c3d1c81c": {
    "args": {
     "__tuple__": [
@@ -15943,6 +18139,40 @@
    },
    "resolved": "80953fc48d36a0c285f51c7ac3cbd7b942e6ee08",
    "size": 2652
+  },
+  "6b7b9f05ef81fe61ff7a4f4cfb2ffadbd8f18810": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
   },
   "6be274db8ae20bb159a979a22a2ad271e856172f": {
    "args": {
@@ -16799,6 +19029,38 @@
    "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
    "size": 948
   },
+  "704d649217cb7b1a9d239056662289cfb9f96bee": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "27ffa7f46948c1d253f148b73256259dfc08a62c.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "d760ffe5998799b400488bd7de73422de200999d",
+   "size": 56336
+  },
   "706ef4c7be2f154c8b93ea83d343d4b11338a939": {
    "args": {
     "__tuple__": [
@@ -16926,6 +19188,86 @@
    },
    "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
    "size": 6273
+  },
+  "70e4ec258d461fe8bdfa5cc249397ba5ef0eacd1": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
   },
   "7148d55ce984ef37413d5b09d3901e8ddce5919e": {
    "args": {
@@ -17069,6 +19411,38 @@
    },
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
+  },
+  "715e08700c73ee2375662fe03577ebc118223b57": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
   },
   "71812d4221700902f87ae9893a36d7e725917a80": {
    "args": {
@@ -17347,6 +19721,151 @@
    },
    "resolved": "518359315e2a9784b369dcc03f288a0ae0b281ab",
    "size": 51708
+  },
+  "74938b7405cfe65a2fa1565c78218bf8d1ba95a5": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520592
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "07d9fddd0515d8d300c00a48732808808f5c5cb7.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "37b282813be0adc17a303372de9bd34524ed7449",
+   "size": 2901
   },
   "74b53cb082c80097b4805cff8338466db210b8fc": {
    "args": {
@@ -18628,6 +21147,37 @@
    "resolved": "b67a66a73941b71f7655cf256442e78206381c2d",
    "size": 1000
   },
+  "79c42b5dca5c51f5060ec4cbef6021c84c33dbe6": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
   "79feea2f8c26ad31df69c8280a1b11462bf209bc": {
    "args": {
     "__tuple__": [
@@ -19204,6 +21754,38 @@
    },
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
+  },
+  "7de52170db92e805b353c72603fda22da08dc929": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "46d1a9054c9c2b044f89b172a65bc7fb8ed0fc2f.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_s8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7e8bfff0b01d36f7b4fbb8f43187d911258ccb93",
+   "size": 13525
   },
   "7e197427b941d63bf117b501d45ae3cd27510abd": {
    "args": {
@@ -19897,6 +22479,87 @@
    "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
    "size": 6273
   },
+  "82f1240d1b93f2d2f433f397e9901d93c1e05e17": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
+  },
   "831c7a238370173f30ddd2ef2dabdf051da04b88": {
    "args": {
     "__tuple__": [
@@ -20099,6 +22762,95 @@
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
   },
+  "8343ca3630a81c9a672231257b120161fd806429": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "cfg_sha1",
+        "9b38d355cbcc75a1b71b6a3f62b801265e8dda76"
+       ]
+      ]
+     },
+     {
+      "__dict__": [
+       [
+        "MT_VSCPU",
+        1
+       ],
+       [
+        "MT_VSMENU",
+        1
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "9afeeb4a879104a32bf035eec2a1ed88c16e65f8.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mtpatch.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
+   "size": 6273
+  },
+  "83983288d9608c0b631ff6bcf94a0c2c5acef559": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
+  },
   "83b207b7637e4a6243aad8145578234845011c0b": {
    "args": {
     "__tuple__": [
@@ -20176,6 +22928,37 @@
    },
    "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
    "size": 20423
+  },
+  "84196d65f7a92563624f7c8780ca160eff1fde41": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
   },
   "8449e5714c04a7155810f289227d8662930bba16": {
    "args": {
@@ -20743,6 +23526,38 @@
    "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
    "size": 948
   },
+  "8a5008f5bedd4cbb3d0d52c3a758b8494507c3e5": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
   "8a92cc58a986a1abe8f293a7d736ea95859cbfca": {
    "args": {
     "__tuple__": [
@@ -21002,6 +23817,86 @@
    },
    "resolved": "080af5eb479222426bc9132bfc58157cf885f1f5",
    "size": 2901
+  },
+  "8ae92db6400912e6ed79c516b99113b4b4a3be68": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
   },
   "8b5eee015524bd4d454ab121ef7bbea5969d123d": {
    "args": {
@@ -23282,6 +26177,89 @@
    "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
    "size": 948
   },
+  "995a955a5227dd7fae2a68415b68590e986b9a0a": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
+  },
   "99782762b7b7a5be8453002989e42fcc5b344fba": {
    "args": {
     "__tuple__": [
@@ -23524,6 +26502,38 @@
    "resolved": "3d698596bbee17f94ba44e728852e21169063236",
    "size": 5581
   },
+  "9c3da39cec249ac993924ac097a55ebad8f39a58": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "60a5702ad0b630fef765459436d2a4fbc4918283.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7c0248244c112a9d641666684c9e8053523f6dae",
+   "size": 1087
+  },
   "9c99991b056bc8f05d9a566612792b5b0eba93ef": {
    "args": {
     "__tuple__": [
@@ -23691,6 +26701,39 @@
    "resolved": "ad7c7c6fa3641511796f6aa66a8c66f1ae4161bb",
    "size": 2377
   },
+  "9decdd0302c6664714014ec07ff4f9c5c9659eba": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1a9bcf22ee88756abc9994c192219d6d26b67d4a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "cyswap.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "8e26a0eb2cff4b2221357f1ec3496b47234e9cdd",
+   "size": 590
+  },
   "9e12cb1631def4528cf19af0ae2fa430cb59a7d8": {
    "args": {
     "__tuple__": [
@@ -23800,6 +26843,37 @@
    },
    "resolved": "a67043a12bcd9e0f45508f9452fc5ab864a3023e",
    "size": 88
+  },
+  "9f41ae14d67ddb2fd30daae38c2df35cf02c669d": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "60a5702ad0b630fef765459436d2a4fbc4918283.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "a0mem.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7c0248244c112a9d641666684c9e8053523f6dae",
+   "size": 1087
   },
   "9f9eda06d82a138d76102db9bad85f5891ff9af2": {
    "args": {
@@ -24292,6 +27366,62 @@
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
   },
+  "a347eddbbc1e0cbfb9667ae9063320be877a1355": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ],
+     2149520628
+    ]
+   },
+   "blob": "8d100ba26e50ee24aa5355a59ed57f3a1c2c52d0.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "afb88f53c34203c66ac5041330b996de64d667e5",
+   "size": 3588
+  },
   "a491145712493b1ffdd0f343ca1d0830fcd26007": {
    "args": {
     "__tuple__": [
@@ -24698,6 +27828,39 @@
    "resolved": "936054126fa93d9cd1d86e5449b8fc0fe4c7dfb1",
    "size": 3063
   },
+  "a574fa28e21a54b1beed04e2004b52e636d63be4": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "c468cfe0da6a6b3190e3bd22415fa4cf6ad4d765.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshskip.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
+   "size": 4028
+  },
   "a58350464d9b15ce12f511d85b5dcad77a85fe5b": {
    "args": {
     "__tuple__": []
@@ -25025,6 +28188,183 @@
    },
    "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
    "size": 1336
+  },
+  "a8de21d91004f1588e073b88d5cb39b0479950ef": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "3249795c91a793988a3a2252a63e9e2105fa4bcd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e692ea39f143ed9878431dbee54e991ce81b0ded",
+   "size": 3063
+  },
+  "a94f59de987951ae382c3324f216416c47cd1490": {
+   "args": {
+    "__tuple__": [
+     2148532224,
+     559640241
+    ]
+   },
+   "blob": "5229446528670342851da1aedc4a4359ca5a15aa.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshach.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "88bff59b96739329faa2d75f8b215bc6a9874cdc",
+   "size": 102692
   },
   "a98f46512e6ae7091ae0176c49a253e29b9937a6": {
    "args": {
@@ -25667,6 +29007,39 @@
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
   },
+  "acf6cb8b62074f316dd44a238b2d587ebf7acc42": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "e6a8b1be83f407a840a8d2609febce20b08f4065.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "sndbuild.hook",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
+   "size": 256
+  },
   "ad70044a0bda87ac2f2e375303369d70e90db4eb": {
    "args": {
     "__tuple__": [
@@ -26285,6 +29658,88 @@
    "resolved": "436ff13841f5827f4450d94db99b8d8db5fd854b",
    "size": 53866
   },
+  "b117e1e61312c790ecee662360022abebbec8edb": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
+  },
   "b170067ee43e6d24fe78dc5d6fdbcc4c4f0cca31": {
    "args": {
     "__tuple__": [
@@ -26397,6 +29852,38 @@
    },
    "resolved": "41092b2219c9f59f01e7de9bbfd3dee006aed030",
    "size": 3588
+  },
+  "b1e4e580fd65401347d2f19e9d2a48b24a930d9e": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "d170bfff0ed9a1a961e2f2010c3585e9a5925ace.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshcards.card2_stub",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
+   "size": 1372
   },
   "b20a2101e36567f03bf8bd438279752ffc8a672d": {
    "args": {
@@ -27088,6 +30575,64 @@
    "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
    "size": 4028
   },
+  "b5ee851fbcd625cea0a2932309a07265939fb7ad": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ],
+     2149520628
+    ]
+   },
+   "blob": "8d100ba26e50ee24aa5355a59ed57f3a1c2c52d0.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "afb88f53c34203c66ac5041330b996de64d667e5",
+   "size": 3588
+  },
   "b5fb175f95583bde2e2cb7d92ba9a473c8ff8bca": {
    "args": {
     "__tuple__": []
@@ -27198,6 +30743,58 @@
     "__dict__": []
    },
    "resolved": "59a0d39d56e23a7d5dc85737f58be3f6aba69975",
+   "size": 3593
+  },
+  "b724067db3b61b0d31aee489b2f50f00f015179a": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "ef16f365fd2fddc6e84b4340d43fa525fd556eb4.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "87c0dc1b8ed323df42fd6eabc2d37ef859a7d8b2",
    "size": 3593
   },
   "b7de0681edfc474377bff0c51886e6ea2fc05726": {
@@ -27328,6 +30925,96 @@
    "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
    "size": 6273
   },
+  "b867a25fb00e38d0e6fa87cd68aee237a0a22cb7": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
+  "b8d2a4291491debf5a67d11d9aa51910fe135d9e": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "ef16f365fd2fddc6e84b4340d43fa525fd556eb4.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "87c0dc1b8ed323df42fd6eabc2d37ef859a7d8b2",
+   "size": 3593
+  },
   "b8e48aa64019d0ac68ce8c9abd03d9f430bf1780": {
    "args": {
     "__tuple__": []
@@ -27354,6 +31041,153 @@
    },
    "resolved": "98a7346dc1faf6aa9414b0c544fd6ddc72994bf9",
    "size": 49389
+  },
+  "ba2d17ec1fc72b5e27c5b7ca8163bb5769440b77": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520592
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "07d9fddd0515d8d300c00a48732808808f5c5cb7.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "37b282813be0adc17a303372de9bd34524ed7449",
+   "size": 2901
   },
   "ba62b42de911405b308cdeb2f8653f258a1b4749": {
    "args": {
@@ -27387,6 +31221,89 @@
    "resolved": "e6a8b1be83f407a840a8d2609febce20b08f4065",
    "size": 256
   },
+  "ba67cdaf2a396d8dd088f94ff57bc5d8c7a70682": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "d3a7b1cf74d288da601de805afbcf7f5e28e77f6.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "b749af1c9208aa7a045f7420634ce1ada16c737d",
+   "size": 948
+  },
   "bacd89618c6282059b2157e3feea7839c9ed73be": {
    "args": {
     "__tuple__": [
@@ -27410,6 +31327,154 @@
    },
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
+  },
+  "bb455047006ff33005a253b4b09f8bc7731d4325": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520628
+       ]
+      ]
+     },
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--nologo",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ]
+    ]
+   },
+   "blob": "3249795c91a793988a3a2252a63e9e2105fa4bcd.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "e692ea39f143ed9878431dbee54e991ce81b0ded",
+   "size": 3063
   },
   "bbbad8772a5734f0acf3b6ddbfb0a9b2e9afa44e": {
    "args": {
@@ -27461,6 +31526,88 @@
    },
    "resolved": "32f71683bda832e89b96200c12f6103d16bd83ad",
    "size": 3593
+  },
+  "bbf133b129db769746e7a5ae0c5618d6bb65c5bf": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
   },
   "bc54189dda4789f570f85b10e4a675da839792b9": {
    "args": {
@@ -30376,6 +34523,38 @@
    "resolved": "59a0d39d56e23a7d5dc85737f58be3f6aba69975",
    "size": 3593
   },
+  "c8df97e1e0baebf502e7309420b516f92db7bf5e": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "f35606a5b051041db2ca360de6fab09e46831a05.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mshcards.card1",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "3b56b08d3f0d51002487edd53e86f36f0fd957ee",
+   "size": 20423
+  },
   "c9556cb501da5613e2b3a2c681a89921737b0b47": {
    "args": {
     "__tuple__": []
@@ -30828,6 +35007,148 @@
    },
    "resolved": "18d0126a0217a78159146e6255eb15d70220f56a",
    "size": 3591
+  },
+  "cbf9418db42b83c1754f173c32e85f51e5243eec": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ],
+       [
+        "abapply_card",
+        2149520592
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "dd0a2899f3e6440f155daf944b7cb9d46e4694a5.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "20f982d134201678c366cdd1cae87303864d40e3",
+   "size": 2550
   },
   "cc101590d9cd8e68c814a70084d712b8bfa37041": {
    "args": {
@@ -31404,6 +35725,147 @@
    "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
    "size": 4028
   },
+  "d1ad5c1d0cbb4d0458a11b3b8e4351ec8c55dbf1": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--ach",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--achpop",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "07d9fddd0515d8d300c00a48732808808f5c5cb7.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "37b282813be0adc17a303372de9bd34524ed7449",
+   "size": 2901
+  },
   "d206f7dda0d86b8cca6e3efb01b6f5b9a0c8e588": {
    "args": {
     "__tuple__": []
@@ -31733,6 +36195,41 @@
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
   },
+  "d441a1bee12f36a44512810af3b459882d0113fe": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1"
+    ]
+   },
+   "blob": "4a52b731f69ffd2dc5695d4d3c0bd60d000c701a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.menu_part",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "65019ab7ecf147362e103fe45b4c9943667d347e",
+   "size": 1039
+  },
   "d4f3a2369652c0270551a5bcdf308b952a6817f0": {
    "args": {
     "__tuple__": []
@@ -31948,6 +36445,39 @@
    },
    "resolved": "5302c5b2d5df12f7a1b1c4fdd3e993fcc2911d95",
    "size": 1039
+  },
+  "d56811a47c92b5ce89eb393641f326784618036d": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "27ffa7f46948c1d253f148b73256259dfc08a62c.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nologo",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mkap8.build_blob8",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "d760ffe5998799b400488bd7de73422de200999d",
+   "size": 56336
   },
   "d5cd42c39e68d4dee0a1224de920de49645ac2e6": {
    "args": {
@@ -34135,6 +38665,89 @@
    "resolved": "463fabe7b46ec20de66280567a0479056c77fa48",
    "size": 4028
   },
+  "e357127de5391e7c249cbe6dbef0bc1fc3805891": {
+   "args": {
+    "__tuple__": [
+     {
+      "__dict__": [
+       [
+        "cfg_sha1",
+        "9b38d355cbcc75a1b71b6a3f62b801265e8dda76"
+       ]
+      ]
+     },
+     {
+      "__dict__": [
+       [
+        "MT_VSCPU",
+        1
+       ],
+       [
+        "MT_VSMENU",
+        1
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "9afeeb4a879104a32bf035eec2a1ed88c16e65f8.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "mtpatch.code",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
+   "size": 6273
+  },
+  "e3d7d3cf0ca7badb59888ea10e6511ac9c354d56": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "1a9bcf22ee88756abc9994c192219d6d26b67d4a.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "cyswap.build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "8e26a0eb2cff4b2221357f1ec3496b47234e9cdd",
+   "size": 590
+  },
   "e400f97c48b1d5b6c444d24aef56e20e57f6c734": {
    "args": {
     "__tuple__": [
@@ -34906,6 +39519,144 @@
    "resolved": "f7449f58e01a9e827cab336d574bfc6c93223c13",
    "size": 1372
   },
+  "e9652f74aa08b501aeccca525ae7dfdf11ada033": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     {
+      "__dict__": [
+       [
+        "ldhook",
+        2147552804
+       ],
+       [
+        "sa_tk",
+        2147563232
+       ],
+       [
+        "ldset",
+        2147727300
+       ],
+       [
+        "rowval",
+        2147727344
+       ],
+       [
+        "abidx",
+        2147580048
+       ],
+       [
+        "pv_auto",
+        2147580042
+       ],
+       [
+        "pl_fs",
+        2147580012
+       ],
+       [
+        "PROWS",
+        2147580012
+       ],
+       [
+        "pv_on",
+        2147580039
+       ],
+       [
+        "pl_sm",
+        2147580023
+       ],
+       [
+        "pv_off",
+        2147580035
+       ],
+       [
+        "ldfin",
+        2147623488
+       ],
+       [
+        "ldz",
+        2147623516
+       ],
+       [
+        "abrow",
+        2147623540
+       ],
+       [
+        "svhook",
+        2147631708
+       ],
+       [
+        "im_d",
+        2147859752
+       ],
+       [
+        "xkey",
+        2147787752
+       ],
+       [
+        "pconf",
+        2147653004
+       ],
+       [
+        "pdraw",
+        2147652980
+       ],
+       [
+        "pd0",
+        2147653024
+       ],
+       [
+        "pmenu",
+        2147652612
+       ]
+      ]
+     },
+     [
+      "mktag.py",
+      "mshvsf_tag",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--l2g",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1"
+     ]
+    ]
+   },
+   "blob": "dd0a2899f3e6440f155daf944b7cb9d46e4694a5.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "exopt.screen",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "20f982d134201678c366cdd1cae87303864d40e3",
+   "size": 2550
+  },
   "e9da333df05728a2ec0383a598ce221772bcd43d": {
    "args": {
     "__tuple__": [
@@ -35074,6 +39825,39 @@
    },
    "resolved": "951f7065d2da5309254abe58f4b41bf78baa0039",
    "size": 2215
+  },
+  "ea64605996755015999cd726d16c13e9696aeed8": {
+   "args": {
+    "__tuple__": [
+     "mshvsf"
+    ]
+   },
+   "blob": "dc4384354be2eba63e0ec538298a104e81e15517.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "dsmpatch.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
+   "size": 2673
   },
   "ea9312134aa11ba9a0accb3d1d83cf859145602f": {
    "args": {
@@ -35595,6 +40379,87 @@
    },
    "resolved": "af161ed159577868e18732e9c5949eca4f88e906",
    "size": 6273
+  },
+  "f09f95983dbb7df08b803d9d865622b8b1ad4e43": {
+   "args": {
+    "__tuple__": [
+     "TAG HACK 1.1",
+     {
+      "__dict__": [
+       [
+        "mstub",
+        2147631992
+       ],
+       [
+        "mflag",
+        2147632064
+       ],
+       [
+        "mcopy",
+        2147735836
+       ],
+       [
+        "mst",
+        2149574836
+       ],
+       [
+        "mfont",
+        2149574780
+       ],
+       [
+        "mram_end",
+        2149574856
+       ],
+       [
+        "mdig",
+        2149574824
+       ],
+       [
+        "meter",
+        2149574212
+       ],
+       [
+        "mram",
+        2149574208
+       ],
+       [
+        "mseg",
+        2149574796
+       ],
+       [
+        "mdraw",
+        2149574396
+       ]
+      ]
+     }
+    ]
+   },
+   "blob": "1f18cf87bc44daf0b574f065a5e3caa1b6c08a88.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--achpop",
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--l2g",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--stageanim",
+     "--vsmenu"
+    ]
+   },
+   "function": "allpatches.overlay_patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "7dc44f02ce74053e0e65cb9ee3fa80fffdd22fb2",
+   "size": 2447
   },
   "f0c3dc9b3bd478af999db895624f23a571d8d3ee": {
    "args": {
@@ -36686,6 +41551,37 @@
    "resolved": "af5301fd37206884a8eb4d008c4fb35023ed75c7",
    "size": 2673
   },
+  "fc38fda396c0c81eadca01242ccfa2b925c31de0": {
+   "args": {
+    "__tuple__": []
+   },
+   "blob": "076e31d66d90fb0af46cdc69596dadcc3d7358e9.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "ahead.patches",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "4607fceb6e5e8bb399bca0befd8f2ac7498779b0",
+   "size": 5229
+  },
   "fca28244630f2f526ae169ab05cc7f3a06dc80c5": {
    "args": {
     "__tuple__": [
@@ -36785,6 +41681,59 @@
    },
    "resolved": "33a1390f5c06e59c96d25026275d0d2594d75d4b",
    "size": 1336
+  },
+  "fe588af218d21d2eab27982569df65a3ac453219": {
+   "args": {
+    "__tuple__": [
+     2147632064,
+     2147665396,
+     [
+      "mkap8.py",
+      "mshvsf_ap8",
+      "--meter",
+      "--mcfix",
+      "--exopt",
+      "--stageanim",
+      "--cyswap",
+      "--arcbal",
+      "--vsmenu",
+      "--nori",
+      "--infmeter",
+      "--nosmrow",
+      "--excard",
+      "--galfix",
+      "--title=TAG HACK 1.1",
+      "--afrow"
+     ],
+     2149520628
+    ]
+   },
+   "blob": "8d100ba26e50ee24aa5355a59ed57f3a1c2c52d0.json",
+   "context": {
+    "ap8": null,
+    "argv": [
+     "--arcbal",
+     "--cyswap",
+     "--excard",
+     "--exopt",
+     "--galfix",
+     "--infmeter",
+     "--mcfix",
+     "--meter",
+     "--nori",
+     "--nosmrow",
+     "--sn8full",
+     "--stageanim",
+     "--vsmenu",
+     "--work2"
+    ]
+   },
+   "function": "exopt.exe_build",
+   "kwargs": {
+    "__dict__": []
+   },
+   "resolved": "afb88f53c34203c66ac5041330b996de64d667e5",
+   "size": 3588
   },
   "fef4429788d1ae01b302d75bb1e666c648871127": {
    "args": {
@@ -36912,7 +41861,7 @@
   "games/mshvsf/tools/ap/audit8.py": "0e2da6311108aa8155f0712931abc63b75aae69a",
   "games/mshvsf/tools/ap/build8.py": "b50314d87cd3b5c5276ab8aa613bcfe9ebb172da",
   "games/mshvsf/tools/ap/gt8.py": "7f28186b780eb9694a66faeabd10c124c8aae154",
-  "games/mshvsf/tools/ap8/ap8.c": "96cbdeb74e9e5d8397d3a2bb3df3a3c3cb62ef64",
+  "games/mshvsf/tools/ap8/ap8.c": "99ccea8e5bc027b37f42e05e78b68a4f5ee01ddc",
   "games/mshvsf/tools/ap8/ap8menu.S": "37cc09636934d6609a337221cfb5ec2861bf81fb",
   "games/mshvsf/tools/ap8/b8bisect.py": "72bf01b8a3ce0d9f5e2f1d89b0c5c1359cee2c8f",
   "games/mshvsf/tools/ap8/bench8.py": "d2a252a143d909eb0b94784340f7a41d2e6032a0",
@@ -36925,7 +41874,7 @@
   "games/mshvsf/tools/ap8/h_mvs_m11_f8.json": "97d170e1550eee4afc0af065b78cda302a97674c",
   "games/mshvsf/tools/ap8/h_mvs_mshvsf_ap8_f10.json": "97d170e1550eee4afc0af065b78cda302a97674c",
   "games/mshvsf/tools/ap8/link8.ld": "2e70f35caaa3f1031c964408d743e0365f4649f5",
-  "games/mshvsf/tools/ap8/mkap8.py": "3ec3454533ebd4acf8ee11b2a85470b16d96f3ad",
+  "games/mshvsf/tools/ap8/mkap8.py": "64551cdb37a3545105f0f277970c0ee40ec871fe",
   "games/mshvsf/tools/ap8/rt8.py": "e5e1df6a22a0784c63645eeffde0c23093662dce",
   "games/mshvsf/tools/ap8/s8/s8.c": "0f55caaa7b165f663be5a556364aae381394a8f6",
   "games/mshvsf/tools/ap8/s8/s8.h": "46bb5a0db505cc1401c64f63a2823ee0fe35622e",

@@ -182,7 +182,7 @@ Re-baking (development machine, MIPS compiler; holds `games/mshvsf/work/mktag.lo
     python work/release14/record_msh.py             # 1.1: bake data/mshvsf/blobs, record == replay (no compiler) == the finals (known.json "reference"), known.json
 
 The 1.1 configurations reproduce games/mshvsf/build/m11_gf1.bin (sha1 `0c782cd7…`) and, with mshvsf or mshvsfu,
-mshvsf_ap8_gf1.bin (`ae2f5166…`); `--ram8` `0d28aa39…` (work/release14/rec_msh_gf1.log: 11 configurations).  Every 8 MB
+mshvsf_ap8_i23e.bin (`586bf8b5…`, 8 MB with the GitHub #23 fix `--work2`); `--ram8` `e944cd90…` (11 configurations, re-baked 2026-11-27).  Every 8 MB
 image is a DUAL image (builder/mshb/dual.py): the 2 MB build with the same options + the 8 MB build appended, switched over
 only by a boot-time 8 MB test, so on a 2 MB console it runs exactly the 2 MB disc.
 The 1.0 release configurations reproduced `games/mshvsf/build/mshvsf_rc1.bin` (`mktag.py --meter`: `fed1e957…`) and
